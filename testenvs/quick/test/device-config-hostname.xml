@@ -2,10 +2,9 @@
     <device>
         <name>dev1</name>
         <config>
-            <!-- TODO: replace with platform specific config -->
-            <system xmlns="urn:ietf:params:xml:ns:yang:ietf-system">
-                <hostname>foobarhostname</hostname>
-            </system>
+            <host-names xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-shellutil-cfg">
+                <host-name>foobarhostname</host-name>
+            </host-names>
         </config>
     </device>
 </devices>
