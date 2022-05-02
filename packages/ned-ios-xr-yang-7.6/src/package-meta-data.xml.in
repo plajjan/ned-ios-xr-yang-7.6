@@ -1,0 +1,15 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>ned-ios-xr-yang</name>
+  <package-version>7.4.2</package-version>
+  <description>Generated netconf package</description>
+  <ncs-min-version>5.5.0</ncs-min-version>
+  <component>
+    <name>ned-ios-xr-yang-7.4.2</name>
+    <ned>
+      <netconf/>
+      <device>
+        <vendor>Cisco</vendor>
+      </device>
+    </ned>
+  </component>
+</ncs-package>
