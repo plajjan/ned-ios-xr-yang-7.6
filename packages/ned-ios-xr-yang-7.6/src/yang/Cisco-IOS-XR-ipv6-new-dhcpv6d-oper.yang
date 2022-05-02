@@ -9,7 +9,7 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
-    revision-date 2021-03-19;
+    revision-date 2021-10-05;
   }
 
   organization
@@ -35,9 +35,25 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-05 {
+    description
+      "Migrated LEAF-LIST with duplicate value to LIST type.";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-09-14 {
+    description
+      "Fixed GET-OPER to display interface name in standard format.";
+    semver:module-version "3.0.0";
+  }
   revision 2021-03-19 {
     description
-      "Added support for dynamic relay MAC address handling.";
+      "Added support for dynamic relay MAC address handling.
+       2020-12-20
+           Added Yang Support for ADT,to retrive statistcs with help of vrf/interface.
+       2020-09-30
+           Modified to accommodate cdm changes
+       2020-09-29
+           Added support to track server that allocated IP for DHCPv6 relay client.";
     semver:module-version "2.1.0";
   }
   revision 2019-12-18 {
@@ -177,7 +193,7 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-oper {
               description
                 "IPv6 DHCP proxy interface";
               leaf interface-name {
-                type xr:Cisco-ios-xr-string;
+                type xr:Interface-name;
                 description
                   "Interface Name";
               }
@@ -201,7 +217,7 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-oper {
                   "L3 VRF Name";
               }
               leaf interface-name {
-                type xr:Cisco-ios-xr-string;
+                type xr:Interface-name;
                 description
                   "L3 Interface Name";
               }
@@ -268,7 +284,7 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-oper {
                   "L3 VRF Name";
               }
               leaf interface-name {
-                type xr:Cisco-ios-xr-string;
+                type xr:Interface-name;
                 description
                   "L3 Interface Name";
               }
@@ -394,7 +410,7 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-oper {
               description
                 "IPv6 DHCP server interface";
               leaf interface-name {
-                type xr:Cisco-ios-xr-string;
+                type xr:Interface-name;
                 description
                   "Interface Name";
               }
@@ -413,7 +429,7 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-oper {
                   "L3 VRF Name";
               }
               leaf interface-name {
-                type xr:Cisco-ios-xr-string;
+                type xr:Interface-name;
                 description
                   "L3 Interface Name";
               }

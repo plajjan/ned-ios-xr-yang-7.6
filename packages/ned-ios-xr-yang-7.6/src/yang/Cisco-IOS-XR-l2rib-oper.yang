@@ -12,7 +12,7 @@ module Cisco-IOS-XR-l2rib-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-l2rib-oper-sub1 {
-    revision-date 2019-11-22;
+    revision-date 2021-07-09;
   }
 
   organization
@@ -35,9 +35,14 @@ module Cisco-IOS-XR-l2rib-oper {
      for the following management objects:
        l2rib: L2RIB operational information
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-09 {
+    description
+      "Changes made in the bag to display IID next-hop.";
+    semver:module-version "2.2.0";
+  }
   revision 2019-11-22 {
     description
       "Added to path for Mac/IP Table and Mac/IP Detail Table";

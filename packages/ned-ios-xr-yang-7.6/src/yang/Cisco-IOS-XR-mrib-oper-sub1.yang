@@ -38,13 +38,13 @@ submodule Cisco-IOS-XR-mrib-oper-sub1 {
   revision 2021-08-27 {
     description
       "non-backward compatible edit in leaf parent-if-handle. type changed from uint32 to type xr:Hex-integer";
-    semver:module-version "2.0.0";
+    semver:module-version "3.0.0";
   }
   revision 2020-10-29 {
     description
       "Adding RPFID for PIM-SM design
        2020-10-11
-       Backward compatible addition in leaf table-mdt-name-tree-sid,table-tree-sid-turnaround and reference-count.";
+           Backward compatible addition in leaf table-mdt-name-tree-sid,table-tree-sid-turnaround and reference-count.";
     semver:module-version "1.1.0";
   }
   revision 2020-02-13 {
@@ -2521,6 +2521,11 @@ submodule Cisco-IOS-XR-mrib-oper-sub1 {
       description
         "Nexthop ID";
     }
+    leaf out-nh-sid {
+      type uint32;
+      description
+        "NH SID";
+    }
     leaf output-label {
       type uint32;
       description
@@ -3526,6 +3531,33 @@ submodule Cisco-IOS-XR-mrib-oper-sub1 {
     }
   }
 
+  grouping MRIB-NH-PATH-BAG {
+    description
+      "MRIB NH Path Information";
+    leaf mribnh-string {
+      type string {
+        length "0..32";
+      }
+      description
+        "MRIB neighbor identity";
+    }
+    leaf out-intf {
+      type xr:Interface-name;
+      description
+        "Outgoing Interface ";
+    }
+    leaf prim-count {
+      type uint32;
+      description
+        "Primary Interface Count";
+    }
+    leaf backup-count {
+      type uint32;
+      description
+        "Backup Interface Count";
+    }
+  }
+
   grouping MRIB-REGDB-BAG {
     description
       "MRIB Regdb Entry";
@@ -3538,6 +3570,11 @@ submodule Cisco-IOS-XR-mrib-oper-sub1 {
       type inet:ipv4-address;
       description
         "NH addr";
+    }
+    leaf label {
+      type uint32;
+      description
+        "Label NH";
     }
     leaf regdb-ip-leaf-count {
       type uint32;
@@ -3573,6 +3610,18 @@ submodule Cisco-IOS-XR-mrib-oper-sub1 {
       type string;
       description
         "Destination Vrf Name";
+    }
+    leaf notified-ts {
+      type string {
+        length "0..40";
+      }
+      description
+        "notified timestamp";
+    }
+    list path {
+      description
+        "NH path list";
+      uses MRIB-NH-PATH-BAG;
     }
   }
 }

@@ -32,28 +32,50 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR clns-isis package operational data.
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-30 {
+    description
+      "add per-area, per topology statistic indexed list.
+       2022-01-11
+         add show isis neighbor summary statistic info. IosSetYangSchemaRev Cisco-IOS-XR-PRIVATE-ocni-isis-oper
+       2021-09-03
+         Show output added for IP Flex-algo.";
+    semver:module-version "4.2.0";
+  }
+  revision 2021-07-07 {
+    description
+      "Add timestamp and age to isis local rib routes.";
+    semver:module-version "4.1.0";
+  }
   revision 2021-03-13 {
     description
-      "Interface bandwidth changed from uint32_t to uint64_t";
-    semver:module-version "4.1.0";
+      "Interface bandwidth changed from uint32_t to uint64_t
+       2021-01-04
+           Add private adjacency bag
+       2020-11-05
+           Flex-algo extension for show isis topology.
+       2020-10-27
+           Add a new type Isis-flex-algo-metric for flex-algo metrics and change the metric-type leaf in ISIS-SH-FLEX-ALGO-AREA to use it.
+       2020-10-20
+           Change in Yang tool corrected strings repair-s-rv6* to repair-srv6*, end-xsid* to end-x-sid*, and is-s-rv6 to is-srv6. Changed avg-dela-rawy to avg-delay-raw to fix misspelling via CSCvu63930. Changed SRv6 function-type to sid-behavior, uint32_t to mgmt_srv6_sid_fmt, and num-sid to num-sids for consistency and to comply with current IETF ISIS SRv6 draft via CSCvu06764.";
+    semver:module-version "4.0.0";
   }
   revision 2020-05-12 {
     description
       "Added SRLG and SRLG Static
        2020-03-25
-       Added operational data for new features.";
+         Added operational data for new features.";
     semver:module-version "3.0.0";
   }
   revision 2019-09-25 {
     description
       "Added operational data for new features
        2019-05-14
-       Conditional Advertise-prefix support
+         Conditional Advertise-prefix support
        2019-05-03
-       move ocni-isis opencfg model from native model to private oper model";
+         move ocni-isis opencfg model from native model to private oper model";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -2610,6 +2632,57 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
     }
   }
 
+  grouping ISIS-SH-GLOBAL-AREA-TOPO-STATS {
+    description
+      "ISIS process traffic per area topo statistics
+       data";
+    container statistics {
+      description
+        "Statistics";
+      uses ISIS-AREA-TOPO-STATS-TYPE;
+    }
+  }
+
+  grouping ISIS-SH-GLOBAL-AREA-STATS {
+    description
+      "ISIS process traffic per area statistics data";
+    container statistics {
+      description
+        "Statistics";
+      uses ISIS-AREA-STATS-TYPE;
+    }
+  }
+
+  grouping ISIS-SH-GLOBAL-STATS {
+    description
+      "IS-IS process traffic statistics data";
+    container statistics {
+      description
+        "Statistics";
+      uses ISIS-TRAFFIC-GLOBAL-TYPE;
+    }
+  }
+
+  grouping ISIS-SH-NBR-SUMM-STATS {
+    description
+      "Neighbor summary statistics data";
+    leaf level-1-nbr-count {
+      type uint32;
+      description
+        "L1-only neighbor counter";
+    }
+    leaf level-2-nbr-count {
+      type uint32;
+      description
+        "L2-only neighbor counter";
+    }
+    leaf level12-nbr-count {
+      type uint32;
+      description
+        "L1L2 neighbor counter";
+    }
+  }
+
   grouping ISIS-SH-DDADJ-SID {
     description
       "Delay Deletion Protected Adj-SID data";
@@ -3246,6 +3319,11 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       type uint32;
       description
         "PDUs sent";
+    }
+    leaf pdu-dropped-count {
+      type uint32;
+      description
+        "PDUs dropped";
     }
   }
 
@@ -4238,6 +4316,42 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       description
         "Flex-Algo Definition Node-ID";
     }
+    list excl-affinity {
+      description
+        "ExclAffinity";
+      leaf entry {
+        type uint32;
+        description
+          "ExclAffinity";
+      }
+    }
+    list incl-any-affinity {
+      description
+        "InclAnyAffinity";
+      leaf entry {
+        type uint32;
+        description
+          "InclAnyAffinity";
+      }
+    }
+    list incl-all-affinity {
+      description
+        "InclAllAffinity";
+      leaf entry {
+        type uint32;
+        description
+          "InclAllAffinity";
+      }
+    }
+    list exc-srlg {
+      description
+        "ExclSRLG";
+      leaf entry {
+        type uint32;
+        description
+          "ExclSRLG";
+      }
+    }
   }
 
   grouping ISIS-SH-FLEX-ALGO {
@@ -4262,6 +4376,16 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       type boolean;
       description
         "Flex-Algo Microloop Avoidance Disabled";
+    }
+    leaf data-plane-sr {
+      type boolean;
+      description
+        "Flex-Algo Data Plane Segment Routing";
+    }
+    leaf data-plane-ip {
+      type boolean;
+      description
+        "Flex-Algo Data Plane IP";
     }
     list area {
       description
@@ -4327,6 +4451,15 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       type boolean;
       description
         "Is the interface unnumbered";
+    }
+    list algo {
+      description
+        "algo";
+      leaf entry {
+        type uint32;
+        description
+          "algo";
+      }
     }
     list prefix {
       description
@@ -6921,6 +7054,16 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       description
         "Is the IS attached?";
     }
+    leaf is-sr-capable {
+      type boolean;
+      description
+        "Is SR Capable";
+    }
+    leaf is-srv6-capable {
+      type boolean;
+      description
+        "Is SRv6 Capable";
+    }
     leaf algorithm {
       type uint32;
       description
@@ -7036,6 +7179,11 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       type boolean;
       description
         "Is the IS attached?";
+    }
+    leaf is-sr-capable {
+      type boolean;
+      description
+        "Is SR Capable";
     }
     leaf algorithm {
       type uint32;
@@ -7840,6 +7988,11 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
   grouping ISIS-SH-IPV6-ROUTE {
     description
       "IS-IS IPv6 route";
+    container route-timestamp {
+      description
+        "Timestamp of last route update";
+      uses ISIS-SH-TIMESTAMP-TYPE;
+    }
     container connected-status {
       description
         "Status of IS-IS directly connected routes to the
@@ -7856,6 +8009,12 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       description
         "Status of native IS-IS routes to the prefix";
       uses ISIS-SH-IPV6-ROUTE-NATIVE-STATUS;
+    }
+    leaf route-age {
+      type uint32;
+      units "second";
+      description
+        "Seconds since last route update";
     }
     list per-level-advertising-detail {
       description
@@ -8692,6 +8851,11 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
   grouping ISIS-SH-IPV4-ROUTE {
     description
       "IS-IS IPv4 route";
+    container route-timestamp {
+      description
+        "Timestamp of last route update";
+      uses ISIS-SH-TIMESTAMP-TYPE;
+    }
     container connected-status {
       description
         "Status of IS-IS directly connected routes to the
@@ -8708,6 +8872,12 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub1 {
       description
         "Status of native IS-IS routes to the prefix";
       uses ISIS-SH-IPV4-ROUTE-NATIVE-STATUS;
+    }
+    leaf route-age {
+      type uint32;
+      units "second";
+      description
+        "Seconds since last route update";
     }
     list per-level-advertising-detail {
       description

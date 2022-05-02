@@ -35,6 +35,11 @@ module Cisco-IOS-XR-lib-mpp-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-04 {
+    description
+      "Restricting inband behavior on out-of-band in some scenarios.";
+    semver:module-version "1.1.0";
+  }
   revision 2021-01-30 {
     description
       "Removal of hidden cmd in /lib/mpp/";
@@ -261,6 +266,15 @@ module Cisco-IOS-XR-lib-mpp-cfg {
     container management-plane-protection {
       description
         "Configure management plane protection";
+      container enable {
+        description
+          "Enable Outband Configuration";
+        leaf outband-default-deny {
+          type empty;
+          description
+            "Enable inband behavior for out-of-band";
+        }
+      }
       container outband {
         description
           "Outband Configuration";

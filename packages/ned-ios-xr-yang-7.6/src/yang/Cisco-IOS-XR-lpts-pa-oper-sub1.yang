@@ -26,9 +26,14 @@ submodule Cisco-IOS-XR-lpts-pa-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR lpts-pa package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-11-24 {
+    description
+      "added new members in binding oper data as location name, vrf name, client id name, etc";
+    semver:module-version "1.1.0";
+  }
   revision 2020-06-24 {
     description
       "added task-name to LptsPA class.";
@@ -105,6 +110,11 @@ submodule Cisco-IOS-XR-lpts-pa-oper-sub1 {
     leaf location {
       type uint32;
       description
+        "Node Id";
+    }
+    leaf location-name {
+      type string;
+      description
         "Rack/slot/instance";
     }
     leaf client-id {
@@ -112,10 +122,20 @@ submodule Cisco-IOS-XR-lpts-pa-oper-sub1 {
       description
         "Client ID";
     }
+    leaf client-name {
+      type string;
+      description
+        "Client's Name";
+    }
     leaf vid {
       type uint32;
       description
         "VR/VRF ID";
+    }
+    leaf vrf-name {
+      type string;
+      description
+        "VRF Name";
     }
     leaf cookie {
       type uint32;
@@ -152,10 +172,20 @@ submodule Cisco-IOS-XR-lpts-pa-oper-sub1 {
       description
         "Local address";
     }
+    leaf local-ip-str {
+      type string;
+      description
+        "Local IP address";
+    }
     leaf remote-ip {
       type yang:hex-string;
       description
         "Remote address";
+    }
+    leaf remote-ip-str {
+      type string;
+      description
+        "Remote IP address";
     }
     leaf local-len {
       type uint8;
@@ -197,15 +227,25 @@ submodule Cisco-IOS-XR-lpts-pa-oper-sub1 {
       description
         "Minimum TTL";
     }
+    leaf ctime-str {
+      type string;
+      description
+        "Creation Time In DateTime Format";
+    }
+    leaf utime-str {
+      type string;
+      description
+        "Update Time In DateTime Format";
+    }
     leaf lazy-bindq-delay {
       type uint32;
       description
-        " lazy binding queue delay";
+        "Lazy binding queue delay";
     }
     leaf ptq-delay {
       type uint32;
       description
-        " pending transactions queue delay";
+        "Pending transactions queue delay";
     }
   }
 }

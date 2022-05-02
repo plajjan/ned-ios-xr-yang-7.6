@@ -42,7 +42,7 @@ module Cisco-IOS-XR-um-rsvp-cfg {
   revision 2019-06-10 {
     description
       "- Added 'default' container under bandwidth which corredsponds to
-       empty CLI keyword 'bandwidth'
+         empty CLI keyword 'bandwidth'
        - Added necessary 'must' statement within bandwidth block
        - Established semantic version baseline.";
     semver:module-version "1.0.0";

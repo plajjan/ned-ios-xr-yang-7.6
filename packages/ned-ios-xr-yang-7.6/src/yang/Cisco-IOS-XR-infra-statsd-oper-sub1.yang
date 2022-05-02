@@ -26,9 +26,22 @@ submodule Cisco-IOS-XR-infra-statsd-oper-sub1 {
      Copyright (c) 2013-2020 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2020-12-17 {
+    description
+      "Unit of bandwidth in datarate container changed from 32-bit to 64-bit.";
+    semver:module-version "1.2.0";
+  }
   revision 2020-10-08 {
     description
-      "Unit of last-data-time in milliseconds reverted to seconds for generic stats";
+      "Unit of last-data-time in milliseconds reverted to seconds for generic stats
+       2020-05-05
+           Added Hardware timestamp support for protocol stats.
+       2020-04-14
+           Unit of last-data-time changed from seconds to milliseconds for generic stats
+       2020-04-14
+           Data type of last-data-time changed from uint32 to uint64 for generic and proto stats
+       2020-04-14
+           Adding Hardware timestamp feature in generic structure.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -93,7 +106,7 @@ submodule Cisco-IOS-XR-infra-statsd-oper-sub1 {
          last clear counters";
     }
     leaf bandwidth {
-      type uint32;
+      type uint64;
       units "kbit/s";
       description
         "Bandwidth (in kbps)";

@@ -29,9 +29,19 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR mpls-ldp-mldp package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-27 {
+    description
+      "Modified arg type for mldp database root address in schema and bgen files. from ipaddress to string";
+    semver:module-version "1.2.0";
+  }
+  revision 2021-04-27 {
+    description
+      "Added mLDP flex-algo";
+    semver:module-version "1.2.0";
+  }
   revision 2020-10-18 {
     description
       "Backward compatible removal in telemetry event Cisco-IOS-XR-types, event-telemetry was removed.";
@@ -49,6 +59,149 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
+  }
+
+  grouping MLDP-FIB-REGDB-BAG {
+    description
+      "MLDP FIB REGDB";
+    leaf address {
+      type inet:ipv4-address;
+      description
+        "address";
+    }
+    leaf registered {
+      type boolean;
+      description
+        "ecd registered";
+    }
+    leaf stale {
+      type boolean;
+      description
+        "ECD Stale flag";
+    }
+    leaf flags {
+      type uint8;
+      description
+        "interested flags";
+    }
+    leaf algo {
+      type uint8;
+      description
+        "algo value";
+    }
+    leaf sid {
+      type uint32;
+      description
+        "Sid";
+    }
+    leaf notified-count {
+      type uint32;
+      description
+        "ecd notified count";
+    }
+    leaf ecd-info {
+      type uint16;
+      description
+        "ecd info length";
+    }
+    leaf notified-ts {
+      type string {
+        length "0..40";
+      }
+      description
+        "notified timestamp";
+    }
+    list path {
+      description
+        "path list";
+      uses MLDP-ROOT-PATH-BAG;
+    }
+  }
+
+  grouping MLDP-FLEX-PEER-BRANCH-BAG {
+    description
+      "MLDP Flex peer Branch Information";
+    leaf lsm-id {
+      type uint32;
+      description
+        "LSM ID";
+    }
+    leaf branch-type {
+      type uint32;
+      description
+        "Branch Type";
+    }
+    leaf branch-id {
+      type uint32;
+      description
+        "Branch ID";
+    }
+  }
+
+  grouping MLDP-FLEX-PEER-BAG {
+    description
+      "MLDP Flex Peer Information";
+    leaf fi-bregistered {
+      type boolean;
+      description
+        "Registered with FIB";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf algo {
+      type uint8;
+      description
+        "Flex Algo";
+    }
+    leaf sid {
+      type uint32;
+      description
+        "Sid";
+    }
+    leaf metric {
+      type uint32;
+      description
+        "Metric";
+    }
+    leaf branch-count {
+      type uint32;
+      description
+        "Number of Branches";
+    }
+    leaf path-count {
+      type uint32;
+      description
+        "Paths to reach";
+    }
+    list branch {
+      description
+        "Peer Brach list";
+      uses MLDP-FLEX-PEER-BRANCH-BAG;
+    }
+    list path {
+      description
+        "Peer Path list";
+      uses MLDP-NEIGHBOR-PATH-BAG;
+    }
+  }
+
+  grouping MLDP-FLEX-PEER-RIB-BAG {
+    description
+      "MLDP RIB algo";
+    leaf ri-bregistered {
+      type uint8;
+      description
+        "RIB registered algo-id";
+    }
+    leaf ri-blocal {
+      type uint32;
+      description
+        "Local Label";
+    }
+    leaf metric {
+      type uint32;
+      description
+        "Metric";
+    }
   }
 
   grouping MLDP-NEIGHBOR-IDENT-BAG {
@@ -108,6 +261,13 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
       description
         "MLDP neighbor path interface";
     }
+    leaf interface-name-parent {
+      type string {
+        length "0..65";
+      }
+      description
+        "MLDP neighbor path interface";
+    }
     leaf mldp-adjacency {
       type boolean;
       description
@@ -122,6 +282,11 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
       type uint32;
       description
         "MLDP neighbor path is disabled";
+    }
+    leaf rib-disc-id {
+      type uint16;
+      description
+        "RIB Discovery ID";
     }
   }
 
@@ -237,6 +402,11 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
       description
         "MLDP peer identify count";
     }
+    leaf peer-upstream-preference {
+      type uint32;
+      description
+        "MLDP peer upstream preference";
+    }
     list neighbor-path {
       description
         "Path List";
@@ -251,6 +421,16 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
       description
         "Identity List";
       uses MLDP-NEIGHBOR-IDENT-BAG;
+    }
+    list numberof-algo {
+      description
+        "RIB algo list";
+      uses MLDP-FLEX-PEER-RIB-BAG;
+    }
+    list flex-peer {
+      description
+        "flex peer list";
+      uses MLDP-FLEX-PEER-BAG;
     }
   }
 
@@ -340,6 +520,97 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
     }
   }
 
+  grouping MLDP-FLEX-ROOT-DB-BAG {
+    description
+      "MLDP Root Flex db information";
+    container rootdb-bag-info {
+      description
+        "Root Information";
+      uses MLDP-ROOT-AFI-BAG;
+    }
+    leaf lsmid {
+      type uint32;
+      description
+        "LSM ID of the paths in this LSP binding";
+    }
+  }
+
+  grouping MLDP-FLEX-ROOT-BAG {
+    description
+      "MLDP Flex Root Information";
+    leaf fi-bregistered {
+      type boolean;
+      description
+        "Registered with FIB";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf algo {
+      type uint8;
+      description
+        "Flex Algo";
+    }
+    leaf sid {
+      type uint32;
+      description
+        "Sid";
+    }
+    leaf metric {
+      type uint32;
+      description
+        "Metric";
+    }
+    leaf distance {
+      type uint32;
+      description
+        "Distance";
+    }
+    leaf fec-count {
+      type uint32;
+      description
+        "LSP's linked to this root";
+    }
+    leaf recursice-fec-count {
+      type uint32;
+      description
+        "Recursive LSP's linked to this root";
+    }
+    leaf path-count {
+      type uint32;
+      description
+        "Paths to reach this root";
+    }
+    list root-path {
+      description
+        "Root path list";
+      uses MLDP-ROOT-PATH-BAG;
+    }
+    list root-info {
+      description
+        "Root Information";
+      uses MLDP-FLEX-ROOT-DB-BAG;
+    }
+  }
+
+  grouping MLDP-FLEX-RIB-BAG {
+    description
+      "MLDP RIB algo";
+    leaf ri-bregistered {
+      type uint8;
+      description
+        "RIB registered algo-id";
+    }
+    leaf ri-blocal {
+      type uint32;
+      description
+        "Local Label";
+    }
+    leaf metric {
+      type uint32;
+      description
+        "Metric";
+    }
+  }
+
   grouping MLDP-ROOT-IPMSI-BAG {
     description
       "MLDP Root I-PMSI Information";
@@ -382,10 +653,30 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
       description
         "MLDP root path information via checkpoint";
     }
+    leaf flex-root {
+      type boolean;
+      description
+        "Flex Root";
+    }
     leaf php-next-hop-address {
       type inet:ipv4-address;
       description
         "Penultimate next-hop";
+    }
+    leaf rib-disc-id {
+      type uint16;
+      description
+        "RIB Discovery ID";
+    }
+    leaf algotype {
+      type uint8;
+      description
+        "Algo type";
+    }
+    leaf table-id {
+      type uint32;
+      description
+        "Table ID ";
     }
   }
 
@@ -459,6 +750,16 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
       description
         "Root I-PMSI list";
       uses MLDP-ROOT-IPMSI-BAG;
+    }
+    list numberof-algo {
+      description
+        "RIB algo list";
+      uses MLDP-FLEX-RIB-BAG;
+    }
+    list flex-path {
+      description
+        "Flex path list";
+      uses MLDP-FLEX-ROOT-BAG;
     }
   }
 
@@ -746,6 +1047,11 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
   grouping MLDP-DATABASE-BAG {
     description
       "MLDP Database Information";
+    container root-info {
+      description
+        "Root Information";
+      uses MLDP-ROOT-AFI-BAG;
+    }
     leaf lsm-id-xr {
       type uint32;
       description
@@ -978,9 +1284,44 @@ submodule Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
     }
   }
 
+  grouping MLDP-ROOT-AFI-BAG {
+    description
+      "MLDP Root Information";
+    leaf root-afi {
+      type uint16;
+      description
+        "Root AFI";
+    }
+    leaf root-address {
+      type inet:ipv4-address;
+      description
+        "Root address";
+    }
+    leaf mt-algo-type {
+      type uint8;
+      description
+        "MT Algo Type";
+    }
+    leaf mt-algo-id {
+      type uint8;
+      description
+        "MT Algo ID";
+    }
+    leaf mtid {
+      type uint16;
+      description
+        "MT ID";
+    }
+  }
+
   grouping MLDP-BINDING-DB-OPQ-BAG {
     description
       "MLDP Binding Opaque information";
+    container root-info {
+      description
+        "Root Information";
+      uses MLDP-ROOT-AFI-BAG;
+    }
     leaf tree-type {
       type uint32;
       description

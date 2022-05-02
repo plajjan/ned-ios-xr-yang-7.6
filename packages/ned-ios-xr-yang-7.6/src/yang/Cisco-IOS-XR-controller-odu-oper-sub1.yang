@@ -26,9 +26,27 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-10 {
+    description
+      "Added PRBS error-inject feature support.";
+    semver:module-version "1.5.0";
+  }
+  revision 2021-05-21 {
+    description
+      "Added support for ODU PLE information.";
+    semver:module-version "1.4.0";
+  }
   revision 2021-02-21 {
     description
-      "Added IS_CEM_PACKETIZED to odu_resource_et enum for Private Line Emulation feature.";
+      "Added IS_CEM_PACKETIZED to odu_resource_et enum for Private Line Emulation feature.
+       2020-11-11
+           Added PRBS bit errors and lock time support in bag odu_prbs_info.
+       2020-09-25
+           Added PRBS direction feature support.
+       2020-09-22
+           Changed existing bag to contain one more enum value for odu pt type
+       2020-09-12
+           Created New Bag for ODTU Remote Info and Far End Child Info.";
     semver:module-version "1.3.0";
   }
   revision 2019-08-05 {
@@ -86,6 +104,80 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
     }
     description
       "Odtu type et";
+  }
+
+  typedef Odu-map-type-et {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None";
+      }
+      enum "gfp-f" {
+        value 1;
+        description
+          "GFP F";
+      }
+      enum "amp" {
+        value 2;
+        description
+          "AMP";
+      }
+      enum "bmp" {
+        value 3;
+        description
+          "BMP";
+      }
+      enum "gmp" {
+        value 4;
+        description
+          "GMP";
+      }
+      enum "wis" {
+        value 5;
+        description
+          "WIS";
+      }
+      enum "gfp-ext" {
+        value 6;
+        description
+          "GFP w/ extension header";
+      }
+    }
+    description
+      "Odu map type et";
+  }
+
+  typedef Odu-cem-pktize-clnt-et {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None";
+      }
+      enum "ethernet" {
+        value 1;
+        description
+          "Ethernet";
+      }
+      enum "sonet" {
+        value 2;
+        description
+          "SONET";
+      }
+      enum "sdh" {
+        value 3;
+        description
+          "SDH";
+      }
+      enum "otn" {
+        value 4;
+        description
+          "OTN";
+      }
+    }
+    description
+      "Odu cem pktize clnt et";
   }
 
   typedef Odu-ca-mode-et {
@@ -935,6 +1027,28 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
       "Odu state et";
   }
 
+  typedef Odu-prbs-err-inject {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None";
+      }
+      enum "single" {
+        value 1;
+        description
+          "Single";
+      }
+      enum "continuous" {
+        value 2;
+        description
+          "Continuous";
+      }
+    }
+    description
+      "Odu prbs err inject";
+  }
+
   typedef Odu-prbs-direct-ion {
     type enumeration {
       enum "none" {
@@ -1020,6 +1134,16 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
         value 64;
         description
           "PN7";
+      }
+      enum "pn9" {
+        value 128;
+        description
+          "PN9";
+      }
+      enum "user-def" {
+        value 256;
+        description
+          "USER DEFINED";
       }
     }
     description
@@ -1177,6 +1301,176 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
       description
         "Child Ts";
       uses ODU-CHILD-TS-INFO;
+    }
+  }
+
+  grouping ODU-CEM-AC-CLIENT-INFO {
+    description
+      "CEM AC client info";
+    leaf client-type {
+      type uint32;
+      description
+        "Client type";
+    }
+    leaf client-rate {
+      type uint32;
+      description
+        "Client rate";
+    }
+  }
+
+  grouping ODU-CEM-PLOAD-DJB-SIZE-INFO {
+    description
+      "CEM payload dejitter size info";
+    leaf max-payload-for-range {
+      type uint32;
+      description
+        "Maximum payload for range";
+    }
+    leaf min-dejitter-buffer-size {
+      type uint32;
+      description
+        "Mininum De-jitter buffer size";
+    }
+    leaf max-dejitter-buffer-size {
+      type uint32;
+      description
+        "Maximum De-jitter buffer size";
+    }
+    leaf multiple-factor {
+      type uint32;
+      description
+        "Multiple factor";
+    }
+  }
+
+  grouping ODU-CEM-PARAM-ST {
+    description
+      "ODU CEM parameters";
+    container ac-client-info {
+      description
+        "AC Client info";
+      uses ODU-CEM-AC-CLIENT-INFO;
+    }
+    leaf internal-parent-interface-name {
+      type string;
+      description
+        "Internal parent interface name";
+    }
+    leaf rtp-default-enabled {
+      type boolean;
+      description
+        "RTP default enabled";
+    }
+    leaf default-payload-size {
+      type uint32;
+      description
+        "Default payload Size";
+    }
+    leaf clock-type {
+      type uint32;
+      description
+        "Clock type";
+    }
+    leaf min-payload-size {
+      type uint32;
+      description
+        "Minimum payload size";
+    }
+    leaf max-payload-size {
+      type uint32;
+      description
+        "Maximum payload size";
+    }
+    leaf default-dejitter-bufferlen {
+      type uint32;
+      description
+        "Default De-jitter buffer length";
+    }
+    leaf min-dejitter-bufferlen {
+      type uint32;
+      description
+        "Minimum De-jitter buffer length";
+    }
+    leaf max-dejitter-bufferlen {
+      type uint32;
+      description
+        "Maximum De-jitter buffer length";
+    }
+    leaf default-idle-pattern {
+      type uint32;
+      description
+        "Default idle pattern";
+    }
+    leaf default-dummy-pattern {
+      type uint32;
+      description
+        "Default dummy pattern";
+    }
+    leaf default-dummy-mode {
+      type uint32;
+      description
+        "Default dummy mode";
+    }
+    leaf payload-incr-value {
+      type uint32;
+      description
+        "Payload increment value";
+    }
+    leaf internal-parent-interface-handle {
+      type uint32;
+      description
+        "Internal parent interface handle";
+    }
+    list payalod-dejitter-buffer-size-info {
+      description
+        "Payload De-jitter buffer size info";
+      uses ODU-CEM-PLOAD-DJB-SIZE-INFO;
+    }
+  }
+
+  grouping ODU-SUPP-MAP-TYPES {
+    description
+      "ODU supported mapping types bit map";
+    leaf ethernet-client {
+      type uint32;
+      description
+        "Mapping types supported for Ethernet";
+    }
+    leaf sonet-client {
+      type uint32;
+      description
+        "Mapping types supported for SONET ";
+    }
+    leaf sdh-client {
+      type uint32;
+      description
+        "Mapping types supported for SDH";
+    }
+  }
+
+  grouping ODU-PLE-INFO-ST {
+    description
+      "ODU PLE info";
+    container supported-mapping-types {
+      description
+        " supported mapping types";
+      uses ODU-SUPP-MAP-TYPES;
+    }
+    leaf odu-is-cem-packetized {
+      type boolean;
+      description
+        "ODU is CEM packetized";
+    }
+    leaf client-type {
+      type Odu-cem-pktize-clnt-et;
+      description
+        "CEM packetize client";
+    }
+    leaf mapping {
+      type Odu-map-type-et;
+      description
+        "Client mapping type";
     }
   }
 
@@ -2283,6 +2577,11 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
       description
         "tcm id";
     }
+    leaf ple-supported {
+      type boolean;
+      description
+        "PLE supported ";
+    }
     list odu {
       description
         "Child Ts";
@@ -2323,6 +2622,11 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
       description
         "odu prbs direction";
     }
+    leaf odu-prbs-err-inject {
+      type Odu-prbs-err-inject;
+      description
+        "odu prbs error inject";
+    }
     leaf odu-prbs-locked-time-elapsed {
       type uint32;
       description
@@ -2332,6 +2636,11 @@ submodule Cisco-IOS-XR-controller-odu-oper-sub1 {
       type uint32;
       description
         "prbs bit errors";
+    }
+    leaf odu-prbs-user-pattern {
+      type uint64;
+      description
+        "odu prbs user defined pattern";
     }
   }
 }

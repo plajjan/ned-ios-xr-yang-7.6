@@ -34,6 +34,11 @@ module Cisco-IOS-XR-remote-attestation-act {
      This version of this YANG module is part of RFC VVVV; see
      the RFC itself for full legal notices.";
 
+  revision 2021-03-18 {
+    description
+      "Added attestation-results container and set-rpc for the same";
+    semver:module-version "1.3.0";
+  }
   revision 2020-09-26 {
     description
       "Added IMA Audit log support";
@@ -42,7 +47,7 @@ module Cisco-IOS-XR-remote-attestation-act {
   revision 2020-07-10 {
     description
       "Added xr-task so that Limited access user should not configure
-       router using this model";
+         router using this model";
     semver:module-version "1.1.0";
   }
   revision 2019-10-01 {
@@ -551,6 +556,47 @@ module Cisco-IOS-XR-remote-attestation-act {
     }
   }
 
+  grouping attestation-results {
+    description
+      "Attestation results";
+    container attestation-results {
+      description
+        "Per-node attestation results";
+      list node-data {
+        leaf node-location {
+          type string;
+          mandatory true;
+          description
+            "Location of the node in the distributed system";
+        }
+        leaf result-encode-type {
+          type enumeration {
+            enum "cbor" {
+              value 1;
+              description
+                "CBOR RFC: https://tools.ietf.org/html/rfc7049";
+            }
+          }
+          mandatory true;
+        }
+        leaf result {
+          type binary;
+          mandatory true;
+          description
+            "The data is encoded in the sequence of objects as defined by the
+             attestation-results-data group present in the following CDDL file:
+             https://wwwin-github.cisco.com/agautham/TPR/blob/master/models/cddl/flat.cddl";
+        }
+        leaf verifier-signature {
+          type binary;
+          mandatory true;
+          description
+            "Signature of the Verifier across the above blob of encoded data";
+        }
+      }
+    }
+  }
+
   rpc get-certificate {
     description
       "Query certificate.
@@ -763,6 +809,13 @@ module Cisco-IOS-XR-remote-attestation-act {
     }
     output {
       uses hardware-integrity;
+    }
+  }
+  rpc set-attestation-results {
+    description
+      "Used by the Verifier to push the attestation-results of an Attestee";
+    input {
+      uses attestation-results;
     }
   }
   notification hardware-intergrity-failure {

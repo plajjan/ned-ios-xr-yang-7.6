@@ -8,8 +8,8 @@ module Cisco-IOS-XR-um-vrf-cfg {
   import Cisco-IOS-XR-types {
     prefix xr;
   }
-  import Cisco-IOS-XR-config-mda-cfg {
-    prefix node;
+  import Cisco-IOS-XR-um-location-cfg {
+    prefix location;
   }
 
   organization
@@ -34,9 +34,17 @@ module Cisco-IOS-XR-um-vrf-cfg {
      Copyright (c) 2019-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-13 {
+    description
+      "Removed imported native model Cisco-IOS-XR-config-mda-cfg and imported
+       model Cisco-IOS-XR-um-location-cfg";
+    semver:module-version "4.1.0";
+  }
   revision 2021-01-11 {
     description
-      "Added new leaf description under srlg->names->name";
+      "Added new leaf description under srlg->names->name
+       2020-07-23
+           Removed unused tailf import";
     semver:module-version "4.0.0";
   }
   revision 2019-10-31 {
@@ -48,7 +56,7 @@ module Cisco-IOS-XR-um-vrf-cfg {
     description
       "Moved interface augments into Cisco-IOS-XR-um-if-vrf-cfg
        2019-09-23
-       Moved 'selective-vrf-download-locations' and its child nodes to module 'Cisco-IOS-XR-config-mda-cfg' to resolve an issue with duplicated list entries being created between the two models.";
+         Moved 'selective-vrf-download-locations' and its child nodes to module 'Cisco-IOS-XR-config-mda-cfg' to resolve an issue with duplicated list entries being created between the two models.";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -176,12 +184,12 @@ module Cisco-IOS-XR-um-vrf-cfg {
     }
   }
 
-  augment "/node:active-nodes/node:active-node" {
+  augment "/location:locations/location:location" {
     description
       "This augment extends active nodes configuration";
     uses GROUP-SVD-LOCATION;
   }
-  augment "/node:preconfigured-nodes/node:preconfigured-node" {
+  augment "/location:locations/location:preconfigured-location" {
     description
       "This augment extends preconfigured nodes
        configuration";

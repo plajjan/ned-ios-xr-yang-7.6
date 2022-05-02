@@ -46,26 +46,44 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
        Cisco-IOS-XR-l2vpn-cfg
      modules with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-06 {
+    description
+      "Added support for global mirror intervals
+       2021-09-15
+         Added support for mirror first configured on sessions
+       2021-08-20
+         Added support for ERSPAN session ID under GRE destinations";
+    semver:module-version "5.0.0";
+  }
+  revision 2021-07-19 {
+    description
+      "Added extended range of values to mirror interval sampling
+       2021-06-02
+          Added support for non-default VRFs and router-id";
+    semver:module-version "4.0.0";
+  }
   revision 2020-12-03 {
     description
-      "Added support for multiple attachments per class on an interface";
+      "Added support for multiple attachments per class on an interface
+       2020-09-14
+           Added support for mirror rx and tx traffic to separate destinations";
     semver:module-version "3.1.0";
   }
   revision 2020-01-30 {
     description
       "Added support for L3 IPv4 and IPv6 ACLs on a L2 ethernet SPAN session
        2019-12-12
-       Added support for file format and PCAP filter expressions under file";
+         Added support for file format and PCAP filter expressions under file";
     semver:module-version "3.0.0";
   }
   revision 2019-10-31 {
     description
       "Added mandatory nodes.
        2019-05-12
-       Added support for file destinations.";
+         Added support for file destinations.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -93,43 +111,6 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
     }
     description
       "Span traffic direction";
-  }
-
-  typedef Span-mirror-interval {
-    type enumeration {
-      enum "512" {
-        value 1;
-        description
-          "Mirror 1 in every 512 packets";
-      }
-      enum "1k" {
-        value 2;
-        description
-          "Mirror 1 in every 1024 packets";
-      }
-      enum "2k" {
-        value 3;
-        description
-          "Mirror 1 in every 2048 packets";
-      }
-      enum "4k" {
-        value 4;
-        description
-          "Mirror 1 in every 4096 packets";
-      }
-      enum "8k" {
-        value 5;
-        description
-          "Mirror 1 in every 8192 packets";
-      }
-      enum "16k" {
-        value 6;
-        description
-          "Mirror 1 in every 16384 packets";
-      }
-    }
-    description
-      "Span mirror interval";
   }
 
   typedef Span-destination {
@@ -286,7 +267,7 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
        span-monitor-session, span-attachment,
        span-attachment";
     leaf mirror-interval {
-      type Span-mirror-interval;
+      type dt1:Span-mirror-interval;
       description
         "Specify the mirror interval";
     }
@@ -608,9 +589,11 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
               "Specify the source port";
           }
           leaf vrf-name {
-            when "../destination-type = 'udp'" {
+            when "../destination-type = 'ipv4-address' or ../destination-type = 'ipv6-address' or ../destination-type = 'udp'" {
               description
-                "../DestinationType = UDP";
+                "../DestinationType = IPv4Address or .
+                 ./DestinationType = IPv6Address or .
+                 ./DestinationType = UDP";
             }
             type string;
             description
@@ -633,6 +616,15 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
             type string;
             description
               "Specify a pcap filter";
+          }
+          leaf erspan-session-id {
+            when "../destination-type = 'interface'" {
+              description
+                "../DestinationType = Interface";
+            }
+            type uint32;
+            description
+              "Specify an ERSPAN Session ID";
           }
         }
         container cloud-span {
@@ -740,9 +732,11 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
               "Specify the source port";
           }
           leaf vrf-name {
-            when "../destination-type = 'udp'" {
+            when "../destination-type = 'ipv4-address' or ../destination-type = 'ipv6-address' or ../destination-type = 'udp'" {
               description
-                "../DestinationType = UDP";
+                "../DestinationType = IPv4Address or .
+                 ./DestinationType = IPv6Address or .
+                 ./DestinationType = UDP";
             }
             type string;
             description
@@ -765,6 +759,15 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
             type string;
             description
               "Specify a pcap filter";
+          }
+          leaf erspan-session-id {
+            when "../destination-type = 'interface'" {
+              description
+                "../DestinationType = Interface";
+            }
+            type uint32;
+            description
+              "Specify an ERSPAN Session ID";
           }
         }
         container destination {
@@ -862,9 +865,11 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
               "Specify the source port";
           }
           leaf vrf-name {
-            when "../destination-type = 'udp'" {
+            when "../destination-type = 'ipv4-address' or ../destination-type = 'ipv6-address' or ../destination-type = 'udp'" {
               description
-                "../DestinationType = UDP";
+                "../DestinationType = IPv4Address or .
+                 ./DestinationType = IPv6Address or .
+                 ./DestinationType = UDP";
             }
             type string;
             description
@@ -888,6 +893,15 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
             description
               "Specify a pcap filter";
           }
+          leaf erspan-session-id {
+            when "../destination-type = 'interface'" {
+              description
+                "../DestinationType = Interface";
+            }
+            type uint32;
+            description
+              "Specify an ERSPAN Session ID";
+          }
         }
         leaf class {
           type dt1:Span-session-class;
@@ -895,6 +909,15 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
           description
             "Enable a Monitor Session.  Setting this item
              causes the Monitor Session to be created.";
+        }
+        leaf mirror-first {
+          type uint32 {
+            range "1..10000";
+          }
+          units "byte";
+          description
+            "Mirror a specified number of bytes from start
+             of packet";
         }
         leaf discard-class {
           type uint32 {
@@ -923,6 +946,13 @@ module Cisco-IOS-XR-Ethernet-SPAN-cfg {
             "Session Name";
         }
       }
+    }
+    leaf router-id {
+      type uint32 {
+        range "1..255";
+      }
+      description
+        "Specify the Router ID for this router";
     }
   }
 }

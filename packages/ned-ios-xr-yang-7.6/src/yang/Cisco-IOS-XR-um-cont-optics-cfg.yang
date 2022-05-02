@@ -37,12 +37,19 @@ module Cisco-IOS-XR-um-cont-optics-cfg {
      Copyright (c) 2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-11-17 {
+  revision 2021-12-07 {
     description
-      "Updated add-drop-channel regex to match CLI command
-       2021-08-24
-         Updated model as per 24I DT image CLI command";
-    semver:module-version "1.0.0";
+      "Added container otdr
+       2021-11-19
+         Corrected range of egress-ampli-gain, ingress-ampli-gain and raman-tx-power/value as per CLI
+       2021-11-17
+         Updated add-drop-channel regex to match CLI command";
+    semver:module-version "3.0.0";
+  }
+  revision 2021-08-24 {
+    description
+      "Updated model as per 24I DT image CLI command";
+    semver:module-version "2.0.0";
   }
   revision 2021-05-10 {
     description
@@ -779,7 +786,7 @@ module Cisco-IOS-XR-um-cont-optics-cfg {
       type int32 {
         range "0..200" {
           description
-            "Select attenuation level (in units of 0.1dBm)";
+            "Select attenuation level (in units of 0.1dB)";
         }
       }
       description
@@ -836,15 +843,17 @@ module Cisco-IOS-XR-um-cont-optics-cfg {
         "Configure transponder low receive psd threshold";
     }
     leaf add-drop-channel {
-      type xr:Interface-name;
+      type xr:Interface-name {
+        pattern "Ots-Och.*";
+      }
       description
         "configures optical cross connect";
     }
     leaf ingress-ampli-gain {
       type int32 {
-        range "0..500" {
+        range "80..380" {
           description
-            "Select power level (in units of 0.1dBm)";
+            "Select power level (in units of 0.1dB)";
         }
       }
       description
@@ -898,9 +907,9 @@ module Cisco-IOS-XR-um-cont-optics-cfg {
     }
     leaf egress-ampli-gain {
       type int32 {
-        range "0..500" {
+        range "80..380" {
           description
-            "Select power level (in units of 0.1dBm)";
+            "Select power level (in units of 0.1dB)";
         }
       }
       description
@@ -971,7 +980,7 @@ module Cisco-IOS-XR-um-cont-optics-cfg {
         }
         leaf value {
           type uint32 {
-            range "35..360" {
+            range "3500..36000" {
               description
                 "Select power level (in units of 0.01mW)";
             }
@@ -981,212 +990,505 @@ module Cisco-IOS-XR-um-cont-optics-cfg {
         }
       }
     }
-    container ingress-ampli {
+    leaf ingress-ampli-safety-control-mode {
+      type enumeration {
+        enum "auto" {
+          value 1;
+          description
+            "Select Safety Control Mode: Automatic";
+        }
+        enum "disabled" {
+          value 2;
+          description
+            "Disable Safety Control Mode";
+        }
+      }
       description
-        "Configure ingress ampli safety params";
-      leaf safety-control-mode {
-        type enumeration {
-          enum "auto" {
-            value 1;
-            description
-              "Select Safety Control Mode: Automatic";
-          }
-          enum "disabled" {
-            value 2;
-            description
-              "Disable Safety Control Mode";
-          }
-        }
+        "Configure ingress ampli safety Control Mode ";
+    }
+    container ingress-ampli-osri {
+      description
+        "Configure Optical safety remote interlock (OSRI)";
+      container on {
+        must "not(../off)";
+        presence "Indicates a on node is configured.";
         description
-          "Configure ingress ampli safety Control Mode ";
+          "Enable OSRI ";
       }
-      container osri {
+      container off {
+        must "not(../on)";
+        presence "Indicates a off node is configured.";
         description
-          "Configure Optical safety remote interlock (OSRI)";
-        container on {
-          must "not(../off)";
-          presence "Indicates a on node is configured.";
+          "Disable OSRI ";
+      }
+    }
+    container ingress-ampli-force-apr {
+      description
+        "Configure ingress Ampli Force Automatic Power Reduction";
+      container on {
+        must "not(../off)";
+        presence "Indicates a on node is configured.";
+        description
+          "Enable Force APR ";
+      }
+      container off {
+        must "not(../on)";
+        presence "Indicates a off node is configured.";
+        description
+          "Disable Force APR ";
+      }
+    }
+    leaf egress-ampli-safety-control-mode {
+      type enumeration {
+        enum "auto" {
+          value 1;
           description
-            "Enable OSRI ";
+            "Select Safety Control Mode: Automatic";
         }
-        container off {
-          must "not(../on)";
-          presence "Indicates a off node is configured.";
+        enum "disabled" {
+          value 2;
           description
-            "Disable OSRI ";
+            "Disable Safety Control Mode";
         }
       }
-      container force-apr {
+      description
+        "Configure egress ampli safety Control Mode ";
+    }
+    container egress-ampli-osri {
+      description
+        "Configure egress Optical safety remote interlock (OSRI)";
+      container on {
+        must "not(../off)";
+        presence "Indicates a on node is configured.";
         description
-          "Configure ingress Force Automatic Power Reduction";
-        container on {
-          must "not(../off)";
-          presence "Indicates a on node is configured.";
+          "Enable OSRI ";
+      }
+      container off {
+        must "not(../on)";
+        presence "Indicates a off node is configured.";
+        description
+          "Disable OSRI ";
+      }
+    }
+    container egress-ampli-force-apr {
+      description
+        "Configure egress ampli Force Automatic Power Reduction";
+      container on {
+        must "not(../off)";
+        presence "Indicates a on node is configured.";
+        description
+          "Enable Force APR ";
+      }
+      container off {
+        must "not(../on)";
+        presence "Indicates a off node is configured.";
+        description
+          "Disable Force APR ";
+      }
+    }
+    container egress-ampli-br {
+      description
+        "Configure egress ampli back reflection";
+      container enable {
+        must "not(../disable)";
+        presence "Indicates a enable node is configured.";
+        description
+          "Enable Back Reflection ";
+      }
+      container disable {
+        must "not(../enable)";
+        presence "Indicates a disable node is configured.";
+        description
+          "Disable Back Reflection ";
+      }
+    }
+    leaf egress-ampli-br-high-threshold {
+      type int32 {
+        range "-500..300" {
           description
-            "Enable Force APR ";
+            "Select value (in units of 0.1dBm)";
         }
-        container off {
-          must "not(../on)";
-          presence "Indicates a off node is configured.";
+      }
+      description
+        "Configure egress ampli back reflection high threshold";
+    }
+    leaf raman-safety-control-mode {
+      type enumeration {
+        enum "auto" {
+          value 1;
           description
-            "Disable Force APR ";
+            "Select Safety Control Mode: Automatic";
+        }
+        enum "disabled" {
+          value 2;
+          description
+            "Disable Safety Control Mode";
+        }
+      }
+      description
+        "Configure Raman safety Control Mode ";
+    }
+    container raman-osri {
+      description
+        "Configure raman Optical safety remote interlock (OSRI)";
+      container on {
+        must "not(../off)";
+        presence "Indicates a on node is configured.";
+        description
+          "Enable OSRI ";
+      }
+      container off {
+        must "not(../on)";
+        presence "Indicates a off node is configured.";
+        description
+          "Disable OSRI ";
+      }
+    }
+    container raman-force-apr {
+      description
+        "Configure raman Force Automatic Power Reduction";
+      container on {
+        must "not(../off)";
+        presence "Indicates a on node is configured.";
+        description
+          "Enable Force APR ";
+      }
+      container off {
+        must "not(../on)";
+        presence "Indicates a off node is configured.";
+        description
+          "Disable Force APR ";
+      }
+    }
+    container raman-br {
+      description
+        "Configure raman back reflection";
+      container enable {
+        must "not(../disable)";
+        presence "Indicates a enable node is configured.";
+        description
+          "Enable Back Reflection ";
+      }
+      container disable {
+        must "not(../enable)";
+        presence "Indicates a disable node is configured.";
+        description
+          "Disable Back Reflection ";
+      }
+    }
+    leaf raman-br-high-threshold {
+      type int32 {
+        range "-500..300" {
+          description
+            "Select value (in units of 0.1dBm)";
+        }
+      }
+      description
+        "Configure raman back reflection high threshold";
+    }
+    container ingress-channel-slices {
+      description
+        "Configure Ingress Channel Slice";
+      list ingress-channel-slice {
+        key "ingress-channel-slice-id";
+        description
+          "Configure Ingress Channel Slice";
+        leaf ingress-channel-slice-id {
+          type uint32 {
+            range "1..1548" {
+              description
+                "Ingress Channel Slice";
+            }
+          }
+          description
+            "Configure Ingress Channel Slice";
+        }
+        leaf attn {
+          type uint32 {
+            range "0..250" {
+              description
+                "Select attenuation (in units of 0.1 dB)";
+            }
+          }
+          description
+            "set attenuation";
         }
       }
     }
-    container egress-ampli {
+    container egress-channel-slices {
       description
-        "Configure egress ampli safety params";
-      leaf safety-control-mode {
-        type enumeration {
-          enum "auto" {
-            value 1;
-            description
-              "Select Safety Control Mode: Automatic";
+        "Configure egress Channel Slice";
+      list egress-channel-slice {
+        key "egress-channel-slice-id";
+        description
+          "Configure egress Channel Slice";
+        leaf egress-channel-slice-id {
+          type uint32 {
+            range "1..1548" {
+              description
+                "egress Channel Slice";
+            }
           }
-          enum "disabled" {
-            value 2;
-            description
-              "Disable Safety Control Mode";
+          description
+            "Configure egress Channel Slice";
+        }
+        leaf attn {
+          type uint32 {
+            range "0..250" {
+              description
+                "Select attenuation (in units of 0.1 dB)";
+            }
           }
-        }
-        description
-          "Configure egress ampli safety Control Mode ";
-      }
-      container osri {
-        description
-          "Configure egress Optical safety remote interlock (OSRI)";
-        container on {
-          must "not(../off)";
-          presence "Indicates a on node is configured.";
           description
-            "Enable OSRI ";
+            "set attenuation";
         }
-        container off {
-          must "not(../on)";
-          presence "Indicates a off node is configured.";
-          description
-            "Disable OSRI ";
-        }
-      }
-      container force-apr {
-        description
-          "Configure egress Force Automatic Power Reduction";
-        container on {
-          must "not(../off)";
-          presence "Indicates a on node is configured.";
-          description
-            "Enable Force APR ";
-        }
-        container off {
-          must "not(../on)";
-          presence "Indicates a off node is configured.";
-          description
-            "Disable Force APR ";
-        }
-      }
-      container br {
-        description
-          "Configure egress back reflection";
-        container enable {
-          must "not(../disable)";
-          presence "Indicates a enable node is configured.";
-          description
-            "Enable Back Reflection ";
-        }
-        container disable {
-          must "not(../enable)";
-          presence "Indicates a disable node is configured.";
-          description
-            "Disable Back Reflection ";
-        }
-      }
-      leaf br-high-threshold {
-        type int32 {
-          range "-500..300" {
-            description
-              "Select value (in units of 0.1dBm)";
-          }
-        }
-        description
-          "Configure egress back reflection high threshold";
       }
     }
-    container raman {
+    leaf channel-attn {
+      type uint32 {
+        range "0..250" {
+          description
+            "Select value (in units of 0.1dB)";
+        }
+      }
       description
-        "Configure Raman safety params";
-      leaf safety-control-mode {
-        type enumeration {
-          enum "auto" {
-            value 1;
-            description
-              "Select Safety Control Mode: Automatic";
+        "Configure channel attenuation";
+    }
+    container otdr {
+      description
+        "OTDR Configuration for OTS controller";
+      container rx {
+        description
+          "OTDR rx configuration";
+        leaf refractive-index {
+          type uint32 {
+            range "1000000..2000000" {
+              description
+                "Select value";
+            }
           }
-          enum "disabled" {
-            value 2;
+          description
+            "Configure OTDR rx refractive-index (Value in 0.000001)";
+        }
+        leaf back-scattering {
+          type int32 {
+            range "-9000..-7000" {
+              description
+                "Select value <Value in 0.01 dB>";
+            }
+          }
+          description
+            "Configure OTDR rx back-scattering (Value in 0.01 dB)";
+        }
+        container expert {
+          description
+            "OTDR rx expert configuration";
+          leaf capture-start {
+            type uint32 {
+              range "0..10000000" {
+                description
+                  "Select value <Value in cm>";
+              }
+            }
             description
-              "Disable Safety Control Mode";
+              "Configure OTDR rx capture-start (Value in cm)";
+          }
+          leaf capture-end {
+            type uint32 {
+              range "0..15000000" {
+                description
+                  "Select value <Value in cm>";
+              }
+            }
+            description
+              "Configure OTDR rx capture-end (Value in cm)";
+          }
+          leaf scan-duration {
+            type uint32 {
+              range "0..180" {
+                description
+                  "Select value <Value in seconds>";
+              }
+            }
+            description
+              "Configure OTDR rx scan-duration (Value in seconds)";
+          }
+          leaf pulse-width {
+            type uint32 {
+              range "1..500000" {
+                description
+                  "Select value <Value in nano seconds>";
+              }
+            }
+            description
+              "Configure OTDR rx pulse-width (Value in nano seconds)";
           }
         }
-        description
-          "Configure Raman safety Control Mode ";
-      }
-      container osri {
-        description
-          "Configure raman Optical safety remote interlock (OSRI)";
-        container on {
-          must "not(../off)";
-          presence "Indicates a on node is configured.";
+        container auto {
           description
-            "Enable OSRI ";
-        }
-        container off {
-          must "not(../on)";
-          presence "Indicates a off node is configured.";
-          description
-            "Disable OSRI ";
-        }
-      }
-      container force-apr {
-        description
-          "Configure raman Force Automatic Power Reduction";
-        container on {
-          must "not(../off)";
-          presence "Indicates a on node is configured.";
-          description
-            "Enable Force APR ";
-        }
-        container off {
-          must "not(../on)";
-          presence "Indicates a off node is configured.";
-          description
-            "Disable Force APR ";
-        }
-      }
-      container br {
-        description
-          "Configure raman back reflection";
-        container enable {
-          must "not(../disable)";
-          presence "Indicates a enable node is configured.";
-          description
-            "Enable Back Reflection ";
-        }
-        container disable {
-          must "not(../enable)";
-          presence "Indicates a disable node is configured.";
-          description
-            "Disable Back Reflection ";
-        }
-      }
-      leaf br-high-threshold {
-        type int32 {
-          range "-500..300" {
+            "OTDR rx auto configuration";
+          leaf excess-reflection-threshold {
+            type int32 {
+              range "-50..-10" {
+                description
+                  "Select value <Value in dB>";
+              }
+            }
             description
-              "Select value (in units of 0.1dBm)";
+              "Configure OTDR rx excess-reflection-threshold (Value in dB)";
+          }
+          leaf raman-setpoint {
+            type uint32 {
+              range "0..170" {
+                description
+                  "Select value <Value in 0.1 dB>";
+              }
+            }
+            description
+              "Configure OTDR rx raman-setpoint  (Value in 0.1 dB)";
+          }
+          leaf reflectance-threshold {
+            type int32 {
+              range "-50..-10" {
+                description
+                  "Select value <Value in dB>";
+              }
+            }
+            description
+              "Configure OTDR rx reflectance-threshold  (Value in dB)";
+          }
+          leaf splice-loss-threshold {
+            type uint32 {
+              range "200..5000" {
+                description
+                  "Select value <Value in 0.001 dB>";
+              }
+            }
+            description
+              "Configure OTDR rx splice-loss-threshold  (Value in 0.001 dB)";
           }
         }
+      }
+      container tx {
         description
-          "Configure raman back reflection high threshold";
+          "OTDR tx configuration";
+        leaf refractive-index {
+          type uint32 {
+            range "1000000..2000000" {
+              description
+                "Select value <Value in 0.000001>";
+            }
+          }
+          description
+            "Configure OTDR tx refractive-index (Value in 0.000001)";
+        }
+        leaf back-scattering {
+          type int32 {
+            range "-9000..-7000" {
+              description
+                "Select value <Value in 0.01 dB>";
+            }
+          }
+          description
+            "Configure OTDR tx back-scattering (Value in 0.01 dB)";
+        }
+        container expert {
+          description
+            "OTDR tx expert configuration";
+          leaf capture-start {
+            type uint32 {
+              range "0..10000000" {
+                description
+                  "Select value <Value in cm>";
+              }
+            }
+            description
+              "Configure OTDR tx capture-start (Value in cm)";
+          }
+          leaf capture-end {
+            type uint32 {
+              range "0..15000000" {
+                description
+                  "Select value <Value in cm>";
+              }
+            }
+            description
+              "Configure OTDR tx capture-end (Value in cm)";
+          }
+          leaf scan-duration {
+            type uint32 {
+              range "0..180" {
+                description
+                  "Select value <Value in seconds>";
+              }
+            }
+            description
+              "Configure OTDR tx scan-duration (Value in seconds)";
+          }
+          leaf pulse-width {
+            type uint32 {
+              range "1..500000" {
+                description
+                  "Select value <Value in nano seconds>";
+              }
+            }
+            description
+              "Configure OTDR tx pulse-width (Value in nano seconds)";
+          }
+        }
+        container auto {
+          description
+            "OTDR tx auto configuration";
+          leaf excess-reflection-threshold {
+            type int32 {
+              range "-50..-10" {
+                description
+                  "Select value <Value in dB>";
+              }
+            }
+            description
+              "Configure OTDR tx excess-reflection-threshold  (Value in dB)";
+          }
+          leaf raman-setpoint {
+            type uint32 {
+              range "0..170" {
+                description
+                  "Select value <Value in 0.1 dB>";
+              }
+            }
+            description
+              "Configure OTDR tx raman-setpoint  (Value in 0.1 dB)";
+          }
+          leaf reflectance-threshold {
+            type int32 {
+              range "-50..-10" {
+                description
+                  "Select value <Value in dB>";
+              }
+            }
+            description
+              "Configure OTDR tx reflectance-threshold  (Value in dB)";
+          }
+          leaf splice-loss-threshold {
+            type uint32 {
+              range "200..5000" {
+                description
+                  "Select value <Value in 0.001 dB>";
+              }
+            }
+            description
+              "Configure OTDR tx splice-loss-threshold  (Value in 0.001 dB)";
+          }
+        }
+      }
+      container scan-mode {
+        description
+          "OTDR scan-mode configuration";
+        container expert {
+          presence "Indicates a expert node is configured.";
+          description
+            "Configure OTDR scan-mode to expert";
+        }
       }
     }
     container fastpoll {

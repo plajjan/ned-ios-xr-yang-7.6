@@ -36,9 +36,25 @@ module Cisco-IOS-XR-sysadmin-alarm-mgr {
      Copyright (c) 2011-2020 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-11 {
+    description
+      "Removed alarm group LAST";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-09-15 {
+    description
+      "Removed alarm group LAST
+       2021-05-17
+          Alarm support for CEM interface
+       2021-04-14
+          PTAH support for E1 controller";
+    semver:module-version "4.0.0";
+  }
   revision 2020-12-02 {
     description
-      "PTAH support for Fibre Channel controller";
+      "PTAH support for Fibre Channel controller
+       2020-09-02
+           rackid type change from uint32 to string";
     semver:module-version "3.0.0";
   }
   revision 2019-06-28 {
@@ -170,8 +186,11 @@ module Cisco-IOS-XR-sysadmin-alarm-mgr {
       enum "fibre_channel" {
         value 20;
       }
-      enum "last" {
+      enum "e1" {
         value 21;
+      }
+      enum "cem" {
+        value 22;
       }
     }
     description

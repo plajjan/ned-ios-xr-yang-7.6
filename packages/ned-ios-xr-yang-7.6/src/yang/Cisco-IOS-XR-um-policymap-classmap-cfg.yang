@@ -37,10 +37,15 @@ module Cisco-IOS-XR-um-policymap-classmap-cfg {
      All rights reserved.
     ";
 
+  revision 2021-09-24 {
+    description
+      "Added support for low-latency-profile configuration";
+    semver:module-version "2.1.0";
+  }
   revision 2021-05-11 {
     description
       "Removed MUST check under policy-map/qos/class for
-       not(random-detect-default and random-detect)";
+        not(random-detect-default and random-detect)";
     semver:module-version "2.0.0";
   }
   revision 2020-01-27 {
@@ -4507,6 +4512,11 @@ module Cisco-IOS-XR-um-policymap-classmap-cfg {
           }
         }
       }
+    }
+    container low-latency-profile {
+      presence "low-latency profile";
+      description
+        "low-latency profile";
     }
   }
 

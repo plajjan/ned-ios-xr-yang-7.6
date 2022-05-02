@@ -29,16 +29,31 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub2 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-06-21 {
+  revision 2021-10-07 {
     description
-      "Added l2-interface information for show command";
-    semver:module-version "1.2.0";
+      "Added session_in_bound_client_id_changed counter in debug stats.
+       2021-10-05
+         Migrated LEAF-LIST with duplicate value to LIST type.";
+    semver:module-version "3.0.0";
+  }
+  revision 2021-09-14 {
+    description
+      "Fixed GET-OPER to display interface name in standard format.
+       2021-09-08
+          Fixed GET-OPER rpc response which returns false value.
+       2021-08-23
+          Migrated LEAF-LIST with duplicate value to LIST type.
+       2021-06-21
+          Added l2-interface information for show command
+       2021-04-09
+          NodeID keyword changed from nodeid to NodeName as per standard";
+    semver:module-version "2.0.0";
   }
   revision 2020-11-20 {
     description
       "Added Yang Support for ADT,to retrive statistcs with help of vrf/interface.
        2020-09-30
-       Modified to accommodate cdm changes";
+           Modified to accommodate cdm changes";
     semver:module-version "1.1.0";
   }
   revision 2019-06-25 {

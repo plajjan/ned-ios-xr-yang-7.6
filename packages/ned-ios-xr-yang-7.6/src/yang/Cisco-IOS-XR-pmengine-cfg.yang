@@ -29,12 +29,28 @@ module Cisco-IOS-XR-pmengine-cfg {
        Cisco-IOS-XR-ifmgr-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-06 {
+    description
+      "Support added for new counters in Optics layer.";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-07-09 {
+    description
+      "Support added for cem layer. Containers second30cem, minute15cem and hour24cem added.
+       2021-04-26
+          Support added for E1 controller.
+       2021-02-24
+          Support added for fc layer. Containers second30fc, minute15fc and hour24fc added.";
+    semver:module-version "3.1.0";
+  }
   revision 2020-04-17 {
     description
-      "Added Instantaneous Q Margin in fec layer.";
+      "Added Instantaneous Q Margin in fec layer.
+       2020-04-07
+           Threshold and report config support provided for OTU PRBS layer parameters.";
     semver:module-version "3.0.0";
   }
   revision 2019-10-31 {
@@ -667,6 +683,68 @@ module Cisco-IOS-XR-pmengine-cfg {
       "Path threshold";
   }
 
+  typedef Fc-report {
+    type enumeration {
+      enum "report-ifin-octets" {
+        value 20971520;
+        description
+          "PM FC ifIn-Octets report";
+      }
+      enum "report-rx-pkts" {
+        value 20971521;
+        description
+          "PM FC rx-pkt report";
+      }
+      enum "report-ifin-error-s" {
+        value 20971522;
+        description
+          "PM FC ifIn-Errors report";
+      }
+      enum "report-rx-bad-fcs" {
+        value 20971523;
+        description
+          "PM FC rx-bad-fcs report";
+      }
+      enum "report-ifout-octets" {
+        value 20971524;
+        description
+          "PM FC ifOut-Octets report";
+      }
+      enum "report-tx-pkts" {
+        value 20971525;
+        description
+          "PM FC tx-pkt report";
+      }
+      enum "report-tx-bad-fcs" {
+        value 20971526;
+        description
+          "PM FC tx-bad-fcs report";
+      }
+      enum "report-rx-frame-s-too-long" {
+        value 20971527;
+        description
+          "PM FC rx-frames-too-long report";
+      }
+      enum "report-rx-frame-s-trunc" {
+        value 20971528;
+        description
+          "PM FC rx-frames-trunc report";
+      }
+      enum "report-tx-frame-s-too-long" {
+        value 20971529;
+        description
+          "PM FC tx-frames-too-long report";
+      }
+      enum "report-tx-frame-s-trunc" {
+        value 20971530;
+        description
+          "PM FC tx-frames-trunc report";
+      }
+    }
+    description
+      "Fc report";
+  }
+
   typedef Sts-threshold {
     type enumeration {
       enum "thresh-cv" {
@@ -746,6 +824,113 @@ module Cisco-IOS-XR-pmengine-cfg {
     }
     description
       "Prbs threshold";
+  }
+
+  typedef Cem-report {
+    type enumeration {
+      enum "report-missing-pkts" {
+        value 24117248;
+        description
+          "PM CEM missing-pkts report";
+      }
+      enum "report-pkts-re-order" {
+        value 24117249;
+        description
+          "PM CEM pkts-reorder report";
+      }
+      enum "report-jtr-bfr-under" {
+        value 24117250;
+        description
+          "PM CEM jtr-bfr-underrun report";
+      }
+      enum "report-mis-order-drop" {
+        value 24117251;
+        description
+          "PM CEM mis-order-drop report";
+      }
+      enum "report-malformed-pkt" {
+        value 24117252;
+        description
+          "PM CEM malformed-pkts report";
+      }
+      enum "report-es" {
+        value 24117253;
+        description
+          "PM CEM ES report";
+      }
+      enum "report-ses" {
+        value 24117254;
+        description
+          "PM CEM SES report";
+      }
+      enum "report-uas" {
+        value 24117255;
+        description
+          "PM CEM UAS report";
+      }
+      enum "report-fc" {
+        value 24117256;
+        description
+          "PM CEM FC report";
+      }
+      enum "report-input-errs" {
+        value 24117257;
+        description
+          "PM CEM input-errs report";
+      }
+      enum "report-output-errs" {
+        value 24117258;
+        description
+          "PM CEM output-errs report";
+      }
+      enum "report-jtr-bfr-over" {
+        value 24117259;
+        description
+          "PM CEM jtr-bfr-overruns report";
+      }
+      enum "report-tx-lbits" {
+        value 24117260;
+        description
+          "PM CEM tx-lbits report";
+      }
+      enum "report-tx-rbits" {
+        value 24117261;
+        description
+          "PM CEM tx-rbits report";
+      }
+      enum "report-rx-lbits" {
+        value 24117262;
+        description
+          "PM CEM rx-lbits report";
+      }
+      enum "report-rx-rbits" {
+        value 24117263;
+        description
+          "PM CEM rx-rbits report";
+      }
+      enum "report-in-pkts" {
+        value 24117264;
+        description
+          "PM CEM ingress-pkts report";
+      }
+      enum "report-eg-pkts" {
+        value 24117265;
+        description
+          "PM CEM egress-pkts report";
+      }
+      enum "report-in-pkts-drop" {
+        value 24117266;
+        description
+          "PM CEM ingress-pkts-dropped report";
+      }
+      enum "report-eg-pkts-drop" {
+        value 24117267;
+        description
+          "PM CEM egress-pkts-dropped report";
+      }
+    }
+    description
+      "Cem report";
   }
 
   typedef Ocn-report {
@@ -1126,237 +1311,454 @@ module Cisco-IOS-XR-pmengine-cfg {
       "Otn threshold";
   }
 
+  typedef E1-report {
+    type enumeration {
+      enum "report-lcv" {
+        value 18874368;
+        description
+          "PM E1 lcv report";
+      }
+      enum "report-pcv" {
+        value 18874369;
+        description
+          "PM E1 pcv report";
+      }
+      enum "report-sels" {
+        value 18874370;
+        description
+          "PM E1 sels report";
+      }
+      enum "report-les" {
+        value 18874371;
+        description
+          "PM E1 les report";
+      }
+      enum "report-aiss-sef" {
+        value 18874372;
+        description
+          "PM E1 aiss-sef report";
+      }
+      enum "report-fcp" {
+        value 18874373;
+        description
+          "PM E1 fcp report";
+      }
+      enum "report-es" {
+        value 18874374;
+        description
+          "PM E1 es report";
+      }
+      enum "report-ses" {
+        value 18874375;
+        description
+          "PM E1 ses report";
+      }
+      enum "report-uas" {
+        value 18874376;
+        description
+          "PM E1 uas report";
+      }
+      enum "report-es-fe" {
+        value 18874377;
+        description
+          "PM E1 es-fe report";
+      }
+      enum "report-ses-fe" {
+        value 18874378;
+        description
+          "PM E1 ses-fe report";
+      }
+      enum "report-uas-fe" {
+        value 18874379;
+        description
+          "PM E1 uas-fe report";
+      }
+    }
+    description
+      "E1 report";
+  }
+
   typedef Optics-threshold {
     type enumeration {
       enum "thresh-opt-min" {
-        value 65562;
+        value 65577;
         description
           "PM Optics opt min threshold in dbm or uW";
       }
       enum "thresh-opr-min" {
-        value 65563;
+        value 65578;
         description
           "PM Optics opr min threshold in dbm or uW";
       }
       enum "thresh-lbc-min" {
-        value 65564;
+        value 65579;
         description
           "PM Optics lbc min threshold";
       }
       enum "thresh-lbc-pc-min" {
-        value 65565;
+        value 65580;
         description
           "PM Optics lbcpc min threshold";
       }
       enum "thresh-cd-min" {
-        value 65569;
+        value 65584;
         description
           "PM Optics cd min threshold";
       }
       enum "thresh-dgd-min" {
-        value 65570;
+        value 65585;
         description
           "PM Optics dgd min threshold";
       }
       enum "thresh-pmd-min" {
-        value 65571;
+        value 65586;
         description
           "PM Optics sopmd min threshold";
       }
       enum "thresh-osnr-min" {
-        value 65572;
+        value 65587;
         description
           "PM Optics osnr min threshold";
       }
       enum "thresh-pdl-min" {
-        value 65573;
+        value 65588;
         description
           "PM Optics pdl min threshold";
       }
       enum "thresh-pcr-min" {
-        value 65574;
+        value 65589;
         description
           "PM Optics pcr min threshold";
       }
       enum "thresh-pn-min" {
-        value 65575;
+        value 65590;
         description
           "PM Optics pn min threshold";
       }
       enum "thresh-rx-sig-pow-min" {
-        value 65576;
+        value 65591;
         description
           "PM Optics rx sig pow min threshold";
       }
       enum "thresh-low-sig-freq-off-min" {
-        value 65577;
+        value 65592;
         description
           "PM Optics low sig freq off min threshold";
       }
       enum "thresh-ampli-gain-min" {
-        value 65578;
+        value 65593;
         description
           "PM Optics ampli gain min threshold";
       }
       enum "thresh-ampli-gain-tilt-min" {
-        value 65579;
+        value 65594;
         description
           "PM Optics ampli gain tilt min threshold";
       }
       enum "thresh-snr-min" {
-        value 65580;
+        value 65595;
         description
           "PM Optics snr min threshold";
       }
       enum "thresh-snr-ax-min" {
-        value 65581;
+        value 65596;
         description
           "PM Optics snr ax min threshold";
       }
       enum "thresh-snr-bx-min" {
-        value 65582;
+        value 65597;
         description
           "PM Optics snr bx min threshold";
       }
       enum "thresh-snr-ay-min" {
-        value 65583;
+        value 65598;
         description
           "PM Optics snr ay min threshold";
       }
       enum "thresh-snr-by-min" {
-        value 65584;
+        value 65599;
         description
           "PM Optics snr by min threshold";
       }
       enum "thresh-sop-s1-min" {
-        value 65585;
+        value 65600;
         description
           "PM Optics sop s1 min threshold";
       }
       enum "thresh-sop-s2-min" {
-        value 65586;
+        value 65601;
         description
           "PM Optics sop s2 min threshold";
       }
       enum "thresh-sop-s3-min" {
-        value 65587;
+        value 65602;
         description
           "PM Optics sop s3 min threshold";
       }
+      enum "thresh-opt-cl-min" {
+        value 65603;
+        description
+          "PM Optics opt-cl min threshold in dbm or uW";
+      }
+      enum "thresh-opr-cl-min" {
+        value 65604;
+        description
+          "PM Optics opr-cl min threshold in dbm or uW";
+      }
+      enum "thresh-opt-s-min" {
+        value 65605;
+        description
+          "PM Optics opt-s min threshold in dbm or uW";
+      }
+      enum "thresh-opr-s-min" {
+        value 65606;
+        description
+          "PM Optics opr-s min threshold in dbm or uW";
+      }
+      enum "thresh-opbr-min" {
+        value 65607;
+        description
+          "PM Optics opbr min threshold in dbm or uW";
+      }
+      enum "thresh-eagn-min" {
+        value 65608;
+        description
+          "PM Optics eagn min threshold in dbm";
+      }
+      enum "thresh-eatl-min" {
+        value 65609;
+        description
+          "PM Optics eatl min threshold in dbm";
+      }
+      enum "thresh-iagn-min" {
+        value 65610;
+        description
+          "PM Optics iagn min threshold in dbm";
+      }
+      enum "thresh-iatl-min" {
+        value 65611;
+        description
+          "PM Optics iatl min threshold in dbm";
+      }
+      enum "thresh-raman-tot-min" {
+        value 65612;
+        description
+          "PM Optics raman-tot min threshold in mW";
+      }
+      enum "thresh-raman-1-min" {
+        value 65613;
+        description
+          "PM Optics raman-1 min threshold in mW";
+      }
+      enum "thresh-raman-2-min" {
+        value 65614;
+        description
+          "PM Optics raman-2 min threshold in mW";
+      }
+      enum "thresh-raman-3-min" {
+        value 65615;
+        description
+          "PM Optics raman-3 min threshold in mW";
+      }
+      enum "thresh-raman-4-min" {
+        value 65616;
+        description
+          "PM Optics raman-4 min threshold in mW";
+      }
+      enum "thresh-raman-5-min" {
+        value 65617;
+        description
+          "PM Optics raman-5 min threshold in mW";
+      }
       enum "thresh-opt-max" {
-        value 65588;
+        value 65618;
         description
           "PM Optics opt max threshold in dbm or uW";
       }
       enum "thresh-opr-max" {
-        value 65589;
+        value 65619;
         description
           "PM Optics opr max threshold in dbm or uW";
       }
       enum "thresh-lbc-max" {
-        value 65590;
+        value 65620;
         description
           "PM Optics lbc max threshold";
       }
       enum "thresh-lbc-pc-max" {
-        value 65591;
+        value 65621;
         description
           "PM Optics lbcpc max threshold";
       }
       enum "thresh-cd-max" {
-        value 65595;
+        value 65625;
         description
           "PM Optics cd max threshold";
       }
       enum "thresh-dgd-max" {
-        value 65596;
+        value 65626;
         description
           "PM Optics dgd max threshold";
       }
       enum "thresh-pmd-max" {
-        value 65597;
+        value 65627;
         description
           "PM Optics sopmd max threshold";
       }
       enum "thresh-osnr-max" {
-        value 65598;
+        value 65628;
         description
           "PM Optics osnr max threshold";
       }
       enum "thresh-pdl-max" {
-        value 65599;
+        value 65629;
         description
           "PM Optics pdl max threshold";
       }
       enum "thresh-pcr-max" {
-        value 65600;
+        value 65630;
         description
           "PM Optics pcr max threshold";
       }
       enum "thresh-pn-max" {
-        value 65601;
+        value 65631;
         description
           "PM Optics pn max threshold";
       }
       enum "thresh-rx-sig-pow-max" {
-        value 65602;
+        value 65632;
         description
           "PM Optics rx sig pow max threshold";
       }
       enum "thresh-low-sig-freq-off-max" {
-        value 65603;
+        value 65633;
         description
           "PM Optics low sig freq off max threshold";
       }
       enum "thresh-ampli-gain-max" {
-        value 65604;
+        value 65634;
         description
           "PM Optics ampli gain max threshold";
       }
       enum "thresh-ampli-gain-tilt-max" {
-        value 65605;
+        value 65635;
         description
           "PM Optics ampli gain tilt max threshold";
       }
       enum "thresh-snr-max" {
-        value 65606;
+        value 65636;
         description
           "PM Optics snr max threshold";
       }
       enum "thresh-snr-ax-max" {
-        value 65607;
+        value 65637;
         description
           "PM Optics snr ax max threshold";
       }
       enum "thresh-snr-bx-max" {
-        value 65608;
+        value 65638;
         description
           "PM Optics snr bx max threshold";
       }
       enum "thresh-snr-ay-max" {
-        value 65609;
+        value 65639;
         description
           "PM Optics snr ay max threshold";
       }
       enum "thresh-snr-by-max" {
-        value 65610;
+        value 65640;
         description
           "PM Optics snr by max threshold";
       }
       enum "thresh-sop-s1-max" {
-        value 65611;
+        value 65641;
         description
           "PM Optics sop s1 max threshold";
       }
       enum "thresh-sop-s2-max" {
-        value 65612;
+        value 65642;
         description
           "PM Optics sop s2 max threshold";
       }
       enum "thresh-sop-s3-max" {
-        value 65613;
+        value 65643;
         description
           "PM Optics sop s3 max threshold";
+      }
+      enum "thresh-opt-cl-max" {
+        value 65644;
+        description
+          "PM Optics opt-cl  max threshold in dbm or uW";
+      }
+      enum "thresh-opr-cl-max" {
+        value 65645;
+        description
+          "PM Optics opr-cl  max threshold in dbm or uW";
+      }
+      enum "thresh-opt-s-max" {
+        value 65646;
+        description
+          "PM Optics opt-s  max threshold in dbm or uW";
+      }
+      enum "thresh-opr-s-max" {
+        value 65647;
+        description
+          "PM Optics opr-s  max threshold in dbm or uW";
+      }
+      enum "thresh-opbr-max" {
+        value 65648;
+        description
+          "PM Optics opbr  max threshold in dbm or uW";
+      }
+      enum "thresh-eagn-max" {
+        value 65649;
+        description
+          "PM Optics eagn  max threshold in dbm";
+      }
+      enum "thresh-eatl-max" {
+        value 65650;
+        description
+          "PM Optics eatl max threshold in dbm";
+      }
+      enum "thresh-iagn-max" {
+        value 65651;
+        description
+          "PM Optics iagn  max threshold in dbm";
+      }
+      enum "thresh-iatl-max" {
+        value 65652;
+        description
+          "PM Optics iatl max threshold in dbm";
+      }
+      enum "thresh-raman-tot-max" {
+        value 65653;
+        description
+          "PM Optics raman-tot max threshold in mW";
+      }
+      enum "thresh-raman-1-max" {
+        value 65654;
+        description
+          "PM Optics raman-1 max threshold in mW";
+      }
+      enum "thresh-raman-2-max" {
+        value 65655;
+        description
+          "PM Optics raman-2 max threshold in mW";
+      }
+      enum "thresh-raman-3-max" {
+        value 65656;
+        description
+          "PM Optics raman-3 max threshold in mW";
+      }
+      enum "thresh-raman-4-max" {
+        value 65657;
+        description
+          "PM Optics raman-4 max threshold in mW";
+      }
+      enum "thresh-raman-5-max" {
+        value 65658;
+        description
+          "PM Optics raman-5 max threshold in mW";
       }
     }
     description
@@ -1438,6 +1840,73 @@ module Cisco-IOS-XR-pmengine-cfg {
     }
     description
       "Ocn threshold";
+  }
+
+  typedef E1-threshold {
+    type enumeration {
+      enum "thresh-lcv" {
+        value 18874368;
+        description
+          "PM E1 lcv thresh";
+      }
+      enum "thresh-pcv" {
+        value 18874369;
+        description
+          "PM E1 pcv thresh";
+      }
+      enum "thresh-sels" {
+        value 18874370;
+        description
+          "PM E1 sels thresh";
+      }
+      enum "thresh-les" {
+        value 18874371;
+        description
+          "PM E1 les thresh";
+      }
+      enum "thresh-aiss-sef" {
+        value 18874372;
+        description
+          "PM E1 aiss-sef thresh";
+      }
+      enum "thresh-fcp" {
+        value 18874373;
+        description
+          "PM E1 fcp thresh";
+      }
+      enum "thresh-es" {
+        value 18874374;
+        description
+          "PM E1 es thresh";
+      }
+      enum "thresh-ses" {
+        value 18874375;
+        description
+          "PM E1 ses thresh";
+      }
+      enum "thresh-uas" {
+        value 18874376;
+        description
+          "PM E1 uas thresh";
+      }
+      enum "thresh-es-fe" {
+        value 18874377;
+        description
+          "PM E1 es-fe thresh";
+      }
+      enum "thresh-ses-fe" {
+        value 18874378;
+        description
+          "PM E1 ses-fe thresh";
+      }
+      enum "thresh-uas-fe" {
+        value 18874379;
+        description
+          "PM E1 uas-fe thresh";
+      }
+    }
+    description
+      "E1 threshold";
   }
 
   typedef Otnsec-threshold {
@@ -1530,234 +1999,384 @@ module Cisco-IOS-XR-pmengine-cfg {
   typedef Optics-report {
     type enumeration {
       enum "report-opt-min" {
-        value 65562;
+        value 65577;
         description
           "PM Optics opt min report";
       }
       enum "report-opr-min" {
-        value 65563;
+        value 65578;
         description
           "PM Optics opr min report";
       }
       enum "report-lbc-min" {
-        value 65564;
+        value 65579;
         description
           "PM Optics lbc min report";
       }
       enum "report-lbc-pc-min" {
-        value 65565;
+        value 65580;
         description
           "PM Optics lbcpc min report";
       }
       enum "report-cd-min" {
-        value 65569;
+        value 65584;
         description
           "PM Optics cd min report";
       }
       enum "report-dgd-min" {
-        value 65570;
+        value 65585;
         description
           "PM Optics dgd min report";
       }
       enum "report-pmd-min" {
-        value 65571;
+        value 65586;
         description
           "PM Optics sopmd min report";
       }
       enum "report-osnr-min" {
-        value 65572;
+        value 65587;
         description
           "PM Optics osnr min report";
       }
       enum "report-pdl-min" {
-        value 65573;
+        value 65588;
         description
           "PM Optics pdl min report";
       }
       enum "report-pcr-min" {
-        value 65574;
+        value 65589;
         description
           "PM Optics pcr min report";
       }
       enum "report-pn-min" {
-        value 65575;
+        value 65590;
         description
           "PM Optics pn min report";
       }
       enum "report-rx-sig-pow-min" {
-        value 65576;
+        value 65591;
         description
           "PM Optics rx sig pow min report";
       }
       enum "report-low-sig-freq-off-min" {
-        value 65577;
+        value 65592;
         description
           "PM Optics low sig freq off min report";
       }
       enum "report-ampli-gain-min" {
-        value 65578;
+        value 65593;
         description
           "PM Optics ampli gain min report";
       }
       enum "report-ampli-gain-tilt-min" {
-        value 65579;
+        value 65594;
         description
           "PM Optics ampli gain tilt min report";
       }
       enum "report-snr-min" {
-        value 65580;
+        value 65595;
         description
           "PM Optics snr min report";
       }
       enum "report-snr-ax-min" {
-        value 65581;
+        value 65596;
         description
           "PM Optics snr ax min report";
       }
       enum "report-snr-bx-min" {
-        value 65582;
+        value 65597;
         description
           "PM Optics snr bx min report";
       }
       enum "report-snr-ay-min" {
-        value 65583;
+        value 65598;
         description
           "PM Optics snr ay min report";
       }
       enum "report-snr-by-min" {
-        value 65584;
+        value 65599;
         description
           "PM Optics snr by min report";
       }
       enum "report-sop-s1-min" {
-        value 65585;
+        value 65600;
         description
           "PM Optics sop s1 min report";
       }
       enum "report-sop-s2-min" {
-        value 65586;
+        value 65601;
         description
           "PM Optics sop s2 min report";
       }
       enum "report-sop-s3-min" {
-        value 65587;
+        value 65602;
         description
           "PM Optics sop s3 min report";
       }
+      enum "report-opt-cl-min" {
+        value 65603;
+        description
+          "PM Optics opt-cl min report";
+      }
+      enum "report-opr-cl-min" {
+        value 65604;
+        description
+          "PM Optics opr-cl min report";
+      }
+      enum "report-opt-s-min" {
+        value 65605;
+        description
+          "PM Optics opt-s min report";
+      }
+      enum "report-opr-s-min" {
+        value 65606;
+        description
+          "PM Optics opr-s min report";
+      }
+      enum "report-opbr-min" {
+        value 65607;
+        description
+          "PM Optics opbr min report";
+      }
+      enum "report-eagn-min" {
+        value 65608;
+        description
+          "PM Optics eagn min report";
+      }
+      enum "report-eatl-min" {
+        value 65609;
+        description
+          "PM Optics eatl min report";
+      }
+      enum "report-iagn-min" {
+        value 65610;
+        description
+          "PM Optics iagn min report";
+      }
+      enum "report-iatl-min" {
+        value 65611;
+        description
+          "PM Optics iatl min report";
+      }
+      enum "report-raman-tot-min" {
+        value 65612;
+        description
+          "PM Optics raman_tot min report";
+      }
+      enum "report-raman-1-min" {
+        value 65613;
+        description
+          "PM Optics raman_1 min report";
+      }
+      enum "report-raman-2-min" {
+        value 65614;
+        description
+          "PM Optics raman_2 min report";
+      }
+      enum "report-raman-3-min" {
+        value 65615;
+        description
+          "PM Optics raman_3 min report";
+      }
+      enum "report-raman-4-min" {
+        value 65616;
+        description
+          "PM Optics raman_4 min report";
+      }
+      enum "report-raman-5-min" {
+        value 65617;
+        description
+          "PM Optics raman_5 min report";
+      }
       enum "report-opt-max" {
-        value 65588;
+        value 65618;
         description
           "PM Optics opt max report";
       }
       enum "report-opr-max" {
-        value 65589;
+        value 65619;
         description
           "PM Optics opr max report";
       }
       enum "report-lbc-max" {
-        value 65590;
+        value 65620;
         description
           "PM Optics lbc max report";
       }
       enum "report-lbc-pc-max" {
-        value 65591;
+        value 65621;
         description
           "PM Optics lbcpc max report";
       }
       enum "report-cd-max" {
-        value 65595;
+        value 65625;
         description
           "PM Optics cd max report";
       }
       enum "report-dgd-max" {
-        value 65596;
+        value 65626;
         description
           "PM Optics dgd max report";
       }
       enum "report-pmd-max" {
-        value 65597;
+        value 65627;
         description
           "PM Optics sopmd max report";
       }
       enum "report-osnr-max" {
-        value 65598;
+        value 65628;
         description
           "PM Optics osnr max report";
       }
       enum "report-pdl-max" {
-        value 65599;
+        value 65629;
         description
           "PM Optics pdl max report";
       }
       enum "report-pcr-max" {
-        value 65600;
+        value 65630;
         description
           "PM Optics pcr max report";
       }
       enum "report-pn-max" {
-        value 65601;
+        value 65631;
         description
           "PM Optics pn max report";
       }
       enum "report-rx-sig-pow-max" {
-        value 65602;
+        value 65632;
         description
           "PM Optics rx sig pow max report";
       }
       enum "report-low-sig-freq-off-max" {
-        value 65603;
+        value 65633;
         description
           "PM Optics low sig freq off max report";
       }
       enum "report-ampli-gain-max" {
-        value 65604;
+        value 65634;
         description
           "PM Optics ampli gain max report";
       }
       enum "report-ampli-gain-tilt-max" {
-        value 65605;
+        value 65635;
         description
           "PM Optics ampli gain tilt max report";
       }
       enum "report-snr-max" {
-        value 65606;
+        value 65636;
         description
           "PM Optics snr max report";
       }
       enum "report-snr-ax-max" {
-        value 65607;
+        value 65637;
         description
           "PM Optics snr ax max report";
       }
       enum "report-snr-bx-max" {
-        value 65608;
+        value 65638;
         description
           "PM Optics snr bx max report";
       }
       enum "report-snr-ay-max" {
-        value 65609;
+        value 65639;
         description
           "PM Optics snr ay max report";
       }
       enum "report-snr-by-max" {
-        value 65610;
+        value 65640;
         description
           "PM Optics snr by max report";
       }
       enum "report-sop-s1-max" {
-        value 65611;
+        value 65641;
         description
           "PM Optics sop s1 max report";
       }
       enum "report-sop-s2-max" {
-        value 65612;
+        value 65642;
         description
           "PM Optics sop s2 max report";
       }
       enum "report-sop-s3-max" {
-        value 65613;
+        value 65643;
         description
           "PM Optics sop s3 max report";
+      }
+      enum "report-opt-cl-max" {
+        value 65644;
+        description
+          "PM Optics opt-cl max report";
+      }
+      enum "report-opr-cl-max" {
+        value 65645;
+        description
+          "PM Optics opr-cl max report";
+      }
+      enum "report-opt-s-max" {
+        value 65646;
+        description
+          "PM Optics opt-s max report";
+      }
+      enum "report-opr-s-max" {
+        value 65647;
+        description
+          "PM Optics opr-s max report";
+      }
+      enum "report-opbr-max" {
+        value 65648;
+        description
+          "PM Optics opbr max report";
+      }
+      enum "report-eagn-max" {
+        value 65649;
+        description
+          "PM Optics eagn max report";
+      }
+      enum "report-eatl-max" {
+        value 65650;
+        description
+          "PM Optics eatl max report";
+      }
+      enum "report-iagn-max" {
+        value 65651;
+        description
+          "PM Optics iagn max report";
+      }
+      enum "report-iatl-max" {
+        value 65652;
+        description
+          "PM Optics iatl max report";
+      }
+      enum "report-raman-tot-max" {
+        value 65653;
+        description
+          "PM Optics raman-tot max report";
+      }
+      enum "report-raman-1-max" {
+        value 65654;
+        description
+          "PM Optics raman-1 max report";
+      }
+      enum "report-raman-2-max" {
+        value 65655;
+        description
+          "PM Optics raman-2 max report";
+      }
+      enum "report-raman-3-max" {
+        value 65656;
+        description
+          "PM Optics raman-3 max report";
+      }
+      enum "report-raman-4-max" {
+        value 65657;
+        description
+          "PM Optics raman-1 max report";
+      }
+      enum "report-raman-5-max" {
+        value 65658;
+        description
+          "PM Optics raman-5 max report";
       }
     }
     description
@@ -2399,6 +3018,68 @@ module Cisco-IOS-XR-pmengine-cfg {
       "Sts report";
   }
 
+  typedef Fc-threshold {
+    type enumeration {
+      enum "thresh-ifin-octets" {
+        value 20971520;
+        description
+          "PM FC ifIn-Octets threshold";
+      }
+      enum "thresh-rx-pkts" {
+        value 20971521;
+        description
+          "PM FC rx-pkt threshold";
+      }
+      enum "thresh-ifin-error-s" {
+        value 20971522;
+        description
+          "PM FC ifIn-Errors threshold";
+      }
+      enum "thresh-rx-bad-fcs" {
+        value 20971523;
+        description
+          "PM FC rx-bad-fcs threshold";
+      }
+      enum "thresh-ifout-octets" {
+        value 20971524;
+        description
+          "PM FC ifOut-Octets threshold";
+      }
+      enum "thresh-tx-pkts" {
+        value 20971525;
+        description
+          "PM FC tx-pkt threshold";
+      }
+      enum "thresh-tx-bad-fcs" {
+        value 20971526;
+        description
+          "PM FC tx-bad-fcs threshold";
+      }
+      enum "thresh-rx-frame-s-too-long" {
+        value 20971527;
+        description
+          "PM FC rx-frames-too-long threshold";
+      }
+      enum "thresh-rx-frame-s-trunc" {
+        value 20971528;
+        description
+          "PM FC rx-frames-trunc threshold";
+      }
+      enum "thresh-tx-frame-s-too-long" {
+        value 20971529;
+        description
+          "PM FC tx-frames-too-long threshold";
+      }
+      enum "thresh-tx-frame-s-trunc" {
+        value 20971530;
+        description
+          "PM FC tx-frames-trunc threshold";
+      }
+    }
+    description
+      "Fc threshold";
+  }
+
   typedef Stm-threshold {
     type enumeration {
       enum "thresh-ebs" {
@@ -2901,6 +3582,113 @@ module Cisco-IOS-XR-pmengine-cfg {
     }
     description
       "Pcs report";
+  }
+
+  typedef Cem-threshold {
+    type enumeration {
+      enum "thresh-missing-pkts" {
+        value 24117248;
+        description
+          "PM CEM missing-pkts threshold";
+      }
+      enum "thresh-pkts-re-order" {
+        value 24117249;
+        description
+          "PM CEM pkts-reorder threshold";
+      }
+      enum "thresh-jtr-bfr-under" {
+        value 24117250;
+        description
+          "PM CEM jtr-bfr-underrun threshold";
+      }
+      enum "thresh-mis-order-drop" {
+        value 24117251;
+        description
+          "PM CEM mis-order-drop threshold";
+      }
+      enum "thresh-malformed-pkt" {
+        value 24117252;
+        description
+          "PM CEM malformed-pkts threshold";
+      }
+      enum "thresh-es" {
+        value 24117253;
+        description
+          "PM CEM ES threshold";
+      }
+      enum "thresh-ses" {
+        value 24117254;
+        description
+          "PM CEM SES threshold";
+      }
+      enum "thresh-uas" {
+        value 24117255;
+        description
+          "PM CEM UAS threshold";
+      }
+      enum "thresh-fc" {
+        value 24117256;
+        description
+          "PM CEM FC threshold";
+      }
+      enum "thresh-input-errs" {
+        value 24117257;
+        description
+          "PM CEM input-errs threshold";
+      }
+      enum "thresh-output-errs" {
+        value 24117258;
+        description
+          "PM CEM output-errs threshold";
+      }
+      enum "thresh-jtr-bfr-over" {
+        value 24117259;
+        description
+          "PM CEM jtr-bfr-overruns threshold";
+      }
+      enum "thresh-tx-lbits" {
+        value 24117260;
+        description
+          "PM CEM tx-lbits threshold";
+      }
+      enum "thresh-tx-rbits" {
+        value 24117261;
+        description
+          "PM CEM tx-rbits threshold";
+      }
+      enum "thresh-rx-lbits" {
+        value 24117262;
+        description
+          "PM CEM rx-lbits threshold";
+      }
+      enum "thresh-rx-rbits" {
+        value 24117263;
+        description
+          "PM CEM rx-rbits threshold";
+      }
+      enum "thresh-in-pkts" {
+        value 24117264;
+        description
+          "PM CEM ingress-pkts threshold";
+      }
+      enum "thresh-eg-pkts" {
+        value 24117265;
+        description
+          "PM CEM egress-pkts threshold";
+      }
+      enum "thresh-in-pkts-drop" {
+        value 24117266;
+        description
+          "PM CEM ingress-pkts-dropped threshold";
+      }
+      enum "thresh-eg-pkts-drop" {
+        value 24117267;
+        description
+          "PM CEM egress-pkts-dropped threshold";
+      }
+    }
+    description
+      "Cem threshold";
   }
 
   typedef Fec-report {
@@ -3888,6 +4676,44 @@ module Cisco-IOS-XR-pmengine-cfg {
         description
           "Configure optics performance monitoring for 30
            sec";
+        container second30cem {
+          description
+            "Configure cem performance monitoring";
+          container second30cem-reports {
+            description
+              "set cem TCA reporting status";
+            list second30cem-report {
+              key "cem-report";
+              description
+                "none";
+              leaf cem-report {
+                type Cem-report;
+                description
+                  "CEM Report Type";
+              }
+            }
+          }
+          container second30cem-thresholds {
+            description
+              "Configure threshold on cem parameters";
+            list second30cem-threshold {
+              key "cem-threshold";
+              description
+                "none";
+              leaf cem-threshold {
+                type Cem-threshold;
+                description
+                  "CEM Threshold Type";
+              }
+              leaf cem-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "CEM Threshold Value";
+              }
+            }
+          }
+        }
         container second30otnsec {
           description
             "Configure otnsec performance monitoring";
@@ -4292,6 +5118,44 @@ module Cisco-IOS-XR-pmengine-cfg {
             }
           }
         }
+        container second30fc {
+          description
+            "Configure fc performance monitoring";
+          container second30fc-thresholds {
+            description
+              "Configure threshold on fc parameters";
+            list second30fc-threshold {
+              key "fc-threshold";
+              description
+                "none";
+              leaf fc-threshold {
+                type Fc-threshold;
+                description
+                  "Fc Threshold Type";
+              }
+              leaf fc-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "Fc Threshold Value";
+              }
+            }
+          }
+          container second30fc-reports {
+            description
+              "set fc TCA reporting status";
+            list second30fc-report {
+              key "fc-report";
+              description
+                "none";
+              leaf fc-report {
+                type Fc-report;
+                description
+                  "Fc Report Type";
+              }
+            }
+          }
+        }
       }
       container hour24otn-tcms {
         description
@@ -4440,6 +5304,82 @@ module Cisco-IOS-XR-pmengine-cfg {
                 mandatory true;
                 description
                   "Otn Report";
+              }
+            }
+          }
+        }
+        container hour24fc {
+          description
+            "Configure fc performance monitoring";
+          container hour24fc-reports {
+            description
+              "set fc TCA reporting status";
+            list hour24fc-report {
+              key "fc-report";
+              description
+                "none";
+              leaf fc-report {
+                type Fc-report;
+                description
+                  "Fc Report Type";
+              }
+            }
+          }
+          container hour24fc-thresholds {
+            description
+              "Configure threshold on fc parameters";
+            list hour24fc-threshold {
+              key "fc-threshold";
+              description
+                "none";
+              leaf fc-threshold {
+                type Fc-threshold;
+                description
+                  "Fc Threshold Type";
+              }
+              leaf fc-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "Fc Thresh Value";
+              }
+            }
+          }
+        }
+        container hour24cem {
+          description
+            "Configure cem performance monitoring";
+          container hour24cem-reports {
+            description
+              "set cem TCA reporting status";
+            list hour24cem-report {
+              key "cem-report";
+              description
+                "none";
+              leaf cem-report {
+                type Cem-report;
+                description
+                  "CEM Report Type";
+              }
+            }
+          }
+          container hour24cem-thresholds {
+            description
+              "Configure threshold on cem parameters";
+            list hour24cem-threshold {
+              key "cem-threshold";
+              description
+                "none";
+              leaf cem-threshold {
+                type Cem-threshold;
+                description
+                  "CEM Threshold Type";
+              }
+              leaf cem-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "CEM Thresh Value";
               }
             }
           }
@@ -4620,6 +5560,50 @@ module Cisco-IOS-XR-pmengine-cfg {
                 mandatory true;
                 description
                   "Secyif threshold value";
+              }
+            }
+          }
+        }
+        container hour24e1 {
+          description
+            "Configure e1 performance monitoring";
+          container hour24e1-thresholds {
+            description
+              "Configure e1 threshold";
+            list hour24e1-threshold {
+              key "e1-threshold";
+              description
+                "none";
+              leaf e1-threshold {
+                type E1-threshold;
+                description
+                  "E1 Threshold Type";
+              }
+              leaf e1-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "E1 Threshold Value";
+              }
+            }
+          }
+          container hour24e1-reports {
+            description
+              "set e1 TCA reporting status";
+            list hour24e1-report {
+              key "e1-report";
+              description
+                "none";
+              leaf e1-report {
+                type E1-report;
+                description
+                  "E1 Report Type";
+              }
+              leaf enable {
+                type Report;
+                mandatory true;
+                description
+                  "E1 Report";
               }
             }
           }
@@ -5220,6 +6204,88 @@ module Cisco-IOS-XR-pmengine-cfg {
       container minute15 {
         description
           "set opr min threshold";
+        container minute15cem {
+          description
+            "Configure cem performance monitoring";
+          container minute15cem-reports {
+            description
+              "set cem TCA reporting status";
+            list minute15cem-report {
+              key "cem-report";
+              description
+                "none";
+              leaf cem-report {
+                type Cem-report;
+                description
+                  "CEM Report Type";
+              }
+            }
+          }
+          container minute15cem-thresholds {
+            description
+              "Configure threshold on cem parameters";
+            list minute15cem-threshold {
+              key "cem-threshold";
+              description
+                "none";
+              leaf cem-threshold {
+                type Cem-threshold;
+                description
+                  "CEM Threshold Type";
+              }
+              leaf cem-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "CEM Threshold Value";
+              }
+            }
+          }
+        }
+        container minute15e1 {
+          description
+            "Configure e1 performance monitoring";
+          container minute15e1-thresholds {
+            description
+              "Configure e1 threshold";
+            list minute15e1-threshold {
+              key "e1-threshold";
+              description
+                "none";
+              leaf e1-threshold {
+                type E1-threshold;
+                description
+                  "E1 Threshold Type";
+              }
+              leaf e1-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "E1 Threshold Value";
+              }
+            }
+          }
+          container minute15e1-reports {
+            description
+              "set e1 TCA reporting status";
+            list minute15e1-report {
+              key "e1-report";
+              description
+                "none";
+              leaf e1-report {
+                type E1-report;
+                description
+                  "E1 Report Type";
+              }
+              leaf enable {
+                type Report;
+                mandatory true;
+                description
+                  "E1 Report";
+              }
+            }
+          }
+        }
         container minute15-optics {
           description
             "Configure optics performance monitoring";
@@ -5484,6 +6550,44 @@ module Cisco-IOS-XR-pmengine-cfg {
                 mandatory true;
                 description
                   "Secytx Threshold Value";
+              }
+            }
+          }
+        }
+        container minute15fc {
+          description
+            "Configure fc performance monitoring";
+          container minute15fc-reports {
+            description
+              "set fc TCA reporting status";
+            list minute15fc-report {
+              key "fc-report";
+              description
+                "none";
+              leaf fc-report {
+                type Fc-report;
+                description
+                  "Fc Report Type";
+              }
+            }
+          }
+          container minute15fc-thresholds {
+            description
+              "Configure threshold on fc parameters";
+            list minute15fc-threshold {
+              key "fc-threshold";
+              description
+                "none";
+              leaf fc-threshold {
+                type Fc-threshold;
+                description
+                  "Fc Threshold Type";
+              }
+              leaf fc-threshold-value {
+                type uint32;
+                mandatory true;
+                description
+                  "Fc Threshold Value";
               }
             }
           }

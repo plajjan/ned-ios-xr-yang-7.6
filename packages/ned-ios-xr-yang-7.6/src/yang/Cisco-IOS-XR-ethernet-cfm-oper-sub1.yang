@@ -23,9 +23,18 @@ submodule Cisco-IOS-XR-ethernet-cfm-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR ethernet-cfm package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-18 {
+    description
+      "Added CSF packet counters.
+       2021-10-22
+         Added counters for missing MEP offload intervals.
+       2021-09-02
+         Added support for LTM statistics.";
+    semver:module-version "1.4.0";
+  }
   revision 2020-10-07 {
     description
       "Added the Link Loss Forwarding feature.";
@@ -1005,13 +1014,13 @@ submodule Cisco-IOS-XR-ethernet-cfm-oper-sub1 {
          if no aggregation.";
     }
     leaf bins-width {
-      type uint16;
+      type uint32;
       description
         "Width of each bin into which to aggregate. 0 if
          no aggregation. For SLM, the units of this value
          are in single units of percent; for LMM they are
          in tenths of percent; for other measurements
-         they are in milliseconds.";
+         they are in microseconds.";
     }
     leaf bucket-size {
       type uint8;

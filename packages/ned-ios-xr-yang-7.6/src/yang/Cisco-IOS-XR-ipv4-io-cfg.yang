@@ -35,9 +35,14 @@ module Cisco-IOS-XR-ipv4-io-cfg {
        Cisco-IOS-XR-ifmgr-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-25 {
+    description
+      "Added new leaf for primary and secondary address.";
+    semver:module-version "1.2.0";
+  }
   revision 2020-02-18 {
     description
       "Added new leaf icmp-unreach-disable.";
@@ -273,6 +278,13 @@ module Cisco-IOS-XR-ipv4-io-cfg {
               description
                 "RouteTag";
             }
+            leaf algorithm {
+              type uint32 {
+                range "128..255";
+              }
+              description
+                "Algorithm";
+            }
           }
         }
         container primary {
@@ -297,6 +309,13 @@ module Cisco-IOS-XR-ipv4-io-cfg {
             }
             description
               "RouteTag";
+          }
+          leaf algorithm {
+            type uint32 {
+              range "128..255";
+            }
+            description
+              "Algorithm";
           }
         }
         leaf unnumbered {

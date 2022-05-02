@@ -37,9 +37,15 @@ module Cisco-IOS-XR-um-flow-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2020-2021 by Cisco Systems, Inc.
+     Copyright (c) 2020-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-19 {
+    description
+      "- Added extended-ipv4-tunnel-egress and
+       extended-ipv6-tunnel-egress container under sflow options";
+    semver:module-version "2.1.0";
+  }
   revision 2021-03-03 {
     description
       "- Added class-table container under options";
@@ -1135,6 +1141,16 @@ module Cisco-IOS-XR-um-flow-cfg {
                   description
                     "Enable extended-gateway flow data type";
                 }
+                container extended-ipv4-tunnel-egress {
+                  presence "Indicates a extended-ipv4-tunnel-egress node is configured.";
+                  description
+                    "Enable extended-ipv4-tunnel-egress flow data type";
+                }
+                container extended-ipv6-tunnel-egress {
+                  presence "Indicates a extended-ipv6-tunnel-egress node is configured.";
+                  description
+                    "Enable extended-ipv6-tunnel-egress flow data type";
+                }
                 container if-counters {
                   description
                     "Enable if-counter counter sampling";
@@ -1750,6 +1766,16 @@ module Cisco-IOS-XR-um-flow-cfg {
                 presence "Indicates a extended-gateway node is configured.";
                 description
                   "Enable extended-gateway flow data type";
+              }
+              container extended-ipv4-tunnel-egress {
+                presence "Indicates a extended-ipv4-tunnel-egress node is configured.";
+                description
+                  "Enable extended-ipv4-tunnel-egress flow data type";
+              }
+              container extended-ipv6-tunnel-egress {
+                presence "Indicates a extended-ipv6-tunnel-egress node is configured.";
+                description
+                  "Enable extended-ipv6-tunnel-egress flow data type";
               }
               container if-counters {
                 description

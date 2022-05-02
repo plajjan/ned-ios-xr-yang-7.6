@@ -25,9 +25,16 @@ module Cisco-IOS-XR-um-banner-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2020 by Cisco Systems, Inc.
+     Copyright (c) 2020-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-10 {
+    description
+      "Updated the description for list banner and leaf banner-type under container banners
+       2021-12-12
+         Removed the string length constraint from leaf line under container banners ";
+    semver:module-version "1.0.0";
+  }
   revision 2020-12-14 {
     description
       "Initial release";
@@ -1941,7 +1948,7 @@ module Cisco-IOS-XR-um-banner-cfg {
     list banner {
       key "banner-type";
       description
-        "configure this node";
+        "Define the banner";
       leaf banner-type {
         type enumeration {
           enum "exec" {
@@ -1976,18 +1983,13 @@ module Cisco-IOS-XR-um-banner-cfg {
           }
         }
         description
-          "configure this node";
+          "Select the banner type";
       }
       leaf line {
-        type string {
-          length "1..1015" {
-            description
-              "c banner-text c, where 'c' is a delimiting character";
-          }
-        }
+        type string;
         mandatory true;
         description
-          "LINE";
+          "c banner-text c, where 'c' is a delimiting character";
       }
     }
   }

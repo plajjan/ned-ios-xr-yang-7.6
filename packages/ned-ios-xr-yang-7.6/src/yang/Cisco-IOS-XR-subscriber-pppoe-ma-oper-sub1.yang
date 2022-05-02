@@ -35,7 +35,7 @@ submodule Cisco-IOS-XR-subscriber-pppoe-ma-oper-sub1 {
   revision 2021-07-01 {
     description
       "Introduced an new enum in cleanup count";
-    semver:module-version "3.0.0";
+    semver:module-version "4.0.0";
   }
   revision 2019-10-07 {
     description
@@ -225,8 +225,13 @@ submodule Cisco-IOS-XR-subscriber-pppoe-ma-oper-sub1 {
         description
           "pppoe ma session trig stopping cleanup timer";
       }
-      enum "pppoe-ma-session-trig-count" {
+      enum "pppoe-ma-session-trig-host-uniq-insert-fail" {
         value 23;
+        description
+          "pppoe ma session trig host uniq insert fail";
+      }
+      enum "pppoe-ma-session-trig-count" {
+        value 24;
         description
           "pppoe ma session trig count";
       }
@@ -1072,12 +1077,12 @@ submodule Cisco-IOS-XR-subscriber-pppoe-ma-oper-sub1 {
       "Wrapping history of disconnected subscribers";
     leaf-list disconnect-count {
       type uint32;
-      max-elements "23";
+      max-elements "24";
       description
         "The total number of disconnects";
     }
     list entry {
-      max-elements "23";
+      max-elements "24";
       description
         "Array of disconnected subscribers";
       uses PPPOE-MA-DISC-ENTRY;

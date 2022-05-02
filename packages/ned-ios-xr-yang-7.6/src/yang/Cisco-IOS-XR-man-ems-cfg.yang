@@ -2,6 +2,9 @@ module Cisco-IOS-XR-man-ems-cfg {
   namespace "http://cisco.com/ns/yang/Cisco-IOS-XR-man-ems-cfg";
   prefix man-ems-cfg;
 
+  import Cisco-IOS-XR-types {
+    prefix xr;
+  }
   import cisco-semver {
     prefix semver;
   }
@@ -30,9 +33,14 @@ module Cisco-IOS-XR-man-ems-cfg {
      for the following management objects:
        grpc: GRPC configruation
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-17 {
+    description
+      "Changed gRPC port range to avoid conflicts with non-Linux applications.";
+    semver:module-version "2.1.0";
+  }
   revision 2019-06-02 {
     description
       "Added support for AAA method lists.";
@@ -247,6 +255,52 @@ module Cisco-IOS-XR-man-ems-cfg {
           "Disable ciphers if default is enabled.";
       }
     }
+    container tunnel {
+      description
+        "gRPC tunnels";
+      container destinations {
+        description
+          "gRPC tunnel destinations";
+        list destination {
+          key "address port";
+          description
+            "gRPC tunnel destination";
+          leaf target {
+            type xr:Cisco-ios-xr-string {
+              length "1..256";
+            }
+            description
+              "Target name to register tunnel service";
+          }
+          leaf source-interface {
+            type xr:Interface-name;
+            description
+              "Source interface for dialout";
+          }
+          leaf vrf {
+            type xr:Cisco-ios-xr-string {
+              length "1..32";
+            }
+            description
+              "VRF for dialout";
+          }
+          leaf address {
+            type xr:Cisco-ios-xr-string {
+              length "1..128";
+            }
+            description
+              "IPv4 address in dotted-quad notation, or IPv6
+               address in full, mixed, shortened, and
+               shortened-mixed notation.";
+          }
+          leaf port {
+            type xr:Cisco-ios-xr-port-number;
+            description
+              "Destination port";
+          }
+        }
+      }
+    }
     container tls {
       description
         "Transport Layer Security (TLS)";
@@ -259,7 +313,7 @@ module Cisco-IOS-XR-man-ems-cfg {
     }
     leaf port {
       type uint32 {
-        range "10000..57999";
+        range "57344..57999";
       }
       description
         "Server listening port";
@@ -282,6 +336,11 @@ module Cisco-IOS-XR-man-ems-cfg {
       status deprecated;
       description
         "Enable GRPC";
+    }
+    leaf cert-auth {
+      type empty;
+      description
+        "Certificate Authentication";
     }
     leaf max-streams-per-user {
       type uint32 {
@@ -327,6 +386,11 @@ module Cisco-IOS-XR-man-ems-cfg {
       type empty;
       description
         "TLS mutual authentication";
+    }
+    leaf local-connection {
+      type empty;
+      description
+        "Enable gRPC server over Unix socket";
     }
     leaf max-request-total {
       type uint32 {

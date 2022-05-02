@@ -43,11 +43,11 @@ submodule Cisco-IOS-XR-telemetry-model-driven-oper-sub2 {
     description
       "Updated the encodings supported
        2020-01-30
-       Added compression leaf to destination container
+         Added compression leaf to destination container
        2020-01-10
-       GRPC channel statistics added
+         GRPC channel statistics added
        2019-09-25
-       Added minimum-cadence and cadence-factor options for target defined mode";
+         Added minimum-cadence and cadence-factor options for target defined mode";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -528,6 +528,11 @@ submodule Cisco-IOS-XR-telemetry-model-driven-oper-sub2 {
       description
         "Suppress Redundant";
     }
+    leaf incremental-updates {
+      type boolean;
+      description
+        "True if path supports incremental push updates";
+    }
   }
 
   grouping MDT-SOURCE-INTERFACE {
@@ -892,6 +897,16 @@ submodule Cisco-IOS-XR-telemetry-model-driven-oper-sub2 {
       description
         "Send heartbeat even if events have occurred
          within interval";
+    }
+    leaf incremental-updates {
+      type boolean;
+      description
+        "True if path supports incremental push updates";
+    }
+    leaf total-incremental-updates {
+      type uint64;
+      description
+        "Count of incremental updates";
     }
     list collection-path {
       description

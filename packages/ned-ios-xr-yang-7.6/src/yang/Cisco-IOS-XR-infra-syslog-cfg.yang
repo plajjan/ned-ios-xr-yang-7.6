@@ -33,9 +33,14 @@ module Cisco-IOS-XR-infra-syslog-cfg {
        syslog-service: Syslog Timestamp Services
        syslog: Modify message logging facilities
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-03 {
+    description
+      "Modified the logging file max-size type as range from integer";
+    semver:module-version "4.0.0";
+  }
   revision 2020-05-22 {
     description
       "Support for syslog format types bsd and rfc5424";
@@ -1123,6 +1128,7 @@ module Cisco-IOS-XR-infra-syslog-cfg {
         description
           "Specify File Name";
         container file-specification {
+          presence "Contains mandatory nodes that used to set default values";
           description
             "Specifications of the logging file destination";
           leaf path {
@@ -1131,16 +1137,33 @@ module Cisco-IOS-XR-infra-syslog-cfg {
               "File path";
           }
           leaf max-file-size {
-            type uint32;
-            default "1024";
+            type uint32 {
+              range "1..2097152";
+            }
+            mandatory true;
             description
               "Maximum file size (in KB)";
           }
           leaf severity {
-            type uint32;
-            default "6";
+            type Log-message-severity;
+            mandatory true;
             description
               "Severity of messages";
+          }
+          leaf local-accounting {
+            type boolean;
+            description
+              "Store only the command accounting logs";
+          }
+          leaf send-to-remote {
+            type boolean;
+            description
+              "Send logs to syslog server";
+          }
+          leaf facility {
+            type Facility;
+            description
+              "Message logging facilities";
           }
         }
         container file-log-discriminator {

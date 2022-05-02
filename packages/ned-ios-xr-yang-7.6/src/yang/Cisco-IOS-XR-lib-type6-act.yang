@@ -22,9 +22,14 @@ module Cisco-IOS-XR-lib-type6-act {
     "This module contains a collection of YANG definitions
      for Cisco IOS-XR action package configuration.
      
-     Copyright (c) 2018-2020 by Cisco Systems, Inc.
+     Copyright (c) 2018-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-04-06 {
+    description
+      "Added masterkey update abort support.";
+    semver:module-version "2.1.0";
+  }
   revision 2020-10-16 {
     description
       "Changed the input type of clear-type6-client to enum";
@@ -122,5 +127,9 @@ module Cisco-IOS-XR-lib-type6-act {
           "Client Name";
       }
     }
+  }
+  rpc masterkey-update-abort {
+    description
+      "Abort masterkey update operation";
   }
 }

@@ -31,6 +31,11 @@ module Cisco-IOS-XR-um-ssh-cfg {
      Copyright (c) 2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-20 {
+    description
+      "New rsa feartures";
+    semver:module-version "2.0.0";
+  }
   revision 2021-02-10 {
     description
       "Initial release";
@@ -353,7 +358,7 @@ module Cisco-IOS-XR-um-ssh-cfg {
           }
         }
         container host-key {
-          must "ecdsa-nistp256 or ecdsa-nistp384 or ecdsa-nistp521 or rsa or dsa or x509v3-ssh-rsa or ed25519";
+          must "ecdsa-nistp256 or ecdsa-nistp384 or ecdsa-nistp521 or rsa or dsa or x509v3-ssh-rsa or ed25519 or rsa-sha512 or rsa-sha256 or ssh-rsa";
           presence "Indicates a ca-certificate node is configured.";
           description
             "Host key algorithms to be used";
@@ -391,6 +396,21 @@ module Cisco-IOS-XR-um-ssh-cfg {
             presence "Indicates a ed25519 node is configured.";
             description
               "ed25519";
+          }
+          container rsa-sha512 {
+            presence "Indicates a rsa-sha512 node is configured.";
+            description
+              "rsa-sha512";
+          }
+          container rsa-sha256 {
+            presence "Indicates a rsa-sha256 node is configured.";
+            description
+              "rsa-sha256";
+          }
+          container ssh-rsa {
+            presence "Indicates a ssh-rsa node is configured.";
+            description
+              "ssh-rsa";
           }
         }
         container ciphers {
@@ -501,7 +521,7 @@ module Cisco-IOS-XR-um-ssh-cfg {
       }
       leaf max-auth-limit {
         type uint32 {
-          range "4..20" {
+          range "3..20" {
             description
               "Number of allowable authentication attempts";
           }

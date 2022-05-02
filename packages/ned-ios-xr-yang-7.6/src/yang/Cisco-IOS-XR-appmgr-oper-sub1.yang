@@ -26,6 +26,16 @@ submodule Cisco-IOS-XR-appmgr-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-09 {
+    description
+      "Adding expected patterns and max length for strings";
+    semver:module-version "3.0.0";
+  }
+  revision 2021-05-15 {
+    description
+      "Unused application types removed";
+    semver:module-version "2.0.0";
+  }
   revision 2021-03-01 {
     description
       "Adding information about installed packages";
@@ -73,19 +83,99 @@ submodule Cisco-IOS-XR-appmgr-oper-sub1 {
         description
           "Docker";
       }
-      enum "rpm" {
-        value 2;
-        description
-          "RPM";
-      }
-      enum "native" {
-        value 3;
-        description
-          "Native";
-      }
     }
     description
       "Appmgr application type";
+  }
+
+  typedef Appmgr-daemon-state {
+    type enumeration {
+      enum "not-started" {
+        value 1;
+        description
+          "Not Started";
+      }
+      enum "start-requested" {
+        value 2;
+        description
+          "Start Requested";
+      }
+      enum "started" {
+        value 3;
+        description
+          "Started";
+      }
+      enum "stop-requested" {
+        value 4;
+        description
+          "Stop Requested";
+      }
+      enum "stopped" {
+        value 5;
+        description
+          "Stopped";
+      }
+      enum "kill-requested" {
+        value 6;
+        description
+          "Kill Requested";
+      }
+      enum "killed" {
+        value 7;
+        description
+          "Killed";
+      }
+      enum "exit-success" {
+        value 8;
+        description
+          "Exit Success";
+      }
+      enum "exit-failure" {
+        value 9;
+        description
+          "Exit Failure";
+      }
+    }
+    description
+      "Appmgr process script state";
+  }
+
+  typedef String1 {
+    type string;
+    description
+      "String1";
+  }
+
+  typedef Appmgr-restart-policy {
+    type enumeration {
+      enum "never" {
+        value 1;
+        description
+          "Never";
+      }
+      enum "on-failure" {
+        value 2;
+        description
+          "On Failure";
+      }
+      enum "always" {
+        value 3;
+        description
+          "Always";
+      }
+      enum "unless-stopped" {
+        value 4;
+        description
+          "Unless Stopped";
+      }
+      enum "unless-errored" {
+        value 5;
+        description
+          "Unless Errored";
+      }
+    }
+    description
+      "Appmgr restart policy";
   }
 
   typedef Package {
@@ -349,6 +439,121 @@ submodule Cisco-IOS-XR-appmgr-oper-sub1 {
       description
         "App Variable Stats";
       uses APPMGR-VAR-STATS;
+    }
+  }
+
+  grouping APPMGR-DAEMON-CONFIG {
+    description
+      "Appmgr process script configuration";
+    leaf executable {
+      type string;
+      description
+        "Executable Name";
+    }
+    leaf run-args {
+      type string;
+      description
+        "Run Arguments";
+    }
+    leaf restart-policy {
+      type Appmgr-restart-policy;
+      description
+        "Restart Policy";
+    }
+    leaf max-retries {
+      type uint16 {
+        range "1..10";
+      }
+      description
+        "Maximum Restarts";
+    }
+  }
+
+  grouping APPMGR-DAEMON-EXEC-INFO {
+    description
+      "Appmgr process script running information";
+    leaf executable {
+      type string;
+      description
+        "Executable Name";
+    }
+    leaf run-args {
+      type string;
+      description
+        "Run Arguments";
+    }
+    leaf restart-policy {
+      type Appmgr-restart-policy;
+      description
+        "Restart Policy";
+    }
+    leaf max-retries {
+      type uint16 {
+        range "1..10";
+      }
+      description
+        "Maximum Restarts";
+    }
+    leaf restarts {
+      type uint16;
+      description
+        "Restarts";
+    }
+    leaf last-started-time {
+      type String1;
+      description
+        "Last Started Time";
+    }
+    leaf checksum {
+      type String1;
+      description
+        "Executable's checksum";
+    }
+    leaf log-location {
+      type String1;
+      description
+        "Log Location";
+    }
+    leaf last-exit-code {
+      type int32;
+      description
+        "Last Exit Code";
+    }
+  }
+
+  grouping APPMGR-DAEMON-INFO {
+    description
+      "Information about a process script managed by the
+       App Mgr";
+    container execution-info {
+      description
+        "Execution Info";
+      uses APPMGR-DAEMON-EXEC-INFO;
+    }
+    container config {
+      description
+        "Registered Configuration";
+      uses APPMGR-DAEMON-CONFIG;
+    }
+    leaf name {
+      type string;
+      description
+        "Application name";
+    }
+    leaf status {
+      type Appmgr-daemon-state;
+      description
+        "Application status";
+    }
+    leaf is-activated {
+      type boolean;
+      description
+        "Is App Activated";
+    }
+    leaf is-cfg-pending {
+      type boolean;
+      description
+        "Is Configuration Pending";
     }
   }
 

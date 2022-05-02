@@ -31,40 +31,42 @@ module Cisco-IOS-XR-infra-policymgr-cfg {
      Copyright (c) 2013, 2015-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-12-01 {
+  revision 2021-11-25 {
     description
-      "Added ordered-by statements for policy class list";
-    semver:module-version "4.1.0";
+      "Added ordered-by statements for policy class list
+       2021-08-13
+         Added changes for low latency config.
+       2021-07-28
+         Added support for WRED probability percent.";
+    semver:module-version "5.0.0";
   }
   revision 2021-02-15 {
     description
-      "IOS XR 7.3.2 revision.
-       2021-01-06
-       IOS XR 7.3.2 revision.";
+      "IOS XR 7.3.2 revision.";
     semver:module-version "4.0.0";
   }
   revision 2020-06-05 {
     description
       "IOS XR 7.2.1 revision.
        2020-05-17
-       IOS XR 7.2.1 revision.
+         IOS XR 7.2.1 revision.
        2020-04-29
-       IOS XR 7.2.1 revision.
+         IOS XR 7.2.1 revision.
        2020-04-06
-       IOS XR 7.2.1 revision.
+         IOS XR 7.2.1 revision.
        2020-01-30
-       IOS XR 7.2.1 revision.
+         IOS XR 7.2.1 revision.
        2019-12-18
-       IOS XR 7.2.1 revision.";
+         IOS XR 7.2.1 revision.";
     semver:module-version "3.0.0";
   }
   revision 2019-11-21 {
     description
       "IOS XR 7.1.1 revision.
        2019-11-03
-       IOS XR 7.1.1 revision.
+         IOS XR 7.1.1 revision.
        2019-10-04
-       IOS XR 7.1.1 revision.";
+         IOS XR 7.1.1 revision.";
     semver:module-version "2.0.0";
   }
   revision 2019-07-31 {
@@ -251,6 +253,16 @@ module Cisco-IOS-XR-infra-policymgr-cfg {
       "Supported units for bandwidth remaining.
        percent      - units in Percentage
        ratio        - units in Ratio";
+  }
+
+  typedef Probability-units {
+    type string {
+      pattern "(percent)|(inverse-ratio)";
+    }
+    description
+      "Supported units for WRED probability.
+       percent       - units in Percentage
+       inverse-ratio - units in Inverse Ratio";
   }
 
   typedef Rate-units {
@@ -1918,8 +1930,17 @@ module Cisco-IOS-XR-infra-policymgr-cfg {
           type uint32 {
             range "0..4294967295";
           }
+          must "../probability-unit" {
+            description
+              "unit must be set.";
+          }
           description
-            "Drop Probability of RED";
+            "Drop probability of RED";
+        }
+        leaf probability-unit {
+          type Probability-units;
+          description
+            "Drop probability units.";
         }
         leaf-list cos {
           type Cos;
@@ -2641,6 +2662,11 @@ module Cisco-IOS-XR-infra-policymgr-cfg {
           description
             "BNG Identifier Interface";
         }
+      }
+      leaf low-latency-profile {
+        type empty;
+        description
+          "low-latency profile";
       }
     }
     leaf description {

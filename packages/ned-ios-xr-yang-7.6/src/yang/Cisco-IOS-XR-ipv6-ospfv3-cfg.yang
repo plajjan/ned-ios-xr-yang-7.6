@@ -43,9 +43,14 @@ module Cisco-IOS-XR-ipv6-ospfv3-cfg {
        Cisco-IOS-XR-snmp-agent-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-14 {
+    description
+      "Added CLI to disable LLS capability at instance level";
+    semver:module-version "2.1.0";
+  }
   revision 2020-04-28 {
     description
       "Modified range for first half of AS number in asdot X.Y format";
@@ -55,7 +60,7 @@ module Cisco-IOS-XR-ipv6-ospfv3-cfg {
     description
       "Added mandatory nodes and presence containers.
        2019-05-12
-       Deprecated the native model, replaced by UM model.";
+         Deprecated the native model, replaced by UM model.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -2634,6 +2639,11 @@ module Cisco-IOS-XR-ipv6-ospfv3-cfg {
         description
           "Enable capability to translate LSAs with fwd
            addr";
+      }
+      leaf lls-disable {
+        type boolean;
+        description
+          "To disable LLS capability";
       }
     }
   }

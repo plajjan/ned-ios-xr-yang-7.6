@@ -40,37 +40,42 @@ module Cisco-IOS-XR-um-mpls-te-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2019-2021 by Cisco Systems, Inc.
+     Copyright (c) 2019-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-11-17 {
+  revision 2022-02-01 {
     description
-      "Added bfd and path protection support for named tunnels
-       2021-07-15
-         Removed presence statement of 2 timers nodes under traffic-eng,
-       Removed presence statement of auto-tunnel container
+      "Added signalled-bandwidth and soft-preemption support for auto-backup
+       2021-11-17
+         Added bfd and path protection support for named tunnels";
+    semver:module-version "2.2.0";
+  }
+  revision 2021-07-15 {
+    description
+      "Removed presence statement of 2 timers nodes under traffic-eng,
+        Removed presence statement of auto-tunnel container
        2021-07-09
-         Added bandwidth-protection/maximum-aggregate nodes under backup container";
+          Added bandwidth-protection/maximum-aggregate nodes under backup container";
     semver:module-version "2.1.0";
   }
   revision 2021-04-14 {
     description
       "new container reopt is added under pce
        2021-02-19
-       Added presence statement in ospf container and removed presence and
-       must statement from area container
+           Added presence statement in ospf container and removed presence and
+         must statement from area container
        2021-02-15
-       Added yang nodes for new mib commands
+           Added yang nodes for new mib commands
        2021-01-28
-       Added cisco-support task yang nodes
+           Added cisco-support task yang nodes
        2021-01-15
-       Add mandatory flag in min node under overflow, adjustment-threshold and
-       underflow container.
-       Added tunnel-mte specific config container.
-       Added backoff-timer under mpls->traffic-eng.
+           Add mandatory flag in min node under overflow, adjustment-threshold and
+         underflow container.
+         Added tunnel-mte specific config container.
+         Added backoff-timer under mpls->traffic-eng.
        2020-12-03
-       Removed leaf hold-backup and containers maxabs, ltrace-buffer and its
-       child nodes as these are used internally with cisco-support task.";
+           Removed leaf hold-backup and containers maxabs, ltrace-buffer and its
+         child nodes as these are used internally with cisco-support task.";
     semver:module-version "2.0.0";
   }
   revision 2020-05-26 {
@@ -83,14 +88,14 @@ module Cisco-IOS-XR-um-mpls-te-cfg {
   revision 2019-07-08 {
     description
       "- removed augmentation to interface-preconfigure as tunnel logical
-       interfaces are not allowed to configure as interface preconfig";
+         interfaces are not allowed to configure as interface preconfig";
   }
   revision 2019-06-11 {
     description
       "- Split area list node under gmpls/optical-nni/topology/instance/opsf
-       into two list nodes
+         into two list nodes
        - Added necessary constraints (must, mandatory) under
-       gmpls/../path-option";
+         gmpls/../path-option";
   }
   revision 2019-06-10 {
     description
@@ -13015,6 +13020,32 @@ module Cisco-IOS-XR-um-mpls-te-cfg {
                   "Hold Priority";
               }
             }
+            container signalled-bandwidth {
+              presence "Indicates a signalled-bandwidth node is configured.";
+              description
+                "Tunnel bandwidth requirement to be signalled";
+              leaf bandwidth {
+                type uint32 {
+                  range "0..4294967295" {
+                    description
+                      "Bandwidth requirement in kbps";
+                  }
+                }
+                mandatory true;
+                description
+                  "Tunnel bandwidth requirement to be signalled";
+              }
+              leaf class-type {
+                type uint32 {
+                  range "0..1" {
+                    description
+                      "Class type number";
+                  }
+                }
+                description
+                  "Specify the bandwidth class type";
+              }
+            }
             container affinity {
               description
                 "Link attributes for links traversed by tunnel";
@@ -14897,6 +14928,11 @@ module Cisco-IOS-XR-um-mpls-te-cfg {
                   }
                 }
               }
+            }
+            container soft-preemption {
+              presence "Indicates a soft-preemption node is configured.";
+              description
+                "Enable the soft-preemption feature on this tunnel";
             }
             container signalled-name {
               presence "Indicates a signalled-name node is configured.";

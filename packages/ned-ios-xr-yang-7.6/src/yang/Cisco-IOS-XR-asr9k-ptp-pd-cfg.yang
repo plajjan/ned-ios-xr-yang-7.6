@@ -29,9 +29,14 @@ module Cisco-IOS-XR-asr9k-ptp-pd-cfg {
        Cisco-IOS-XR-ptp-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-04 {
+    description
+      "IOS-XR 7.6.1 revision.";
+    semver:module-version "1.0.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";

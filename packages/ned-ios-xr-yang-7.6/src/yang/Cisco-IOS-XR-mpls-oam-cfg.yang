@@ -30,9 +30,14 @@ module Cisco-IOS-XR-mpls-oam-cfg {
      for the following management objects:
        mpls-oam: MPLS LSP verification configuration
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-02-18 {
+    description
+      "Unhide revision support and downstream disable.";
+    semver:module-version "1.2.0";
+  }
   revision 2019-05-12 {
     description
       "Deprecated the native model, replaced by UM model.";
@@ -46,6 +51,33 @@ module Cisco-IOS-XR-mpls-oam-cfg {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
+  }
+
+  typedef Mpls-oam-revision {
+    type enumeration {
+      enum "draft03-initial" {
+        value 1;
+        description
+          "draft-ietf-mpls-lsp-ping-03 (initial)";
+      }
+      enum "draft03-revision1" {
+        value 2;
+        description
+          "draft-ietf-mpls-lsp-ping-03 (revision 1)";
+      }
+      enum "draft03-revision2" {
+        value 3;
+        description
+          "draft-ietf-mpls-lsp-ping-03 (revision 2)";
+      }
+      enum "draft09-initial" {
+        value 4;
+        description
+          "draft-ietf-mpls-lsp-ping-09 (initial)";
+      }
+    }
+    description
+      "Mpls oam revision";
   }
 
   container mpls-oam {
@@ -79,6 +111,11 @@ module Cisco-IOS-XR-mpls-oam-cfg {
         description
           "Rate limit in packets per second";
       }
+      leaf downstream-ecmp-faults {
+        type empty;
+        description
+          "Report downstream mismatches";
+      }
     }
     container reply-mode {
       description
@@ -92,6 +129,12 @@ module Cisco-IOS-XR-mpls-oam-cfg {
             "Use Reverse LSP as the control channel";
         }
       }
+    }
+    leaf default-revision {
+      type Mpls-oam-revision;
+      default "draft09-initial";
+      description
+        "Echo request default revision";
     }
     leaf enable-oam {
       type empty;

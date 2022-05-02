@@ -37,12 +37,26 @@ module Cisco-IOS-XR-um-router-isis-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2019-2021 by Cisco Systems, Inc.
+     Copyright (c) 2019-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-06-15 {
+  revision 2022-01-04 {
     description
-      "Added when statement to container prefix-attributes";
+      "Added support for unhidden CLI commands
+       2021-12-14
+         Added authentication-check feature";
+    semver:module-version "4.1.0";
+  }
+  revision 2021-09-23 {
+    description
+      "Merged container levels under disable|interval/periodic/address-family-topology,
+        Merged container levels under disable|interval/periodic/address-family,
+        Merged disable & interval-time into one leaf interval
+       2021-07-27
+          Re-ordered maximum-wait, initial-wait and secondary-wait nodes under
+        level container/spf-interval
+       2021-06-15
+          Added when statement to container prefix-attributes";
     semver:module-version "4.0.0";
   }
   revision 2021-05-18 {
@@ -50,65 +64,65 @@ module Cisco-IOS-XR-um-router-isis-cfg {
       "Added features, 1. flex-algo srlg exclude
        2. advertise application flex-algo link-attributes srlg
        2021-04-22
-       Added te-metric flex-algo feature
+           Added te-metric flex-algo feature
        2021-03-02
-       Re-ordered maximum-wait, initial-wait and secondary-wait nodes under
-       level container
+           Re-ordered maximum-wait, initial-wait and secondary-wait nodes under
+         level container
        2021-02-11
-       Re-ordered per-link, per-prefix nodes under interface fast-reroute container
+           Re-ordered per-link, per-prefix nodes under interface fast-reroute container
        2021-01-28
-       Added cisco-support task yang nodes
+           Added cisco-support task yang nodes
        2021-01-27
-       Re-ordered nodes under lsp-gen-interval, min-lsp-arrivaltime container
+           Re-ordered nodes under lsp-gen-interval, min-lsp-arrivaltime container
        2021-01-20
-       Moved presence containers as leafs under snmp-server traps
+           Moved presence containers as leafs under snmp-server traps
        2021-01-18
-       Added presence statement and re-ordered few nodes under container max-metric
+           Added presence statement and re-ordered few nodes under container max-metric
        2021-01-11
-       Add support to metric and preferred container under tunnel
+           Add support to metric and preferred container under tunnel
        2021-01-07
-       Updated range value in leaf multiplier under fallback container
+           Updated range value in leaf multiplier under fallback container
        2021-01-06
-       Added presence statement under link-state container
+           Added presence statement under link-state container
        2020-12-09
-       Removed cisco-support yang nodes
+           Removed cisco-support yang nodes
        2020-12-01
-       Added container anomaly under metric/fallback
+           Added container anomaly under metric/fallback
        2020-11-20
-       Added metric type te
+           Added metric type te
        2020-11-19
-       Fixed a must statement under absolute, added presence statement to text
+           Fixed a must statement under absolute, added presence statement to text
        2020-11-13
-       Added container receive and attestation under list process.
+           Added container receive and attestation under list process.
        2020-11-02
-       Moved levels container under lsp-password out of it and renamed as
-       lsp-password-levels.
+           Moved levels container under lsp-password out of it and renamed as
+         lsp-password-levels.
        2020-08-20
-       Added level option under srv6/locator
+           Added level option under srv6/locator
        2020-08-13
-       Remove presence container and constraints on the match container
+           Remove presence container and constraints on the match container
        2020-08-10
-       Updated the fallback topology
+           Updated the fallback topology
        2020-07-21
-       Slight changes to prefix-priority nodes
+           Slight changes to prefix-priority nodes
        2020-07-17
-       Added must statements and moved rib-update-delay up one node
+           Added must statements and moved rib-update-delay up one node
        2020-07-15
-       Added down-flag-clear node under redistribute isis
+           Added down-flag-clear node under redistribute isis
        2020-07-14
-       Added mandatory node to bit-position under affinity-map";
+           Added mandatory node to bit-position under affinity-map";
     semver:module-version "3.0.0";
   }
   revision 2020-05-19 {
     description
       "Added nodes for new ISIS features
        2020-05-07
-       Added a container anycast and its child nodes
+         Added a container anycast and its child nodes
        2020-04-14
-       Updated the constraints in the nodes under stagger to be less strict
+         Updated the constraints in the nodes under stagger to be less strict
        2020-03-09
-       Updated lsp-password and summary-prefix trees with proper constaraint
-       statements";
+         Updated lsp-password and summary-prefix trees with proper constaraint
+         statements";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -791,6 +805,15 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                   }
                 }
               }
+            }
+          }
+          container authentication-check {
+            description
+              "Check authentication type and key of isis PDUs";
+            container disable {
+              presence "Indicates a disable node is configured.";
+              description
+                "Disable authentication check";
             }
           }
           leaf vrf-context {
@@ -1814,6 +1837,11 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                               "Specify the absolute value of Prefix Segement ID";
                           }
                         }
+                        leaf interface {
+                          type xr:Interface-name;
+                          description
+                            "Specify the interface associated with the prefix sid";
+                        }
                         container explicit-null {
                           presence "Indicates a explicit-null node is configured.";
                           description
@@ -1879,6 +1907,11 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                               "Specify the absolute value of Prefix Segement ID";
                           }
                         }
+                        leaf interface {
+                          type xr:Interface-name;
+                          description
+                            "Specify the interface associated with the prefix sid";
+                        }
                         container explicit-null {
                           presence "Indicates a explicit-null node is configured.";
                           description
@@ -1934,6 +1967,11 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                               "Specify the absolute value of Prefix Segement ID";
                           }
                         }
+                        leaf interface {
+                          type xr:Interface-name;
+                          description
+                            "Specify the interface associated with the prefix sid";
+                        }
                         container explicit-null {
                           presence "Indicates a explicit-null node is configured.";
                           description
@@ -1973,6 +2011,12 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                   presence "Indicates a bundle-member-adj-sid node is configured.";
                   description
                     "Enable per bundle member adjacency SID";
+                }
+                container labeled-only {
+                  when "../../saf-name = 'unicast'";
+                  presence "Indicates a labeled-only node is configured.";
+                  description
+                    "Only install SR labeled paths";
                 }
                 leaf protected-adjacency-sid-delay {
                   when "../../saf-name = 'unicast'";
@@ -3366,81 +3410,61 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                 container periodic {
                   description
                     "Configure the periodic SPF";
-                  container interval {
-                    description
-                      "Set the maximum interval in between SPF runs";
-                    leaf interval-time {
+                  leaf interval {
+                    type union {
+                      type enumeration {
+                        enum "disable-periodic-spf" {
+                          value 0;
+                          description
+                            "Disable the periodic SPF (spf periodic disable)";
+                        }
+                      }
                       type uint32 {
                         range "1..3600" {
                           description
-                            "Maximum interval in between SPF runs in seconds";
+                            "Maximum interval in between SPF runs in seconds(spf periodic interval <value>)";
                         }
                       }
-                      description
-                        "Set the maximum interval in between SPF runs";
                     }
-                    container levels {
+                    description
+                      "Set the maximum interval in between SPF runs";
+                  }
+                  container levels {
+                    description
+                      "Configure periodic SPF interval for for one level only";
+                    list level {
+                      key "level-id";
                       description
                         "Configure periodic SPF interval for for one level only";
-                      list level {
-                        key "level-id";
+                      leaf level-id {
+                        type uint32 {
+                          range "1..2" {
+                            description
+                              "Level";
+                          }
+                        }
                         description
                           "Configure periodic SPF interval for for one level only";
-                        leaf level-id {
-                          type uint32 {
-                            range "1..2" {
+                      }
+                      leaf interval {
+                        type union {
+                          type enumeration {
+                            enum "disable-periodic-spf" {
+                              value 0;
                               description
-                                "Level";
+                                "Disable the periodic SPF (spf periodic disable)";
                             }
                           }
-                          description
-                            "Configure periodic SPF interval for for one level only";
-                        }
-                        leaf interval-time {
                           type uint32 {
                             range "1..3600" {
                               description
-                                "Maximum interval in between SPF runs in seconds";
+                                "Maximum interval in between SPF runs in seconds(spf periodic interval <value>)";
                             }
                           }
-                          mandatory true;
-                          description
-                            "Set the maximum interval in between SPF runs";
                         }
-                      }
-                    }
-                  }
-                  container disable {
-                    description
-                      "Disable the periodic SPF";
-                    container disable-periodic-spf {
-                      presence "Indicates a disable node is configured.";
-                      description
-                        "Disable the periodic SPF";
-                    }
-                    container levels {
-                      description
-                        "Configure periodic SPF interval for for one level only";
-                      list level {
-                        must "disable-periodic-spf";
-                        key "level-id";
+                        mandatory true;
                         description
-                          "Configure periodic SPF interval for for one level only";
-                        leaf level-id {
-                          type uint32 {
-                            range "1..2" {
-                              description
-                                "Level";
-                            }
-                          }
-                          description
-                            "Configure periodic SPF interval for for one level only";
-                        }
-                        container disable-periodic-spf {
-                          presence "Indicates a disable node is configured.";
-                          description
-                            "Disable the periodic SPF";
-                        }
+                          "Set the maximum interval in between SPF runs";
                       }
                     }
                   }
@@ -5771,36 +5795,6 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                     description
                       "Maximum delay before running a route calculation";
                   }
-                  container levels {
-                    description
-                      "Set SPF interval for one level only";
-                    list level {
-                      key "level-id";
-                      description
-                        "Set SPF interval for one level only";
-                      leaf level-id {
-                        type uint32 {
-                          range "1..2" {
-                            description
-                              "Level";
-                          }
-                        }
-                        description
-                          "Set SPF interval for one level only";
-                      }
-                      leaf maximum-wait-time {
-                        type uint32 {
-                          range "0..120000" {
-                            description
-                              "Delay in milliseconds";
-                          }
-                        }
-                        mandatory true;
-                        description
-                          "Maximum delay before running a route calculation";
-                      }
-                    }
-                  }
                 }
                 container initial-wait {
                   description
@@ -5814,36 +5808,6 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                     }
                     description
                       "Initial delay before running a route calculation";
-                  }
-                  container levels {
-                    description
-                      "Set SPF interval for one level only";
-                    list level {
-                      key "level-id";
-                      description
-                        "Set SPF interval for one level only";
-                      leaf level-id {
-                        type uint32 {
-                          range "1..2" {
-                            description
-                              "Level";
-                          }
-                        }
-                        description
-                          "Set SPF interval for one level only";
-                      }
-                      leaf initial-wait-time {
-                        type uint32 {
-                          range "0..120000" {
-                            description
-                              "Delay in milliseconds";
-                          }
-                        }
-                        mandatory true;
-                        description
-                          "Initial delay before running a route calculation";
-                      }
-                    }
                   }
                 }
                 container secondary-wait {
@@ -5859,34 +5823,53 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                     description
                       "Secondary delay before running a route calculation";
                   }
-                  container levels {
+                }
+                container levels {
+                  description
+                    "Set SPF interval for one level only";
+                  list level {
+                    key "level-id";
                     description
                       "Set SPF interval for one level only";
-                    list level {
-                      key "level-id";
+                    leaf level-id {
+                      type uint32 {
+                        range "1..2" {
+                          description
+                            "Level";
+                        }
+                      }
                       description
                         "Set SPF interval for one level only";
-                      leaf level-id {
-                        type uint32 {
-                          range "1..2" {
-                            description
-                              "Level";
-                          }
+                    }
+                    leaf maximum-wait-time {
+                      type uint32 {
+                        range "0..120000" {
+                          description
+                            "Delay in milliseconds";
                         }
-                        description
-                          "Set SPF interval for one level only";
                       }
-                      leaf secondary-wait-time {
-                        type uint32 {
-                          range "0..120000" {
-                            description
-                              "Delay in milliseconds";
-                          }
+                      description
+                        "Maximum delay before running a route calculation";
+                    }
+                    leaf secondary-wait-time {
+                      type uint32 {
+                        range "0..120000" {
+                          description
+                            "Delay in milliseconds";
                         }
-                        mandatory true;
-                        description
-                          "Secondary delay before running a route calculation";
                       }
+                      description
+                        "Secondary delay before running a route calculation";
+                    }
+                    leaf initial-wait-time {
+                      type uint32 {
+                        range "0..120000" {
+                          description
+                            "Delay in milliseconds";
+                        }
+                      }
+                      description
+                        "Initial delay before running a route calculation";
                     }
                   }
                 }
@@ -5897,81 +5880,61 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                 container periodic {
                   description
                     "Configure the periodic SPF";
-                  container interval {
-                    description
-                      "Set the maximum interval in between SPF runs";
-                    leaf interval-time {
+                  leaf interval {
+                    type union {
+                      type enumeration {
+                        enum "disable-periodic-spf" {
+                          value 0;
+                          description
+                            "Disable the periodic SPF (spf periodic disable)";
+                        }
+                      }
                       type uint32 {
                         range "1..3600" {
                           description
-                            "Maximum interval in between SPF runs in seconds";
+                            "Maximum interval in between SPF runs in seconds(spf periodic interval <value>)";
                         }
                       }
-                      description
-                        "Set the maximum interval in between SPF runs";
                     }
-                    container levels {
+                    description
+                      "Set the maximum interval in between SPF runs";
+                  }
+                  container levels {
+                    description
+                      "Configure periodic SPF interval for for one level only";
+                    list level {
+                      key "level-id";
                       description
                         "Configure periodic SPF interval for for one level only";
-                      list level {
-                        key "level-id";
+                      leaf level-id {
+                        type uint32 {
+                          range "1..2" {
+                            description
+                              "Level";
+                          }
+                        }
                         description
                           "Configure periodic SPF interval for for one level only";
-                        leaf level-id {
-                          type uint32 {
-                            range "1..2" {
+                      }
+                      leaf interval {
+                        type union {
+                          type enumeration {
+                            enum "disable-periodic-spf" {
+                              value 0;
                               description
-                                "Level";
+                                "Disable the periodic SPF (spf periodic disable)";
                             }
                           }
-                          description
-                            "Configure periodic SPF interval for for one level only";
-                        }
-                        leaf interval-time {
                           type uint32 {
                             range "1..3600" {
                               description
-                                "Maximum interval in between SPF runs in seconds";
+                                "Maximum interval in between SPF runs in seconds(spf periodic interval <value>)";
                             }
                           }
-                          mandatory true;
-                          description
-                            "Set the maximum interval in between SPF runs";
                         }
-                      }
-                    }
-                  }
-                  container disable {
-                    description
-                      "Disable the periodic SPF";
-                    container disable-periodic-spf {
-                      presence "Indicates a disable node is configured.";
-                      description
-                        "Disable the periodic SPF";
-                    }
-                    container levels {
-                      description
-                        "Configure periodic SPF interval for for one level only";
-                      list level {
-                        must "disable-periodic-spf";
-                        key "level-id";
+                        mandatory true;
                         description
-                          "Configure periodic SPF interval for for one level only";
-                        leaf level-id {
-                          type uint32 {
-                            range "1..2" {
-                              description
-                                "Level";
-                            }
-                          }
-                          description
-                            "Configure periodic SPF interval for for one level only";
-                        }
-                        container disable-periodic-spf {
-                          presence "Indicates a disable node is configured.";
-                          description
-                            "Disable the periodic SPF";
-                        }
+                          "Set the maximum interval in between SPF runs";
                       }
                     }
                   }
@@ -6940,7 +6903,7 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                 container flex-algos {
                   description
                     "Affinities for Flexible Algorithm application";
-                  leaf-list flex-algo {
+                  leaf-list affinity-names {
                     type string {
                       length "1..32" {
                         description
@@ -7826,6 +7789,11 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                             "Specify the absolute value of Prefix Segement ID";
                         }
                       }
+                      container php-disable {
+                        presence "Indicates a php-disable node is configured.";
+                        description
+                          "Disable Penultimate Hop Popping";
+                      }
                       container explicit-null {
                         presence "Indicates a explicit-null node is configured.";
                         description
@@ -7875,6 +7843,11 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                           description
                             "Specify the absolute value of Prefix Segement ID";
                         }
+                      }
+                      container php-disable {
+                        presence "Indicates a php-disable node is configured.";
+                        description
+                          "Disable Penultimate Hop Popping";
                       }
                       container explicit-null {
                         presence "Indicates a explicit-null node is configured.";
@@ -9156,6 +9129,20 @@ module Cisco-IOS-XR-um-router-isis-cfg {
                 presence "Indicates a prefix-metric node is configured.";
                 description
                   "Use Flex-Algo Prefix Metric";
+              }
+              container data-plane {
+                description
+                  "Flex-Algo Data Plane";
+                container segment-routing {
+                  presence "Indicates a segment-routing node is configured.";
+                  description
+                    "Segment Routing";
+                }
+                container ip {
+                  presence "Indicates a ip node is configured.";
+                  description
+                    "IP";
+                }
               }
             }
           }

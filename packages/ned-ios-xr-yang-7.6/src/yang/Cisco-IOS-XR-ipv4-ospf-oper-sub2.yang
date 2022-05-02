@@ -35,18 +35,23 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-01 {
+    description
+      "Added Extended Inter-Area ASBR LSA, Added Algo label information received from RIB in Extended Prefix LSA";
+    semver:module-version "2.3.0";
+  }
   revision 2021-06-01 {
     description
-      "Added changes to show if a FAD contains unknown parameters";
+      "Added changes to show if a FAD contains unknown parameters, option to enable SR forwarding MPLS, changes in neighbor sham link or virtual link name";
     semver:module-version "2.2.0";
   }
   revision 2020-03-19 {
     description
       "Added changes for Delay Normalization
        2020-02-04
-       Added changes for Conditional Advertising
+         Added changes for Conditional Advertising
        2019-09-30
-       Added changes for Weighted SRLG";
+         Added changes for Weighted SRLG";
     semver:module-version "2.0.0";
   }
   revision 2019-07-26 {
@@ -435,6 +440,11 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
         value 11;
         description
           "Opaque Area type 8";
+      }
+      enum "mgmt-opq-eial-type" {
+        value 12;
+        description
+          "Opaque Area type 11";
       }
     }
     description
@@ -1965,6 +1975,17 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
     }
   }
 
+  grouping OSPF-SH-LSA-OPQ-EIAL {
+    description
+      "OSPF Opaque-area type 11 ExtendedASBR LSA
+       Information";
+    list tlv {
+      description
+        "List of TLVs";
+      uses OSPF-SH-OPQ-TLV;
+    }
+  }
+
   grouping OSPF-SH-LSA-OPQ-ELL {
     description
       "OSPF Opaque-area type 8 ExtendedLink LSA
@@ -2001,7 +2022,7 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
 
   grouping OSPF-SH-SR-FAD-UNKNOWN-STLV {
     description
-      "OSPF FAD Unknown SubTLV";
+      "OSPF FAD SubTLV";
     leaf fad-sub-tlv-length {
       type uint16;
       description
@@ -2014,6 +2035,44 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
         type uint8;
         description
           "FAD unknown TLV data";
+      }
+    }
+  }
+
+  grouping OSPF-SH-SR-FAD-FLAG-STLV {
+    description
+      "OSPF FAD SubTLV";
+    leaf fad-sub-tlv-length {
+      type uint16;
+      description
+        "Length of sub-TLV";
+    }
+    list fad-flag {
+      description
+        "FAD flag bits";
+      leaf entry {
+        type uint8;
+        description
+          "FAD flag bits";
+      }
+    }
+  }
+
+  grouping OSPF-SH-SR-FAD-SRLG-STLV {
+    description
+      "OSPF FAD SubTLV";
+    leaf fad-sub-tlv-length {
+      type uint16;
+      description
+        "Length of sub-TLV";
+    }
+    list fad-srlg {
+      description
+        "FAD SRLG exclude any";
+      leaf entry {
+        type uint32;
+        description
+          "FAD SRLG exclude any";
       }
     }
   }
@@ -2054,6 +2113,16 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
       description
         "Include all sub-TLV";
       uses OSPF-SH-SR-FAD-AG-STLV;
+    }
+    container fad-srlg-exc-any {
+      description
+        "SRLG exclude any sub-TLV";
+      uses OSPF-SH-SR-FAD-SRLG-STLV;
+    }
+    container fad-flags {
+      description
+        "Felx Algo Flags";
+      uses OSPF-SH-SR-FAD-FLAG-STLV;
     }
     container fad-unsupported-tlv {
       description
@@ -2884,6 +2953,15 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
       description
         "Extended Link LSA type";
       uses OSPF-SH-LSA-OPQ-ELL;
+    }
+    container opaque-eia-lsa-type {
+      when "../internal-lsa-type = 'mgmt-opq-eial-type'" {
+        description
+          "../InternalLSAType = 'MGMT_OPQ_EIAL_TYPE'";
+      }
+      description
+        "Extended ASBR LSA type";
+      uses OSPF-SH-LSA-OPQ-EIAL;
     }
     leaf internal-lsa-type {
       type Ospf-internal-lsa-types;
@@ -4873,6 +4951,11 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
       description
         "Interface fallback cost";
     }
+    leaf interface-delay-te-cost-fallback-flex {
+      type uint32;
+      description
+        "Interface fallback cost for flex algo te metric";
+    }
     leaf dealy-te-cost-fallback-active {
       type boolean;
       description
@@ -5287,6 +5370,16 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
         "Result of the policy applied for Conditional
          advertising";
     }
+    leaf if-sr-forwarding-mpls {
+      type boolean;
+      description
+        "Segment Routing Forwarding MPLS enabled";
+    }
+    leaf te-metric-flex {
+      type uint32;
+      description
+        "TE Metric for flex algo";
+    }
     list srlg {
       description
         "SRLG Values";
@@ -5633,6 +5726,26 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
     }
   }
 
+  grouping OSPF-SH-ROUTE-EXT-SID {
+    description
+      "Algo label information received from RIB";
+    leaf flex-algorithm {
+      type uint8;
+      description
+        "Flex-algo number";
+    }
+    leaf label {
+      type uint32;
+      description
+        "Label specific to the algo";
+    }
+    leaf metric {
+      type uint32;
+      description
+        "Metric specific to the algo";
+    }
+  }
+
   grouping OSPF-SH-ROUTE-EXTENDED-COMM {
     description
       "OSPF External Route Extended Community
@@ -5743,6 +5856,11 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
       description
         "Extended communities in the route";
       uses OSPF-SH-ROUTE-EXTENDED-COMM;
+    }
+    list route-label {
+      description
+        "List of labels in other algorithms";
+      uses OSPF-SH-ROUTE-EXT-SID;
     }
   }
 
@@ -6715,6 +6833,11 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
       type xr:Interface-name;
       description
         "Interface via which the neighbor is seen";
+    }
+    leaf neighbor-sham-link-virtual-link-name {
+      type string;
+      description
+        "Neighbor  sham link or virtual link name";
     }
     leaf neighbor-dr-priority {
       type uint8;

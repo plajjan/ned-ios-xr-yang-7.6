@@ -40,43 +40,48 @@ module Cisco-IOS-XR-perf-meas-cfg {
     description
       "Deprecate trnasport specific delay and liveness detection name profile configuration.
        2021-10-27
-         Added tx-interval to profile configuration.
-       2021-09-28
-         Deprecate measurement-mode in liveness profile.";
-    semver:module-version "4.1.0";
+         Added tx-interval to profile configuration.";
+    semver:module-version "5.1.0";
+  }
+  revision 2021-09-28 {
+    description
+      "Deprecate measurement-mode in liveness profile.
+       2021-06-15
+          TWAMP-Light querier source and destination port range updated to 1024 - 14999.";
+    semver:module-version "5.0.0";
   }
   revision 2020-12-19 {
     description
       "Updated liveness profile for endpoint support.
        2020-12-12
-       Add interface delay-profile name schema class and hide delay-profile liveness-detction.
+           Add interface delay-profile name schema class and hide delay-profile liveness-detction.
        2020-12-02
-       Added sr-policy liveness profile config schema.
+           Added sr-policy liveness profile config schema.
        2020-11-16
-       Added default keyword for default profile configuration.
+           Added default keyword for default profile configuration.
        2020-10-27
-       Endpoint support.
+           Endpoint support.
        2020-10-27
-       Added anomaly support for sr-policy min delay metrics.
+           Added anomaly support for sr-policy min delay metrics.
        2020-10-02
-       Added anomaly support for interface min delay metrics
+           Added anomaly support for interface min delay metrics
        2020-07-21
-       Remove deprecated interface profile probe interval and burst interval.";
+           Remove deprecated interface profile probe interval and burst interval.";
     semver:module-version "4.0.0";
   }
   revision 2020-03-31 {
     description
       "721 nohelp CLI for liveness, loopback, endpoint, src-port, named profile, distribution.
        2020-02-24
-       Modifid type of service knobs from array to integer.
+         Modifid type of service knobs from array to integer.
        2020-02-20
-       Modifid type of service knobs from array to integer.
+         Modifid type of service knobs from array to integer.
        2020-01-08
-       Added new configure knob to specify source port for end-to-end DM session on RP.
+         Added new configure knob to specify source port for end-to-end DM session on RP.
        2019-11-29
-       Revision IOS XR 7.2.1 Added PM named profile development.
+         Revision IOS XR 7.2.1 Added PM named profile development.
        2019-11-14
-       Revision IOS XR 7.2.1 Upate PM advertise delay config range.";
+         Revision IOS XR 7.2.1 Upate PM advertise delay config range.";
     semver:module-version "3.0.0";
   }
   revision 2019-09-18 {
@@ -442,7 +447,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
         status deprecated;
         description
           "PM Delay Profile Probe Burst Interval
-           (Deprecated in IOS-XR 7.4.2. Please use
+           (Deprecated in IOS-XR 7.6.1. Please use
            TXInterval.)";
       }
     }
@@ -544,7 +549,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
         status deprecated;
         description
           "PM Delay Profile Probe Burst Interval
-           (Deprecated in IOS-XR 7.4.2. Please use
+           (Deprecated in IOS-XR 7.6.1. Please use
            TXInterval.)";
       }
     }
@@ -611,7 +616,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
         status deprecated;
         description
           "PM Delay Profile Burst Interval (Deprecated in
-           IOS-XR 7.4.2. Please use TXInterval.)";
+           IOS-XR 7.6.1. Please use TXInterval.)";
       }
       leaf computation-interval {
         type uint32 {
@@ -693,7 +698,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
         status deprecated;
         description
           "PM Liveness Profile Probe Burst Interval
-           (Deprecated in IOS-XR 7.4.2. Please use
+           (Deprecated in IOS-XR 7.6.1. Please use
            TXInterval.)";
       }
       leaf tx-interval {
@@ -749,7 +754,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
         status deprecated;
         description
           "PM Liveness Profile Probe Burst Interval
-           (Deprecated in IOS-XR 7.4.2. Please use
+           (Deprecated in IOS-XR 7.6.1. Please use
            TXInterval.)";
       }
       leaf measurement-mode {
@@ -775,7 +780,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
       status deprecated;
       description
         "Endpoint liveness name profile table.
-         (Deprecated in IOS-XR 7.4.2.)";
+         (Deprecated in IOS-XR 7.6.1.)";
       list liveness-name-profile-endpoint {
         key "profile-name";
         description
@@ -803,7 +808,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
               "Unauthenticated mode";
             leaf querier-source-port {
               type uint32 {
-                range "862..14999";
+                range "1024..14999";
               }
               description
                 "UDP port opened on Route Processor to be
@@ -833,7 +838,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
             }
             leaf querier-destination-port {
               type uint32 {
-                range "862..14999";
+                range "1024..14999";
               }
               description
                 "UDP port opened to be used as destination
@@ -953,7 +958,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
       status deprecated;
       description
         "SR Policy delay name profile table (Deprecated
-         in IOS-XR 7.4.2.)";
+         in IOS-XR 7.6.1.)";
       list delay-name-profile-sr-policy {
         key "profile-name";
         description
@@ -1020,7 +1025,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
           status deprecated;
           description
             "PM Delay Profile Probe Burst Interval
-             (Deprecated in IOS-XR 7.4.2. Please use
+             (Deprecated in IOS-XR 7.6.1. Please use
              TXInterval.)";
         }
         leaf measurement-mode {
@@ -1047,7 +1052,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
       status deprecated;
       description
         "Endpoint delay name profile table (Deprecated in
-         IOS-XR 7.4.2.)";
+         IOS-XR 7.6.1.)";
       list delay-name-profile-endpoint {
         key "profile-name";
         description
@@ -1185,7 +1190,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
       status deprecated;
       description
         "Interface delay name profile table (Deprecated
-         in IOS-XR 7.4.2.)";
+         in IOS-XR 7.6.1.)";
       list delay-name-profile-interface {
         key "profile-name";
         description
@@ -1342,7 +1347,7 @@ module Cisco-IOS-XR-perf-meas-cfg {
       status deprecated;
       description
         "SR Policy liveness name profile table.
-         (Deprecated in IOS-XR 7.4.2.)";
+         (Deprecated in IOS-XR 7.6.1.)";
       list liveness-name-profile-sr-policy {
         key "profile-name";
         description

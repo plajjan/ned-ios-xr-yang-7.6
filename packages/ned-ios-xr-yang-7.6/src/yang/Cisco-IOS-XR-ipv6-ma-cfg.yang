@@ -41,6 +41,16 @@ module Cisco-IOS-XR-ipv6-ma-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-25 {
+    description
+      "Enabled DHCP client support on physical interface.";
+    semver:module-version "3.1.0";
+  }
+  revision 2021-09-15 {
+    description
+      "Removed POC nodes for Srv6 SegmentRouting PrefixSid.";
+    semver:module-version "3.0.0";
+  }
   revision 2021-01-29 {
     description
       "Removed Yang support for mcast-mac-filter.";
@@ -50,7 +60,7 @@ module Cisco-IOS-XR-ipv6-ma-cfg {
     description
       "Added new leaf icmp-unreach-disable.
        2019-12-12
-       New leaf node added.";
+         New leaf node added.";
     semver:module-version "2.1.0";
   }
   revision 2019-10-31 {
@@ -234,48 +244,6 @@ module Cisco-IOS-XR-ipv6-ma-cfg {
       container addresses {
         description
           "Set the IPv6 address of an interface";
-        container segment-routings {
-          description
-            "Segment Routing Table";
-          list segment-routing {
-            key "address";
-            description
-              "Segment Routing Submode ";
-            container ipv6-prefix-sid {
-              presence "Indicates a ipv6-prefix-sid node is configured.";
-              description
-                "Prefix-Sid for Segment Routing";
-              leaf prefix-length {
-                type dt1:Ipv6arm-prefix-length;
-                mandatory true;
-                description
-                  "Prefix Length";
-              }
-              leaf zone {
-                type string;
-                description
-                  "IPv6 address zone";
-              }
-              leaf route-tag {
-                type uint32 {
-                  range "1..4294967295";
-                }
-                description
-                  "RouteTag";
-              }
-            }
-            leaf enable {
-              type empty;
-              description
-                "Segment Routing Submode";
-            }
-            leaf address {
-              type inet:ip-address-no-zone;
-              description
-                "IPv6 address";
-            }
-          }
-        }
         container link-local-address {
           presence "Indicates a link-local-address node is configured.";
           description
@@ -331,6 +299,13 @@ module Cisco-IOS-XR-ipv6-ma-cfg {
               description
                 "RouteTag";
             }
+            leaf algorithm {
+              type uint32 {
+                range "128..255";
+              }
+              description
+                "Algorithm";
+            }
           }
         }
         container regular-addresses {
@@ -363,6 +338,13 @@ module Cisco-IOS-XR-ipv6-ma-cfg {
               }
               description
                 "RouteTag";
+            }
+            leaf algorithm {
+              type uint32 {
+                range "128..255";
+              }
+              description
+                "Algorithm";
             }
           }
         }

@@ -32,9 +32,17 @@ module Cisco-IOS-XR-infra-policymgr-oper {
      for the following management objects:
        policy-manager: Policy-map operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-13 {
+    description
+      "Added changes for low latency config.";
+  }
+  revision 2021-07-28 {
+    description
+      "Added support for WRED probability percent.";
+  }
   revision 2020-09-24 {
     description
       "IOS XR 7.3.1 revision.";
@@ -563,6 +571,10 @@ module Cisco-IOS-XR-infra-policymgr-oper {
       enum "policy-action-decap-gue-v1" {
         description
           "Policy Action decapsule GUE v1";
+      }
+      enum "policy-action-low-latency-profile" {
+        description
+          "Policy Action low latency profile";
       }
       enum "policy-action-ptrs" {
         description
@@ -2261,6 +2273,10 @@ module Cisco-IOS-XR-infra-policymgr-oper {
       enum "policy-param-unit-ratio" {
         description
           "policy param unit ratio";
+      }
+      enum "policy-param-unit-inverse-ratio" {
+        description
+          "policy param unit inverse-ratio";
       }
       enum "policy-param-unit-max" {
         description
@@ -7032,10 +7048,10 @@ module Cisco-IOS-XR-infra-policymgr-oper {
       description
         "wred flags";
     }
-    leaf probability {
-      type uint32;
+    container probability {
       description
         "probability";
+      uses POLICY-PARAM-UINT32-ST;
     }
   }
 

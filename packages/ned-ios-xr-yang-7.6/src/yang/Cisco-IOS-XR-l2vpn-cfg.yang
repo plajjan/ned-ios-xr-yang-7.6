@@ -51,16 +51,28 @@ module Cisco-IOS-XR-l2vpn-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-11 {
+    description
+      "Added support to retrieve evpn-route-targets.";
+    semver:module-version "5.1.0";
+  }
+  revision 2021-06-25 {
+    description
+      "Added support for core isolation group under virtual access evi";
+    semver:module-version "5.0.0";
+  }
   revision 2021-06-09 {
     description
-      "- Added support for enforce-mtu-match CLI globally under evpn submode - Added support for transmit-l2-mtu CLI globally under evpn submode - Added support for enforce-mtu-match CLI under evpn instance submode - Added support for transmit-l2-mtu CLI under evpn instance submode";
-    semver:module-version "5.0.0";
+      "- Added support for enforce-mtu-match CLI globally under evpn submode - Added support for transmit-l2-mtu CLI globally under evpn submode - Added support for enforce-mtu-match CLI under evpn instance submode - Added support for transmit-l2-mtu CLI under evpn instance submode
+       2020-08-08
+           Added support for ignore-mtu-mismatch and transmit-mtu-zero CLI globally under evpn submode.";
+    semver:module-version "4.0.0";
   }
   revision 2020-06-29 {
     description
       "Changed key for Pseudowire type to IPv4 neighbor - PW-ID or IPv6 neighbor - PW-id pair.
        2019-12-20
-       EVPN SRv6 related changes";
+         EVPN SRv6 related changes";
     semver:module-version "3.0.0";
   }
   revision 2019-04-05 {
@@ -1526,6 +1538,17 @@ module Cisco-IOS-XR-l2vpn-cfg {
     }
   }
 
+  grouping EVPN-CORE-ISOLATION-GROUP {
+    description
+      "Common node of evpn-interface,
+       evpn-virtual-access-evi";
+    leaf evpn-core-isolation-group {
+      type Evpn-core-group-id-range;
+      description
+        "Enter EVPN Core Isolation Group ID";
+    }
+  }
+
   grouping MANUAL-SERVICE-CARVING {
     description
       "Common node of ethernet-segment,
@@ -1635,8 +1658,9 @@ module Cisco-IOS-XR-l2vpn-cfg {
 
   grouping EVPN-VIRTUAL-ETHERNET-SEGMENT {
     description
-      "Common node of evpn-virtual-access-pw,
-       evpn-virtual-access-vfi";
+      "Common node of evpn-virtual-access-sub-interface,
+       evpn-virtual-access-pw, evpn-virtual-access-vfi,
+       evpn-virtual-access-evi";
     container evpn-virtual-ethernet-segment {
       description
         "Enter Ethernet Segment configuration submode";
@@ -2315,6 +2339,21 @@ module Cisco-IOS-XR-l2vpn-cfg {
             }
           }
         }
+        container access-evis {
+          description
+            "Specify the access EVI ID";
+          list access-evi {
+            key "vpn-id";
+            description
+              "Name of the Access Virtual Forwarding
+               Interface";
+            leaf vpn-id {
+              type Evpnvpnid-range;
+              description
+                "MPLS Ethernet VPN-ID";
+            }
+          }
+        }
         container bd-pseudowires {
           description
             "List of pseudowires";
@@ -2608,6 +2647,20 @@ module Cisco-IOS-XR-l2vpn-cfg {
               description
                 "Pseudowire ID";
             }
+          }
+        }
+        container evpn-bd-e-tree {
+          description
+            "Enter EVPN E-Tree configuration submode";
+          leaf evpn-bd-e-tree-leaf {
+            type empty;
+            description
+              "Configure BD E-Tree as leaf";
+          }
+          leaf enable {
+            type empty;
+            description
+              "Enable EVPN E-Tree";
           }
         }
         container vfis {
@@ -3007,6 +3060,20 @@ module Cisco-IOS-XR-l2vpn-cfg {
             }
           }
         }
+        container bridge-domain-evi-srv6s {
+          description
+            "Bridge Domain SRv6 EVI Table";
+          list bridge-domain-evi-srv6 {
+            key "vpn-id";
+            description
+              "Bridge Domain SRv6 EVPN";
+            leaf vpn-id {
+              type Evpnvpnid-range;
+              description
+                "SRv6 Ethernet VPN-ID";
+            }
+          }
+        }
         container bridge-domainvnis {
           description
             "Bridge Domain EVPN VxLAN Network Identifier
@@ -3149,6 +3216,20 @@ module Cisco-IOS-XR-l2vpn-cfg {
                   description
                     "Static MAC address";
                 }
+              }
+            }
+            container evpn-ac-e-tree {
+              description
+                "Enter EVPN E-Tree configuration submode";
+              leaf evpn-ac-e-tree-leaf {
+                type empty;
+                description
+                  "Configure E-Tree as leaf";
+              }
+              leaf enable {
+                type empty;
+                description
+                  "Enable EVPN E-Tree";
               }
             }
             container interface-mac {
@@ -5467,6 +5548,11 @@ module Cisco-IOS-XR-l2vpn-cfg {
       description
         "Configure MAC limit threshold percent";
     }
+    leaf mtu-mismatch-ignore-auto-discovery {
+      type empty;
+      description
+        "Ignore MTU mismatch for auto-discovered PWs";
+    }
     leaf pw-status-disable {
       type empty;
       description
@@ -5550,6 +5636,14 @@ module Cisco-IOS-XR-l2vpn-cfg {
           description
             "Global Carving timer";
         }
+        leaf evpn-core-de-isolation {
+          type uint32 {
+            range "60..300";
+          }
+          default "60";
+          description
+            "Global Core de-isolation timer";
+        }
         leaf evpn-mac-postpone {
           type uint32 {
             range "0..300";
@@ -5596,6 +5690,21 @@ module Cisco-IOS-XR-l2vpn-cfg {
           default "3";
           description
             "Global Peering timer";
+        }
+      }
+      container evpn-virtual-access-sub-interfaces {
+        description
+          "Access Sub-interface Virtual Ethernet-Segment";
+        list evpn-virtual-access-sub-interface {
+          key "interface-name";
+          description
+            "Access Sub-interface Virtual Ethernet-Segment";
+          leaf interface-name {
+            type xr:Interface-name;
+            description
+              "Name of the sub-interface";
+          }
+          uses EVPN-VIRTUAL-ETHERNET-SEGMENT;
         }
       }
       container evpn-virtual-access-vfis {
@@ -5674,6 +5783,17 @@ module Cisco-IOS-XR-l2vpn-cfg {
           description
             "Enable EVPN Loadbalancing";
         }
+      }
+      container evpn-virtual-access-evi {
+        description
+          "Virtual Access EVI interfaces";
+        leaf enable {
+          type empty;
+          description
+            "Enable Virtual Access EVI Interface";
+        }
+        uses EVPN-CORE-ISOLATION-GROUP;
+        uses EVPN-VIRTUAL-ETHERNET-SEGMENT;
       }
       container evpn-bgp-auto-discovery {
         description
@@ -5898,6 +6018,21 @@ module Cisco-IOS-XR-l2vpn-cfg {
                 "Enable Multicast";
             }
           }
+          container evpn-instance-proxy {
+            description
+              "Enter Proxy configuration submode";
+            leaf enable {
+              type empty;
+              description
+                "Enable Proxy";
+            }
+            leaf evi-proxy-igmp-snooping {
+              type empty;
+              description
+                "Enable IGMP-snooping proxy mode (selective
+                 replication)";
+            }
+          }
           container evpn-instance-load-balancing {
             description
               "Enter Loadbalancing configuration submode";
@@ -6049,6 +6184,21 @@ module Cisco-IOS-XR-l2vpn-cfg {
           key "interface-name";
           description
             "Attachment circuit interface";
+          container evpn-interface-virtual-ethernet-segment {
+            description
+              "Enter Virtual Ethernet Segment configuration
+               submode";
+            leaf evpn-interface-virtual-ethernet-segment-mac {
+              type yang:mac-address;
+              description
+                "6 byte value in MAC format";
+            }
+            leaf enable {
+              type empty;
+              description
+                "Enable Virtual Ethernet Segment";
+            }
+          }
           container evpnac-timers {
             description
               "Enter Interface-specific timers configuration
@@ -6147,11 +6297,6 @@ module Cisco-IOS-XR-l2vpn-cfg {
             uses PREFERENCE-BASED-SERVICE-CARVING;
             uses MANUAL-SERVICE-CARVING;
           }
-          leaf evpn-core-isolation-group {
-            type Evpn-core-group-id-range;
-            description
-              "Enter EVPN Core Isolation Group ID";
-          }
           leaf evpn-access-signal-mode {
             type Interface-access-signal-mode;
             description
@@ -6168,6 +6313,7 @@ module Cisco-IOS-XR-l2vpn-cfg {
             description
               "Name of the attachment circuit interface";
           }
+          uses EVPN-CORE-ISOLATION-GROUP;
         }
       }
       container evpn-virtual-access-pws {

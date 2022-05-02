@@ -23,9 +23,21 @@ submodule Cisco-IOS-XR-flow-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR flow package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-16 {
+    description
+      "Added a new field for cache flow record size in cache information";
+    semver:module-version "1.2.0";
+  }
+  revision 2021-06-16 {
+    description
+      "Added tunnel egress related options for sflow
+       2021-04-23
+          Added new node for data-template info";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -34,6 +46,58 @@ submodule Cisco-IOS-XR-flow-oper-sub1 {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
+  }
+
+  grouping NFSVR-TEMPLATE-IE-ITEM-ST {
+    description
+      "NFSVR TEMPLATE IE ITEM ST";
+    leaf ie-name {
+      type string;
+      description
+        "Name of the Information Element";
+    }
+    leaf ie-id {
+      type uint16;
+      description
+        "Integer identifier of the Information Element";
+    }
+    leaf ie-length {
+      type uint16;
+      units "byte";
+      description
+        "Length of the Information Element item in bytes";
+    }
+  }
+
+  grouping NFSVR-SHOW-FLOW-DATA-TEMPLATE {
+    description
+      "Data Template Info";
+    leaf fm-name {
+      type string;
+      description
+        "Name of the flow monitor";
+    }
+    leaf frec-name {
+      type string;
+      description
+        "Name of flow record";
+    }
+    leaf template-description {
+      type string;
+      description
+        "Name of template description";
+    }
+    list v9-ie-array {
+      description
+        "Array of template items for v9 export protocol";
+      uses NFSVR-TEMPLATE-IE-ITEM-ST;
+    }
+    list ipfix-ie-array {
+      description
+        "Array of template items for ipfix export
+         protocol";
+      uses NFSVR-TEMPLATE-IE-ITEM-ST;
+    }
   }
 
   grouping NFSVR-HASH-BUCKET-STATS-RESP {
@@ -123,6 +187,13 @@ submodule Cisco-IOS-XR-flow-oper-sub1 {
       type uint64;
       description
         "Summary data";
+    }
+    leaf record-size {
+      type uint32;
+      units "byte";
+      description
+        "Memory size of a single cache flow record in
+         bytes";
     }
     list bucket-stat {
       description
@@ -360,6 +431,16 @@ submodule Cisco-IOS-XR-flow-oper-sub1 {
       type uint32;
       description
         "sFlow if_stats counter sampling interval";
+    }
+    leaf sflow-ext-ipv4-tun-egress {
+      type uint8;
+      description
+        "sFlow extended ipv4 tunnel egress enabled";
+    }
+    leaf sflow-ext-ipv6-tun-egress {
+      type uint8;
+      description
+        "sFlow extended ipv6 tunnel egress enabled";
     }
     list fe-name {
       max-elements "8";

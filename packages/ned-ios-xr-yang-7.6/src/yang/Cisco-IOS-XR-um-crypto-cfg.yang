@@ -37,6 +37,11 @@ module Cisco-IOS-XR-um-crypto-cfg {
      Copyright (c) 2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-17 {
+    description
+      "Fixed missing leaf subject-name and combined subject-name ca-cartificate for ca-certificate";
+    semver:module-version "2.0.0";
+  }
   revision 2021-04-02 {
     description
       "Initial release";
@@ -367,19 +372,25 @@ module Cisco-IOS-XR-um-crypto-cfg {
                 "do not include ip address";
             }
           }
-          container subject-name {
+          leaf subject-name {
+            type string {
+              length "1..800" {
+                description
+                  "Subject Name";
+              }
+            }
             description
               "Subject Name";
-            leaf ca-certificate {
-              type string {
-                length "1..800" {
-                  description
-                    "Subject Name";
-                }
+          }
+          leaf subject-name-ca-certificate {
+            type string {
+              length "1..800" {
+                description
+                  "Subject Name";
               }
-              description
-                "Ca Certificate subject name for self enrollment";
             }
+            description
+              "Ca Certificate subject name for self enrollment";
           }
           container serial-number {
             description
@@ -658,19 +669,15 @@ module Cisco-IOS-XR-um-crypto-cfg {
                   "do not include ip address";
               }
             }
-            container subject-name {
+            leaf subject-name {
+              type string {
+                length "1..800" {
+                  description
+                    "Subject Name";
+                }
+              }
               description
                 "Subject Name";
-              leaf ca-certificate {
-                type string {
-                  length "1..800" {
-                    description
-                      "Subject Name";
-                  }
-                }
-                description
-                  "Ca Certificate subject name for self enrollment";
-              }
             }
             container serial-number {
               description
@@ -789,6 +796,103 @@ module Cisco-IOS-XR-um-crypto-cfg {
       presence "Indicates a fips-mode node is configured.";
       description
         "Enable FIPS mode";
+    }
+    container key {
+      description
+        "Keys to be generated";
+      container generate {
+        description
+          "Generate new keys";
+        container rsa {
+          description
+            "Generate RSA key";
+          list label {
+            must "general-keys or usage-keys";
+            key "label-name";
+            description
+              "Label name";
+            leaf label-name {
+              type union {
+                type string {
+                  pattern "the_default" {
+                    description
+                      "Default label name";
+                  }
+                }
+                type xr:Cisco-ios-xr-string {
+                  length "1..800" {
+                    description
+                      "Label name";
+                  }
+                }
+              }
+              description
+                "Label name";
+            }
+            leaf key-module-size {
+              type uint32 {
+                range "512..4096" {
+                  description
+                    "Size of key modulus";
+                }
+              }
+              mandatory true;
+              description
+                "Size of key modulus";
+            }
+            container general-keys {
+              must "not(../usage-keys)";
+              presence "Indicates a general-keys node is configured.";
+              description
+                "Generate a general purpose RSA key pair for signing and encryption";
+            }
+            container usage-keys {
+              must "not(../general-keys)";
+              presence "Indicates a usage-keys node is configured.";
+              description
+                "Generate usage-keys";
+            }
+          }
+        }
+        container ed25519 {
+          presence "Indicates a ed25519 node is configured.";
+          description
+            "Generate ED25519 keys";
+        }
+        container dsa {
+          description
+            "Generate dsa keys";
+          leaf number-of-bits {
+            type uint32 {
+              range "512..2048" {
+                description
+                  "Number of bits";
+              }
+            }
+            description
+              "Number of bits";
+          }
+        }
+        container ecdsa {
+          description
+            "Generate ecdsa keys";
+          container nistp256 {
+            presence "Indicates a nistp256 node is configured.";
+            description
+              " Generate a ECDSA key of curve type nistp256";
+          }
+          container nistp384 {
+            presence "Indicates a nistp384 node is configured.";
+            description
+              "Generate a ECDSA key of curve type nist384";
+          }
+          container nistp521 {
+            presence "Indicates a nistp521 node is configured.";
+            description
+              "Generate a ECDSA key of curve type nist521";
+          }
+        }
+      }
     }
   }
 }

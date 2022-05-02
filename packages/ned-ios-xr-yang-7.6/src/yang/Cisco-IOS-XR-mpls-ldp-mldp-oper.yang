@@ -12,7 +12,7 @@ module Cisco-IOS-XR-mpls-ldp-mldp-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-mpls-ldp-mldp-oper-sub1 {
-    revision-date 2020-10-18;
+    revision-date 2022-01-27;
   }
 
   organization
@@ -35,9 +35,19 @@ module Cisco-IOS-XR-mpls-ldp-mldp-oper {
      for the following management objects:
        mpls-mldp: MPLS MLDP operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-27 {
+    description
+      "Modified arg type for mldp database root address in schema and bgen files. from ipaddress to string";
+    semver:module-version "1.2.0";
+  }
+  revision 2021-04-27 {
+    description
+      "Added mLDP flex-algo";
+    semver:module-version "1.2.0";
+  }
   revision 2020-10-18 {
     description
       "Backward compatible removal in telemetry event Cisco-IOS-XR-types, event-telemetry was removed.";
@@ -262,6 +272,26 @@ module Cisco-IOS-XR-mpls-ldp-mldp-oper {
     }
   }
 
+  grouping FIB-REGDB-TABLE {
+    description
+      "Common node of active, standby";
+    container labels {
+      description
+        "MLDP Regdb Table";
+      list label {
+        key "label";
+        description
+          "MLDP Label Information";
+        leaf label {
+          type uint32;
+          description
+            "LABEL ID";
+        }
+        uses MLDP-FIB-REGDB-BAG;
+      }
+    }
+  }
+
   grouping STATUS {
     description
       "Common node of active, standby";
@@ -385,6 +415,7 @@ module Cisco-IOS-XR-mpls-ldp-mldp-oper {
       uses LSP-BINDINGS-TABLE;
       uses LSM-ID-TABLE;
       uses VRF-TABLE;
+      uses FIB-REGDB-TABLE;
       uses DEFAULT-CONTEXT;
     }
     container standby {
@@ -395,6 +426,7 @@ module Cisco-IOS-XR-mpls-ldp-mldp-oper {
       uses LSP-BINDINGS-TABLE;
       uses LSM-ID-TABLE;
       uses VRF-TABLE;
+      uses FIB-REGDB-TABLE;
       uses DEFAULT-CONTEXT;
     }
   }

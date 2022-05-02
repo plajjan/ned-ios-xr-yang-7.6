@@ -39,9 +39,14 @@ module Cisco-IOS-XR-ip-ntp-cfg {
        Cisco-IOS-XR-snmp-agent-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-23 {
+    description
+      "Changed description for CMAC key.";
+    semver:module-version "2.1.0";
+  }
   revision 2019-10-31 {
     description
       "Added mandatory nodes and presence containers.";
@@ -512,9 +517,57 @@ module Cisco-IOS-XR-ip-ntp-cfg {
     container authentication {
       description
         "Configure NTP Authentication keys";
+      container auth-hmacsha1 {
+        description
+          "Configure NTP Authentication keys HMAC-SHA1";
+        container key-hmacsha1s {
+          description
+            "Authentication Key Table for HMAC-SHA1";
+          list key-hmacsha1 {
+            key "key-number";
+            description
+              "Authentication key for trusted time sources";
+            leaf key-number {
+              type Ntp-key-number;
+              description
+                "Authentication Key number";
+            }
+            leaf authentication-key {
+              type xr:Proprietary-password;
+              mandatory true;
+              description
+                "Authentication key - maximum 32 characters";
+            }
+          }
+        }
+      }
+      container auth-hmacsha2 {
+        description
+          "Configure NTP Authentication keys HMAC-SHA2";
+        container key-hmacsha2s {
+          description
+            "Authentication Key Table for HMAC-SHA2";
+          list key-hmacsha2 {
+            key "key-number";
+            description
+              "Authentication key for trusted time sources";
+            leaf key-number {
+              type Ntp-key-number;
+              description
+                "Authentication Key number";
+            }
+            leaf authentication-key {
+              type xr:Proprietary-password;
+              mandatory true;
+              description
+                "Authentication key - maximum 32 characters";
+            }
+          }
+        }
+      }
       container keys {
         description
-          "Authentication Key Table";
+          "Authentication Key Table for MD5";
         list key {
           key "key-number";
           description
@@ -525,10 +578,34 @@ module Cisco-IOS-XR-ip-ntp-cfg {
               "Authentication Key number";
           }
           leaf authentication-key {
-            type string;
+            type xr:Proprietary-password;
             mandatory true;
             description
               "Authentication key - maximum 32 characters";
+          }
+        }
+      }
+      container auth-cmac {
+        description
+          "Configure NTP Authentication keys CMAC";
+        container key-cmacs {
+          description
+            "Authentication Key Table for CMAC";
+          list key-cmac {
+            key "key-number";
+            description
+              "Authentication key for trusted time sources";
+            leaf key-number {
+              type Ntp-key-number;
+              description
+                "Authentication Key number";
+            }
+            leaf authentication-key {
+              type xr:Proprietary-password;
+              mandatory true;
+              description
+                "Authentication key - 16 characters";
+            }
           }
         }
       }

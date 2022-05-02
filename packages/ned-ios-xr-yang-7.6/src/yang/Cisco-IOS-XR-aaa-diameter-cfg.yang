@@ -51,7 +51,7 @@ module Cisco-IOS-XR-aaa-diameter-cfg {
     description
       "Added nas leaf in yang
        2019-09-20
-       Changed the datatype for AddressIpv6 to IPAddress";
+         Changed the datatype for AddressIpv6 to IPAddress";
     semver:module-version "2.0.0";
   }
   revision 2019-07-10 {

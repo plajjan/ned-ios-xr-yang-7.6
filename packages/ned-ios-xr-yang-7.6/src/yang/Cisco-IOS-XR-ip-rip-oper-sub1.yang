@@ -29,9 +29,18 @@ submodule Cisco-IOS-XR-ip-rip-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR ip-rip package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-10 {
+    description
+      "Corrected pathname for vrf global data
+       2021-09-15
+         Changed datatype of IPv6Prefix in IPv6Route
+       2021-09-07
+         Added support for RIPv6 in oper schema";
+    semver:module-version "2.0.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -104,6 +113,467 @@ submodule Cisco-IOS-XR-ip-rip-oper-sub1 {
     }
     description
       "Rip route origin";
+  }
+
+  grouping V6-RIP-SHOW-PROTO-PROC-BD {
+    description
+      "RIP protocol process data";
+    leaf vrf-config-count {
+      type uint32;
+      description
+        "Number of VRFs configured";
+    }
+    leaf vrf-active-count {
+      type uint32;
+      description
+        "Number of active VRFs";
+    }
+    leaf socket-descriptor {
+      type int32;
+      description
+        "Socket descriptior";
+    }
+    leaf current-oom-state {
+      type int32;
+      description
+        "Current OOM state";
+    }
+    leaf route-count {
+      type uint32;
+      description
+        "Number of routes allocated";
+    }
+    leaf path-count {
+      type uint32;
+      description
+        "Number of paths allocated";
+    }
+    list vrf-summary {
+      description
+        "List of VRFs configured";
+      uses RIP-SHOW-VRF-SUMM-BD;
+    }
+  }
+
+  grouping V6-RIP-SHOW-IF-SUMM-BD {
+    description
+      "IPv6 RIP Interface summary data";
+    leaf interface-name {
+      type string;
+      description
+        "Interface name";
+    }
+    leaf enabled {
+      type boolean;
+      description
+        "RIP enabled indicator";
+    }
+    leaf state {
+      type Interface-state;
+      description
+        "Interface state";
+    }
+    leaf ipv6-address {
+      type inet:ipv6-address;
+      description
+        "IPv6 address";
+    }
+    leaf prefix-length {
+      type uint32;
+      description
+        "Prefix length of IP address";
+    }
+    leaf oom-flags {
+      type uint32;
+      description
+        "Current OOM flags";
+    }
+    leaf neighbor-count {
+      type uint32;
+      description
+        "Number of neighbors seen";
+    }
+  }
+
+  grouping V6-RIP-SHOW-PROTO-VRF-BD {
+    description
+      "RIP IPv6 protocol VRF data";
+    container vrf-summary {
+      description
+        "VRF summary data";
+      uses RIP-SHOW-VRF-SUMM-BD;
+    }
+    list ipv6-interface-summary {
+      description
+        "List of IPv6 Interfaces configured";
+      uses V6-RIP-SHOW-IF-SUMM-BD;
+    }
+  }
+
+  grouping V6-RIP-PEER-BD {
+    description
+      "A ipv6 RIP peer";
+    leaf peer-uptime {
+      type uint32;
+      description
+        "Uptime of this peer";
+    }
+    leaf ipv6-peer-address {
+      type inet:ipv6-address;
+      description
+        "IPv6 Address of this peer";
+    }
+    leaf peer-version {
+      type uint8;
+      description
+        "RIP version for this peer";
+    }
+    leaf discarded-peer-packets {
+      type uint32;
+      description
+        "Discarded packets from this peer";
+    }
+    leaf discarded-peer-routes {
+      type uint32;
+      description
+        "Discarded routes from this peer";
+    }
+  }
+
+  grouping V6-RIP-SHOW-INTERFACE-BD {
+    description
+      "An IPv6 Rip enabled interface";
+    leaf interface {
+      type string;
+      description
+        "Interface name";
+    }
+    leaf if-handle {
+      type xr:Interface-name;
+      description
+        "Interface handle";
+    }
+    leaf rip-enabled {
+      type boolean;
+      description
+        "Whether RIP is enabled on this interface";
+    }
+    leaf is-passive-interface {
+      type boolean;
+      description
+        "Passive interface indicator";
+    }
+    leaf accept-metric-zero {
+      type boolean;
+      description
+        "Accept routes of metric 0 indicator";
+    }
+    leaf state {
+      type Interface-state;
+      description
+        "Current state of the interface";
+    }
+    leaf ipv6-address {
+      type inet:ipv6-address;
+      description
+        "IPv6 Address of this interface";
+    }
+    leaf prefix-length {
+      type uint32;
+      description
+        "Prefix length of the IP address";
+    }
+    leaf metric-cost {
+      type uint32;
+      description
+        "Cost added to routes through this interface";
+    }
+    leaf split-horizon {
+      type boolean;
+      description
+        "Split horizon enabled indicator";
+    }
+    leaf poison-reverse {
+      type boolean;
+      description
+        "Poisoned reverse enabled indicator";
+    }
+    leaf triggered-rip {
+      type boolean;
+      description
+        "Triggered RIP enabled indicator";
+    }
+    leaf ipv6-neighbor-address {
+      type inet:ipv6-address;
+      description
+        "Interface's triggered RIP neighbor";
+    }
+    leaf oom-flags {
+      type uint32;
+      description
+        "Out-of-memory status flags";
+    }
+    leaf join-status {
+      type boolean;
+      description
+        "Multicast group join status";
+    }
+    leaf lpts-state {
+      type boolean;
+      description
+        "Lpts status";
+    }
+    leaf total-pkt-recvd {
+      type uint32;
+      description
+        "Total packets received";
+    }
+    list rip-peer {
+      description
+        "Neighbors on this interface";
+      uses V6-RIP-PEER-BD;
+    }
+  }
+
+  grouping V6-RIP-SHOW-GLOBAL-CONFIG-BD {
+    description
+      "RIPv6's configuration settings";
+    leaf active {
+      type boolean;
+      description
+        "VRF active indicator";
+    }
+    leaf vr-fised-socket {
+      type boolean;
+      description
+        "VRF added to socket indicator";
+    }
+    leaf default-metric {
+      type uint8;
+      description
+        "Default metric for RIP routes";
+    }
+    leaf maximum-paths {
+      type uint8;
+      description
+        "Maximum number of paths a route can have";
+    }
+    leaf update-timer {
+      type uint32;
+      description
+        "Update timer";
+    }
+    leaf next-update-time {
+      type uint32;
+      description
+        "Time left for next update";
+    }
+    leaf invalid-timer {
+      type uint32;
+      description
+        "Invalid timer";
+    }
+    leaf hold-down-timer {
+      type uint32;
+      description
+        "Holddown timer";
+    }
+    leaf flush-timer {
+      type uint32;
+      description
+        "Flush timer";
+    }
+    leaf oom-flags {
+      type uint32;
+      description
+        "Out-of-memory status flags";
+    }
+    leaf nsf-status {
+      type boolean;
+      description
+        "NSF Enable status";
+    }
+    leaf nsf-life-time {
+      type uint32;
+      description
+        "NSF life time";
+    }
+  }
+
+  grouping V6-RIP-SHOW-STATISTICS-BD {
+    description
+      "RIP v6 statistics";
+    leaf received-packets {
+      type uint32;
+      description
+        "Total packets received";
+    }
+    leaf discarded-packets {
+      type uint32;
+      description
+        "Total discarded packets";
+    }
+    leaf discarded-routes {
+      type uint32;
+      description
+        "Total discarded routes";
+    }
+    leaf standby-packets-received {
+      type uint32;
+      description
+        "Packets rx in SRP";
+    }
+    leaf sent-messages {
+      type uint32;
+      description
+        "Number of messages sent";
+    }
+    leaf sent-message-failures {
+      type uint32;
+      description
+        "Number of message send failures";
+    }
+    leaf query-responses {
+      type uint32;
+      description
+        "Number of RIP queries responded to";
+    }
+    leaf periodic-updates {
+      type uint32;
+      description
+        "Number of periodic RIP updates";
+    }
+    leaf route-count {
+      type uint32;
+      description
+        "Number of routes allocated";
+    }
+    leaf path-count {
+      type uint32;
+      description
+        "Number of paths allocated";
+    }
+    leaf route-malloc-failures {
+      type uint32;
+      description
+        "Number of failures to allocate memory for a
+         route";
+    }
+    leaf path-malloc-failures {
+      type uint32;
+      description
+        "Number of failures to allocate memory for a path";
+    }
+    leaf rib-updates {
+      type uint32;
+      description
+        "Number of route updates to RIB made by RIP";
+    }
+  }
+
+  grouping V6-RIP-PATH-BD {
+    description
+      "A ipv6 RIP route path";
+    leaf ipv6-source-address {
+      type inet:ipv6-address;
+      description
+        "IPv6 Source address";
+    }
+    leaf ipv6-next-hop-address {
+      type inet:ipv6-address;
+      description
+        "IPv6 Next hop address";
+    }
+    leaf metric {
+      type uint16;
+      description
+        "Metric";
+    }
+    leaf tag {
+      type uint16;
+      description
+        "Tag";
+    }
+    leaf interface {
+      type xr:Interface-name;
+      description
+        "Interface";
+    }
+    leaf up-time {
+      type uint32;
+      description
+        "Up time";
+    }
+    leaf is-permanent {
+      type boolean;
+      description
+        "Permanent indicator";
+    }
+  }
+
+  grouping V6-RIP-SHOW-ROUTE-BD {
+    description
+      "A ipv6 route in RIP's local routing table";
+    leaf ipv6-destination-address {
+      type inet:ipv6-address;
+      description
+        "IPv6 Destination IP Address for this route";
+    }
+    leaf prefix-length {
+      type uint32;
+      description
+        "Prefix length of IPv6 address";
+    }
+    leaf distance {
+      type uint16;
+      description
+        "Route administrative distance";
+    }
+    leaf hop-count {
+      type uint16;
+      description
+        "Hop count for this route";
+    }
+    leaf route-type {
+      type uint16;
+      description
+        "Type of this route";
+    }
+    leaf route-tag {
+      type uint16;
+      description
+        "Generic route information";
+    }
+    leaf version {
+      type uint8;
+      description
+        "RIB supplied version number";
+    }
+    leaf attributes {
+      type uint32;
+      description
+        "RIB supplied route attributes";
+    }
+    leaf active {
+      type boolean;
+      description
+        "Active route indicator";
+    }
+    leaf path-origin {
+      type Rip-route-origin;
+      description
+        "Where this route was learnt";
+    }
+    leaf hold-down {
+      type boolean;
+      description
+        "Indicates whether route is in holddown";
+    }
+    list paths {
+      description
+        "The paths for this route";
+      uses V6-RIP-PATH-BD;
+    }
   }
 
   grouping RIP-SHOW-PROTO-PROC-BD {
@@ -359,7 +829,7 @@ submodule Cisco-IOS-XR-ip-rip-oper-sub1 {
       description
         "Use broadcast address for v2 packets";
     }
-    leaf accept-metric {
+    leaf accept-metric-zero {
       type boolean;
       description
         "Accept routes of metric 0 indicator";
@@ -399,7 +869,7 @@ submodule Cisco-IOS-XR-ip-rip-oper-sub1 {
       description
         "Split horizon enabled indicator";
     }
-    leaf poison-horizon {
+    leaf poison-reverse {
       type boolean;
       description
         "Poisoned reverse enabled indicator";
@@ -722,7 +1192,7 @@ submodule Cisco-IOS-XR-ip-rip-oper-sub1 {
       description
         "Route administrative distance";
     }
-    leaf bgp-count {
+    leaf hop-count {
       type uint16;
       description
         "Hop count for this route";

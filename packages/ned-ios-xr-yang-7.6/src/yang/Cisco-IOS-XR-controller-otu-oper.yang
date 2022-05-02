@@ -9,7 +9,7 @@ module Cisco-IOS-XR-controller-otu-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-controller-otu-oper-sub1 {
-    revision-date 2020-05-12;
+    revision-date 2021-09-01;
   }
 
   organization
@@ -32,9 +32,14 @@ module Cisco-IOS-XR-controller-otu-oper {
      for the following management objects:
        otu: OTU operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-01 {
+    description
+      "Added support for PRBS direction and error-inject";
+    semver:module-version "3.2.0";
+  }
   revision 2020-05-12 {
     description
       "Added flexo oper";
@@ -44,7 +49,7 @@ module Cisco-IOS-XR-controller-otu-oper {
     description
       "Added new values in OTU_G709FECMode
        2019-09-18
-       Added new parameters, q-margin, q-factor, bandwidth to reflect under show controller coherentdsp.";
+         Added new parameters, q-margin, q-factor, bandwidth to reflect under show controller coherentdsp.";
     semver:module-version "3.0.0";
   }
   revision 2019-04-05 {

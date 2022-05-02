@@ -34,6 +34,11 @@ module Cisco-IOS-XR-um-pce-cfg {
      Copyright (c) 2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-12 {
+    description
+      "Added must statement under the list index";
+    semver:module-version "2.0.0";
+  }
   revision 2021-05-10 {
     description
       "Initial release";
@@ -496,6 +501,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           description
                             "Address type";
                         }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
+                        }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
                             length "1..800" {
@@ -547,6 +558,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           mandatory true;
                           description
                             "Address type";
+                        }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
                         }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
@@ -611,6 +628,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       description
                         "Address type";
                     }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
+                    }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
                         length "1..800" {
@@ -662,6 +685,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       mandatory true;
                       description
                         "Address type";
+                    }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
                     }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
@@ -750,6 +779,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           description
                             "Address type";
                         }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
+                        }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
                             length "1..800" {
@@ -801,6 +836,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           mandatory true;
                           description
                             "Address type";
+                        }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
                         }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
@@ -865,6 +906,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       description
                         "Address type";
                     }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
+                    }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
                         length "1..800" {
@@ -916,6 +963,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       mandatory true;
                       description
                         "Address type";
+                    }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
                     }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
@@ -1004,6 +1057,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           description
                             "Address type";
                         }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
+                        }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
                             length "1..800" {
@@ -1055,6 +1114,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           mandatory true;
                           description
                             "Address type";
+                        }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
                         }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
@@ -1119,6 +1184,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       description
                         "Address type";
                     }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
+                    }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
                         length "1..800" {
@@ -1170,6 +1241,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       mandatory true;
                       description
                         "Address type";
+                    }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
                     }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
@@ -1258,6 +1335,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           description
                             "Address type";
                         }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
+                        }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
                             length "1..800" {
@@ -1309,6 +1392,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                           mandatory true;
                           description
                             "Address type";
+                        }
+                        leaf ip-address {
+                          type inet:ip-address-no-zone;
+                          mandatory true;
+                          description
+                            "IP address of PCC";
                         }
                         leaf lsp-name {
                           type xr:Cisco-ios-xr-string {
@@ -1373,6 +1462,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       description
                         "Address type";
                     }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
+                    }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
                         length "1..800" {
@@ -1424,6 +1519,12 @@ module Cisco-IOS-XR-um-pce-cfg {
                       mandatory true;
                       description
                         "Address type";
+                    }
+                    leaf ip-address {
+                      type inet:ip-address-no-zone;
+                      mandatory true;
+                      description
+                        "IP address of PCC";
                     }
                     leaf lsp-name {
                       type xr:Cisco-ios-xr-string {
@@ -1923,6 +2024,7 @@ module Cisco-IOS-XR-um-pce-cfg {
               description
                 "Next entry index";
               list index {
+                must "mpls/label or mpls/adjacency";
                 key "index-number";
                 description
                   "Next entry index";

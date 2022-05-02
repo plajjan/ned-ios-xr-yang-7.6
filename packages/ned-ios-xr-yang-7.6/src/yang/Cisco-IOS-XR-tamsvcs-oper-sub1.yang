@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-tamsvcs-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR tamsvcs package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-25 {
+    description
+      "3rd Party Key Package support in XR";
+    semver:module-version "1.2.0";
+  }
   revision 2020-11-15 {
     description
       "Show device info and sudi certs support for tam";
@@ -101,6 +106,16 @@ submodule Cisco-IOS-XR-tamsvcs-oper-sub1 {
     }
   }
 
+  grouping TAMSVCS-PUBKEYS-REVOKED {
+    description
+      "TAM Revoked Public Key List ";
+    list revoked {
+      description
+        "Revoked list of Public Key";
+      uses TAMSVCS-PUBKEYS;
+    }
+  }
+
   grouping TAMSVCS-INFO-ALL {
     description
       "Tam All info bag";
@@ -153,6 +168,31 @@ submodule Cisco-IOS-XR-tamsvcs-oper-sub1 {
       type string;
       description
         "Sudi Leaf Certificate";
+    }
+  }
+
+  grouping TAMSVCS-PUBKEYS {
+    description
+      "TAM Public Key ";
+    leaf so-name {
+      type string;
+      description
+        "Name of Public Key";
+    }
+    leaf so-data {
+      type string;
+      description
+        "Content of SO Public Key";
+    }
+  }
+
+  grouping TAMSVCS-PUBKEYS-ALLOWED {
+    description
+      "TAM Allowed Public Key List ";
+    list allowed {
+      description
+        "Allowed list of Public Key";
+      uses TAMSVCS-PUBKEYS;
     }
   }
 }

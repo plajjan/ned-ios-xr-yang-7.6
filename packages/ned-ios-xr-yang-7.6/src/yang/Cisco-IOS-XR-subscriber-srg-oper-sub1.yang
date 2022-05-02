@@ -34,6 +34,11 @@ submodule Cisco-IOS-XR-subscriber-srg-oper-sub1 {
       "stale stats are updated.";
     semver:module-version "1.1.0";
   }
+  revision 2021-07-21 {
+    description
+      "EOMS time is updated in cli.";
+    semver:module-version "1.1.0";
+  }
   revision 2019-10-03 {
     description
       "added new bags and bag elements in srg-show bag.";

@@ -43,10 +43,18 @@ module Cisco-IOS-XR-um-l2-ethernet-cfg {
      Copyright (c) 2020-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-03-30 {
+    description
+      "Updated with statement for 800G interface";
+    semver:module-version "3.0.0";
+  }
   revision 2021-02-19 {
     description
       "Updated when/must statement under carrier-delay, l2transport-encapsulation,
-       encapsulation, l2protocol container.";
+         encapsulation, l2protocol container.
+       2020-08-01
+           Added when/must statement under encapsulation container.
+         Added feature/if-feature for global ethernet config.";
     semver:module-version "2.0.0";
   }
   revision 2020-03-05 {
@@ -62,7 +70,7 @@ module Cisco-IOS-XR-um-l2-ethernet-cfg {
 
   grouping IF-BODY {
     container carrier-delay {
-      when "(../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'Bundle-Ether')] or ../a1:interface-name[starts-with(text(),'PW-Ether')])and ../a1:interface-name[contains(text(),'.')]" {
+      when "(../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'Bundle-Ether')] or ../a1:interface-name[starts-with(text(),'PW-Ether')])and ../a1:interface-name[contains(text(),'.')]" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -79,7 +87,7 @@ module Cisco-IOS-XR-um-l2-ethernet-cfg {
       }
     }
     container encapsulation {
-      when "(../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'Bundle-Ether')] or ../a1:interface-name[starts-with(text(),'PW-Ether')])and ../a1:interface-name[contains(text(),'.')]and not(../a1:sub-interface-type/a1:l2transport)" {
+      when "(../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'Bundle-Ether')] or ../a1:interface-name[starts-with(text(),'PW-Ether')])and ../a1:interface-name[contains(text(),'.')]and not(../a1:sub-interface-type/a1:l2transport)" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -136,7 +144,7 @@ module Cisco-IOS-XR-um-l2-ethernet-cfg {
       }
     }
     container l2transport-encapsulation {
-      when "(../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'Bundle-Ether')] or ../a1:interface-name[starts-with(text(),'PW-Ether')])and ../a1:interface-name[contains(text(),'.')]and ../a1:sub-interface-type/a1:l2transport" {
+      when "(../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'Bundle-Ether')] or ../a1:interface-name[starts-with(text(),'PW-Ether')])and ../a1:interface-name[contains(text(),'.')]and ../a1:sub-interface-type/a1:l2transport" {
         tailf:dependency "../a1:interface-name";
       }
       description

@@ -29,10 +29,15 @@ module Cisco-IOS-XR-appmgr-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-09 {
+    description
+      "Adding expected patterns and max length for strings";
+    semver:module-version "2.0.0";
+  }
   revision 2021-04-04 {
     description
       "Support for secure vault tuple.";
-    semver:module-version "1.0.0";
+    semver:module-version "1.1.0";
   }
   revision 2021-02-15 {
     description
@@ -45,6 +50,42 @@ module Cisco-IOS-XR-appmgr-cfg {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
+  }
+
+  typedef App-restart-policy {
+    type enumeration {
+      enum "never" {
+        value 1;
+        description
+          "Do not automatically restart the app.";
+      }
+      enum "on-failure" {
+        value 2;
+        description
+          "Restart the app if it exits due to an error.";
+      }
+      enum "always" {
+        value 3;
+        description
+          "Always restart the app if it stops. (the
+           default)";
+      }
+      enum "unless-stopped" {
+        value 4;
+        description
+          "Similar to always, except that when the app is
+           stopped (manually or otherwise), it is not
+           restarted.";
+      }
+      enum "unless-errored" {
+        value 5;
+        description
+          "Similar to always, except that when the app is
+           in error state, it is not restarted.";
+      }
+    }
+    description
+      "App restart policy";
   }
 
   typedef App {
@@ -62,6 +103,58 @@ module Cisco-IOS-XR-appmgr-cfg {
   container appmgr {
     description
       "Appmgr configuration data";
+    container process-scripts {
+      description
+        "Table of process scripts";
+      list process-script {
+        key "name";
+        description
+          "Process script configuration";
+        container restart-policy {
+          description
+            "Application restart policy";
+          leaf restart {
+            type App-restart-policy;
+            description
+              "Appliction restart policy";
+          }
+          leaf max-retries {
+            when "../restart = 'on-failure'" {
+              description
+                "../Restart = on-failure";
+            }
+            type uint32 {
+              range "1..10";
+            }
+            description
+              "Maximum retries to attempt";
+          }
+        }
+        leaf arguments {
+          type string {
+            length "1..1024";
+          }
+          description
+            "Process script argument string";
+        }
+        leaf executable {
+          type string {
+            length "1..255";
+            pattern "[a-zA-Z0-9][a-zA-Z0-9_.-]+";
+          }
+          description
+            "Process script executable name";
+        }
+        leaf name {
+          type string {
+            length "1..255";
+            pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+          }
+          description
+            "Application identifier";
+        }
+      }
+    }
     container applications {
       description
         "Table of applications";
@@ -74,7 +167,6 @@ module Cisco-IOS-XR-appmgr-cfg {
             "Application activation";
           leaf type {
             type App;
-            default "docker";
             description
               "Appliction type - type of application to be
                deployed";
@@ -82,8 +174,8 @@ module Cisco-IOS-XR-appmgr-cfg {
           leaf source {
             type string {
               length "1..255";
+              pattern "^[a-zA-Z0-9][a-zA-Z0-9_:.-]+$";
             }
-            default "none";
             description
               "Appliction source - name of source";
           }
@@ -91,7 +183,6 @@ module Cisco-IOS-XR-appmgr-cfg {
             type string {
               length "1..1024";
             }
-            default "none";
             description
               "Command to be run inside the container -
                Docker Only ";
@@ -100,15 +191,14 @@ module Cisco-IOS-XR-appmgr-cfg {
             type string {
               length "1..1024";
             }
-            default "none";
             description
               "Docker run options as a string - Docker Only";
           }
           leaf svault-options {
             type string {
               length "1..255";
+              pattern "^[a-zA-Z_][a-zA-Z_0-9:.-]*";
             }
-            default "none";
             description
               "Secure Vault Profile as a string - Docker
                Only";
@@ -117,6 +207,7 @@ module Cisco-IOS-XR-appmgr-cfg {
         leaf name {
           type string {
             length "1..255";
+            pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
           }
           description
             "Application identifier";

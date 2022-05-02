@@ -30,9 +30,19 @@ module Cisco-IOS-XR-dot1x-cfg {
        dot1x: Global Dot1x Configuration
        eap: Global EAP Configuration
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-26 {
+    description
+      "Added field to enable MAC Authentication Bypass feature";
+    semver:module-version "1.3.0";
+  }
+  revision 2021-08-20 {
+    description
+      "EAP TTLS/EAP Attestation Model consistency across platforms";
+    semver:module-version "1.2.0";
+  }
   revision 2020-10-08 {
     description
       "EAP TTLS/EAP Attestation";
@@ -177,6 +187,11 @@ module Cisco-IOS-XR-dot1x-cfg {
         description
           "Dot1x PAE (Port Access Entity) Role";
       }
+      leaf mab {
+        type empty;
+        description
+          "Enable MAC Authentication Bypass feature";
+      }
       leaf profile-name {
         type xr:Cisco-ios-xr-string {
           length "1..63";
@@ -193,6 +208,37 @@ module Cisco-IOS-XR-dot1x-cfg {
       key "profile-name";
       description
         "Global EAP Profile Configuration";
+      container eapttls {
+        description
+          "EAP TTLS Configuration";
+        container eap-attestation {
+          description
+            "Inner Method";
+          container verifier {
+            description
+              "Configure verifier attributes";
+            leaf rsa-key-label {
+              type string {
+                length "1..63";
+              }
+              description
+                "Configure RSA public key label";
+            }
+          }
+          leaf secure-topology {
+            type empty;
+            description
+              "Enable Secure Topology feature";
+          }
+        }
+        leaf pki-trustpoint {
+          type xr:Cisco-ios-xr-string {
+            length "1..63";
+          }
+          description
+            "Configure PKI Trustpoint";
+        }
+      }
       container eaptls {
         description
           "EAP TLS Configuration";

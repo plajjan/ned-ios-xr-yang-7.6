@@ -15,10 +15,10 @@ module Cisco-IOS-XR-iedge4710-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-iedge4710-oper-sub2 {
-    revision-date 2020-12-24;
+    revision-date 2021-09-27;
   }
   include Cisco-IOS-XR-iedge4710-oper-sub1 {
-    revision-date 2020-12-24;
+    revision-date 2021-09-27;
   }
 
   organization
@@ -43,19 +43,39 @@ module Cisco-IOS-XR-iedge4710-oper {
        iedge-license-manager: Session License Manager Configuration
          data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-27 {
+    description
+      "New CLI added to display session summary counters";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-09-03 {
+    description
+      "Disconnect last sensor path get the chunk of 200 items so enhance this path to per entry to avoid tcp connection flaps between telemetry server and BNG.";
+    semver:module-version "4.0.0";
+  }
   revision 2020-12-24 {
     description
-      "Updated acct stop internal stats.";
+      "Updated acct stop internal stats.
+       2020-11-21
+           Added statsd event to session export.
+       2020-11-02
+           Added yang paths to support ADT
+       2020-10-23
+           Added disc queue statistics.
+       2020-10-09
+           Added acct stop statistics.
+       2020-08-24
+           Added Feature ID to session export.";
     semver:module-version "3.0.0";
   }
   revision 2020-02-20 {
     description
       "Added FADB statistics.
        2020-01-04
-       Added disconnect history support.";
+         Added disconnect history support.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -353,6 +373,21 @@ module Cisco-IOS-XR-iedge4710-oper {
                 uses IEDGE-STATS-CH-DATA;
               }
             }
+            container disconn-last-entries {
+              description
+                "Disconnect Last Detail";
+              list disconn-last-entry {
+                key "arrayindex";
+                description
+                  "Disconnect Last Detail per entry";
+                leaf arrayindex {
+                  type uint32;
+                  description
+                    "disconnect array index";
+                }
+                uses IEDGE-STATS-DISCONNECT-DATA;
+              }
+            }
             container aggregate-summary {
               description
                 "Aggregate summary of statistics";
@@ -382,11 +417,6 @@ module Cisco-IOS-XR-iedge4710-oper {
               description
                 "Disconnect queue statistics";
               uses IEDGE-STATS-DISC-QUEUE-DATA;
-            }
-            container disconn-last {
-              description
-                "Disconnect Last Detail";
-              uses IEDGE-STATS-DISCONNECT-DATA;
             }
             container disconnect-reasons {
               description

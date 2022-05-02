@@ -23,19 +23,39 @@ submodule Cisco-IOS-XR-iedge4710-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR iedge4710 package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-27 {
+    description
+      "New CLI added to display session summary counters";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-09-03 {
+    description
+      "Disconnect last sensor path get the chunk of 200 items so enhance this path to per entry to avoid tcp connection flaps between telemetry server and BNG.";
+    semver:module-version "4.0.0";
+  }
   revision 2020-12-24 {
     description
-      "Updated acct stop internal stats.";
+      "Updated acct stop internal stats.
+       2020-11-21
+           Added statsd event to session export.
+       2020-11-02
+           Added yang paths to support ADT
+       2020-10-23
+           Added disc queue statistics.
+       2020-10-09
+           Added acct stop statistics.
+       2020-08-24
+           Added Feature ID to session export.";
     semver:module-version "3.0.0";
   }
   revision 2020-02-20 {
     description
       "Added FADB statistics.
        2020-01-04
-       Added disconnect history support.";
+         Added disconnect history support.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {

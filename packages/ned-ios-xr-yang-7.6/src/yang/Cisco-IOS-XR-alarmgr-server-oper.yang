@@ -9,7 +9,7 @@ module Cisco-IOS-XR-alarmgr-server-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-alarmgr-server-oper-sub1 {
-    revision-date 2021-05-06;
+    revision-date 2021-10-11;
   }
 
   organization
@@ -35,16 +35,36 @@ module Cisco-IOS-XR-alarmgr-server-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-11 {
+    description
+      "Removed enum last in Alarm-groups.
+       2021-09-27
+         Added new container called conditions for lindt based platforms.";
+    semver:module-version "4.1.0";
+  }
+  revision 2021-09-15 {
+    description
+      "Removed enum last in Alarm-groups.
+       2021-05-17
+          Alarm support for CEM interface. Added enum cem to Alarm-groups.
+       2021-05-11
+          PTAH support for E1 controller.";
+    semver:module-version "4.0.0";
+  }
   revision 2021-05-06 {
     description
-      "Adding new alarm groups to alarm_mgr_edm_spi.bag";
+      "Adding new alarm groups to alarm_mgr_edm_spi.bag
+       2020-12-02
+           PTAH support for Fibre Channel controller.
+       2020-09-02
+           SNMP Trap support added for Alarm mib";
     semver:module-version "3.0.0";
   }
   revision 2020-05-29 {
     description
       "Addressing Yang inconsistency across platforms
        2019-06-28
-       PTAH support for CPRI controller in Felidae 5G platform.";
+         PTAH support for CPRI controller in Felidae 5G platform.";
     semver:module-version "2.1.0";
   }
   revision 2019-04-05 {
@@ -181,6 +201,11 @@ module Cisco-IOS-XR-alarmgr-server-oper {
                 "Show the history alarms at this scope.";
               uses ALARM-MGR-SHOW-ALARM-INFO-CLI;
             }
+            container conditions {
+              description
+                "Show the Conditions present at this scope.";
+              uses ALARM-MGR-SHOW-ALARM-INFO-CLI;
+            }
             container stats {
               description
                 "Show the service statistics.";
@@ -246,6 +271,11 @@ module Cisco-IOS-XR-alarmgr-server-oper {
             container history {
               description
                 "Show the history alarms at this scope.";
+              uses ALARM-MGR-SHOW-ALARM-BRIEF-INFO;
+            }
+            container conditions {
+              description
+                "Show the conditions present at this scope.";
               uses ALARM-MGR-SHOW-ALARM-BRIEF-INFO;
             }
             container suppressed {

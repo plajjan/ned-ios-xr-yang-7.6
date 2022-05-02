@@ -15,10 +15,10 @@ module Cisco-IOS-XR-clns-isis-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-clns-isis-oper-sub2 {
-    revision-date 2021-03-13;
+    revision-date 2022-01-30;
   }
   include Cisco-IOS-XR-clns-isis-oper-sub1 {
-    revision-date 2021-03-13;
+    revision-date 2022-01-30;
   }
 
   organization
@@ -41,28 +41,50 @@ module Cisco-IOS-XR-clns-isis-oper {
      for the following management objects:
        isis: IS-IS operational data
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-30 {
+    description
+      "add per-area, per topology statistic indexed list.
+       2022-01-11
+         add show isis neighbor summary statistic info. IosSetYangSchemaRev Cisco-IOS-XR-PRIVATE-ocni-isis-oper
+       2021-09-03
+         Show output added for IP Flex-algo.";
+    semver:module-version "4.2.0";
+  }
+  revision 2021-07-07 {
+    description
+      "Add timestamp and age to isis local rib routes.";
+    semver:module-version "4.1.0";
+  }
   revision 2021-03-13 {
     description
-      "Interface bandwidth changed from uint32_t to uint64_t";
-    semver:module-version "4.1.0";
+      "Interface bandwidth changed from uint32_t to uint64_t
+       2021-01-04
+           Add private adjacency bag
+       2020-11-05
+           Flex-algo extension for show isis topology.
+       2020-10-27
+           Add a new type Isis-flex-algo-metric for flex-algo metrics and change the metric-type leaf in ISIS-SH-FLEX-ALGO-AREA to use it.
+       2020-10-20
+           Change in Yang tool corrected strings repair-s-rv6* to repair-srv6*, end-xsid* to end-x-sid*, and is-s-rv6 to is-srv6. Changed avg-dela-rawy to avg-delay-raw to fix misspelling via CSCvu63930. Changed SRv6 function-type to sid-behavior, uint32_t to mgmt_srv6_sid_fmt, and num-sid to num-sids for consistency and to comply with current IETF ISIS SRv6 draft via CSCvu06764.";
+    semver:module-version "4.0.0";
   }
   revision 2020-05-12 {
     description
       "Added SRLG and SRLG Static
        2020-03-25
-       Added operational data for new features.";
+         Added operational data for new features.";
     semver:module-version "3.0.0";
   }
   revision 2019-09-25 {
     description
       "Added operational data for new features
        2019-05-14
-       Conditional Advertise-prefix support
+         Conditional Advertise-prefix support
        2019-05-03
-       move ocni-isis opencfg model from native model to private oper model";
+         move ocni-isis opencfg model from native model to private oper model";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -416,6 +438,38 @@ module Cisco-IOS-XR-clns-isis-oper {
                   }
                 }
               }
+              container flex-algo-data-plane-topology-summary-is-tables {
+                description
+                  "Flex-Algo Data Plane Link Topology Summary
+                   IS Tables";
+                list flex-algo-data-plane-topology-summary-is-table {
+                  description
+                    "Flex-Algo Data-Plane Link Topology Summary
+                     IS Table";
+                  leaf flex-alg {
+                    type uint32;
+                    description
+                      "Flex Algo";
+                  }
+                  leaf data-plane {
+                    type uint32;
+                    description
+                      "Data Plane";
+                  }
+                  list flex-algo-data-plane-topology-summary-is {
+                    key "system-id";
+                    description
+                      "Summary information for a particular IS,
+                       Topology, Flex-Algo, and Data-Plane";
+                    leaf system-id {
+                      type xr:Osi-system-id;
+                      description
+                        "System ID";
+                    }
+                    uses ISIS-SH-TOPO-SUMMARY;
+                  }
+                }
+              }
               container flex-algo-ipv6-link-topology-tables {
                 description
                   "Flex-Algo IPv6 IS Topology Tables";
@@ -431,7 +485,71 @@ module Cisco-IOS-XR-clns-isis-oper {
                   list flex-algo-ipv6-link-topology {
                     key "system-id";
                     description
-                      "An IS in an Flex-Algo IPv46Link Topology";
+                      "An IS in an Flex-Algo IPv6Link Topology";
+                    leaf system-id {
+                      type xr:Osi-system-id;
+                      description
+                        "System ID";
+                    }
+                    uses ISIS-SH-IPV6-TOPO-ENTRY;
+                  }
+                }
+              }
+              container flex-algo-data-plane-ipv4-link-topology-tables {
+                description
+                  "Flex-Algo Data-Plane IPv4 IS Topology
+                   Tables";
+                list flex-algo-data-plane-ipv4-link-topology-table {
+                  description
+                    "Flex-Algo Data-Plane IPv4 IS Topology
+                     Table";
+                  leaf flex-alg {
+                    type uint32;
+                    description
+                      "Flex Algo";
+                  }
+                  leaf data-plane {
+                    type uint32;
+                    description
+                      "Data Plane";
+                  }
+                  list flex-algo-data-plane-ipv4-link-topology {
+                    key "system-id";
+                    description
+                      "An IS in an Flex-Algo Data-Plane IPv4
+                       Link Topology";
+                    leaf system-id {
+                      type xr:Osi-system-id;
+                      description
+                        "System ID";
+                    }
+                    uses ISIS-SH-IPV4-TOPO-ENTRY;
+                  }
+                }
+              }
+              container flex-algo-data-plane-ipv6-link-topology-tables {
+                description
+                  "Flex-Algo Data-Plane IPv6 IS Topology
+                   Tables";
+                list flex-algo-data-plane-ipv6-link-topology-table {
+                  description
+                    "Flex-Algo Data-Plane IPv6 IS Topology
+                     Table";
+                  leaf flex-alg {
+                    type uint32;
+                    description
+                      "Flex Algo";
+                  }
+                  leaf data-plane {
+                    type uint32;
+                    description
+                      "Data Plane";
+                  }
+                  list flex-algo-data-plane-ipv6-link-topology {
+                    key "system-id";
+                    description
+                      "An IS in an Flex-Algo Data-Plane IPv6
+                       Link Topology";
                     leaf system-id {
                       type xr:Osi-system-id;
                       description
@@ -472,6 +590,26 @@ module Cisco-IOS-XR-clns-isis-oper {
                     type uint32;
                     description
                       "Flex Algo";
+                  }
+                  uses ISIS-SH-TOPO-SUMMARY;
+                }
+              }
+              container flex-algo-data-plane-topology-summaries {
+                description
+                  "Flex-Algo and Data-Plane Link Topology
+                   Summary Tables";
+                list flex-algo-data-plane-topology-summary {
+                  description
+                    "Flex-Algo Data-Plane IS Topology Table";
+                  leaf flex-alg {
+                    type uint32;
+                    description
+                      "Flex Algo";
+                  }
+                  leaf data-plane {
+                    type uint32;
+                    description
+                      "Data Plane";
                   }
                   uses ISIS-SH-TOPO-SUMMARY;
                 }
@@ -1063,6 +1201,72 @@ module Cisco-IOS-XR-clns-isis-oper {
           "Basic protocol information about an IS-IS
            instance";
         uses ISIS-SH-PROTO;
+      }
+      container nbr-summ-stats {
+        description
+          "Neighbor Summary Statistics information";
+        uses ISIS-SH-NBR-SUMM-STATS;
+      }
+      container statistics-global-tbl {
+        description
+          "Per-instance statistics table";
+        container statistics {
+          description
+            "Global Statistics";
+          uses ISIS-SH-GLOBAL-STATS;
+        }
+        container per-area-datas {
+          description
+            "Statistcis for an area";
+          list per-area-data {
+            key "level";
+            description
+              "Per-area Statistics data";
+            container statistics {
+              description
+                "Area Statistics";
+              uses ISIS-SH-GLOBAL-AREA-STATS;
+            }
+            container per-topology-datas {
+              description
+                "Statistcis for an topology";
+              list per-topology-data {
+                description
+                  "Per topology Statistics";
+                container statistics {
+                  description
+                    "Statistics info for per topology";
+                  uses ISIS-SH-GLOBAL-AREA-TOPO-STATS;
+                }
+                leaf af-name {
+                  type dt1:Isis-address-family;
+                  description
+                    "Address family";
+                }
+                leaf saf-name {
+                  type dt1:Isis-sub-address-family;
+                  description
+                    "Sub address family";
+                }
+                leaf vrf-name {
+                  type dt1:Isis-vrf-name;
+                  description
+                    "Vrf name";
+                }
+                leaf topology-name {
+                  type dt1:Isis-topology-name;
+                  description
+                    "Topology Name";
+                }
+              }
+            }
+            leaf level {
+              type dt1:Isis-internal-level;
+              description
+                "Level";
+            }
+          }
+        }
       }
       container neighbor-summaries {
         description

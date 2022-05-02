@@ -9,10 +9,10 @@ module Cisco-IOS-XR-spirit-install-instmgr-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-spirit-install-instmgr-oper-sub2 {
-    revision-date 2020-10-06;
+    revision-date 2021-12-08;
   }
   include Cisco-IOS-XR-spirit-install-instmgr-oper-sub1 {
-    revision-date 2020-10-06;
+    revision-date 2021-12-08;
   }
 
   organization
@@ -35,9 +35,19 @@ module Cisco-IOS-XR-spirit-install-instmgr-oper {
      for the following management objects:
        install: Install operations info
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-08 {
+    description
+      "Add optional fields for show request cli";
+    semver:module-version "3.2.0";
+  }
+  revision 2021-01-08 {
+    description
+      "Deprecating ISSU show commands in Install code as the information is already provided by the ISSU infra.";
+    semver:module-version "3.1.0";
+  }
   revision 2020-10-06 {
     description
       "Fixing backward compatible addition of new leafs.";
@@ -47,7 +57,7 @@ module Cisco-IOS-XR-spirit-install-instmgr-oper {
     description
       "Fixing schema-describe support.
        2019-06-28
-       Common yang action model between lindt and eXR install.";
+         Common yang action model between lindt and eXR install.";
     semver:module-version "2.1.0";
   }
   revision 2019-04-05 {
@@ -238,14 +248,17 @@ module Cisco-IOS-XR-spirit-install-instmgr-oper {
       uses INSTMGR-SHOW-INST-SUP-SUMMARY;
     }
     container issu {
+      status deprecated;
       description
         "ISSU operation";
       container stage {
+        status deprecated;
         description
           "Show XR install issu stage";
         uses ISD-STAGE-INFO;
       }
       container inventory {
+        status deprecated;
         description
           "Show XR install issu inventory";
         uses ISD-INV-INFO-CONTAINER;

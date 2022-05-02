@@ -9,7 +9,7 @@ module Cisco-IOS-XR-pmengine-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-pmengine-oper-sub1 {
-    revision-date 2020-09-02;
+    revision-date 2021-10-13;
   }
 
   organization
@@ -33,12 +33,36 @@ module Cisco-IOS-XR-pmengine-oper {
        performance-management: performace data
        performance-management-history: performace data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-13 {
+    description
+      "Support added for cumulative-bad-sh and cumulative-frm-err in pcs layer.
+       2021-10-06
+         Support added for new counters in Optics layer.";
+    semver:module-version "1.5.0";
+  }
+  revision 2021-07-09 {
+    description
+      "Support added for prbs layer for fibre-channel, ocn, stm and ethernet controllers. Support added for cem layer and controller. Container cem added.
+       2021-04-26
+          Support added for E1 controller.
+       2021-04-14
+          Support added for pcs and fec layers for fibre-channel controller.
+       2021-02-24
+          Support added for fc layer and controller. Container fibre-channel added.";
+    semver:module-version "1.4.0";
+  }
   revision 2020-09-02 {
     description
-      "Added PM support for PRBS direction feature.";
+      "Added PM support for PRBS direction feature.
+       2020-07-20
+           Added parameter for cumulative BIP count in pcs pmengine bag.
+       2020-04-17
+           Added Instantaneous Q Margin in fec layer.
+       2020-04-07
+           Changes made to support TCA for OTU PRBS layer.";
     semver:module-version "1.3.0";
   }
   revision 2019-10-10 {
@@ -50,9 +74,9 @@ module Cisco-IOS-XR-pmengine-oper {
     description
       "Existing optics parameter PMD is deprecated and SOPMD is added to use instead.
        2019-08-28
-       Max and Min time support for fec and optics layer parameters.
+         Max and Min time support for fec and optics layer parameters.
        2019-06-01
-       Added Range attribute for the history buckets.";
+         Added Range attribute for the history buckets.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -475,6 +499,397 @@ module Cisco-IOS-XR-pmengine-oper {
                       "channel number";
                   }
                   uses PM-HO-VC-PARAS;
+                }
+              }
+            }
+          }
+          leaf name {
+            type xr:Interface-name;
+            description
+              "Port name";
+          }
+        }
+      }
+    }
+    container fibre-channel {
+      description
+        "Fibre Channel controller performance data";
+      container fc-ports {
+        description
+          "Port performance data";
+        list fc-port {
+          key "name";
+          description
+            "Port performance data";
+          container fc-current {
+            description
+              "FC controller current performance data";
+            container fc-minute15 {
+              description
+                "FC controller current 15 minute performance
+                 data";
+              container fc-minute15fecs {
+                description
+                  "FC controller 15 minute FEC layer current
+                   performance data";
+                list fc-minute15fec {
+                  key "slot-number";
+                  description
+                    "FC controller 15 minute FEC layer current
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-FEC-PARAS;
+                }
+              }
+              container minute15fcs {
+                description
+                  "FC controller 15 minute current FC layer
+                   performance data";
+                list minute15fc {
+                  key "slot-number";
+                  description
+                    "FC controller 15 minute current FC layer
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-FC-PARAS;
+                }
+              }
+              container fc-minute15prbses {
+                description
+                  "FC controller 15 minute PRBS layer current
+                   performance data";
+                list fc-minute15prbs {
+                  key "number";
+                  description
+                    "FC controller 15 minute PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+              container fc-minute15pcses {
+                description
+                  "FC controller 15 minute PCS layer current
+                   performance data";
+                list fc-minute15pcs {
+                  key "slot-number";
+                  description
+                    "FC controller 15 minute PCS layer current
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-PCS-PARAS;
+                }
+              }
+            }
+            container fc-second30 {
+              description
+                "FC controller current 30 second performance
+                 data";
+              container fc-second30fecs {
+                description
+                  "FC controller 30 second FEC layer current
+                   performance data";
+                list fc-second30fec {
+                  key "slot-number";
+                  description
+                    "FC controller 30 second FEC layer current
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-FEC-PARAS;
+                }
+              }
+              container second30fcs {
+                description
+                  "FC controller 30 second current FC layer
+                   performance data";
+                list second30fc {
+                  key "slot-number";
+                  description
+                    "FC controller 30 second current FC layer
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-FC-PARAS;
+                }
+              }
+              container fc-second30prbses {
+                description
+                  "FC controller 30 second PRBS layer current
+                   performance data";
+                list fc-second30prbs {
+                  key "number";
+                  description
+                    "FC controller 30 second PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+              container fc-second30pcses {
+                description
+                  "FC controller 30 second PCS layer current
+                   performance data";
+                list fc-second30pcs {
+                  key "slot-number";
+                  description
+                    "FC controller 30 second PCS layer current
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-PCS-PARAS;
+                }
+              }
+            }
+            container fc-flex-interval {
+              description
+                "FC controller flex-bin current performance
+                 data";
+              container fc-flex-interval-pcses {
+                description
+                  "FC controller flex-bin PCS layer current
+                   performance data";
+                list fc-flex-interval-pcs {
+                  key "slot-number";
+                  description
+                    "FC controller flex-bin PCS layer current
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-PCS-PARAS;
+                }
+              }
+              container fc-flex-interval-fcs {
+                description
+                  "FC controller flex-bin FC layer current
+                   performance data";
+                list fc-flex-interval-fc {
+                  key "number";
+                  description
+                    "FC controller flex-bin FC layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-FC-PARAS;
+                }
+              }
+              container fc-flex-interval-fecs {
+                description
+                  "FC controller flex-bin FEC layer current
+                   performance data";
+                list fc-flex-interval-fec {
+                  key "slot-number";
+                  description
+                    "FC controller flex-bin FEC layer current
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-FEC-PARAS;
+                }
+              }
+              container fc-flex-interval-prbses {
+                description
+                  "FC controller flex-bin PRBS layer current
+                   performance data";
+                list fc-flex-interval-prbs {
+                  key "number";
+                  description
+                    "FC controller flex-bin PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+            }
+            container fc-hour24 {
+              description
+                "FC controller current 24 hour performance
+                 data";
+              container fc-hour24prbses {
+                description
+                  "FC controller 24 hour PRBS layer current
+                   performance data";
+                list fc-hour24prbs {
+                  key "number";
+                  description
+                    "FC controller 24 hour PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+              container fc-hour24fcs {
+                description
+                  "FC controller 24 hour FC layer current
+                   performance data";
+                list fc-hour24fc {
+                  key "number";
+                  description
+                    "FC controller 24 hour FC layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-FC-PARAS;
+                }
+              }
+              container fc-hour24pcses {
+                description
+                  "FC controller 24 hour PCS layer current
+                   performance data";
+                list fc-hour24pcs {
+                  key "number";
+                  description
+                    "FC controller 24 hour PCS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PCS-PARAS;
+                }
+              }
+              container fc-hour24fecs {
+                description
+                  "FC controller 24 hour FEC layer current
+                   performance data";
+                list fc-hour24fec {
+                  key "number";
+                  description
+                    "FC controller 24 hour FEC layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-FEC-PARAS;
+                }
+              }
+            }
+          }
+          container fc-prev {
+            description
+              "FC controller previous performance data";
+            container fc-prev-flex-interval {
+              description
+                "FC controller flex-bin previous performance
+                 data";
+              container fc-prev-flex-interval-fcs {
+                description
+                  "FC controller flex-bin previous FC layer
+                   performance data";
+                list fc-prev-flex-interval-fc {
+                  key "number";
+                  description
+                    "FC controller flex-bin previous FC layer
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-FC-PARAS;
+                }
+              }
+              container fc-prev-flex-interval-prbses {
+                description
+                  "FC controller flex-bin PRBS layer previous
+                   performance data";
+                list fc-prev-flex-interval-prbs {
+                  key "number";
+                  description
+                    "FC controller flex-bin PRBS layer previous
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+              container fc-prev-flex-interval-pcses {
+                description
+                  "FC controller flex-bin PCS layer previous
+                   performance data";
+                list fc-prev-flex-interval-pcs {
+                  key "slot-number";
+                  description
+                    "FC controller flex-bin PCS layer previous
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-PCS-PARAS;
+                }
+              }
+              container fc-prev-flex-interval-fecs {
+                description
+                  "FC controller flex-bin FEC layer previous
+                   performance data";
+                list fc-prev-flex-interval-fec {
+                  key "slot-number";
+                  description
+                    "FC controller flex-bin FEC layer previous
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-FEC-PARAS;
                 }
               }
             }
@@ -1126,6 +1541,23 @@ module Cisco-IOS-XR-pmengine-oper {
             container stm-hour24 {
               description
                 "port current performance data";
+              container stm-hour24prbses {
+                description
+                  "STM controller 24 hour PRBS layer current
+                   performance data";
+                list stm-hour24prbs {
+                  key "number";
+                  description
+                    "STM controller 24 hour PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
               container stm-hour24stms {
                 description
                   "port current performance data";
@@ -1142,9 +1574,48 @@ module Cisco-IOS-XR-pmengine-oper {
                 }
               }
             }
+            container stm-flex-interval {
+              description
+                "STM controller flex-bin current performance
+                 data";
+              container stm-flex-interval-prbses {
+                description
+                  "STM controller flex-bin PRBS layer current
+                   performance data";
+                list stm-flex-interval-prbs {
+                  key "number";
+                  description
+                    "STM controller flex-bin PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+            }
             container stm-minute15 {
               description
                 "port current performance data";
+              container stm-minute15prbses {
+                description
+                  "STM controller 15 minute PRBS layer current
+                   performance data";
+                list stm-minute15prbs {
+                  key "number";
+                  description
+                    "STM controller 15 minute PRBS layer
+                     current performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
               container stm-minute15stms {
                 description
                   "port current performance data";
@@ -1158,6 +1629,53 @@ module Cisco-IOS-XR-pmengine-oper {
                       "channel number";
                   }
                   uses PM-STM-PARAS;
+                }
+              }
+            }
+            container stm-second30 {
+              description
+                "port current performance data";
+              container stm-second30prbses {
+                description
+                  "STM controller 30 second PRBS layer current
+                   performance data";
+                list stm-second30prbs {
+                  key "number";
+                  description
+                    "STM controller 30 second PRBS layer
+                     current performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+            }
+          }
+          container stm-prev {
+            description
+              "STM controller previous performance data";
+            container stm-prev-flex-interval {
+              description
+                "STM controller flex-bin previous performance
+                 data";
+              container stm-prev-flex-interval-prbses {
+                description
+                  "STM controller flex-bin PRBS layer previous
+                   performance data";
+                list stm-prev-flex-interval-prbs {
+                  key "number";
+                  description
+                    "STM controller flex-bin PRBS layer
+                     previous performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
                 }
               }
             }
@@ -1518,6 +2036,142 @@ module Cisco-IOS-XR-pmengine-oper {
         }
       }
     }
+    container cem {
+      description
+        "CEM performance data";
+      container cem-ports {
+        description
+          "Port performance data";
+        list cem-port {
+          key "name";
+          description
+            "Port performance data";
+          container cem-current {
+            description
+              "CEM controller current performance data";
+            container cem-minute15 {
+              description
+                "CEM controller current 15 minute performance
+                 data";
+              container minute15cems {
+                description
+                  "CEM controller 15 minute current CEM layer
+                   performance data";
+                list minute15cem {
+                  key "slot-number";
+                  description
+                    "CEM controller 15 minute current CEM layer
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-CEM-PARAS;
+                }
+              }
+            }
+            container cem-second30 {
+              description
+                "CEM controller current 30 second performance
+                 data";
+              container second30cems {
+                description
+                  "CEM controller 30 second current CEM layer
+                   performance data";
+                list second30cem {
+                  key "slot-number";
+                  description
+                    "CEM controller 30 second current CEM layer
+                     performance data";
+                  leaf slot-number {
+                    type uint32;
+                    description
+                      "interval slot number";
+                  }
+                  uses PM-CEM-PARAS;
+                }
+              }
+            }
+            container cem-hour24 {
+              description
+                "CEM controller current 24 hour performance
+                 data";
+              container cem-hour24cems {
+                description
+                  "CEM controller 24 hour CEM layer current
+                   performance data";
+                list cem-hour24cem {
+                  key "number";
+                  description
+                    "CEM controller 24 hour CEM layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-CEM-PARAS;
+                }
+              }
+            }
+            container cem-flex-interval {
+              description
+                "CEM controller flex-bin current performance
+                 data";
+              container cem-flex-interval-cems {
+                description
+                  "CEM controller flex-bin CEM layer current
+                   performance data";
+                list cem-flex-interval-cem {
+                  key "number";
+                  description
+                    "CEM controller flex-bin CEM layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-CEM-PARAS;
+                }
+              }
+            }
+          }
+          container cem-prev {
+            description
+              "CEM controller previous performance data";
+            container cem-prev-flex-interval {
+              description
+                "CEM controller flex-bin previous performance
+                 data";
+              container cem-prev-flex-interval-cems {
+                description
+                  "CEM controller flex-bin previous CEM layer
+                   performance data";
+                list cem-prev-flex-interval-cem {
+                  key "number";
+                  description
+                    "CEM controller flex-bin previous CEM layer
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-CEM-PARAS;
+                }
+              }
+            }
+          }
+          leaf name {
+            type xr:Interface-name;
+            description
+              "Port name";
+          }
+        }
+      }
+    }
     container dwdm {
       description
         "DWDM controller performance data";
@@ -1654,6 +2308,23 @@ module Cisco-IOS-XR-pmengine-oper {
             container oc-hour24 {
               description
                 "port current performance data";
+              container oc-hour24prbses {
+                description
+                  "OC controller 24 hour PRBS layer current
+                   performance data";
+                list oc-hour24prbs {
+                  key "number";
+                  description
+                    "OC controller 24 hour PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
               container oc-hour24ocns {
                 description
                   "port current performance data";
@@ -1673,6 +2344,23 @@ module Cisco-IOS-XR-pmengine-oper {
             container oc-minute15 {
               description
                 "port current performance data";
+              container oc-minute15prbses {
+                description
+                  "OC controller 15 minute PRBS layer current
+                   performance data";
+                list oc-minute15prbs {
+                  key "number";
+                  description
+                    "OC controller 15 minute PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
               container oc-minute15ocns {
                 description
                   "port current performance data";
@@ -1686,6 +2374,135 @@ module Cisco-IOS-XR-pmengine-oper {
                       "channel number";
                   }
                   uses PM-SONET-PARAS;
+                }
+              }
+            }
+            container oc-second30 {
+              description
+                "port current performance data";
+              container oc-second30prbses {
+                description
+                  "OC controller 30 second PRBS layer current
+                   performance data";
+                list oc-second30prbs {
+                  key "number";
+                  description
+                    "OC controller 30 second PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+            }
+            container oc-flex-interval {
+              description
+                "OC controller flex-bin current performance
+                 data";
+              container oc-flex-interval-prbses {
+                description
+                  "OC controller flex-bin PRBS layer current
+                   performance data";
+                list oc-flex-interval-prbs {
+                  key "number";
+                  description
+                    "OC controller flex-bin PRBS layer current
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+            }
+          }
+          container oc-prev {
+            description
+              "OC controller previous performance data";
+            container oc-prev-flex-interval {
+              description
+                "OC controller flex-bin previous performance
+                 data";
+              container oc-prev-flex-interval-prbses {
+                description
+                  "OC controller flex-bin PRBS layer previous
+                   performance data";
+                list oc-prev-flex-interval-prbs {
+                  key "number";
+                  description
+                    "OC controller flex-bin PRBS layer previous
+                     performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
+            }
+          }
+          leaf name {
+            type xr:Interface-name;
+            description
+              "Port name";
+          }
+        }
+      }
+    }
+    container e1 {
+      description
+        "E1 controller performance data";
+      container e1-ports {
+        description
+          "Port performance data";
+        list e1-port {
+          key "name";
+          description
+            "Port performance data";
+          container e1-current {
+            description
+              "port current performance data";
+            container e1-minute15 {
+              description
+                "port current performance data";
+              container e1-minute15e1s {
+                description
+                  "port current performance data";
+                list e1-minute15e1 {
+                  key "number";
+                  description
+                    "port 15-minute e1 performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-E1-PARAS;
+                }
+              }
+            }
+            container e1-hour24 {
+              description
+                "port current performance data";
+              container e1-hour24e1s {
+                description
+                  "port current performance data";
+                list e1-hour24e1 {
+                  key "number";
+                  description
+                    "port 24 hour e1 performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-E1-PARAS;
                 }
               }
             }
@@ -1714,6 +2531,23 @@ module Cisco-IOS-XR-pmengine-oper {
             container ethernet-flex-interval {
               description
                 "port current performance data";
+              container ethernet-flex-interval-prbses {
+                description
+                  "Ethernet controller flex-bin PRBS layer
+                   current performance data";
+                list ethernet-flex-interval-prbs {
+                  key "number";
+                  description
+                    "Ethernet controller flex-bin PRBS layer
+                     current performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
               container ethernet-flex-interval-pcses {
                 description
                   "ETHERNET port interval performance data";
@@ -1796,6 +2630,23 @@ module Cisco-IOS-XR-pmengine-oper {
                   uses PM-PCS-PARAS;
                 }
               }
+              container ethernet-second30prbses {
+                description
+                  "Ethernet controller 30 second PRBS layer
+                   current performance data";
+                list ethernet-second30prbs {
+                  key "number";
+                  description
+                    "Ethernet controller 30 second PRBS layer
+                     current performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
               container second30-ethers {
                 description
                   "ETHERNET port interval performance data";
@@ -1829,6 +2680,23 @@ module Cisco-IOS-XR-pmengine-oper {
                       "channel number";
                   }
                   uses PM-ETHERNET-PARAS;
+                }
+              }
+              container ethernet-hour24prbses {
+                description
+                  "Ethernet controller 24 hour PRBS layer
+                   current performance data";
+                list ethernet-hour24prbs {
+                  key "number";
+                  description
+                    "Ethernet controller 24 hour PRBS layer
+                     current performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
                 }
               }
               container hour24pcses {
@@ -1913,6 +2781,23 @@ module Cisco-IOS-XR-pmengine-oper {
                   uses PM-ETHERNET-PARAS;
                 }
               }
+              container ethernet-minute15prbses {
+                description
+                  "Ethernet controller 15 minute PRBS layer
+                   current performance data";
+                list ethernet-minute15prbs {
+                  key "number";
+                  description
+                    "Ethernet controller 15 minute PRBS layer
+                     current performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
             }
           }
           container ethernet-prev {
@@ -1921,6 +2806,23 @@ module Cisco-IOS-XR-pmengine-oper {
             container ethernet-prev-flex-interval {
               description
                 "port prev performance data";
+              container ethernet-prev-flex-interval-prbses {
+                description
+                  "Ethernet controller flex-bin PRBS layer
+                   previous performance data";
+                list ethernet-prev-flex-interval-prbs {
+                  key "number";
+                  description
+                    "Ethernet controller flex-bin PRBS layer
+                     previous performance data";
+                  leaf number {
+                    type uint32;
+                    description
+                      "channel number";
+                  }
+                  uses PM-PRBS-PARAS;
+                }
+              }
               container ethernet-prev-flex-interval-ether-s {
                 description
                   "port prev performance data";
@@ -2226,6 +3128,229 @@ module Cisco-IOS-XR-pmengine-oper {
             }
           }
         }
+        container cem-history {
+          description
+            "CEM controller historical performance data";
+          container cem-port-histories {
+            description
+              "CEM controller historical performance data";
+            list cem-port-history {
+              key "name";
+              description
+                "CEM controller historical performance data";
+              container cem-second30-history {
+                description
+                  "CEM controller 30 second historical
+                   performance data";
+                container second30cem-histories {
+                  description
+                    "CEM controller 30 second CEM layer
+                     historical performance data";
+                  list second30cem-history {
+                    key "slot-number";
+                    description
+                      "CEM controller 30 second CEM layer
+                       historical performance data";
+                    container second30cem-time-line-instances {
+                      description
+                        "CEM controller 30 second CEM layer
+                         historical performance data";
+                      list second30cem-time-line-instance {
+                        key "number";
+                        description
+                          "CEM controller 30 second CEM layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-CEM-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+              }
+              container cem-hour24-history {
+                description
+                  "CEM controller 24 hour historical
+                   performance data";
+                container cem-hour24cem-histories {
+                  description
+                    "CEM controller 24 hour CEM layer
+                     historical performance data";
+                  list cem-hour24cem-history {
+                    key "number";
+                    description
+                      "CEM controller 24 hour CEM layer
+                       historical performance data";
+                    container cem-hour24cem-time-line-instances {
+                      description
+                        "CEM controller 24 hour CEM layer
+                         historical performance data";
+                      list cem-hour24cem-time-line-instance {
+                        key "number";
+                        description
+                          "CEM controller 24 hour CEM layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-CEM-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+              }
+              container cem-minute15-history {
+                description
+                  "CEM controller 15 minute historical
+                   performance data";
+                container minute15cem-histories {
+                  description
+                    "CEM controller 15 minute CEM layer
+                     historical performance data";
+                  list minute15cem-history {
+                    key "slot-number";
+                    description
+                      "CEM controller 15 minute CEM layer
+                       historical performance data";
+                    container minute15cem-time-line-instances {
+                      description
+                        "CEM controller 15 minute CEM layer
+                         historical performance data";
+                      list minute15cem-time-line-instance {
+                        key "number";
+                        description
+                          "CEM controller 15 minute CEM layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-CEM-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+              }
+              leaf name {
+                type xr:Interface-name;
+                description
+                  "Port name";
+              }
+            }
+          }
+        }
+        container e1-history {
+          description
+            "E1 controller History performance data";
+          container e1-port-histories {
+            description
+              "Port performance data";
+            list e1-port-history {
+              key "name";
+              description
+                "Port performance data";
+              container e1-hour24-history {
+                description
+                  "port current performance data";
+                container e1-hour24e1-histories {
+                  description
+                    "port current performance data";
+                  list e1-hour24e1-history {
+                    key "number";
+                    description
+                      "port 24 hour e1 performance data";
+                    container e1-hour24e1-time-line-instances {
+                      description
+                        "port current performance data";
+                      list e1-hour24e1-time-line-instance {
+                        key "number";
+                        description
+                          "port 24 hour e1 performance data";
+                        leaf number {
+                          type uint32;
+                          description
+                            "History Index number";
+                        }
+                        uses PM-E1-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+              }
+              container e1-minute15-history {
+                description
+                  "port current performance data";
+                container e1-minute15e1-histories {
+                  description
+                    "port current performance data";
+                  list e1-minute15e1-history {
+                    key "number";
+                    description
+                      "port 15-minute e1 performance data";
+                    container e1-minute15e1-time-line-instances {
+                      description
+                        "port current performance data";
+                      list e1-minute15e1-time-line-instance {
+                        key "number";
+                        description
+                          "port 15-minute e1 performance data by
+                           index";
+                        leaf number {
+                          type uint32;
+                          description
+                            "History Index number";
+                        }
+                        uses PM-E1-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+              }
+              leaf name {
+                type xr:Interface-name;
+                description
+                  "Port name";
+              }
+            }
+          }
+        }
         container ethernet-history {
           description
             "EHERNET controller History performance data";
@@ -2239,6 +3364,41 @@ module Cisco-IOS-XR-pmengine-oper {
               container ethernet-second30-history {
                 description
                   "port current performance data";
+                container ethernet-second30prbs-histories {
+                  description
+                    "Ethernet controller 30 second PRBS layer
+                     historical performance data";
+                  list ethernet-second30prbs-history {
+                    key "number";
+                    description
+                      "Ethernet controller 30 second PRBS layer
+                       historical performance data";
+                    container ethernet-second30prbs-time-line-instances {
+                      description
+                        "Ethernet controller 30 second PRBS layer
+                         historical performance data";
+                      list ethernet-second30prbs-time-line-instance {
+                        key "number";
+                        description
+                          "Ethernet controller 30 second PRBS
+                           layer historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
                 container second30pcs-histories {
                   description
                     "ETHERNET port interval performance data";
@@ -2399,6 +3559,41 @@ module Cisco-IOS-XR-pmengine-oper {
                     }
                   }
                 }
+                container ethernet-hour24prbs-histories {
+                  description
+                    "Ethernet controller 24 hour PRBS layer
+                     historical performance data";
+                  list ethernet-hour24prbs-history {
+                    key "number";
+                    description
+                      "Ethernet controller 24 hour PRBS layer
+                       historical performance data";
+                    container ethernet-hour24prbs-time-line-instances {
+                      description
+                        "Ethernet controller 24 hour PRBS layer
+                         historical performance data";
+                      list ethernet-hour24prbs-time-line-instance {
+                        key "number";
+                        description
+                          "Ethernet controller 24 hour PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
                 container ethernet-hour24-ether-histories {
                   description
                     "port current performance data";
@@ -2527,6 +3722,41 @@ module Cisco-IOS-XR-pmengine-oper {
                       type uint32;
                       description
                         "interval slot number";
+                    }
+                  }
+                }
+                container ethernet-minute15prbs-histories {
+                  description
+                    "Ethernet controller 15 minute PRBS layer
+                     historical performance data";
+                  list ethernet-minute15prbs-history {
+                    key "number";
+                    description
+                      "Ethernet controller 15 minute PRBS layer
+                       historical performance data";
+                    container ethernet-minute15prbs-time-line-instances {
+                      description
+                        "Ethernet controller 15 minute PRBS layer
+                         historical performance data";
+                      list ethernet-minute15prbs-time-line-instance {
+                        key "number";
+                        description
+                          "Ethernet controller 15 minute PRBS
+                           layer historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
                     }
                   }
                 }
@@ -2797,6 +4027,41 @@ module Cisco-IOS-XR-pmengine-oper {
                     }
                   }
                 }
+                container stm-hour24prbs-histories {
+                  description
+                    "STM controller 24 hour PRBS layer
+                     historical performance data";
+                  list stm-hour24prbs-history {
+                    key "number";
+                    description
+                      "STM controller 24 hour PRBS layer
+                       historical performance data";
+                    container stm-hour24prbs-time-line-instances {
+                      description
+                        "STM controller 24 hour PRBS layer
+                         historical performance data";
+                      list stm-hour24prbs-time-line-instance {
+                        key "number";
+                        description
+                          "STM controller 24 hour PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
               }
               container stm-minute15-history {
                 description
@@ -2823,6 +4088,81 @@ module Cisco-IOS-XR-pmengine-oper {
                             "History Index number";
                         }
                         uses PM-STM-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+                container stm-minute15prbs-histories {
+                  description
+                    "STM controller 15 minute PRBS layer
+                     historical performance data";
+                  list stm-minute15prbs-history {
+                    key "number";
+                    description
+                      "STM controller 15 minute PRBS layer
+                       historical performance data";
+                    container stm-minute15prbs-time-line-instances {
+                      description
+                        "STM controller 15 minute PRBS layer
+                         historical performance data";
+                      list stm-minute15prbs-time-line-instance {
+                        key "number";
+                        description
+                          "STM controller 15 minute PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+              }
+              container stm-second30-history {
+                description
+                  "STM controller 30 second historical
+                   performance data";
+                container stm-second30prbs-histories {
+                  description
+                    "STM controller 30 second PRBS layer
+                     historical performance data";
+                  list stm-second30prbs-history {
+                    key "number";
+                    description
+                      "STM controller 30 second PRBS layer
+                       historical performance data";
+                    container stm-second30prbs-time-line-instances {
+                      description
+                        "STM controller 30 second PRBS layer
+                         historical performance data";
+                      list stm-second30prbs-time-line-instance {
+                        key "number";
+                        description
+                          "STM controller 30 second PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
                       }
                     }
                     leaf number {
@@ -3856,6 +5196,459 @@ module Cisco-IOS-XR-pmengine-oper {
             }
           }
         }
+        container fc-history {
+          description
+            "FC controller historical performance data";
+          container fc-port-histories {
+            description
+              "FC controller historical performance data";
+            list fc-port-history {
+              key "name";
+              description
+                "FC controller historical performance data";
+              container fc-minute15-history {
+                description
+                  "FC controller 15 minute historical
+                   performance data";
+                container fc-minute15fec-histories {
+                  description
+                    "FC controller 15 minute FEC layer
+                     historical performance data";
+                  list fc-minute15fec-history {
+                    key "slot-number";
+                    description
+                      "FC controller 15 minute FEC layer
+                       historical performance data";
+                    container fc-minute15fec-time-line-instances {
+                      description
+                        "FC controller 15 minute FEC layer
+                         historical performance data";
+                      list fc-minute15fec-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 15 minute FEC layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-FEC-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+                container fc-minute15prbs-histories {
+                  description
+                    "FC controller 15 minute PRBS layer
+                     historical performance data";
+                  list fc-minute15prbs-history {
+                    key "number";
+                    description
+                      "FC controller 15 minute PRBS layer
+                       historical performance data";
+                    container fc-minute15prbs-time-line-instances {
+                      description
+                        "FC controller 15 minute PRBS layer
+                         historical performance data";
+                      list fc-minute15prbs-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 15 minute PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+                container minute15fc-histories {
+                  description
+                    "FC controller 15 minute FC layer
+                     historical performance data";
+                  list minute15fc-history {
+                    key "slot-number";
+                    description
+                      "FC controller 15 minute FC layer
+                       historical performance data";
+                    container minute15fc-time-line-instances {
+                      description
+                        "FC controller 15 minute FC layer
+                         historical performance data";
+                      list minute15fc-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 15 minute FC layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-FC-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+                container fc-minute15pcs-histories {
+                  description
+                    "FC controller 15 minute PCS layer
+                     historical performance data";
+                  list fc-minute15pcs-history {
+                    key "slot-number";
+                    description
+                      "FC controller 15 minute PCS layer
+                       historical performance data";
+                    container fc-minute15pcs-time-line-instances {
+                      description
+                        "FC controller 15 minute PCS layer
+                         historical performance data";
+                      list fc-minute15pcs-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 15 minute PCS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PCS-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+              }
+              container fc-second30-history {
+                description
+                  "FC controller 30 second historical
+                   performance data";
+                container fc-second30fec-histories {
+                  description
+                    "FC controller 30 second FEC layer
+                     historical performance data";
+                  list fc-second30fec-history {
+                    key "slot-number";
+                    description
+                      "FC controller 30 second FEC layer
+                       historical performance data";
+                    container fc-second30fec-time-line-instances {
+                      description
+                        "FC controller 30 second FEC layer
+                         historical performance data";
+                      list fc-second30fec-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 30 second FEC layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-FC-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+                container fc-second30prbs-histories {
+                  description
+                    "FC controller 30 second PRBS layer
+                     historical performance data";
+                  list fc-second30prbs-history {
+                    key "number";
+                    description
+                      "FC controller 30 second PRBS layer
+                       historical performance data";
+                    container fc-second30prbs-time-line-instances {
+                      description
+                        "FC controller 30 second PRBS layer
+                         historical performance data";
+                      list fc-second30prbs-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 30 second PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+                container fc-second30pcs-histories {
+                  description
+                    "FC controller 30 second PCS layer
+                     historical performance data";
+                  list fc-second30pcs-history {
+                    key "slot-number";
+                    description
+                      "FC controller 30 second PCS layer
+                       historical performance data";
+                    container fc-second30pcs-time-line-instances {
+                      description
+                        "FC controller 30 second PCS layer
+                         historical performance data";
+                      list fc-second30pcs-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 30 second PCS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-FC-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+                container second30fc-histories {
+                  description
+                    "FC controller 30 second FC layer
+                     historical performance data";
+                  list second30fc-history {
+                    key "slot-number";
+                    description
+                      "FC controller 30 second FC layer
+                       historical performance data";
+                    container second30fc-time-line-instances {
+                      description
+                        "FC controller 30 second FC layer
+                         historical performance data";
+                      list second30fc-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 30 second FC layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-FC-PARAS;
+                      }
+                    }
+                    leaf slot-number {
+                      type uint32;
+                      description
+                        "interval slot number";
+                    }
+                  }
+                }
+              }
+              container fc-hour24-history {
+                description
+                  "FC controller 24 hour historical
+                   performance data";
+                container fc-hour24pcs-histories {
+                  description
+                    "FC controller 24 hour PCS layer historical
+                     performance data";
+                  list fc-hour24pcs-history {
+                    key "number";
+                    description
+                      "FC controller 24 hour PCS layer
+                       historical performance data";
+                    container fc-hour24pcs-time-line-instances {
+                      description
+                        "FC controller 24 hour PCS layer
+                         historical performance data";
+                      list fc-hour24pcs-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 24 hour PCS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PCS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+                container fc-hour24fec-histories {
+                  description
+                    "FC controller 24 hour FEC layer historical
+                     performance data";
+                  list fc-hour24fec-history {
+                    key "number";
+                    description
+                      "FC controller 24 hour FEC layer
+                       historical performance data";
+                    container fc-hour24fec-time-line-instances {
+                      description
+                        "FC controller 24 hour FEC layer
+                         historical performance data";
+                      list fc-hour24fec-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 24 hour FEC layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-FEC-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+                container fc-hour24fc-histories {
+                  description
+                    "FC controller 24 hour FC layer historical
+                     performance data";
+                  list fc-hour24fc-history {
+                    key "number";
+                    description
+                      "FC controller 24 hour FC layer historical
+                       performance data";
+                    container fc-hour24fc-time-line-instances {
+                      description
+                        "FC controller 24 hour FC layer
+                         historical performance data";
+                      list fc-hour24fc-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 24 hour FC layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-FC-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+                container fc-hour24prbs-histories {
+                  description
+                    "FC controller 24 hour PRBS layer
+                     historical performance data";
+                  list fc-hour24prbs-history {
+                    key "number";
+                    description
+                      "FC controller 24 hour PRBS layer
+                       historical performance data";
+                    container fc-hour24prbs-time-line-instances {
+                      description
+                        "FC controller 24 hour PRBS layer
+                         historical performance data";
+                      list fc-hour24prbs-time-line-instance {
+                        key "number";
+                        description
+                          "FC controller 24 hour PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+              }
+              leaf name {
+                type xr:Interface-name;
+                description
+                  "Port name";
+              }
+            }
+          }
+        }
         container optics-history {
           description
             "OPTICS controller History performance data";
@@ -4082,9 +5875,84 @@ module Cisco-IOS-XR-pmengine-oper {
               key "name";
               description
                 "Port performance data";
+              container oc-second30-history {
+                description
+                  "OC controller 30 second historical
+                   performance data";
+                container oc-second30prbs-histories {
+                  description
+                    "OC controller 30 second PRBS layer
+                     historical performance data";
+                  list oc-second30prbs-history {
+                    key "number";
+                    description
+                      "OC controller 30 second PRBS layer
+                       historical performance data";
+                    container oc-second30prbs-time-line-instances {
+                      description
+                        "OC controller 30 second PRBS layer
+                         historical performance data";
+                      list oc-second30prbs-time-line-instance {
+                        key "number";
+                        description
+                          "OC controller 30 second PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..30";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+              }
               container oc-hour24-history {
                 description
                   "port current performance data";
+                container oc-hour24prbs-histories {
+                  description
+                    "OC controller 24 hour PRBS layer
+                     historical performance data";
+                  list oc-hour24prbs-history {
+                    key "number";
+                    description
+                      "OC controller 24 hour PRBS layer
+                       historical performance data";
+                    container oc-hour24prbs-time-line-instances {
+                      description
+                        "OC controller 24 hour PRBS layer
+                         historical performance data";
+                      list oc-hour24prbs-time-line-instance {
+                        key "number";
+                        description
+                          "OC controller 24 hour PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
                 container oc-hour24ocn-histories {
                   description
                     "port current performance data";
@@ -4142,6 +6010,41 @@ module Cisco-IOS-XR-pmengine-oper {
                             "History Index number";
                         }
                         uses PM-SONET-PARAS;
+                      }
+                    }
+                    leaf number {
+                      type uint32;
+                      description
+                        "channel number";
+                    }
+                  }
+                }
+                container oc-minute15prbs-histories {
+                  description
+                    "OC controller 15 minute PRBS layer
+                     historical performance data";
+                  list oc-minute15prbs-history {
+                    key "number";
+                    description
+                      "OC controller 15 minute PRBS layer
+                       historical performance data";
+                    container oc-minute15prbs-time-line-instances {
+                      description
+                        "OC controller 15 minute PRBS layer
+                         historical performance data";
+                      list oc-minute15prbs-time-line-instance {
+                        key "number";
+                        description
+                          "OC controller 15 minute PRBS layer
+                           historical performance data";
+                        leaf number {
+                          type uint32 {
+                            range "1..32";
+                          }
+                          description
+                            "History Index number";
+                        }
+                        uses PM-PRBS-PARAS;
                       }
                     }
                     leaf number {

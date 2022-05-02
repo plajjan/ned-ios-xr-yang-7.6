@@ -43,28 +43,50 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
        Cisco-IOS-XR-snmp-agent-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-29 {
+    description
+      "Added CLI to configure adjacency sid deletion delay.
+       2021-10-05
+         Added nodes to configure te metric for flex algo.
+       2021-09-09
+         Added CLI command to configure srlg exclude-any.";
+    semver:module-version "2.2.0";
+  }
+  revision 2021-07-22 {
+    description
+      "Added option to disable LLS capability
+       2021-05-12
+          Added prefix-metric config to flex-algo";
+    semver:module-version "2.1.0";
+  }
   revision 2020-10-12 {
     description
-      "Added disable option for Delay Anomaly";
+      "Added disable option for Delay Anomaly
+       2020-10-12
+           Added disable option for Delay Anomaly
+       2020-09-16
+           Added new command for per prefix load balancing
+       2020-09-15
+           Added new command for Delay Anomaly";
     semver:module-version "2.0.0";
   }
   revision 2020-03-19 {
     description
       "Added new command for Delay Normalization
        2020-02-04
-       Added new commands for Conditional Advertising";
+         Added new commands for Conditional Advertising";
     semver:module-version "1.2.0";
   }
   revision 2019-10-31 {
     description
       "Added mandatory nodes and presence containers.
        2019-08-13
-       Fixed ordering issue of flex-algo advertise definition and affinity.
+         Fixed ordering issue of flex-algo advertise definition and affinity.
        2019-05-12
-       Deprecated the native model, replaced by UM model.";
+         Deprecated the native model, replaced by UM model.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -1291,6 +1313,19 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
     }
   }
 
+  grouping TE-METRIC-FLEX {
+    description
+      "Common node of name-scope,
+       multi-area-interface-scope";
+    leaf te-metric-flex {
+      type uint32 {
+        range "1..2147483647";
+      }
+      description
+        "Interface TE Metric for flex algo application";
+    }
+  }
+
   grouping MAXIMUM-INTERFACES {
     description
       "Common node of default-vrf, vrf";
@@ -1723,6 +1758,7 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
             uses AUTHENTICATION;
             uses LDP-SYNC-IGP-SHORTCUTS;
             uses LDP-AUTO-CONFIG;
+            uses TE-METRIC-FLEX;
             uses SECURITY;
             uses DELAY-NORM-INTERVAL;
             uses NEIGHBOR-TABLE;
@@ -1763,6 +1799,7 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
             uses COST;
             uses MTU-IGNORE;
             uses AUTHENTICATION;
+            uses TE-METRIC-FLEX;
             uses DELAY-NORM-INTERVAL;
             uses NEIGHBOR-TABLE;
             uses HELLO-INTERVAL;
@@ -2064,6 +2101,16 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
       type Ospf-network;
       description
         "Type of attached network";
+    }
+  }
+
+  grouping LLS-DISABLE {
+    description
+      "Common node of default-vrf, vrf";
+    leaf lls-disable {
+      type boolean;
+      description
+        "To disable LLS capability";
     }
   }
 
@@ -3948,6 +3995,7 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
             }
             uses MICROLOOP;
             uses IGNORE-MOSPF;
+            uses LLS-DISABLE;
             uses MAXIMUM-REDISTRIBUTE-PREFIX;
             uses DEFAULT-INFORMATION;
             uses AF;
@@ -4114,6 +4162,21 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
                   }
                 }
               }
+              container srlg-exclude-any-attributes {
+                description
+                  "Configuration for a particular Flex-algo
+                   srlg excludeany";
+                list srlg-exclude-any-attribute {
+                  key "srlgname";
+                  description
+                    "Configure srlg exclude-any name";
+                  leaf srlgname {
+                    type xr:Cisco-ios-xr-string;
+                    description
+                      "srlgname name";
+                  }
+                }
+              }
               leaf fast-reroute-disable {
                 type empty;
                 description
@@ -4129,6 +4192,12 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
                 type empty;
                 description
                   "Configuration to disable uloop in Flex Algo";
+              }
+              leaf prefix-metric {
+                type empty;
+                description
+                  "Configuration to Enable Metric flag in Flex
+                   Algo Definition";
               }
               leaf priority {
                 type uint32 {
@@ -4205,6 +4274,16 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
                 description
                   "Name of the Prefix List";
               }
+            }
+            leaf sr-prot-adj-sid-delay {
+              type uint32 {
+                range "30..3600";
+              }
+              units "second";
+              default "900";
+              description
+                "Delay before deletion of protected adj sid
+                 in seconds";
             }
             leaf prefix-sid-map-receive-disable {
               type empty;
@@ -4291,6 +4370,7 @@ module Cisco-IOS-XR-ipv4-ospf-cfg {
           }
           uses MICROLOOP;
           uses IGNORE-MOSPF;
+          uses LLS-DISABLE;
           uses MAXIMUM-REDISTRIBUTE-PREFIX;
           uses DEFAULT-INFORMATION;
           uses AF;

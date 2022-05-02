@@ -40,7 +40,7 @@ module Cisco-IOS-XR-um-grpc-cfg {
     description
       "Added leaf min-keepalive-interval.
        2020-08-01
-       Added aaa container.";
+           Added aaa container.";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -384,6 +384,64 @@ module Cisco-IOS-XR-um-grpc-cfg {
       presence "Indicates a certificate-authentication node is configured.";
       description
         "Enables Certificate based Authentication";
+    }
+    container tunnel {
+      description
+        "grpc tunnel service";
+      container destinations {
+        description
+          "GRPC tunnel destination";
+        list destination {
+          key "destination-name port-id";
+          description
+            "GRPC tunnel destination";
+          leaf destination-name {
+            type xr:Cisco-ios-xr-string {
+              length "1..128" {
+                description
+                  "Destination IPv4/IPv6 address";
+              }
+            }
+            description
+              "GRPC tunnel destination";
+          }
+          leaf port-id {
+            type uint32 {
+              range "1..65535" {
+                description
+                  "Port number";
+              }
+            }
+            description
+              "Destination port";
+          }
+          leaf vrf {
+            type xr:Cisco-ios-xr-string {
+              length "1..32" {
+                description
+                  "vrf-name";
+              }
+            }
+            description
+              "VRF for the dialout";
+          }
+          leaf source-interface {
+            type xr:Interface-name;
+            description
+              "Source interface";
+          }
+          leaf target {
+            type xr:Cisco-ios-xr-string {
+              length "1..256" {
+                description
+                  "target name";
+              }
+            }
+            description
+              "Target name to register tunnel service";
+          }
+        }
+      }
     }
   }
 }

@@ -38,6 +38,11 @@ module Cisco-IOS-XR-ipv4-dhcpd-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-25 {
+    description
+      "Enabled DHCP client support on physical interface.";
+    semver:module-version "2.0.0";
+  }
   revision 2021-06-30 {
     description
       "Resolved EDIT and GET config issues for interface level relay remote-id options.";
@@ -47,17 +52,17 @@ module Cisco-IOS-XR-ipv4-dhcpd-cfg {
     description
       "Added interface level remote-id configuration to intake ASCII/Hex values.
        2020-08-15
-       Added insert-bootfile option.
+           Added insert-bootfile option.
        2020-07-20
-       Added IPoE DHCP CLI to enable option82 in release message.
+           Added IPoE DHCP CLI to enable option82 in release message.
        2020-06-15
-       Added IPoE DHCP client keep subsIntf on new discover CLI.
+           Added IPoE DHCP client keep subsIntf on new discover CLI.
        2020-06-14
-       Added IPoE DHCP client reboot interval config.
+           Added IPoE DHCP client reboot interval config.
        2020-03-31
-       Interface vlan-intf session-limit configuration added.
+           Interface vlan-intf session-limit configuration added.
        2020-03-26
-       CNBNG profile cfg added.";
+           CNBNG profile cfg added.";
     semver:module-version "1.2.0";
   }
   revision 2019-10-18 {

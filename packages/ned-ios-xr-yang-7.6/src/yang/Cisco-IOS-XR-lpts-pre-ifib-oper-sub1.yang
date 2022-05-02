@@ -26,9 +26,14 @@ submodule Cisco-IOS-XR-lpts-pre-ifib-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR lpts-pre-ifib package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-19 {
+    description
+      "LPTS HW FLow Policer datalist support.";
+    semver:module-version "2.0.0";
+  }
   revision 2020-12-03 {
     description
       "LPTS HW FLow Policer Support.";
@@ -38,9 +43,9 @@ submodule Cisco-IOS-XR-lpts-pre-ifib-oper-sub1 {
     description
       "added task-name to LptsPifib class.
        2019-11-06
-       LPTS Punt Policer Support.
+         LPTS Punt Policer Support.
        2019-10-23
-       LPTS Punt Policer Support.";
+         LPTS Punt Policer Support.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -67,11 +72,11 @@ submodule Cisco-IOS-XR-lpts-pre-ifib-oper-sub1 {
 
   grouping PIFIB-HW-FLOW-POLICER-DATA {
     description
-      "PIFIB HW FLOW POLICER DATA";
-    leaf flow-type {
+      "Pre-IFIB hw flow police data structure";
+    leaf flow-id {
       type uint8;
       description
-        "flow type";
+        "flow id";
     }
     leaf flow-name {
       type string;
@@ -122,16 +127,6 @@ submodule Cisco-IOS-XR-lpts-pre-ifib-oper-sub1 {
       type uint64;
       description
         "dropped";
-    }
-  }
-
-  grouping PIFIB-SHOW-HW-FLOW-POLICE {
-    description
-      "Pre-IFIB hw flow police data stricture";
-    list police-info {
-      description
-        "Per flow type police info";
-      uses PIFIB-HW-FLOW-POLICER-DATA;
     }
   }
 

@@ -9,7 +9,7 @@ module Cisco-IOS-XR-sysmgr-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-sysmgr-oper-sub1 {
-    revision-date 2019-04-05;
+    revision-date 2021-04-29;
   }
 
   organization
@@ -32,9 +32,14 @@ module Cisco-IOS-XR-sysmgr-oper {
      for the following management objects:
        system-process: Process information
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-04-29 {
+    description
+      "Added a grouping list to return an array of process control block records.";
+    semver:module-version "2.0.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -71,7 +76,7 @@ module Cisco-IOS-XR-sysmgr-oper {
               description
                 "Process Name";
             }
-            uses PROC-BASIC-INFO;
+            uses PROC-BASIC-INFO-LIST;
           }
         }
         container process-name-infos {
@@ -86,7 +91,7 @@ module Cisco-IOS-XR-sysmgr-oper {
               description
                 "Process Name";
             }
-            uses PROC-BASIC-INFO;
+            uses PROC-BASIC-INFO-LIST;
           }
         }
         container process-name-run-details {
@@ -101,7 +106,7 @@ module Cisco-IOS-XR-sysmgr-oper {
               description
                 "Process Name";
             }
-            uses PROC-BASIC-DETAIL-INFO;
+            uses PROC-BASIC-DETAIL-INFO-LIST;
           }
         }
         container process-name-runverboses {
@@ -116,7 +121,7 @@ module Cisco-IOS-XR-sysmgr-oper {
               description
                 "Process Name";
             }
-            uses PROC-BASIC-DETAIL-VERBOSE-INFO;
+            uses PROC-BASIC-DETAIL-VERBOSE-INFO-LIST;
           }
         }
         container process-name-details {
@@ -131,7 +136,7 @@ module Cisco-IOS-XR-sysmgr-oper {
               description
                 "Process Name";
             }
-            uses PROC-BASIC-DETAIL-INFO;
+            uses PROC-BASIC-DETAIL-INFO-LIST;
           }
         }
         container process-name-verboses {
@@ -146,7 +151,7 @@ module Cisco-IOS-XR-sysmgr-oper {
               description
                 "Process Name";
             }
-            uses PROC-BASIC-DETAIL-VERBOSE-INFO;
+            uses PROC-BASIC-DETAIL-VERBOSE-INFO-LIST;
           }
         }
       }

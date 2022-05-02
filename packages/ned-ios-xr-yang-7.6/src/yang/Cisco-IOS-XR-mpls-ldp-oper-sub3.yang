@@ -26,6 +26,11 @@ submodule Cisco-IOS-XR-mpls-ldp-oper-sub3 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-20 {
+    description
+      "Added keys for nbr-br-af-info";
+    semver:module-version "2.0.0";
+  }
   revision 2021-04-06 {
     description
       "Added BSID data in LDP forwarding";

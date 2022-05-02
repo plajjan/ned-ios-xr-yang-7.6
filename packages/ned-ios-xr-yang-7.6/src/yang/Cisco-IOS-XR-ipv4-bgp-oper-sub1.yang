@@ -35,42 +35,53 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-11-12 {
+  revision 2021-11-15 {
     description
-      "Updated convergence operational information";
-    semver:module-version "4.1.0";
+      "Added interafi leak information in update out
+       2021-11-12
+         Updated convergence operational information
+       2021-11-09
+         Added oper for Nexthop sync slot";
+    semver:module-version "6.0.0";
+  }
+  revision 2021-10-16 {
+    description
+      "Added Oper for mamximum-paths deterministic
+       2021-06-27
+          Added PathLocalSidTable and PathReceivedSidTable";
+    semver:module-version "5.0.0";
   }
   revision 2021-05-10 {
     description
       "Added platform capability mix srte CLI
        2021-03-15
-       Added Export Allow Config for backup
+           Added Export Allow Config for backup
        2021-03-05
-       Deprecated Hidden commands
+           Deprecated Hidden commands
        2021-03-05
-       Added SR Policy Path Prefernce in Bestpath Compare
+           Added SR Policy Path Prefernce in Bestpath Compare
        2020-10-04
-       Added Soft NextHop Validation and Metric
+           Added Soft NextHop Validation and Metric
        2020-09-30
-       Added LATEST bestpath comparison reason
+           Added LATEST bestpath comparison reason
        2020-09-18
-       Added SRv6 TE BSID information
+           Added SRv6 TE BSID information
        2020-07-15
-       Changed VRFDBVRFTable pathformat";
+           Changed VRFDBVRFTable pathformat";
     semver:module-version "4.0.0";
   }
   revision 2020-06-23 {
     description
       "changed the afi from integer to string in BPM entities
        2020-03-30
-       Extended flags to 16 bits and changed leaf names as per convention";
+         Extended flags to 16 bits and changed leaf names as per convention";
     semver:module-version "3.0.0";
   }
   revision 2020-01-11 {
     description
       "Fixing invalid range for prefix length.
        2019-08-31
-       Fixing revision error in module.";
+         Fixing revision error in module.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -477,6 +488,53 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       "Bgp bag upd err action";
   }
 
+  typedef Bgp-gshut-bw-edm-state {
+    type enumeration {
+      enum "bgp-gshut-bw-edm-state-init" {
+        value 0;
+        description
+          "Not Configured";
+      }
+      enum "bgp-gshut-bw-edm-state-validate" {
+        value 1;
+        description
+          "Validating Update";
+      }
+      enum "bgp-gshut-bw-edm-state-no-op" {
+        value 2;
+        description
+          "Non Operational";
+      }
+      enum "bgp-gshut-bw-edm-state-learn" {
+        value 3;
+        description
+          "Learning from Interface";
+      }
+      enum "bgp-gshut-bw-edm-state-compute" {
+        value 4;
+        description
+          "Processing";
+      }
+      enum "bgp-gshut-bw-edm-state-active" {
+        value 5;
+        description
+          "Graceful-Maintenance Active";
+      }
+      enum "bgp-gshut-bw-edm-state-inactive" {
+        value 6;
+        description
+          "Inactive as Bandwidth threshold met";
+      }
+      enum "bgp-gshut-bw-edm-state-max" {
+        value 7;
+        description
+          "Invalid State";
+      }
+    }
+    description
+      "Bgp gshut bw edm state";
+  }
+
   typedef Bgp-sync-nbr-nsr-state {
     type enumeration {
       enum "bgp-nbr-nsr-st-none" {
@@ -728,8 +786,8 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       enum "scoped-sync-retry" {
         value 31;
         description
-          "Scoped sync is repeated due to strict
-           prefix check failure";
+          "Scoped sync is repeated due to strict prefix
+           check failure";
       }
       enum "cluster-id-changed" {
         value 32;
@@ -745,8 +803,8 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       enum "aigp-changed" {
         value 34;
         description
-          "AIGP configuration has changed
-           for cluster to which neighbor belongs";
+          "AIGP configuration has changed for cluster to
+           which neighbor belongs";
       }
       enum "signalling-changed" {
         value 35;
@@ -1660,6 +1718,31 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       "Bgp slow peer updgrp split";
   }
 
+  typedef Bgp-gshut-bw-mode {
+    type enumeration {
+      enum "bgp-gshut-bw-aw-are-mode-none" {
+        value 0;
+        description
+          "Bandwidth-Aware Graceful-Maintenance not
+           configured";
+      }
+      enum "bgp-gshut-bw-aw-are-mode-bandwidth" {
+        value 1;
+        description
+          "Bandwidth-Aware Graceful-Maintenance in
+           bandwidth threshold";
+      }
+      enum "bgp-gshut-bw-aw-are-mode-percent-age" {
+        value 2;
+        description
+          "Bandwidth-Aware Graceful-Maintenance in
+           percentage threshold";
+      }
+    }
+    description
+      "Bgp gshut bw mode";
+  }
+
   typedef Bgp-tcp-mode {
     type enumeration {
       enum "bgp-tcp-mode-type-either" {
@@ -1974,6 +2057,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Used by Total number of neighbors";
     }
+    leaf flex-algo {
+      type uint32;
+      description
+        "Flex algo value";
+    }
     leaf is-orr-root-address-configured {
       type boolean;
       description
@@ -2282,22 +2370,22 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Number of IPv6 ROA Paths";
     }
     leaf ipv4-table-version {
-      type uint32;
+      type uint64;
       description
         "RPKI IPv4 Table Version";
     }
     leaf ipv4-table-scanner-version {
-      type uint32;
+      type uint64;
       description
         "RPKI IPv4 Scanner Version";
     }
     leaf ipv6-table-version {
-      type uint32;
+      type uint64;
       description
         "RPKI IPv6 Table Version";
     }
     leaf ipv6-table-scanner-version {
-      type uint32;
+      type uint64;
       description
         "RPKI IPv6 Scanner Version";
     }
@@ -2391,7 +2479,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "ROA is stale";
     }
     leaf version {
-      type uint32;
+      type uint64;
       description
         "ROA version";
     }
@@ -2810,6 +2898,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "ORR Group tableid";
     }
+    leaf flex-algo {
+      type uint32;
+      description
+        "Flex algo value";
+    }
     leaf is-orr-root-address-configured {
       type boolean;
       description
@@ -3169,6 +3262,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type uint32;
       description
         "Locator Format";
+    }
+    leaf is-locator-active {
+      type boolean;
+      description
+        "Locator State";
     }
   }
 
@@ -3630,6 +3728,22 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Flag to indicate whether long-lived
          graceful-restart stale time is configured";
+    }
+    leaf retention-stale-time-configured {
+      type boolean;
+      description
+        "Flag to indicate whether Retention stale time is
+         configured";
+    }
+    leaf retention-policy {
+      type string;
+      description
+        "Retention Policy";
+    }
+    leaf retention-stale-time {
+      type uint32;
+      description
+        "Stale time Configured for Route Retention";
     }
     leaf long-lived-graceful-restart-stale-time-sent {
       type uint32;
@@ -5880,12 +5994,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "BMP Resume prefix Len";
     }
     leaf bmp-upd-gen-resume-start-version {
-      type uint32;
+      type uint64;
       description
         "Update Gen ResumeWalk start version";
     }
     leaf bmp-upd-gen-resume-end-version {
-      type uint32;
+      type uint64;
       description
         "Update Gen ResumeWalk end version";
     }
@@ -5895,7 +6009,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Update Gen WalkStopped";
     }
     leaf bmp-upd-gen-resume-net-version {
-      type uint32;
+      type uint64;
       description
         "Update Gen ResumeWalk Net version";
     }
@@ -5920,7 +6034,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Number of times Update Gen Stopped";
     }
     leaf bmp-init-eor-end-version {
-      type uint32;
+      type uint64;
       description
         "Version to reach to send EOR";
     }
@@ -5940,7 +6054,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Filter nbr Count for this AFI";
     }
     leaf bmp-send-version {
-      type uint32;
+      type uint64;
       description
         "Table Version that this BMP server has caught
          upto";
@@ -6803,7 +6917,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
     leaf is-bestpath-sr-policy-prefer-enabled {
       type boolean;
       description
-        "Bestpath: Pefer SR policy path";
+        "Bestpath: Prefer SR policy path";
+    }
+    leaf is-bestpath-sr-policy-force-enabled {
+      type boolean;
+      description
+        "Bestpath: Force SR policy path";
     }
     leaf is-enforce-first-as-enabled {
       type boolean;
@@ -6968,6 +7087,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type string;
       description
         "Name of BGP instance";
+    }
+    leaf platform-max-multi-paths {
+      type uint32;
+      description
+        "Platform supported maximum multi-path count";
     }
     leaf restart-count {
       type uint32;
@@ -7395,17 +7519,17 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Address family identifier";
     }
     leaf update-main-table-version {
-      type uint32;
+      type uint64;
       description
         "Main table version";
     }
     leaf update-rib-version {
-      type uint32;
+      type uint64;
       description
         "RIB version";
     }
     leaf update-min-neighbor-version {
-      type uint32;
+      type uint64;
       description
         "Minimum Neighbor version";
     }
@@ -7502,14 +7626,34 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Address family identifier";
     }
     leaf update-vrf-rd-version {
-      type uint32;
+      type uint64;
       description
         "RD Version";
     }
     leaf update-vrf-table-rib-version {
-      type uint32;
+      type uint64;
       description
         "VRF Table RIB version";
+    }
+    leaf table-inter-afi-import-advertise {
+      type boolean;
+      description
+        "InterAfi Import Advertise";
+    }
+    leaf table-inter-afi-export-allow-imported-vpn {
+      type boolean;
+      description
+        "InterAfi Export Allow Imported VPN";
+    }
+    leaf export-allow-imported-vpn {
+      type boolean;
+      description
+        "Export Allow Imported VPN";
+    }
+    leaf vrf-import-advertise {
+      type boolean;
+      description
+        "Vrf Import Advertise";
     }
     leaf table-update-group-count {
       type uint32;
@@ -7686,12 +7830,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Index of this BGP Update-group";
     }
     leaf update-main-table-version {
-      type uint32;
+      type uint64;
       description
         "Main table version";
     }
     leaf update-vrf-table-rib-version {
-      type uint32;
+      type uint64;
       description
         "VRF Table RIB version";
     }
@@ -7721,31 +7865,31 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "The number of messages on the BGP filter-group";
     }
     leaf version {
-      type uint32;
+      type uint64;
       description
         "Version up to which we have generated updates
          for BGP";
     }
     leaf pending-target-version {
-      type uint32;
+      type uint64;
       description
         "Version of pending target for BGP update
          generation";
     }
     leaf next-resume-version {
-      type uint32;
+      type uint64;
       description
         "Version number identifying the next to process
          when tablewalk has been interrupted";
     }
     leaf ack-version {
-      type uint32;
+      type uint64;
       description
         "Identifying the prefixs that have been
          advertisedto the peer and acknowledged by it";
     }
     leaf synced-ack-version {
-      type uint32;
+      type uint64;
       description
         "Peer acked version that was previously
          synchronized";
@@ -7757,34 +7901,34 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
          for thisneighbor address-family";
     }
     leaf update-refresh-version {
-      type uint32;
+      type uint64;
       description
         "Refresh version";
     }
     leaf refresh-requested-target-version {
-      type uint32;
+      type uint64;
       description
         "Requested refresh target version";
     }
     leaf update-refresh-target-version {
-      type uint32;
+      type uint64;
       description
         "Target version for update generation in response
          to arefresh request";
     }
     leaf refresh-pending-target-version {
-      type uint32;
+      type uint64;
       description
         "Pending refresh target version";
     }
     leaf refresh-next-resume-version {
-      type uint32;
+      type uint64;
       description
         "Version number identifying the next to process
          whena table walk has been interrupted";
     }
     leaf refresh-ack-version {
-      type uint32;
+      type uint64;
       description
         "Versio of the Refresh Ack for BGP update
          generation";
@@ -7915,7 +8059,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Type of EPE object";
     }
     leaf epe-version {
-      type uint32;
+      type uint64;
       description
         "EPE object's version";
     }
@@ -8042,6 +8186,32 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type boolean;
       description
         "Graceful Maintenance activated at Location";
+    }
+    leaf gshut-all-nbr-active {
+      type boolean;
+      description
+        "Graceful Maintenance globally activated";
+    }
+    leaf gshut-bandwidth-aware-set {
+      type boolean;
+      description
+        "Graceful Maintenance Bandwidth Aware Configured";
+    }
+    leaf gshut-bandwidth-aware-state {
+      type Bgp-gshut-bw-edm-state;
+      description
+        "Graceful Maintenance Bandwidth Aware Operational
+         State";
+    }
+    leaf gshut-bandwidth-aware-effective-link-bandwidth {
+      type uint64;
+      description
+        "Effective Link Bandwidth";
+    }
+    leaf gshut-bandwidth-aware-total-link-bandwidth {
+      type uint64;
+      description
+        "Total Link Bandwidth";
     }
   }
 
@@ -8398,7 +8568,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Addpath is operational on receive-side";
     }
     leaf neighbor-version {
-      type uint32;
+      type uint64;
       description
         "BGP neighbor version for theaddress-family";
     }
@@ -8692,18 +8862,18 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Number of route refresh requests sent";
     }
     leaf refresh-target-version {
-      type uint32;
+      type uint64;
       description
         "Target version for refresh update generation";
     }
     leaf refresh-version {
-      type uint32;
+      type uint64;
       description
         "Version till which refresh updates have been
          generated";
     }
     leaf refresh-acked-version {
-      type uint32;
+      type uint64;
       description
         "Version acked by the peer for refresh updates
          sent";
@@ -8737,6 +8907,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type string;
       description
         "Outgoing route policy name";
+    }
+    leaf route-policy-ret {
+      type string;
+      description
+        "Retention route policy name";
     }
     leaf route-policy-default-originate {
       type string;
@@ -8786,12 +8961,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "An EoR was received while in read-only mode";
     }
     leaf acked-version {
-      type uint32;
+      type uint64;
       description
         "Version mapped from acked seqNo";
     }
     leaf synced-acked-version {
-      type uint32;
+      type uint64;
       description
         "Version mapped from acked seqNo that was synced
          last";
@@ -8979,6 +9154,18 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
   grouping BGP-PERF-NBR {
     description
       "BGP PERF NBR";
+    container gshut-bandwidth-aware-last-enter-time-spec {
+      description
+        "Last Bandwidth Aware Graceful-Maintenance enter
+         timestamp";
+      uses BGP-TIMESPEC;
+    }
+    container gshut-bandwidth-aware-last-exit-time-spec {
+      description
+        "Last Bandwidth Aware Graceful-Maintenance exit
+         timestamp";
+      uses BGP-TIMESPEC;
+    }
     leaf read-throttles {
       type uint32;
       description
@@ -9186,6 +9373,18 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Last time NSR scoped syncwas done for the
          neighbor";
+    }
+    leaf gshut-bandwidth-aware-num-enters {
+      type uint32;
+      description
+        "Number of times neighbor entered
+         Graceful-Maintenance due to bandwidth-awareness";
+    }
+    leaf gshut-bandwidth-aware-num-exits {
+      type uint32;
+      description
+        "Number of times neighbor exited
+         Graceful-Maintenance due to bandwidth-awareness";
     }
   }
 
@@ -9488,8 +9687,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
     leaf tcpmss {
       type uint32;
       description
-        "Neighbor TCP Maximum Segment
-         size";
+        "Neighbor TCP Maximum Segment size";
     }
     leaf msg-log-in {
       type uint32;
@@ -10089,6 +10287,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
          session";
     }
     list af-data {
+      key "af-name";
       max-elements "25";
       description
         "Address family specific neighbor data";
@@ -10334,7 +10533,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Local Path ID";
     }
     leaf pelem-version {
-      type uint32;
+      type uint64;
       description
         "Version";
     }
@@ -10359,23 +10558,23 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Path peer path ID";
     }
     leaf pelem-table-attr-version {
-      type uint32;
+      type uint64;
       description
         "Table Attr version";
     }
     leaf pelem-path-table-attr-version {
-      type uint32;
+      type uint64;
       description
         "Path Table Attribute version";
     }
     leaf pelem-no-bestpath-table-attr-version {
-      type uint32;
+      type uint64;
       description
         "BGP network no best path tableattribute version
          number";
     }
     leaf pelem-no-addpath-table-attr-version {
-      type uint32;
+      type uint64;
       description
         "The version of the no addpath table attribute";
     }
@@ -10431,12 +10630,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "L2VPN Net LDP signaled  aggregation";
     }
     leaf table-version {
-      type uint32;
+      type uint64;
       description
         "Table version # for net";
     }
     leaf table-brib-version {
-      type uint32;
+      type uint64;
       description
         "Table version # for updates";
     }
@@ -10547,7 +10746,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Number of path for this net";
     }
     leaf version {
-      type uint32;
+      type uint64;
       description
         "The version of the the radix tree";
     }
@@ -10918,7 +11117,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Flags associated with net";
     }
     leaf bmp-net-version {
-      type uint32;
+      type uint64;
       description
         "Net's version";
     }
@@ -11019,7 +11218,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Comm librray ID";
     }
     leaf nexthop-version {
-      type uint32;
+      type uint64;
       description
         "Table version";
     }
@@ -11254,6 +11453,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Gateway prefix length";
     }
+    leaf nexthop-hash-slot {
+      type uint32;
+      description
+        "Sync Hash slot of Nexthop";
+    }
     list nexthop-gateway-info {
       description
         "Gateway related info, including Optimal Route
@@ -11464,12 +11668,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Whether the VRF is active";
     }
     leaf nh-rib-version {
-      type uint32;
+      type uint64;
       description
         "RIB version for gw_ctx";
     }
     leaf nh-nexthop-version {
-      type uint32;
+      type uint64;
       description
         "NH version for gw_ctx";
     }
@@ -11479,22 +11683,22 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Gateway context table id";
     }
     leaf epe-table-version {
-      type uint32;
+      type uint64;
       description
         "Version of the EPE table";
     }
     leaf epe-label-version {
-      type uint32;
+      type uint64;
       description
         "Version of the EPE label walk";
     }
     leaf epe-downloaded-version {
-      type uint32;
+      type uint64;
       description
         "Version of the EPE table downloaded";
     }
     leaf epe-standby-version {
-      type uint32;
+      type uint64;
       description
         "Version of the EPE table processed by sync
          thread";
@@ -11589,12 +11793,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Index of the this BGp update group";
     }
     leaf update-main-table-version {
-      type uint32;
+      type uint64;
       description
         "Main table version";
     }
     leaf update-vrf-table-rib-version {
-      type uint32;
+      type uint64;
       description
         "VRF Table RIB version";
     }
@@ -11642,30 +11846,30 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Number of neighbors in the sub-group";
     }
     leaf version {
-      type uint32;
+      type uint64;
       description
         "Version up to which we have generated updatesfor
          the entity";
     }
     leaf nsr-version {
-      type uint32;
+      type uint64;
       description
         "NSR version";
     }
     leaf pending-target-version {
-      type uint32;
+      type uint64;
       description
         "Target version for pending update generation";
     }
     leaf next-resume-version {
-      type uint32;
+      type uint64;
       description
         "Version number identifying the next net
          toprocess when an attribute table walk has been
          interrupted";
     }
     leaf update-refresh-target-version {
-      type uint32;
+      type uint64;
       description
         "Target version for update generation in response
          to arefresh request";
@@ -12279,6 +12483,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "This update group contains slow peers";
     }
+    leaf advertise-entropy-label-disable {
+      type boolean;
+      description
+        "Disable propagation of entropy label to this
+         peer";
+    }
     list neighbor {
       description
         "Neighbors in this update group which are not in
@@ -12332,22 +12542,22 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Default Orig enabled for a vrf afi";
     }
     leaf table-version {
-      type uint32;
+      type uint64;
       description
         "BGP global process table version info";
     }
     leaf rd-version {
-      type uint32;
+      type uint64;
       description
         "RD version";
     }
     leaf rib-version {
-      type uint32;
+      type uint64;
       description
         "Table version synced to RIB";
     }
     leaf nsr-conv-version {
-      type uint32;
+      type uint64;
       description
         "Cache for non stop routingcurrent table version";
     }
@@ -12426,7 +12636,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Received convergence notification from RIB";
     }
     leaf rib-convergence-version {
-      type uint32;
+      type uint64;
       description
         "Last convergence version received from RIB";
     }
@@ -12436,10 +12646,15 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Indicates if RIB table is in prefix-limit state";
     }
     leaf rib-table-full-version {
-      type uint32;
+      type uint64;
       description
         "Version when RIB table became full (from
          non-full)";
+    }
+    leaf is-unique-nexthop-check-disabled {
+      type boolean;
+      description
+        "Indicates if unique nexthop check disabled";
     }
     leaf nexthop-resolution-minimum-prefix-length-configured {
       type boolean;
@@ -12483,8 +12698,14 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Flag to indicate if the Selective option is
          configured with multipath external internal bgp";
     }
+    leaf deterministic-ibgp-multipath-enabled {
+      type boolean;
+      description
+        "Flag to indicate if Deterministic option is
+         configured with multipath internal bgp";
+    }
     leaf rib-acked-table-version {
-      type uint32;
+      type uint64;
       description
         "Table version acked by RIB";
     }
@@ -12519,12 +12740,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "SRv6 info under a Vrf All";
     }
     leaf rpki-version {
-      type uint32;
+      type uint64;
       description
         "RPKI table version walked";
     }
     leaf rpki-soft-reconf-version {
-      type uint32;
+      type uint64;
       description
         "RPKI soft reconfiguration version walked";
     }
@@ -12546,7 +12767,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
          runs";
     }
     leaf nh-tunnel-version {
-      type uint32;
+      type uint64;
       description
         "NH Tunnel Version";
     }
@@ -12729,7 +12950,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Sync-group Version";
       leaf entry {
-        type uint32;
+        type uint64;
         description
           "Sync-group Version";
       }
@@ -12846,7 +13067,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Is Route Monitoring mode enabled";
     }
     leaf bmp-table-version {
-      type uint32;
+      type uint64;
       description
         "Table version";
     }
@@ -12924,8 +13145,8 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "LSD label space is exhausted";
     }
-    leaf label-oor-version {
-      type uint32;
+    leaf label-o-or-version {
+      type uint64;
       description
         "Label Version when OOR happens";
     }
@@ -12950,7 +13171,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "BGP path Original Source Route Distinguisher";
     }
     leaf prefix-version {
-      type uint32;
+      type uint64;
       description
         "Version of BGP Prefix Table";
     }
@@ -12968,6 +13189,21 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type Bgp-afi;
       description
         "Address family identifier";
+    }
+    leaf sid-oor {
+      type boolean;
+      description
+        "SID out-of-resource state ";
+    }
+    leaf sid-oor-version {
+      type uint64;
+      description
+        "Sid Version when OOR happens";
+    }
+    leaf sid-fail {
+      type boolean;
+      description
+        "SRv6 sid allocation failed ";
     }
   }
 
@@ -13137,19 +13373,19 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Indicates if RIB table is in prefix-limit state";
     }
     leaf rib-table-full-version {
-      type uint32;
+      type uint64;
       description
         "Version when RIB table became full (from
          non-full)";
     }
     leaf first-rib-table-full-version {
-      type uint32;
+      type uint64;
       description
         "Version when RIB table was full for the first
          time";
     }
     leaf last-rib-table-full-version {
-      type uint32;
+      type uint64;
       description
         "Version when RIB table was full for the last
          time";
@@ -13162,13 +13398,13 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
          (in seconds)";
     }
     leaf first-rib-table-has-space-version {
-      type uint32;
+      type uint64;
       description
         "Version when RIB table had space for the first
          time";
     }
     leaf last-rib-table-has-space-version {
-      type uint32;
+      type uint64;
       description
         "Version when RIB table had space for the last
          time";
@@ -13614,6 +13850,20 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Memory (in bytes) used by path data";
     }
+    leaf path-lookup-path-count {
+      type uint32;
+      description
+        "Number of paths in path lookup db";
+    }
+    list net-path-distribution {
+      description
+        "Net Paths Distribution";
+      leaf entry {
+        type uint32;
+        description
+          "Net Paths Distribution";
+      }
+    }
   }
 
   grouping BGP-RIB-INSTALL-TIME-INFO {
@@ -13651,13 +13901,13 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Count of withdrawn routes";
     }
     leaf start-version {
-      type uint32;
+      type uint64;
       description
         "Start version of the BGP routing information
          base ";
     }
     leaf target-version {
-      type uint32;
+      type uint64;
       description
         "Target version of BGProuting information
          baseupdate ";
@@ -13673,12 +13923,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       uses BGP-TIMESPEC;
     }
     leaf trigger-version {
-      type uint32;
+      type uint64;
       description
         "The thread version last timethe thread is run";
     }
     leaf trigger-table-version {
-      type uint32;
+      type uint64;
       description
         "TriggerTableVersion";
     }
@@ -13708,11 +13958,13 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       uses BGP-TIMESPEC;
     }
     container version-wrap-start-time-spec {
+      status obsolete;
       description
         "Version Wrap handle start timestamp";
       uses BGP-TIMESPEC;
     }
     container version-wrap-done-time-spec {
+      status obsolete;
       description
         "Version Wrap handle Done timestamp";
       uses BGP-TIMESPEC;
@@ -13750,27 +14002,43 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "BGP router state for the address family ";
     }
     leaf table-version {
-      type uint32;
+      type uint64;
       description
         "BGP main routing table version";
+    }
+    leaf semi-wrap-table-version {
+      type uint64;
+      description
+        "BGP table version at semi wrap";
     }
     leaf version-wrapped {
       type uint32;
       description
-        "Number of times Version Wrap happened";
+        "Number of times Version semi-Wrap happened";
     }
     leaf version-wrapped-tid {
       type uint32;
+      status obsolete;
       description
         "Version Wrapped trigger tid";
     }
-    leaf max-active-pelem-version {
+    leaf low-versions-bumped {
       type uint32;
+      description
+        "Number of nets with low versions bumped";
+    }
+    leaf nets-at-semi-wrap {
+      type uint32;
+      description
+        "Number of nets in the tree at semi wrap";
+    }
+    leaf max-active-pelem-version {
+      type uint64;
       description
         "Maximum Active Pelem Version";
     }
     leaf merged-table-version {
-      type uint32;
+      type uint64;
       description
         "The merged Bgp table version after RPFO";
     }
@@ -13781,32 +14049,32 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
          pulse is sent or not";
     }
     leaf rib-brib-received-version {
-      type uint32;
+      type uint64;
       description
         "Version received from ";
     }
     leaf table-brib-version {
-      type uint32;
+      type uint64;
       description
         "Version sent to RIB/bRIB";
     }
     leaf label-version {
-      type uint32;
+      type uint64;
       description
         "Version updated by label thread";
     }
     leaf import-version {
-      type uint32;
+      type uint64;
       description
         "Version updated by import thread";
     }
     leaf standby-version {
-      type uint32;
+      type uint64;
       description
         "Version updated by sync thread";
     }
     leaf send-version {
-      type uint32;
+      type uint64;
       description
         "Version for sending updates to peers";
     }
@@ -13949,12 +14217,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Timestamp when Label thread is last triggered";
     }
     leaf last-label-version {
-      type uint32;
+      type uint64;
       description
         "Label thread version when last triggered";
     }
     leaf label-bgp-version {
-      type uint32;
+      type uint64;
       description
         "BGP version when label thread is last triggered";
     }
@@ -13969,12 +14237,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Timestamp when RIB thread is last triggered";
     }
     leaf last-rib-version {
-      type uint32;
+      type uint64;
       description
         "RIB thread version when last triggered";
     }
     leaf rib-bgp-version {
-      type uint32;
+      type uint64;
       description
         "BGP version when RIB thread is last triggered";
     }
@@ -13989,12 +14257,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Timestamp when Import thread is last triggered";
     }
     leaf last-import-version {
-      type uint32;
+      type uint64;
       description
         "Import thread version when last triggered";
     }
     leaf import-bgp-version {
-      type uint32;
+      type uint64;
       description
         "BGP version when Import thread is last triggered";
     }
@@ -14010,7 +14278,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
          triggered";
     }
     leaf update-gen-bgp-version {
-      type uint32;
+      type uint64;
       description
         "BGP version when Update generation thread is
          last triggered";
@@ -14081,7 +14349,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
          configured";
     }
     leaf rib-acked-table-version {
-      type uint32;
+      type uint64;
       description
         "Table version acked by routing information base";
     }
@@ -15108,6 +15376,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "RIB RNH Encapsulation Type";
     }
+    leaf entropy-label-capability {
+      type boolean;
+      description
+        "Entropy label Capability";
+    }
   }
 
   grouping BGP-ADVINFO-TYPE {
@@ -15680,6 +15953,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Flags associated with path";
     }
+    leaf path-flags2 {
+      type uint32;
+      description
+        "Flags2 associated with path";
+    }
     leaf path-import-flags {
       type uint32;
       description
@@ -15701,7 +15979,7 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Received path ID";
     }
     leaf path-table-version {
-      type uint32;
+      type uint64;
       description
         "Table version # for pelem";
     }
@@ -15891,6 +16169,31 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "EVPN IGMP Flags";
     }
+    leaf has-srv6-sid-allocated {
+      type boolean;
+      description
+        "Net has SRv6 SID allocated";
+    }
+    leaf srv6-sid-address {
+      type Ipv6-address;
+      description
+        "SRv6 SID address value";
+    }
+    leaf srv6-sid-address-len {
+      type uint32;
+      description
+        "SRv6 SID address Length";
+    }
+    leaf srv6-sid-alloc-mode {
+      type uint32;
+      description
+        "SID alloc mode of SRv6";
+    }
+    leaf srv6-locator {
+      type string;
+      description
+        "SRv6 Locator Name";
+    }
     leaf evpn-imet-pmsi-originator-present {
       type boolean;
       description
@@ -15900,6 +16203,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type boolean;
       description
         "Reachability for PMSI Originator nexthop";
+    }
+    leaf path-count {
+      type uint32;
+      description
+        "Number of paths for net";
     }
     list rcvd-label {
       description
@@ -16538,6 +16846,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Inbound prefix based filter item info";
       uses BGP-CONFIG-INFO;
     }
+    container route-policy-retention-info {
+      description
+        "Inbound Retention policy item info";
+      uses BGP-CONFIG-INFO;
+    }
     container remove-private-as-info {
       description
         "Outbound private-AS removal item info";
@@ -16753,6 +17066,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
         "Slow peer update group splitrelate information";
       uses BGP-CONFIG-INFO;
     }
+    container entropy-label-advertise-disable-info {
+      description
+        "Disable Entropy Label propagation";
+      uses BGP-CONFIG-INFO;
+    }
     leaf has-orf-capability {
       type uint32;
       description
@@ -16834,6 +17152,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type string;
       description
         "Inbound prefix based filter";
+    }
+    leaf route-policy-ret {
+      type string;
+      description
+        "Inbound route retention route-policy name";
     }
     leaf remove-private-as-out {
       type boolean;
@@ -16925,6 +17248,16 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type uint32;
       description
         "Default allowas_in count";
+    }
+    leaf af-retention-stale-time {
+      type uint32;
+      description
+        "Stale time in   route retention";
+    }
+    leaf af-ret-policy {
+      type string;
+      description
+        "Retention route policy name";
     }
     leaf af-long-lived-graceful-restart-stale-time-send {
       type uint32;
@@ -17126,6 +17459,11 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Options to indicate if rpki tested paths are to
          be stored";
+    }
+    leaf entropy-label-advertise-disable {
+      type boolean;
+      description
+        "Disable Entropy Label propagation";
     }
   }
 
@@ -17459,6 +17797,12 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       description
         "Information for the activation ofgraceful
          shutdown";
+      uses BGP-CONFIG-INFO;
+    }
+    container graceful-shutdown-bandwidth-aware-info {
+      description
+        "Bandwidth-Aware Graceful-Maintenance
+         configuration info";
       uses BGP-CONFIG-INFO;
     }
     container update-in-safi14-merge-info {
@@ -17872,6 +18216,23 @@ submodule Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
       type uint32;
       description
         "Graceful Shutdown state is activated";
+    }
+    leaf graceful-shutdown-bandwidth-aware-mode {
+      type Bgp-gshut-bw-mode;
+      description
+        "Bandwidth-Aware Graceful-Maintenance mode";
+    }
+    leaf graceful-shutdown-bandwidth-aware-low-threshold {
+      type uint32;
+      description
+        "Bandwidth-Aware Graceful-Maintenance Low
+         threshold";
+    }
+    leaf graceful-shutdown-bandwidth-aware-high-threshold {
+      type uint32;
+      description
+        "Bandwidth-Aware Graceful-Maintenance High
+         threshold";
     }
     leaf neighbor-remote-as-list-group-name {
       type string;

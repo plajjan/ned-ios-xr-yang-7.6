@@ -29,9 +29,14 @@ submodule Cisco-IOS-XR-msdp-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR msdp package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-22 {
+    description
+      "backward compatible addition";
+    semver:module-version "2.0.0";
+  }
   revision 2019-08-27 {
     description
       "Providing MSDP information.";
@@ -1069,7 +1074,7 @@ submodule Cisco-IOS-XR-msdp-oper-sub1 {
         "Peer statistics";
       uses MSDP-STATS-PEER-BAG;
     }
-    leaf local-address {
+    leaf connection-source {
       type inet:ipv4-address;
       description
         "Local Address";

@@ -46,9 +46,22 @@ module Cisco-IOS-XR-traffmon-netflow-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-05-23 {
+    description
+      "Added leaf for sflow extended tunnel flow records";
+    semver:module-version "2.1.0";
+  }
   revision 2021-02-23 {
     description
-      "Added class table export time-out";
+      "Added class table export time-out
+       2021-01-16
+           Added l2 record type in monitor-map
+       2020-11-16
+           Increased maximum packet length in exporter configuration to support jumbo export packets
+       2020-10-16
+           Added gtp record type in monitor-map and protobuf version in exporter-map
+       2020-07-15
+           Added flow support for l2transport interfaces";
     semver:module-version "2.0.0";
   }
   revision 2020-02-15 {
@@ -344,6 +357,16 @@ module Cisco-IOS-XR-traffmon-netflow-cfg {
       }
       enum "extended-gateway" {
         value 1;
+        description
+          "Option extended-gateway flow type";
+      }
+      enum "extended-ipv4-tunnel-egress" {
+        value 2;
+        description
+          "Option extended-gateway flow type";
+      }
+      enum "extended-ipv6-tunnel-egress" {
+        value 3;
         description
           "Option extended-gateway flow type";
       }

@@ -26,6 +26,11 @@ submodule Cisco-IOS-XR-asr9k-np-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-18 {
+    description
+      "add support for NP resources";
+    semver:module-version "1.2.0";
+  }
   revision 2021-05-26 {
     description
       "add support for NP ucode counter query by index";
@@ -131,6 +136,37 @@ submodule Cisco-IOS-XR-asr9k-np-oper-sub1 {
       description
         "Array of NP Fast Drop Counters";
       uses PRM-NP-FAST-DROP-A;
+    }
+  }
+
+  grouping PRM-RESOURCES-TCAM-FEATURE {
+    description
+      "Resources TCAM feature";
+    leaf feature-id {
+      type string;
+      description
+        "Feature ID";
+    }
+    leaf total-vmrids {
+      type uint32;
+      description
+        "Total VMR IDs for feature";
+    }
+    leaf total-used-entries {
+      type uint32;
+      description
+        "Total entries used by feature";
+    }
+    leaf total-allocated-entries {
+      type uint32;
+      description
+        "Total entries allocated by feature";
+    }
+    leaf utilization-percent {
+      type uint32;
+      units "percentage";
+      description
+        "Total utilization percentage for feature";
     }
   }
 
@@ -829,7 +865,7 @@ submodule Cisco-IOS-XR-asr9k-np-oper-sub1 {
     }
     leaf show-str {
       type string {
-        length "0..160";
+        length "0..2000";
       }
       description
         "one cfgmode display string";

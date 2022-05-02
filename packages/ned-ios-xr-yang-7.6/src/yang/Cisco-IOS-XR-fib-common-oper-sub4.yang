@@ -32,19 +32,30 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR fib-common package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-17 {
+    description
+      "Modify the type of list fsum-attr-cnt";
+    semver:module-version "5.0.0";
+  }
   revision 2020-12-02 {
     description
-      "Adding per-object accounting.";
-    semver:module-version "3.1.0";
+      "Adding per-object accounting.
+       2020-10-20
+           NBC documentation of CSCvu06764, CSCvv14573,CSCvv76648
+       2020-05-26
+           Update SRv6 Block Space naming convention
+       2020-05-05
+           changes related to treat SRv6 and SID as well-known when parsing XML for yang";
+    semver:module-version "3.0.0";
   }
   revision 2020-01-16 {
     description
       "NBC documentation of CSCvs27272,CSCvs22018,CSCvs45512
        2019-10-29
-       Updated srv6 global bag";
+         Updated srv6 global bag";
     semver:module-version "2.0.0";
   }
   revision 2019-09-27 {
@@ -1141,6 +1152,11 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
         "Ignore nexthop address and interface in case of
          via-label routes";
     }
+    leaf platform-nsr-ready-required {
+      type boolean;
+      description
+        "Platform NSR readiness is required";
+    }
     list fpc-lisp-decap-over-v4 {
       min-elements 3;
       max-elements "3";
@@ -1532,6 +1548,17 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
       description
         "Total time for all pd updates";
     }
+    leaf number-async-eod-done {
+      type uint64;
+      description
+        "Number of asynchronous end of download done";
+    }
+    leaf number-async-eod-done-forwarded {
+      type uint64;
+      description
+        "Number of asynchronous end of download done
+         forwarded";
+    }
     list fpus-obj-stat {
       description
         "Array of max time info indexed by object type";
@@ -1801,7 +1828,7 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
         "Scheduler time period in msec";
     }
     list fpd-gbltbl-src-entry {
-      max-elements "14";
+      max-elements "15";
       description
         "Number of global routes from
          
@@ -1815,7 +1842,7 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
       }
     }
     list fpd-vrftbl-src-entry {
-      max-elements "14";
+      max-elements "15";
       description
         "Number of vrf routes from
          
@@ -1987,6 +2014,16 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
       type uint32;
       description
         "The value of the retry syslog timer";
+    }
+    leaf mi-hlb-mode {
+      type uint32;
+      description
+        "BGP hierarchical load balancing mode";
+    }
+    leaf mi-hlb-num-paths {
+      type uint32;
+      description
+        "number of paths for hierarchical load balancing";
     }
     list mi-idb-ext-cleanup-failed-count {
       max-elements "3";
@@ -3541,6 +3578,16 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
       description
         "SRv6 EVPN xconnect ID";
     }
+    leaf srv6-evpn-bridge-id {
+      type uint32;
+      description
+        "SRv6 EVPN bridge ID";
+    }
+    leaf srv6-evpn-shg-id {
+      type uint32;
+      description
+        "SRv6 EVPN shg ID";
+    }
   }
 
   grouping FIB-SH-TBL-MPLS-LABEL-STACK {
@@ -5024,12 +5071,12 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
   grouping FIB-SH-PFX-MASKLEN-DISTRIB {
     description
       "FIB Prefix Masklengths distribution";
-    list unicast-prefixe {
+    list unicast-prefix {
       description
         "Masklength counts for unicast prefixes";
       uses FIB-SH-PFX-MASKLEN-CNT;
     }
-    list broadcast-prefixe {
+    list broadcast-prefix {
       description
         "Masklength counts for broadcast prefixes";
       uses FIB-SH-PFX-MASKLEN-CNT;
@@ -5203,17 +5250,17 @@ submodule Cisco-IOS-XR-fib-common-oper-sub4 {
       description
         "Number of reresolved entries";
     }
-    leaf old-unresolve-entries {
+    leaf old-unresolved-entries {
       type uint32;
       description
         "Number of old unresolved entries";
     }
-    leaf new-unresolve-entries {
+    leaf new-unresolved-entries {
       type uint32;
       description
         "Number of new unresolved entries";
     }
-    leaf unresolve-entries {
+    leaf unresolved-entries {
       type uint32;
       description
         "Number of total unresolved entries";

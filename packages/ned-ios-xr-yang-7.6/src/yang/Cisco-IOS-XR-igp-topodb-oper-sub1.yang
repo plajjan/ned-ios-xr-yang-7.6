@@ -32,10 +32,15 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-06-01 {
+  revision 2021-10-22 {
     description
-      "Added changes to show if a FAD contains unknown parameters";
-    semver:module-version "2.1.0";
+      "Modified for Flex algo srlg exclude-any and Flex algo External features.";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-05-12 {
+    description
+      "Modified for Flex algo Inter-area support.";
+    semver:module-version "3.0.0";
   }
   revision 2020-01-02 {
     description
@@ -99,18 +104,6 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
   grouping OTLIB-SH-AREA-ALGO-SUMMARY {
     description
       "OTLIB Area Algo Summary";
-    container uloop-timestamp-begin-last-successful-calc {
-      description
-        "Time at which last successful microloop
-         calculation began";
-      uses OTLIB-SHOW-TIME;
-    }
-    container uloop-timestamp-end-last-successful-calc {
-      description
-        "Time at which last successful microloop
-         calculation was completed";
-      uses OTLIB-SHOW-TIME;
-    }
     leaf algo-number {
       type uint8;
       description
@@ -164,6 +157,11 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
         "Whether selected FAD contains parameters not
          supported by this node";
     }
+    leaf is-fapm-supported {
+      type boolean;
+      description
+        "Whether FAPM/FAAM support is enabled";
+    }
     leaf uloop-near-end-node {
       type uint32;
       description
@@ -211,6 +209,22 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
         "Action that triggered the last successful
          microloop calculation";
     }
+    leaf uloop-last-success-begin {
+      type string {
+        length "0..50";
+      }
+      description
+        "Time at which last successful microloop
+         calculation began";
+    }
+    leaf uloop-last-success-end {
+      type string {
+        length "0..50";
+      }
+      description
+        "Time at which last successful microloop
+         calculation was completed";
+    }
     leaf-list exclude-affinity {
       type uint32;
       description
@@ -225,6 +239,11 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       type uint32;
       description
         "Include All Affinity";
+    }
+    leaf-list exclude-srlg {
+      type uint32;
+      description
+        "Exclude SRLG";
     }
   }
 
@@ -391,6 +410,11 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       description
         "Backup Metric";
     }
+    leaf label {
+      type uint32;
+      description
+        "Label";
+    }
     leaf primary-path {
       type boolean;
       description
@@ -492,31 +516,16 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       description
         "Path Label";
     }
-  }
-
-  grouping OTLIB-SHOW-TIME {
-    description
-      "Time in seconds and nanoseconds";
-    leaf second {
+    leaf area-id {
       type uint32;
       description
-        "Second";
-    }
-    leaf nanosecond {
-      type uint32;
-      description
-        "Nanosecond";
+        "Area ID";
     }
   }
 
   grouping OTLIB-SHOW-ROUTE-ALGO {
     description
       "OTLIB Route Algo";
-    container route-update-time {
-      description
-        "Time at which this route was updated";
-      uses OTLIB-SHOW-TIME;
-    }
     leaf algo-number {
       type uint8;
       description
@@ -526,6 +535,18 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       type uint64;
       description
         "Route Metric";
+    }
+    leaf forward-distance {
+      type uint64;
+      description
+        "Forward Distance";
+    }
+    leaf route-update-time {
+      type string {
+        length "0..50";
+      }
+      description
+        "Time at which this route was updated";
     }
     leaf route-algo-flags {
       type uint8;
@@ -551,6 +572,11 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       type uint32;
       description
         "Route path count";
+    }
+    leaf ext-e-bit {
+      type boolean;
+      description
+        "External E bit";
     }
     list path {
       description
@@ -619,6 +645,558 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
     }
   }
 
+  grouping OTLIB-SHOW-ASBR-CONTRIB-ALGO {
+    description
+      "OTLIB Flex algo specific ASBR contributor";
+    leaf algo {
+      type uint8;
+      description
+        "Algo number";
+    }
+    leaf igp-metric {
+      type uint32;
+      description
+        "Base IGP metric of the asbr by the node";
+    }
+    leaf faam-metric {
+      type uint32;
+      description
+        "FAAM metric of the asbr by the node";
+    }
+    leaf total-metric {
+      type uint64;
+      description
+        "Total metric to reach the asbr";
+    }
+    leaf contrib-flags {
+      type uint8;
+      description
+        "ASBR contributor flags";
+    }
+  }
+
+  grouping OTLIB-SHOW-ASBR {
+    description
+      "OTLIB ASBR";
+    leaf asbrid {
+      type inet:ipv4-address;
+      description
+        "ASBR ID";
+    }
+    leaf asbr-metric {
+      type uint32;
+      description
+        "ASBR metric";
+    }
+    list asbr-contributor {
+      description
+        "ASBR Contributors";
+      uses OTLIB-SHOW-ASBR-CONTRIB-ALGO;
+    }
+  }
+
+  grouping OTLIB-SHOW-ASBR-REACHABILITY-NODE {
+    description
+      "OTLIB ASBR Reachability Node";
+    container node-id {
+      description
+        "Node ID";
+      uses OTLIB-SHOW-NODE-ID;
+    }
+    leaf num-asb-rs {
+      type uint32;
+      description
+        "Number of ASBRs";
+    }
+    list asbr {
+      description
+        "List of ASBRs advertised by the node";
+      uses OTLIB-SHOW-ASBR;
+    }
+  }
+
+  grouping OTLIB-SHOW-ASBR-REACHABILITY-AREA {
+    description
+      "OTLIB ASBR Reachability Area";
+    leaf area-id-string {
+      type string {
+        length "0..16";
+      }
+      description
+        "Area ID string";
+    }
+    list node {
+      description
+        "List of Nodes";
+      uses OTLIB-SHOW-ASBR-REACHABILITY-NODE;
+    }
+  }
+
+  grouping OTLIB-SHOW-ASBR-REACHABILITY-INSTANCE {
+    description
+      "OTLIB ASBR Reachability Instance";
+    leaf router-id {
+      type inet:ipv4-address;
+      description
+        "Router ID";
+    }
+    list area {
+      description
+        "List of Areas";
+      uses OTLIB-SHOW-ASBR-REACHABILITY-AREA;
+    }
+  }
+
+  grouping OTLIB-SHOW-NFTE-NODE-SRLG {
+    description
+      "OTLIB Nfte Srlg";
+    leaf srlg-interface-topo-intf {
+      type uint32;
+      description
+        "Srlg Interface Topo Interface";
+    }
+    leaf sit-pcspt-node-srlg-dist {
+      type uint64;
+      description
+        "Srlg Pcspt Node Srlg Dist";
+    }
+    list nfte-path {
+      description
+        "Nfte Path List";
+      uses OTLIB-SHOW-NFTE-PATH;
+    }
+  }
+
+  grouping OTLIB-SHOW-NFTE-SRLG {
+    description
+      "OTLIB Nfte Srlg";
+    leaf srlg-interface-topo-intf {
+      type uint32;
+      description
+        "Srlg Interface Topo Interface";
+    }
+    leaf sit-pcspt-srlg-dist {
+      type uint64;
+      description
+        "Srlg Pcspt Srlg Dist";
+    }
+    list nfte-path {
+      description
+        "Nfte Path List";
+      uses OTLIB-SHOW-NFTE-PATH;
+    }
+  }
+
+  grouping OTLIB-SHOW-NFTE-NODE {
+    description
+      "OTLIB Nfte Node";
+    leaf nfte-pcspt-node-dist {
+      type uint64;
+      description
+        "Nfte Post Convergence Node Distance";
+    }
+    list nfte-path {
+      description
+        "Nfte Path List";
+      uses OTLIB-SHOW-NFTE-PATH;
+    }
+  }
+
+  grouping OTLIB-SHOW-NFTE-PATH {
+    description
+      "OTLIB Nfte Path";
+    leaf nfte-path-nexthop {
+      type inet:ipv4-address;
+      description
+        "Nfte Path Nexthop";
+    }
+    leaf nfte-path-ifhandle {
+      type uint32;
+      description
+        "Nfte Path Intf Handle";
+    }
+    leaf nfte-path-nbr-id {
+      type inet:ipv4-address;
+      description
+        "Nfte Path Nbr Id";
+    }
+    leaf nfte-parent-node-id {
+      type inet:ipv4-address;
+      description
+        "Nfte Parent Node Id";
+    }
+    leaf nfte-path-is-repair {
+      type boolean;
+      description
+        "Nfte Path Node Id";
+    }
+    list repair-node {
+      description
+        "Repair Node List";
+      uses OTLIB-SHOW-REPAIR-NODE;
+    }
+  }
+
+  grouping OTLIB-SHOW-NFTE-LINK {
+    description
+      "OTLIB Nfte Link";
+    leaf nfte-pcspt-dist {
+      type uint64;
+      description
+        "Nfte Post Convergence Distance";
+    }
+    list nfte-path {
+      description
+        "Nfte Path List";
+      uses OTLIB-SHOW-NFTE-PATH;
+    }
+  }
+
+  grouping OTLIB-SHOW-NFTE {
+    description
+      "OTLIB Nfte";
+    container nfte-link {
+      description
+        "Nfte Link Protection";
+      uses OTLIB-SHOW-NFTE-LINK;
+    }
+    container nfte-node {
+      description
+        "Nfte Node Protection";
+      uses OTLIB-SHOW-NFTE-NODE;
+    }
+    leaf nfte-node-id {
+      type inet:ipv4-address;
+      description
+        "Nfte Node Id";
+    }
+    leaf nfte-dist {
+      type uint64;
+      description
+        "Nfte Distance";
+    }
+    leaf nfte-rspt-dist {
+      type uint64;
+      description
+        "Nfte Reverse SPT Distance";
+    }
+    leaf nfte-in-pspace {
+      type boolean;
+      description
+        "Nfte In P Space";
+    }
+    leaf nfte-in-qspace {
+      type boolean;
+      description
+        "Nfte In Q Space";
+    }
+    leaf nfte-in-ext-pspace {
+      type boolean;
+      description
+        "Nfte In Ext P Space";
+    }
+    list nfte-srlg {
+      description
+        "Nfte Srlg Protection list";
+      uses OTLIB-SHOW-NFTE-SRLG;
+    }
+    list nfte-node-srlg {
+      description
+        "Nfte Node Srlg Protection list";
+      uses OTLIB-SHOW-NFTE-NODE-SRLG;
+    }
+  }
+
+  grouping OTLIB-SHOW-IPFRR-NBR-ALGO {
+    description
+      "OTLIB Ipfrr Nbr Algo";
+    leaf algo-number {
+      type uint8;
+      description
+        "Algo Number";
+    }
+    leaf lfa-rev-num {
+      type uint32;
+      description
+        "Lfa Revision Number";
+    }
+    list nfte {
+      description
+        "Node Flexalgo Topo Entries List";
+      uses OTLIB-SHOW-NFTE;
+    }
+  }
+
+  grouping OTLIB-SHOW-IPFRR-NBR {
+    description
+      "OTLIB Ipfrr Nbr";
+    leaf neighbor-id {
+      type inet:ipv4-address;
+      description
+        "Neighbor ID";
+    }
+    list ipfrr-nbr-algo {
+      description
+        "Ipfrr Nbr Algo List";
+      uses OTLIB-SHOW-IPFRR-NBR-ALGO;
+    }
+  }
+
+  grouping OTLIB-SHOW-IPFRR-AREA {
+    description
+      "OTLIB SHOW IPFRR AREA";
+    leaf area-id-str {
+      type string;
+      description
+        "Area Id Str";
+    }
+    list ipfrr-nbr {
+      description
+        "Ipfrr Nbr List";
+      uses OTLIB-SHOW-IPFRR-NBR;
+    }
+  }
+
+  grouping OTLIB-SHOW-IPFRR-INSTANCE {
+    description
+      "OTLIB SHOW IPFRR INSTANCE";
+    leaf vrf-name {
+      type string;
+      description
+        "VRF Name";
+    }
+    leaf router-id {
+      type inet:ipv4-address;
+      description
+        "Router ID";
+    }
+    list ipfrr-area {
+      description
+        "Ipfrr Area List";
+      uses OTLIB-SHOW-IPFRR-AREA;
+    }
+  }
+
+  grouping OTLIB-SHOW-FORW-ADDR {
+    description
+      "OTLIB Forwarding Address";
+    leaf forw-addr {
+      type inet:ipv4-address;
+      description
+        "Forw Addr";
+    }
+    leaf route-prefix {
+      type inet:ipv4-address;
+      description
+        "Route Prefix";
+    }
+    leaf route-prefix-len {
+      type uint8;
+      description
+        "Route Prefix Len";
+    }
+    leaf forw-addr-flags {
+      type uint8;
+      description
+        "Forwarding Address flags";
+    }
+  }
+
+  grouping OTLIB-SHOW-FORW-ADDR-INSTANCE {
+    description
+      "OTLIB Forwarding Address Instance";
+    leaf router-id {
+      type inet:ipv4-address;
+      description
+        "Router ID";
+    }
+    list forw-addr {
+      description
+        "List of forwarding addresses";
+      uses OTLIB-SHOW-FORW-ADDR;
+    }
+  }
+
+  grouping OTLIB-SHOW-REPAIR-NODE {
+    description
+      "OTLIB Repair Node";
+    leaf re-label {
+      type uint32;
+      description
+        "Repair element Label";
+    }
+    leaf re-address {
+      type inet:ipv4-address;
+      description
+        "Repair Address";
+    }
+    leaf re-identifier {
+      type inet:ipv4-address;
+      description
+        "Repair Identifier";
+    }
+    leaf re-is-node-sid {
+      type boolean;
+      description
+        "Repair Is Node Sid";
+    }
+  }
+
+  grouping OTLIB-SHOW-ULOOP-NODE-PATH {
+    description
+      "OTLIB Microloop Avoidance Node Path";
+    leaf path-nexthop {
+      type inet:ipv4-address;
+      description
+        "Path Nexthop";
+    }
+    leaf path-ifhandle {
+      type uint32;
+      description
+        "Path Intf Handle";
+    }
+    leaf path-nbr-id {
+      type uint32;
+      description
+        "Path Nbr Id";
+    }
+    leaf parent-node-id {
+      type inet:ipv4-address;
+      description
+        "Parent Node Id";
+    }
+    leaf path-is-repair {
+      type boolean;
+      description
+        "Path Node Id";
+    }
+    list repair-node {
+      description
+        "Reapir Node List";
+      uses OTLIB-SHOW-REPAIR-NODE;
+    }
+  }
+
+  grouping OTLIB-SHOW-ULOOP-NODE {
+    description
+      "OTLIB Microloop Avoidance Node";
+    leaf node-id {
+      type inet:ipv4-address;
+      description
+        "Node Id";
+    }
+    leaf rspt-dist {
+      type uint64;
+      description
+        "Rspt Distance";
+    }
+    leaf in-pspace {
+      type boolean;
+      description
+        "In P Space";
+    }
+    leaf in-qspace {
+      type boolean;
+      description
+        "In Q Space";
+    }
+    leaf in-ext-pspace {
+      type boolean;
+      description
+        "In Ext P Space";
+    }
+    list path {
+      description
+        "Path List";
+      uses OTLIB-SHOW-ULOOP-NODE-PATH;
+    }
+  }
+
+  grouping OTLIB-SHOW-ULOOP-ALGO {
+    description
+      "OTLIB Microloop Avoidance Algo";
+    leaf algo-number {
+      type uint8;
+      description
+        "Algo Number";
+    }
+    list node {
+      description
+        "Node List";
+      uses OTLIB-SHOW-ULOOP-NODE;
+    }
+  }
+
+  grouping OTLIB-SHOW-ULOOP-AREA {
+    description
+      "OTLIB Microloop Avoidance Area";
+    leaf area-id-str {
+      type string;
+      description
+        "Area Id Str";
+    }
+    list algo {
+      description
+        "Algo List";
+      uses OTLIB-SHOW-ULOOP-ALGO;
+    }
+  }
+
+  grouping OTLIB-SHOW-ULOOP-INSTANCE {
+    description
+      "OTLIB Microloop Avoidance Instance";
+    leaf vrf-name {
+      type string;
+      description
+        "VRF Name";
+    }
+    leaf router-id {
+      type inet:ipv4-address;
+      description
+        "Router ID";
+    }
+    list area {
+      description
+        "Area List";
+      uses OTLIB-SHOW-ULOOP-AREA;
+    }
+  }
+
+  grouping OTLIB-SHOW-ASBR-CONTRIB {
+    description
+      "OTLIB ASBR contributor";
+    leaf igp-metric {
+      type uint32;
+      description
+        "Base IGP metric of the asbr by the node";
+    }
+    leaf faam-metric {
+      type uint32;
+      description
+        "FAAM metric of the asbr by the node";
+    }
+    leaf total-metric {
+      type uint64;
+      description
+        "Total metric to reach the asbr";
+    }
+    leaf contrib-flags {
+      type uint8;
+      description
+        "ASBR contributor flags";
+    }
+    leaf adv-router-id {
+      type inet:ipv4-address;
+      description
+        "Advertising Router ID";
+    }
+    leaf area-id {
+      type uint32;
+      description
+        "Area ID of the contributor";
+    }
+  }
+
   grouping OTLIB-SHOW-TOPO-PATH {
     description
       "OTLIB Topo Path";
@@ -641,6 +1219,11 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       type uint32;
       description
         "Path Weight";
+    }
+    leaf area-id {
+      type uint32;
+      description
+        "Area ID";
     }
   }
 
@@ -667,15 +1250,30 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       description
         "Direct Node";
     }
-    leaf is-path-dirty {
+    leaf is-node-dirty {
       type boolean;
       description
         "Node is dirty";
+    }
+    leaf is-abr-dirty {
+      type boolean;
+      description
+        "ABR Node is dirty";
+    }
+    leaf is-asbr-dirty {
+      type boolean;
+      description
+        "ASBR Node is dirty";
     }
     list path {
       description
         "Algo Path List";
       uses OTLIB-SHOW-TOPO-PATH;
+    }
+    list asbr-contributor {
+      description
+        "ASBR Contributors";
+      uses OTLIB-SHOW-ASBR-CONTRIB;
     }
   }
 
@@ -717,7 +1315,13 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
         length "0..16";
       }
       description
-        "Area ID";
+        "Area ID string. Valid only if it is not ASBR
+         paths";
+    }
+    leaf is-asbr-paths {
+      type boolean;
+      description
+        "Is the paths to ASBRs";
     }
     list node {
       description
@@ -795,6 +1399,11 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       description
         "Include All Affinity";
     }
+    leaf-list exclude-srlg {
+      type uint32;
+      description
+        "Exclude-any SRLG";
+    }
   }
 
   grouping OTLIB-SHOW-SR-RANGE {
@@ -825,10 +1434,20 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       description
         "SID";
     }
+    leaf igp-metric {
+      type uint32;
+      description
+        "Base IGP metric of the prefix by the node";
+    }
+    leaf fapm-metric {
+      type uint32;
+      description
+        "FAPM metric of the prefix by the node";
+    }
     leaf total-metric {
       type uint64;
       description
-        "Total metric";
+        "Total metric to reach the prefix";
     }
     leaf contrib-flags {
       type uint8;
@@ -839,6 +1458,21 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       type uint8;
       description
         "SID flags";
+    }
+    leaf route-type {
+      type uint8;
+      description
+        "Route Type of this contributor";
+    }
+    leaf adv-router-id {
+      type inet:ipv4-address;
+      description
+        "Advertising Router ID";
+    }
+    leaf area-id {
+      type uint32;
+      description
+        "Area ID of the contributor";
     }
   }
 
@@ -865,10 +1499,68 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       description
         "Route Type";
     }
+    leaf ext-e-bit {
+      type boolean;
+      description
+        "External E Bit. Valid when route type is
+         external";
+    }
+    leaf forwarding-address {
+      type inet:ipv4-address;
+      description
+        "Forwarding Address applicable only for external
+         prefixes";
+    }
+    leaf external-tag {
+      type uint32;
+      description
+        "Tag applicable only for external prefixes";
+    }
+    leaf prefix-flags {
+      type uint16;
+      description
+        "Prefix Flags";
+    }
     list prefix-contributor {
       description
         "Prefix Contributors";
       uses OTLIB-SHOW-PREFIX-CONTRIB;
+    }
+  }
+
+  grouping OTLIB-SHOW-ADJ-SID {
+    description
+      "OTLIB Adj Sid";
+    leaf lan-nbr-id {
+      type uint32;
+      description
+        "Neighbor ID in LAN";
+    }
+    leaf sid {
+      type uint32;
+      description
+        "SID value advertised";
+    }
+    leaf type {
+      type uint8;
+      description
+        "Type specifying if this is Normal Adj SID or LAN
+         Adj SID";
+    }
+    leaf flags {
+      type uint8;
+      description
+        "Adj SID Flags as per RFC";
+    }
+    leaf mtid {
+      type uint8;
+      description
+        "Multi-Topology ID as per RFC";
+    }
+    leaf weight {
+      type uint8;
+      description
+        "Weight used in load balancing";
     }
   }
 
@@ -930,6 +1622,11 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
       type uint32;
       description
         "Max Bandwidth";
+    }
+    list adj-sid {
+      description
+        "Adjacency Sid";
+      uses OTLIB-SHOW-ADJ-SID;
     }
   }
 
@@ -1106,7 +1803,12 @@ submodule Cisco-IOS-XR-igp-topodb-oper-sub1 {
         length "0..16";
       }
       description
-        "Area ID string";
+        "Area ID string. Valid only if not AS scoped";
+    }
+    leaf is-as-scoped {
+      type boolean;
+      description
+        "Is the prefixes AS scoped";
     }
     leaf num-nodes {
       type uint16;

@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-nto-misc-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR nto-misc package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-25 {
+    description
+      "Enhance output as per show shmwin summary/detail";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -48,6 +53,16 @@ submodule Cisco-IOS-XR-nto-misc-oper-sub1 {
       type uint64;
       description
         "Size of shared window";
+    }
+    leaf window-group {
+      type uint64;
+      description
+        "Shared window ID";
+    }
+    leaf private-window {
+      type boolean;
+      description
+        "Shared window type";
     }
   }
 
@@ -119,6 +134,42 @@ submodule Cisco-IOS-XR-nto-misc-oper-sub1 {
       units "byte";
       description
         "Flash System size in bytes";
+    }
+    leaf group1-shmwin-size {
+      type uint64;
+      units "byte";
+      description
+        "Shared memory size in bytes";
+    }
+    leaf group1-shmwin-allocated {
+      type uint64;
+      units "byte";
+      description
+        "Shared memory allocated in bytes";
+    }
+    leaf group1-shmwin-free {
+      type uint64;
+      units "byte";
+      description
+        "Shared memory available in bytes";
+    }
+    leaf group2-shmwin-size {
+      type uint64;
+      units "byte";
+      description
+        "Shared memory size in bytes";
+    }
+    leaf group2-shmwin-allocated {
+      type uint64;
+      units "byte";
+      description
+        "Shared memory allocated in bytes";
+    }
+    leaf group2-shmwin-free {
+      type uint64;
+      units "byte";
+      description
+        "Shared memory available in bytes";
     }
     leaf total-shared-window {
       type uint64;

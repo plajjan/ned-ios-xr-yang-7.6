@@ -40,6 +40,12 @@ module Cisco-IOS-XR-um-ethernet-cfm-cfg {
      Copyright (c) 2020-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-07 {
+    description
+      "list-leaf cos-value updated to 7 seperate leafs,
+         Added must and presence statement to priority container";
+    semver:module-version "2.0.0";
+  }
   revision 2021-02-09 {
     description
       "Initial release";
@@ -119,41 +125,112 @@ module Cisco-IOS-XR-um-ethernet-cfm-cfg {
                     "Allocate aggregated packet counters for this MEP";
                 }
                 container priority {
+                  must "cos-values or cos-range";
+                  presence "Indicates a up node is configured.";
                   description
                     "Specify a list or range of CoS values to allocate packet counters for";
-                  leaf start-of-cos-range {
-                    type uint32 {
-                      range "0..7" {
-                        description
-                          "Start of CoS range";
-                      }
-                    }
-                    must "../end-of-cos-range";
+                  container cos-range {
                     description
-                      "Start of CoS range";
-                  }
-                  leaf end-of-cos-range {
-                    type uint32 {
-                      range "1..7" {
-                        description
-                          "End of CoS range";
+                      "Range of CoS values ";
+                    leaf start-of-cos-range {
+                      type uint32 {
+                        range "0..7" {
+                          description
+                            "Start of CoS range";
+                        }
                       }
+                      must "../end-of-cos-range";
+                      description
+                        "Start of CoS range";
                     }
-                    must "../start-of-cos-range";
-                    description
-                      "End of CoS range";
+                    leaf end-of-cos-range {
+                      type uint32 {
+                        range "1..7" {
+                          description
+                            "End of CoS range";
+                        }
+                      }
+                      must "../start-of-cos-range";
+                      description
+                        "End of CoS range";
+                    }
                   }
                   container cos-values {
                     description
                       "Set of CoS values";
-                    leaf-list cos-value {
+                    leaf cos-value1 {
                       type uint32 {
                         range "0..7" {
                           description
                             "CoS value";
                         }
                       }
-                      max-elements "8";
+                      description
+                        "CoS value";
+                    }
+                    leaf cos-value2 {
+                      type uint32 {
+                        range "0..7" {
+                          description
+                            "CoS value";
+                        }
+                      }
+                      must "../cos-value1";
+                      description
+                        "CoS value";
+                    }
+                    leaf cos-value3 {
+                      type uint32 {
+                        range "0..7" {
+                          description
+                            "CoS value";
+                        }
+                      }
+                      must "../cos-value2";
+                      description
+                        "CoS value";
+                    }
+                    leaf cos-value4 {
+                      type uint32 {
+                        range "0..7" {
+                          description
+                            "CoS value";
+                        }
+                      }
+                      must "../cos-value3";
+                      description
+                        "CoS value";
+                    }
+                    leaf cos-value5 {
+                      type uint32 {
+                        range "0..7" {
+                          description
+                            "CoS value";
+                        }
+                      }
+                      must "../cos-value4";
+                      description
+                        "CoS value";
+                    }
+                    leaf cos-value6 {
+                      type uint32 {
+                        range "0..7" {
+                          description
+                            "CoS value";
+                        }
+                      }
+                      must "../cos-value5";
+                      description
+                        "CoS value";
+                    }
+                    leaf cos-value7 {
+                      type uint32 {
+                        range "0..7" {
+                          description
+                            "CoS value";
+                        }
+                      }
+                      must "../cos-value6";
                       description
                         "CoS value";
                     }

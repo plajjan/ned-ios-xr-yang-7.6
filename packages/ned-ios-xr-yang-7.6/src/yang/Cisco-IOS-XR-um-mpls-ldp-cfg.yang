@@ -31,12 +31,28 @@ module Cisco-IOS-XR-um-mpls-ldp-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2019-2021 by Cisco Systems, Inc.
+     Copyright (c) 2019-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-11-15 {
+    description
+      "added address-family ipv6 feature and rtr-id-arb-tlv ";
+    semver:module-version "3.1.0";
+  }
+  revision 2021-07-09 {
+    description
+      "type correction for the ipv4/v6 address";
+    semver:module-version "3.0.0";
+  }
   revision 2021-01-29 {
     description
-      "Add enable container under recursive-fec container";
+      "Add enable container under recursive-fec container
+       2021-01-28
+           Added cisco-support task yang nodes
+       2020-12-08
+           Removed cisco-support yang nodes
+       2020-07-10
+           Added when statement to redistribute to show it's only for ipv4";
     semver:module-version "2.0.0";
   }
   revision 2020-05-29 {
@@ -817,6 +833,231 @@ module Cisco-IOS-XR-um-mpls-ldp-cfg {
                 }
               }
             }
+            container ipv6 {
+              presence "Indicates a ipv6 node is configured.";
+              description
+                "IPv6";
+              container discovery {
+                description
+                  "Configure discovery parameters";
+                container transport-address {
+                  description
+                    "Specify transport address for TCP connection";
+                  leaf ip-address {
+                    type inet:ipv6-address-no-zone;
+                    description
+                      "IP address to be used as transport address";
+                  }
+                }
+              }
+              container label {
+                description
+                  "Configure label control and policies";
+                container local {
+                  description
+                    "Configure local label control and policies";
+                  container allocate {
+                    description
+                      "Configure label allocation control";
+                    container for {
+                      description
+                        "Limit label allocation to a set of prefixes";
+                      leaf ip-access-list {
+                        type xr:Cisco-ios-xr-string {
+                          length "1..800" {
+                            description
+                              "IP access-list";
+                          }
+                        }
+                        must "not(../host-routes)";
+                        description
+                          "IP access-list";
+                      }
+                      container host-routes {
+                        must "not(../ip-access-list)";
+                        presence "Indicates a host-routes node is configured.";
+                        description
+                          "Allocate label for host routes only";
+                      }
+                    }
+                  }
+                  container default-route {
+                    presence "Indicates a default-route node is configured.";
+                    description
+                      "Enable MPLS forwarding for default route";
+                  }
+                  container implicit-null-override {
+                    description
+                      "Configure use of implicit-null local label for non-egress prefixes";
+                    leaf for {
+                      type xr:Cisco-ios-xr-string {
+                        length "1..800" {
+                          description
+                            "IP access-list";
+                        }
+                      }
+                      description
+                        "Limit implicit-null label use to a set of prefixes";
+                    }
+                  }
+                  container advertise {
+                    description
+                      "Configure outbound label advertisement control";
+                    container explicit-null {
+                      must "not(for and to)";
+                      presence "Indicates a explicit-null node is configured.";
+                      description
+                        "Configure explicit-null advertisement";
+                      container for {
+                        presence "Indicates a for node is configured.";
+                        description
+                          "IP Access-list specifying controls on destination prefixes";
+                        leaf access-list {
+                          type string {
+                            length "1..1024" {
+                              description
+                                "IP access-list";
+                            }
+                          }
+                          mandatory true;
+                          description
+                            "IP Access-list specifying controls on destination prefixes";
+                        }
+                        container to {
+                          presence "Indicates a to node is configured.";
+                          description
+                            "IP Access-list specifying controls on LDP Peers";
+                          leaf access-list {
+                            type string {
+                              length "1..1024" {
+                                description
+                                  "IPv6 access-list (specify peer LSR Ids)";
+                              }
+                            }
+                            mandatory true;
+                            description
+                              "IP Access-list specifying controls on LDP Peers";
+                          }
+                        }
+                      }
+                      container to {
+                        presence "Indicates a to node is configured.";
+                        description
+                          "IP Access-list specifying controls on LDP Peers";
+                        leaf access-list {
+                          type string {
+                            length "1..1024" {
+                              description
+                                "IPv6 access-list (specify peer LSR Ids)";
+                            }
+                          }
+                          mandatory true;
+                          description
+                            "IP Access-list specifying controls on LDP Peers";
+                        }
+                      }
+                    }
+                    container to {
+                      description
+                        "Peer centric outbound label filtering";
+                      list neighbor {
+                        key "neighbor-address label-space-id";
+                        description
+                          "neighbor";
+                        leaf neighbor-address {
+                          type inet:ipv4-address-no-zone;
+                          description
+                            "neighbor address";
+                        }
+                        leaf label-space-id {
+                          type uint32 {
+                            range "0" {
+                              description
+                                "Label Space Id of neighbor";
+                            }
+                          }
+                          description
+                            "Label Space Id of neighbor";
+                        }
+                        leaf for {
+                          type string {
+                            length "1..32" {
+                              description
+                                "IP access-list";
+                            }
+                          }
+                          mandatory true;
+                          description
+                            "IP access-list for prefixes to be sent";
+                        }
+                      }
+                    }
+                    container interfaces {
+                      description
+                        "Advertise interface host address";
+                      list interface {
+                        key "interface-name";
+                        description
+                          "Advertise interface host address";
+                        leaf interface-name {
+                          type xr:Interface-name;
+                          description
+                            "Advertise interface host address";
+                        }
+                      }
+                    }
+                    container disable {
+                      presence "Indicates a disable node is configured.";
+                      description
+                        "Disable label advertisement to all peers for all prefixes";
+                    }
+                  }
+                }
+                container remote {
+                  description
+                    "Configure remote/peer label control and policies";
+                  container accept {
+                    description
+                      "Configure inbound label acceptance control";
+                    container from {
+                      description
+                        "Neighbor from whom to accept label advertisement";
+                      list neighbor {
+                        key "neighbor-address label-space-id";
+                        description
+                          "Neighbor from whom to accept label advertisement";
+                        leaf neighbor-address {
+                          type inet:ipv4-address-no-zone;
+                          description
+                            "Neighbor from whom to accept label advertisement";
+                        }
+                        leaf label-space-id {
+                          type uint32 {
+                            range "0" {
+                              description
+                                "Label Space Id of neighbor";
+                            }
+                          }
+                          description
+                            "Label Space Id of neighbor";
+                        }
+                        leaf for {
+                          type xr:Cisco-ios-xr-string {
+                            length "1..800" {
+                              description
+                                "IP access-list";
+                            }
+                          }
+                          mandatory true;
+                          description
+                            "IP access-list for destination prefixes";
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
           container interfaces {
             description
@@ -852,6 +1093,31 @@ module Cisco-IOS-XR-um-mpls-ldp-cfg {
                       }
                       leaf ip-address {
                         type inet:ipv4-address-no-zone;
+                        description
+                          "IP address to be used as transport address";
+                      }
+                    }
+                  }
+                }
+                container ipv6 {
+                  presence "Indicates a ipv6 node is configured.";
+                  description
+                    "IPv6";
+                  container discovery {
+                    description
+                      "Configure discovery parameters";
+                    container transport-address {
+                      description
+                        "Specify interface LDP transport address";
+                      container interface {
+                        must "not(../ip-address)";
+                        presence "Indicates a interface node is configured.";
+                        description
+                          "Use this interface address as transport address";
+                      }
+                      leaf ip-address {
+                        type inet:ipv6-address-no-zone;
+                        must "not(../interface)";
                         description
                           "IP address to be used as transport address";
                       }
@@ -1257,6 +1523,15 @@ module Cisco-IOS-XR-um-mpls-ldp-cfg {
               "Disable transmit and receive processing for TLV";
           }
         }
+        container rtr-id-arb-tlv {
+          description
+            "Control support for Router ID based arbitration TLV in Hello messages";
+          container disable {
+            presence "Indicates a disable node is configured.";
+            description
+              "Disable transmit and receive processing for TLV";
+          }
+        }
         container quick-start {
           description
             "Control quick discovery and initial burst of hello";
@@ -1382,9 +1657,15 @@ module Cisco-IOS-XR-um-mpls-ldp-cfg {
               presence "Indicates a transport-address node is configured.";
               description
                 "Specify transport address for TCP connection";
-              leaf ip-address {
-                type inet:ip-address-no-zone;
-                mandatory true;
+              leaf ipv4-address {
+                when "../../../af-name = 'ipv4'";
+                type inet:ipv4-address-no-zone;
+                description
+                  "IP address to be used as transport address";
+              }
+              leaf ipv6-address {
+                when "../../../af-name = 'ipv6'";
+                type inet:ipv6-address-no-zone;
                 description
                   "IP address to be used as transport address";
               }
@@ -1412,22 +1693,33 @@ module Cisco-IOS-XR-um-mpls-ldp-cfg {
           container neighbor {
             description
               "Configure neighbor parameters";
-            container addresses {
+            container ipv4-addresses {
+              when "../../af-name = 'ipv4'";
               description
                 "IP address of neighbor";
-              list address {
+              list targeted {
                 key "neighbor-address";
                 description
-                  "IP address of neighbor";
+                  "Establish targeted session";
                 leaf neighbor-address {
-                  type inet:ip-address-no-zone;
+                  type inet:ipv4-address-no-zone;
                   description
                     "IP address of neighbor";
                 }
-                container targeted {
-                  presence "Indicates a targeted node is configured.";
+              }
+            }
+            container ipv6-addresses {
+              when "../../af-name = 'ipv6'";
+              description
+                "IP address of neighbor";
+              list targeted {
+                key "neighbor-address";
+                description
+                  "Establish targeted session";
+                leaf neighbor-address {
+                  type inet:ipv6-address-no-zone;
                   description
-                    "Establish targeted session";
+                    "IP address of neighbor";
                 }
               }
             }

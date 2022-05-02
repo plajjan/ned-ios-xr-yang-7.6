@@ -9,7 +9,7 @@ module Cisco-IOS-XR-asr9k-np-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-asr9k-np-oper-sub1 {
-    revision-date 2021-05-26;
+    revision-date 2021-12-18;
   }
 
   organization
@@ -35,6 +35,11 @@ module Cisco-IOS-XR-asr9k-np-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-18 {
+    description
+      "add support for NP resources";
+    semver:module-version "1.2.0";
+  }
   revision 2021-05-26 {
     description
       "add support for NP ucode counter query by index";
@@ -155,6 +160,610 @@ module Cisco-IOS-XR-asr9k-np-oper {
                   type uint32;
                   description
                     "Indexed Counter Key";
+                }
+              }
+            }
+            container resources {
+              description
+                "sub-leafs for resources displays";
+              container tcam {
+                description
+                  "TCAM section of resources display";
+                container one-sixty-ing {
+                  description
+                    "TCAM Region";
+                  container compr-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-15 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-dst-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-l2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-1 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-mpls {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv6 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container edpl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container l2-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-3 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-src-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                }
+                container one-sixty-egr {
+                  description
+                    "TCAM Region";
+                  container compr-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-15 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-dst-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-l2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-1 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-mpls {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv6 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container edpl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container l2-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-3 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-src-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                }
+                container six-forty-ing {
+                  description
+                    "TCAM Region";
+                  container compr-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-15 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-dst-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-l2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-1 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-mpls {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv6 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container edpl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container l2-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-3 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-src-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                }
+                container six-forty-egr {
+                  description
+                    "TCAM Region";
+                  container compr-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-15 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-dst-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-l2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-1 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-mpls {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv6 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv6-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-fmt-0 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container edpl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-2 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-src-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container l2-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-3 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-ipv4-acl-dst-ip {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container compr-acl-src-port {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container qos-fmt-4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv6-meta-acl {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container ipv4-li {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
+                  container pbr-ipv4 {
+                    description
+                      "TCAM feature utilization";
+                    uses PRM-RESOURCES-TCAM-FEATURE;
+                  }
                 }
               }
             }

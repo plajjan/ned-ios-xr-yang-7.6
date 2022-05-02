@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-subscriber-accounting-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR subscriber-accounting package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-02-10 {
+    description
+      "New cli added to list accouting statistics for all subscribers";
+    semver:module-version "2.0.0";
+  }
   revision 2019-12-16 {
     description
       "Fixed for service acct stats i.e leaf nodes are deleted for session accounting stats from service acct stats bag and maintained unique stats for session and service accounting.";

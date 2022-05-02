@@ -44,11 +44,11 @@ submodule Cisco-IOS-XR-ipv4-arp-oper-sub1 {
     description
       "IOS XR 6.2.3 revision.
        2021-02-04
-       IOS XR 6.2.2 revision.
+           IOS XR 6.2.2 revision.
        2020-12-03
-       Adding support for displaying client resync time
+           Adding support for displaying client resync time
        2020-04-22
-       adding oper schema support, clinet stats update with cnbng.";
+           adding oper schema support, clinet stats update with cnbng.";
     semver:module-version "2.0.0";
   }
   revision 2019-12-11 {

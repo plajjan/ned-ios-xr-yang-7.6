@@ -9,10 +9,10 @@ module Cisco-IOS-XR-asr9k-netflow-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-asr9k-netflow-oper-sub2 {
-    revision-date 2019-12-16;
+    revision-date 2021-08-18;
   }
   include Cisco-IOS-XR-asr9k-netflow-oper-sub1 {
-    revision-date 2019-12-16;
+    revision-date 2021-08-18;
   }
 
   organization
@@ -35,9 +35,14 @@ module Cisco-IOS-XR-asr9k-netflow-oper {
      for the following management objects:
        net-flow: NetFlow operational data
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-18 {
+    description
+      "Added sFlow counters for ingress flows";
+    semver:module-version "1.1.0";
+  }
   revision 2019-12-16 {
     description
       "Added map-t logging counters for ingress flows.";

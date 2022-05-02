@@ -28,6 +28,11 @@ module Cisco-IOS-XR-mpls-traceroute-act {
      Copyright (c) 2020-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-12 {
+    description
+      "Added ddmap return code leaf";
+    semver:module-version "2.0.0";
+  }
   revision 2021-04-27 {
     description
       "Added missing descriptions";
@@ -157,6 +162,12 @@ module Cisco-IOS-XR-mpls-traceroute-act {
                     description
                       "TLV FEC type to use in request";
                   }
+                  leaf multipath {
+                    type boolean;
+                    default "false";
+                    description
+                      "Enable LSP multipath traceroute (treetrace)";
+                  }
                 }
               }
               case subtype-traffic-eng {
@@ -267,6 +278,12 @@ module Cisco-IOS-XR-mpls-traceroute-act {
                     description
                       "SR OAM IGP FEC TLV type to use in request";
                   }
+                  leaf multipath {
+                    type boolean;
+                    default "false";
+                    description
+                      "Enable LSP multipath traceroute (treetrace)";
+                  }
                 }
               }
               case target_labels {
@@ -303,6 +320,12 @@ module Cisco-IOS-XR-mpls-traceroute-act {
                     type inet:ipv4-address;
                     description
                       "Specify the IP of the LSP endpoint";
+                  }
+                  leaf multipath {
+                    type boolean;
+                    default "false";
+                    description
+                      "Enable LSP multipath traceroute (treetrace)";
                   }
                 }
               }
@@ -346,6 +369,12 @@ module Cisco-IOS-XR-mpls-traceroute-act {
                     type inet:ipv4-address;
                     description
                       "Specify the IP of the LSP endpoint";
+                  }
+                  leaf multipath {
+                    type boolean;
+                    default "false";
+                    description
+                      "Enable LSP multipath traceroute (treetrace)";
                   }
                 }
               }
@@ -437,6 +466,35 @@ module Cisco-IOS-XR-mpls-traceroute-act {
           description
             "Time to live (hops to until forced punt)";
         }
+        leaf retry-count {
+          type uint8 {
+            range "0..10";
+          }
+          description
+            "Maximum treetrace retry count";
+        }
+        container hashkey {
+          description
+            "Downstream map multipath settings";
+          container ipv4 {
+            description
+              "IPv4 bitmap options";
+            leaf bitmap {
+              type uint16 {
+                range "1..256";
+              }
+              description
+                "Multipath bitmap size";
+            }
+          }
+        }
+        leaf interval {
+          type uint32 {
+            range "0..3600000";
+          }
+          description
+            "Send interval between treetrace requests";
+        }
       }
     }
     output {
@@ -527,133 +585,263 @@ module Cisco-IOS-XR-mpls-traceroute-act {
             description
               "Time to live (hops to until forced punt)";
           }
-        }
-        container hops {
-          description
-            "Traceroute Hops";
-          list hop {
-            key "hop-index";
+          leaf retry-count {
+            type uint8 {
+              range "0..10";
+            }
             description
-              "Traceroute Hop";
-            leaf hop-index {
+              "Maximum treetrace retry count";
+          }
+          container hashkey {
+            description
+              "Downstream map multipath settings";
+            container ipv4 {
+              description
+                "IPv4 bitmap options";
+              leaf bitmap {
+                type uint16 {
+                  range "1..256";
+                }
+                description
+                  "Multipath bitmap size";
+              }
+            }
+          }
+          leaf interval {
+            type uint32 {
+              range "0..3600000";
+            }
+            description
+              "Send interval between treetrace requests";
+          }
+        }
+        container paths {
+          description
+            "Traceroute paths";
+          list path {
+            key "path-index";
+            description
+              "Traceroute path";
+            leaf path-index {
               type uint64 {
                 range "1..2147483647";
               }
               description
-                "Index of the hop list";
+                "Index of the path list";
             }
-            leaf hop-origin-ip {
+            leaf path-status {
               type string;
               description
-                "Hop origin interface ip";
+                "Treetrace path status (Found, Broken, Unexplored)";
             }
-            leaf hop-destination-ip {
+            leaf source {
               type string;
               description
-                "Hop destination interface ip";
+                "Source IP address used in the IP header";
             }
-            leaf mtu {
+            leaf destination {
               type string;
               description
-                "Maximum Transmission Unit";
+                "Destination IP address (127.x.y.z)";
             }
-            container dsmap-label-stack {
+            leaf output-interface {
+              type string;
               description
-                "Label Stack from the DSMAP received
-                 in the Echo Response Payload.";
-              list dsmap-label {
-                key "label";
+                "Outgoing interface for echo packet";
+            }
+            leaf nexthop {
+              type string;
+              description
+                "Outgoing next hop IP for echo packet";
+            }
+            container hops {
+              description
+                "Traceroute Hops";
+              list hop {
+                key "hop-index";
                 description
-                  "DSMAP labels";
-                leaf label {
-                  type uint32 {
-                    range "16..1048575";
-                  }
-                  description
-                    "DSMAP label";
-                }
-              }
-            }
-            leaf return-code {
-              type uint8;
-              description
-                "Return Code of the echo request";
-            }
-            leaf return-char {
-              type string;
-              description
-                "Return Char of the echo request";
-            }
-            leaf duration {
-              type uint32;
-              description
-                "Trip duration (msec)";
-            }
-            container ddmaps {
-              description
-                "Downstream Detailed Mapping received";
-              list ddmap {
-                key "ddmap-index";
-                description
-                  "DDMAP";
-                leaf ddmap-index {
+                  "Traceroute Hop";
+                leaf hop-index {
                   type uint64 {
                     range "1..2147483647";
                   }
                   description
                     "Index of the hop list";
                 }
-                leaf ddmap-mtu {
-                  type int16;
+                leaf hop-origin-ip {
+                  type string;
                   description
-                    "MTU from the DDMAP received in
-                     the Echo Response Payload";
+                    "Hop origin interface ip";
                 }
-                leaf ddmap-downstream-address {
-                  type inet:ipv4-address;
+                leaf hop-destination-ip {
+                  type string;
                   description
-                    "Downstream Address from the DDMAP
-                     received in the Echo Response Payload";
+                    "Hop destination interface ip";
                 }
-                leaf ddmap-downstream-intf-index {
-                  type int32 {
-                    range "1..2147483647";
-                  }
+                leaf mtu {
+                  type string;
                   description
-                    "Downstream Interface Address from the DDMAP
-                     received in the Echo Response Payload.";
+                    "Maximum Transmission Unit";
                 }
-                leaf ddmap-return-code {
-                  type uint8;
+                container dsmap-label-stack {
                   description
-                    "Return Code from the DDMAP received
+                    "Label Stack from the DSMAP received
                      in the Echo Response Payload.";
-                }
-                leaf ddmap-return-subcode {
-                  type int16;
-                  description
-                    "Return Sub Code from the DDMAP
-                     received in the Echo Response Payload.";
-                }
-                container ddmap-label-stack {
-                  description
-                    "Label Stack from the DDMAP received
-                     in the Echo Response Payload.";
-                  list ddmap-label {
+                  list dsmap-label {
                     key "label";
                     description
-                      "ddmap labels";
+                      "DSMAP labels";
                     leaf label {
                       type uint32 {
                         range "16..1048575";
                       }
                       description
-                        "ddmap label";
+                        "DSMAP label";
+                    }
+                  }
+                }
+                leaf paths-count {
+                  type int32;
+                  description
+                    "Number of outgoing paths. For multipath requests only.";
+                }
+                leaf return-code {
+                  type uint8;
+                  description
+                    "Return Code of the echo request";
+                }
+                leaf return-char {
+                  type string;
+                  description
+                    "Return Char of the echo request";
+                }
+                leaf duration {
+                  type uint32;
+                  description
+                    "Trip duration (msec)";
+                }
+                container ddmaps {
+                  description
+                    "Downstream Detailed Mapping received";
+                  list ddmap {
+                    key "ddmap-index";
+                    description
+                      "DDMAP";
+                    leaf ddmap-index {
+                      type uint64 {
+                        range "1..2147483647";
+                      }
+                      description
+                        "Index of the hop list";
+                    }
+                    leaf ddmap-mtu {
+                      type int16;
+                      description
+                        "MTU from the DDMAP received in
+                         the Echo Response Payload";
+                    }
+                    leaf ddmap-downstream-address {
+                      type inet:ipv4-address;
+                      description
+                        "Downstream Address from the DDMAP
+                         received in the Echo Response Payload";
+                    }
+                    leaf ddmap-downstream-intf-index {
+                      type int32 {
+                        range "1..2147483647";
+                      }
+                      description
+                        "Downstream Interface Address from the DDMAP
+                         received in the Echo Response Payload.";
+                    }
+                    leaf ddmap-return-char {
+                      type string;
+                      description
+                        "Return Char from the DDMAP received
+                         in the Echo Response Payload.";
+                    }
+                    leaf ddmap-return-code {
+                      type uint8;
+                      description
+                        "Return Code from the DDMAP received
+                         in the Echo Response Payload.";
+                    }
+                    leaf ddmap-return-subcode {
+                      type int16;
+                      description
+                        "Return Sub Code from the DDMAP
+                         received in the Echo Response Payload.";
+                    }
+                    container ddmap-label-stack {
+                      description
+                        "Label Stack from the DDMAP received
+                         in the Echo Response Payload.";
+                      list ddmap-label {
+                        key "label";
+                        description
+                          "ddmap labels";
+                        leaf label {
+                          type uint32 {
+                            range "16..1048575";
+                          }
+                          description
+                            "ddmap label";
+                        }
+                      }
+                    }
+                    leaf paths-count {
+                      type int32;
+                      description
+                        "Number of outgoing paths. For multipath request only";
                     }
                   }
                 }
               }
             }
+          }
+        }
+        container statistics {
+          description
+            "Treetrace Statistics";
+          leaf paths-found {
+            type uint32;
+            description
+              "Number of paths found";
+          }
+          leaf paths-broken {
+            type uint32;
+            description
+              "Number of paths broken";
+          }
+          leaf paths-unexplored {
+            type uint32;
+            description
+              "Number of paths unexplored";
+          }
+          leaf requests-sent {
+            type uint32;
+            description
+              "Number of echo requests sent";
+          }
+          leaf requests-failed {
+            type uint32;
+            description
+              "Number of echo requests failed";
+          }
+          leaf requests-received {
+            type uint32;
+            description
+              "Number of echo requests received";
+          }
+          leaf requests-timeout {
+            type uint32;
+            description
+              "Number of echo requests timed out";
+          }
+          leaf total-time-elapsed {
+            type uint64;
+            description
+              "The total time taken for the request in ms";
           }
         }
       }

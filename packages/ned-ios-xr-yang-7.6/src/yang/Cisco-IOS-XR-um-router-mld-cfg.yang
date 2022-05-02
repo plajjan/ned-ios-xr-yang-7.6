@@ -34,15 +34,15 @@ module Cisco-IOS-XR-um-router-mld-cfg {
   revision 2021-10-04 {
     description
       "Added missing disable node under explicit-tracking";
-    semver:module-version "1.2.0";
+    semver:module-version "2.0.0";
   }
   revision 2021-02-09 {
     description
       "Added dvmrp-enable node under vrf and default container
        2021-01-28
-       Added cisco-support task yang nodes
+           Added cisco-support task yang nodes
        2020-12-07
-       Removed un-supported nodes";
+           Removed un-supported nodes";
     semver:module-version "1.1.0";
   }
   revision 2019-08-20 {
@@ -583,7 +583,7 @@ module Cisco-IOS-XR-um-router-mld-cfg {
                 description
                   "MLD join multicast group";
                 list join-group {
-                  must "group-address-only or includes or excludes";
+                  must "group-address-only or source-addresses";
                   key "group-address";
                   description
                     "MLD join multicast group";
@@ -597,32 +597,27 @@ module Cisco-IOS-XR-um-router-mld-cfg {
                     description
                       "Join multicast group without source address";
                   }
-                  container includes {
+                  list source-addresses {
+                    must "include or exclude";
+                    key "source-address";
                     description
-                      "Include only the following source address";
-                    list include {
-                      key "source-address";
+                      "Source address to include or exclude";
+                    leaf source-address {
+                      type inet:ipv6-address-no-zone;
                       description
                         "Source address to include";
-                      leaf source-address {
-                        type inet:ipv6-address-no-zone;
-                        description
-                          "Source address to include";
-                      }
                     }
-                  }
-                  container excludes {
-                    description
-                      "Exclude the only following source address";
-                    list exclude {
-                      key "address";
+                    container include {
+                      must "not (../exclude)";
+                      presence "Indicates a include node is configured.";
+                      description
+                        "Source address to include";
+                    }
+                    container exclude {
+                      must "not (../include)";
+                      presence "Indicates a exclude node is configured.";
                       description
                         "Exclude the only following source address";
-                      leaf address {
-                        type inet:ipv6-address-no-zone;
-                        description
-                          "Exclude the only following source address";
-                      }
                     }
                   }
                 }
@@ -1156,7 +1151,7 @@ module Cisco-IOS-XR-um-router-mld-cfg {
             description
               "MLD join multicast group";
             list join-group {
-              must "group-address-only or includes or excludes";
+              must "group-address-only or source-addresses";
               key "group-address";
               description
                 "MLD join multicast group";
@@ -1170,32 +1165,27 @@ module Cisco-IOS-XR-um-router-mld-cfg {
                 description
                   "Join multicast group without source address";
               }
-              container includes {
+              list source-addresses {
+                must "include or exclude";
+                key "source-address";
                 description
-                  "Include only the following source address";
-                list include {
-                  key "source-address";
+                  "Source address to include or exclude";
+                leaf source-address {
+                  type inet:ipv6-address-no-zone;
                   description
                     "Source address to include";
-                  leaf source-address {
-                    type inet:ipv6-address-no-zone;
-                    description
-                      "Source address to include";
-                  }
                 }
-              }
-              container excludes {
-                description
-                  "Exclude the only following source address";
-                list exclude {
-                  key "source-address";
+                container include {
+                  must "not (../exclude)";
+                  presence "Indicates a include node is configured.";
+                  description
+                    "Source address to include";
+                }
+                container exclude {
+                  must "not (../include)";
+                  presence "Indicates a exclude node is configured.";
                   description
                     "Exclude the only following source address";
-                  leaf source-address {
-                    type inet:ipv6-address-no-zone;
-                    description
-                      "Exclude the only following source address";
-                  }
                 }
               }
             }

@@ -26,9 +26,14 @@ submodule Cisco-IOS-XR-aaa-diameter-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR aaa-diameter package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-08 {
+    description
+      "show_diameter.bag file updated with event history update with gx and gy";
+    semver:module-version "3.2.0";
+  }
   revision 2020-10-19 {
     description
       "show_diameter.bag file updated with ccr_final stale in gy stats";
@@ -38,18 +43,18 @@ submodule Cisco-IOS-XR-aaa-diameter-oper-sub1 {
     description
       "show_diameter.bag file updated with CCR Update COA Disconnect in GX Stats
        2020-02-28
-       class-Name NAS was commented to avoid duplicate result in XML operational data
+         class-Name NAS was commented to avoid duplicate result in XML operational data
        2020-02-13
-       show_diameter.bag file was updated to included sublabel";
+         show_diameter.bag file was updated to included sublabel";
     semver:module-version "3.0.0";
   }
   revision 2019-10-17 {
     description
       "Added new container for NasSession and made NasSessionId as child
        2019-09-26
-       Introduced a peer-closed-reason leaf and transaction related leaves in DIAMETER-SERVERBAG grouping.
+         Introduced a peer-closed-reason leaf and transaction related leaves in DIAMETER-SERVERBAG grouping.
        2019-08-25
-       Fixed the string length to Bounded String.";
+         Fixed the string length to Bounded String.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -211,6 +216,11 @@ submodule Cisco-IOS-XR-aaa-diameter-oper-sub1 {
   grouping DIAMETER-GX-SESS {
     description
       "Gx Sess";
+    container event-history {
+      description
+        "gx Event History";
+      uses EVT-HIST-INFO;
+    }
     leaf aaa-session-id {
       type uint32;
       description
@@ -498,9 +508,64 @@ submodule Cisco-IOS-XR-aaa-diameter-oper-sub1 {
     }
   }
 
+  grouping EVT-HIST-ENTRY {
+    description
+      "Event history Entry";
+    leaf evt-timestamp {
+      type string;
+      description
+        "The timestamp of the event";
+    }
+    leaf evt-name {
+      type string;
+      description
+        "Event name";
+    }
+    leaf evt-type {
+      type uint8;
+      description
+        "Event type";
+    }
+    leaf evt-many {
+      type boolean;
+      description
+        "Multiple instance flag";
+    }
+    leaf evt-sticky {
+      type boolean;
+      description
+        "Sticky flag";
+    }
+    leaf-list evt-data {
+      type uint32;
+      description
+        "Optional data";
+    }
+  }
+
+  grouping EVT-HIST-INFO {
+    description
+      "Per object event history";
+    leaf evt-class-name {
+      type string;
+      description
+        "Class name string";
+    }
+    list evt-entry {
+      description
+        "Array of event entries";
+      uses EVT-HIST-ENTRY;
+    }
+  }
+
   grouping DIAMETER-GY-SESS {
     description
       "Gy Sess";
+    container event-history {
+      description
+        "gx Event History";
+      uses EVT-HIST-INFO;
+    }
     leaf aaa-session-id {
       type uint32;
       description

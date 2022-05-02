@@ -31,9 +31,20 @@ module Cisco-IOS-XR-um-router-igmp-cfg {
      Copyright (c) 2019-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-28 {
+    description
+      "Merged Container include & exclude into single list source-addresses";
+    semver:module-version "2.0.0";
+  }
   revision 2021-01-28 {
     description
-      "Added cisco-support task yang nodes";
+      "Added cisco-support task yang nodes
+       2021-01-11
+           Added support for specific platforms
+       2021-01-07
+           Added dvmrp-enable
+       2020-12-07
+           Removed un-supported nodes";
     semver:module-version "1.1.0";
   }
   revision 2019-08-20 {
@@ -183,8 +194,15 @@ module Cisco-IOS-XR-um-router-igmp-cfg {
               "IGMPv3 explicit host tracking";
             leaf access-list {
               type xr:Cisco-ios-xr-string;
+              must "not(../disable)";
               description
                 "Access list specifying tracking group range";
+            }
+            container disable {
+              must "not(../access-list)";
+              presence "Indicates a disable node is configured.";
+              description
+                "Disable IGMPv3 explicit host tracking";
             }
           }
           leaf access-group {
@@ -593,7 +611,7 @@ module Cisco-IOS-XR-um-router-igmp-cfg {
                 description
                   "IGMP join multicast group";
                 list join-group {
-                  must "group-address-only or includes or excludes";
+                  must "group-address-only or source-addresses";
                   key "group-address";
                   description
                     "IGMP join multicast group";
@@ -607,32 +625,27 @@ module Cisco-IOS-XR-um-router-igmp-cfg {
                     description
                       "Join multicast group without source address";
                   }
-                  container includes {
+                  list source-addresses {
+                    must "include or exclude";
+                    key "source-address";
                     description
-                      "Include only the following source address";
-                    list include {
-                      key "source-address";
+                      "Source address to include or exclude";
+                    leaf source-address {
+                      type inet:ipv4-address-no-zone;
                       description
                         "Source address to include";
-                      leaf source-address {
-                        type inet:ipv4-address-no-zone;
-                        description
-                          "Source address to include";
-                      }
                     }
-                  }
-                  container excludes {
-                    description
-                      "Exclude the only following source address";
-                    list exclude {
-                      key "source-address";
+                    container include {
+                      must "not (../exclude)";
+                      presence "Indicates a include node is configured.";
+                      description
+                        "Source address to include";
+                    }
+                    container exclude {
+                      must "not (../include)";
+                      presence "Indicates a exclude node is configured.";
                       description
                         "Exclude the only following source address";
-                      leaf source-address {
-                        type inet:ipv4-address-no-zone;
-                        description
-                          "Exclude the only following source address";
-                      }
                     }
                   }
                 }
@@ -781,8 +794,15 @@ module Cisco-IOS-XR-um-router-igmp-cfg {
           "IGMPv3 explicit host tracking";
         leaf access-list {
           type xr:Cisco-ios-xr-string;
+          must "not(../disable)";
           description
             "Access list specifying tracking group range";
+        }
+        container disable {
+          must "not(../access-list)";
+          presence "Indicates a disable node is configured.";
+          description
+            "Disable IGMPv3 explicit host tracking";
         }
       }
       leaf access-group {
@@ -1225,7 +1245,7 @@ module Cisco-IOS-XR-um-router-igmp-cfg {
             description
               "IGMP join multicast group";
             list join-group {
-              must "group-address-only or includes or excludes";
+              must "group-address-only or source-addresses";
               key "group-address";
               description
                 "IGMP join multicast group";
@@ -1239,32 +1259,27 @@ module Cisco-IOS-XR-um-router-igmp-cfg {
                 description
                   "Join multicast group without source address";
               }
-              container includes {
+              list source-addresses {
+                must "include or exclude";
+                key "source-address";
                 description
-                  "Include only the following source address";
-                list include {
-                  key "source-address";
+                  "Source address to include or exclude";
+                leaf source-address {
+                  type inet:ipv4-address-no-zone;
                   description
                     "Source address to include";
-                  leaf source-address {
-                    type inet:ipv4-address-no-zone;
-                    description
-                      "Source address to include";
-                  }
                 }
-              }
-              container excludes {
-                description
-                  "Exclude the only following source address";
-                list exclude {
-                  key "source-address";
+                container include {
+                  must "not (../exclude)";
+                  presence "Indicates a include node is configured.";
+                  description
+                    "Source address to include";
+                }
+                container exclude {
+                  must "not (../include)";
+                  presence "Indicates a exclude node is configured.";
                   description
                     "Exclude the only following source address";
-                  leaf source-address {
-                    type inet:ipv4-address-no-zone;
-                    description
-                      "Exclude the only following source address";
-                  }
                 }
               }
             }

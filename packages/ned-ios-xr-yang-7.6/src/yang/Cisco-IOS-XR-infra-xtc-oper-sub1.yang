@@ -29,56 +29,63 @@ submodule Cisco-IOS-XR-infra-xtc-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-11-09 {
+    description
+      "Added unreliable flag and update drop count in topology summary bag.
+       2021-10-21
+         Adding algorithm and computation time to path query results";
+    semver:module-version "4.1.0";
+  }
   revision 2021-09-28 {
     description
       "Added protection type set in candidate path constraints.
        2021-08-27
-         Added binding-sid to pce sibling synced lsp.
+          Added binding-sid to pce sibling synced lsp.
        2021-06-21
-         un-hide cspf-srv6 option in cspf srv6 path calculation.
+          un-hide cspf-srv6 option in cspf srv6 path calculation.
        2021-05-26
-         Added keys to topology-summary list.";
+          Added keys to topology-summary list.";
     semver:module-version "4.0.0";
   }
   revision 2021-04-22 {
     description
       "Added TE metric field for Flex-algo ASLA.
        2021-04-08
-       Change protection type from integer to enum.
+           Change protection type from integer to enum.
        2021-03-31
-       Added new enumeration Api-peer-stats-info-oper. Changed type of type in API-PEER-STATS-INFO to use Api-peer-stats-info-oper. This is a non backward compatible change.
+           Added new enumeration Api-peer-stats-info-oper. Changed type of type in API-PEER-STATS-INFO to use Api-peer-stats-info-oper. This is a non backward compatible change.
        2021-03-04
-       Added MSD list per topology link. Added SRLB list per topology node.
+           Added MSD list per topology link. Added SRLB list per topology node.
        2021-01-29
-       Updated SRv6 Endpoint function from int to enum.
+           Updated SRv6 Endpoint function from int to enum.
        2020-09-16
-       Adding operational nodes for new features path invalidation drop protected and unprotected path Operational nodes for PCE segment-routing traffic-eng policy
+           Adding operational nodes for new features path invalidation drop protected and unprotected path Operational nodes for PCE segment-routing traffic-eng policy
        2020-09-01
-       Added uB6SID field in the LSP object
+           Added uB6SID field in the LSP object
        2020-08-18
-       Added SRv6 LSP details fields in the LSP object
+           Added SRv6 LSP details fields in the LSP object
        2020-07-13
-       Added NodeID fields in the uN SID object in the IPv6 topology.
+           Added NodeID fields in the uN SID object in the IPv6 topology.
        2020-04-20
-       Added fields in the PCE IPv6 link object.";
+           Added fields in the PCE IPv6 link object.";
     semver:module-version "3.0.0";
   }
   revision 2020-03-17 {
     description
       "Add flex-algo related operational nodes. Updated description of statistics-nodes. Add SR-PAG related operational nodes. Add PCE authentication related operational nodes.
        2020-02-03
-       Added TCP AuthenticationOption related operational model. Implemented show pce authentication. Added classes AuthenticationKeyTable and AuthenticationKey.
+         Added TCP AuthenticationOption related operational model. Implemented show pce authentication. Added classes AuthenticationKeyTable and AuthenticationKey.
        2019-11-07
-       Adding leaf preference, leaf interface-name, and leaf profile-id to support a new HTTP API bindpoint for sibling PCEs.
+         Adding leaf preference, leaf interface-name, and leaf profile-id to support a new HTTP API bindpoint for sibling PCEs.
        2019-10-09
-       Adding enum sr-flex-algo-prefix-sid, enum pce-cspf-flex-algo-definition-mistmatch, leaf flex-algo-prefix-sids, list sr-flex-algo, and container flex-algos to support Flex-algo info.";
+         Adding enum sr-flex-algo-prefix-sid, enum pce-cspf-flex-algo-definition-mistmatch, leaf flex-algo-prefix-sids, list sr-flex-algo, and container flex-algos to support Flex-algo info.";
     semver:module-version "2.0.0";
   }
   revision 2019-10-02 {
     description
       "Added REST peer statistic information.
        2019-09-27
-       Implement new show pce lsp and show pce initiated tunnels commands for Optima";
+         Implement new show pce lsp and show pce initiated tunnels commands for Optima";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -220,23 +227,28 @@ submodule Cisco-IOS-XR-infra-xtc-oper-sub1 {
         description
           "P2MP get information";
       }
-      enum "api-operation-external-lsp" {
+      enum "api-operation-p2mp-subscription" {
         value 18;
+        description
+          "P2MP subscribe";
+      }
+      enum "api-operation-external-lsp" {
+        value 19;
         description
           "External LSP";
       }
       enum "api-operation-topology-link-attribute" {
-        value 19;
+        value 20;
         description
           "Topology link attribute update";
       }
       enum "api-operationversion" {
-        value 20;
+        value 21;
         description
           "API version";
       }
       enum "api-operation-maximum" {
-        value 21;
+        value 22;
         description
           "Maximum value";
       }
@@ -431,9 +443,52 @@ submodule Cisco-IOS-XR-infra-xtc-oper-sub1 {
         description
           "Latency bound exceeded for computed path";
       }
+      enum "pce-cspf-flex-algo-unsupported" {
+        description
+          "Flex-algo based path computation unsupported";
+      }
     }
     description
       "PCE CSPF Result Code";
+  }
+
+  typedef Sr-computation-algorithm {
+    type enumeration {
+      enum "computation-sr-native" {
+        description
+          "SR Native";
+      }
+      enum "computation-igp" {
+        description
+          "SR IGP";
+      }
+      enum "computation-dijkstra" {
+        description
+          "Dijkstra";
+      }
+      enum "computation-k-shortest" {
+        description
+          "K shortest";
+      }
+      enum "computation-flex-algo" {
+        description
+          "Flex Algo";
+      }
+      enum "computation-suurballe" {
+        description
+          "Suurballe";
+      }
+      enum "computation-bellman-ford" {
+        description
+          "Bellman Ford";
+      }
+      enum "computation-rsvp" {
+        description
+          "RSVP Computation";
+      }
+    }
+    description
+      "Path Computation Algorithm";
   }
 
   typedef Cmn-ha-case {
@@ -2090,6 +2145,18 @@ submodule Cisco-IOS-XR-infra-xtc-oper-sub1 {
       description
         "Cost";
     }
+    leaf computation-duration-millisecond {
+      type uint32;
+      units "millisecond";
+      description
+        "How many milliseconds it took to compute this
+         path";
+    }
+    leaf computation-algorithm {
+      type Sr-computation-algorithm;
+      description
+        "What algorithm was used to compute this path";
+    }
     list hops {
       description
         "SR hops";
@@ -2332,6 +2399,16 @@ submodule Cisco-IOS-XR-infra-xtc-oper-sub1 {
       type boolean;
       description
         "True if topology is consistent";
+    }
+    leaf topology-unreliable {
+      type boolean;
+      description
+        "True if topology is unreliable";
+    }
+    leaf update-dropped {
+      type uint32;
+      description
+        "Number of total update dropped";
     }
   }
 

@@ -35,40 +35,55 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
        Cisco-IOS-XR-segment-routing-ms-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-08-31 {
+  revision 2022-03-09 {
     description
-      "Range for on-demand-colors/constraint/segments/sid-algorithm was incrased from 128-255 to 0-255 to allow algo-0/1 prefix-SIDS. Range for candidate-paths/preferences/preference/constraint/segment-rules/sid-algorithm was increased from 128-255 to 0-255 to allow algo-0/1 prefix-SIDS.
-       2021-07-22
-         Added SR-TE path Strict SPF algorithm configuration
+      "Add delete-delay timer.
+       2021-11-03
+         On demand color level options were added to allow up to 3 standby candidate paths to be brought up for quicker convergence.
+       2021-09-27
+         Global and policy level options were added to allow up to 3 standby candidate paths to be brought up for quicker convergence.
+       2021-08-31
+         Range for on-demand-colors/constraint/segments/sid-algorithm was incrased from 128-255 to 0-255 to allow algo-0/1 prefix-SIDS. Range for candidate-paths/preferences/preference/constraint/segment-rules/sid-algorithm was increased from 128-255 to 0-255 to allow algo-0/1 prefix-SIDS.";
+    semver:module-version "5.1.0";
+  }
+  revision 2021-07-22 {
+    description
+      "Added SR-TE path Strict SPF algorithm configuration
+       2021-06-04
+          DEPRECATED on-demand-colors on-demand-color on-demand-color-dyn-mpls on-demand-color-dyn-mpls-flex-algorithm in IOS-XR 7.5.1. Please use on-demand-colors on-demand-color constraint segments sid-algorithm.
+       2021-05-14
+          Modify the description of ODN related nodes to indicate that they are applicable for both SR-MPLS and SRv6 policies.
        2021-04-09
-         Add backup liveness profile.";
-    semver:module-version "4.1.0";
+          Add backup liveness profile.
+       2021-03-09
+          Removed unsupported TCP Authentication option - accept mismatch connection, Changed taskgroup for SRPAG leaf.";
+    semver:module-version "5.0.0";
   }
   revision 2021-02-18 {
     description
       "Remove deprecated liveness-detection and reverse-path cfg schema from performance-measurement delay measurement.
        2020-12-13
-       Added performance-measurement liveness-detection config schema.
+           Added performance-measurement liveness-detection config schema.
        2020-11-04
-       Adding configurations for new features path invalidation drop protected and unprotected path Added liveness-detection container under delay measurement container. Added dm-reverse-path under delay measurement container. Added profile-name leaf under delay measurement container. Added separate-next-hop leaf under traffic-engineering container. Increased the maximum value of PCC delegation timeout. Added invalidation-drop leaf under steering container. Renamed type XTCSteeringApplicationType to XTCAgentPolicySteeringApplicationType.
+           Adding configurations for new features path invalidation drop protected and unprotected path Added liveness-detection container under delay measurement container. Added dm-reverse-path under delay measurement container. Added profile-name leaf under delay measurement container. Added separate-next-hop leaf under traffic-engineering container. Increased the maximum value of PCC delegation timeout. Added invalidation-drop leaf under steering container. Renamed type XTCSteeringApplicationType to XTCAgentPolicySteeringApplicationType.
        2020-10-27
-       Adding support for ipv6 link local for srv6
+           Adding support for ipv6 link local for srv6
        2020-09-18
-       Effective metric config CLI
+           Effective metric config CLI
        2020-08-07
-       Remodel related to steering submode IosSetYangSchemaRev Cisco-IOS-XR-infra-xtc-agent-cfg";
+           Remodel related to steering submode IosSetYangSchemaRev Cisco-IOS-XR-infra-xtc-agent-cfg";
     semver:module-version "4.0.0";
   }
   revision 2020-01-29 {
     description
       "Implement new performance-measurement logging commands. Added per-flow configuration under policy and on-demand color. Adding leaf pdp-count to support Per-Flow Policy. Remove unnecessary config leaves from the steering container.
        2019-10-11
-       Introduce a new HTTP API bindpoint for sibling PCEs. Adding enable leaf to profile list.
+         Introduce a new HTTP API bindpoint for sibling PCEs. Adding enable leaf to profile list.
        2019-09-25
-       Adding enum ipv4-adjacency-address.";
+         Adding enum ipv4-adjacency-address.";
     semver:module-version "3.0.0";
   }
   revision 2019-09-05 {
@@ -384,6 +399,23 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
       "Xtc agent policy steering application";
   }
 
+  typedef Xtc-path-hop {
+    type enumeration {
+      enum "mpls" {
+        value 1;
+        description
+          "Segment-routing MPLS";
+      }
+      enum "srv6" {
+        value 2;
+        description
+          "Segment-routing v6";
+      }
+    }
+    description
+      "Xtc path hop";
+  }
+
   typedef Xtc-cpath {
     type enumeration {
       enum "candidate-path-type-all" {
@@ -656,6 +688,19 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
     }
   }
 
+  grouping MAX-INSTALL-STANDBY-C-PATHS {
+    description
+      "Common node of policy, on-demand-color";
+    leaf max-install-standby-c-paths {
+      type uint32 {
+        range "0..3";
+      }
+      description
+        "Allow additional candidate paths to warm up non
+         forwarding LSPs";
+    }
+  }
+
   grouping PERFORMANCE-MEASUREMENT {
     description
       "Common node of policy, on-demand-color";
@@ -732,6 +777,18 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
         description
           "True only";
       }
+    }
+  }
+
+  grouping PRECEDENCE {
+    description
+      "Common node of pce-peer, pce-peer-v6";
+    leaf precedence {
+      type uint32 {
+        range "0..255";
+      }
+      description
+        "Precedence value of this PCE";
     }
   }
 
@@ -858,6 +915,21 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
     }
   }
 
+  grouping XTC-AGENT-CFG-ENABLE {
+    description
+      "Common node of pce-peer, pce-peer-v6Common node
+       of segment-list, candidate-paths, preference,
+       path-info, metric, srte-interface, auto-route,
+       pcep, anycast, delay-measurement,
+       pm-liveness-detection, delay-measurement-logging,
+       pm-liveness-detection-logging, protection, lock";
+    leaf enable {
+      type empty;
+      description
+        "True only";
+    }
+  }
+
   grouping SRV6 {
     description
       "Common node of traffic-engineering, policy,
@@ -902,10 +974,36 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
     }
   }
 
+  grouping PASSWORD {
+    description
+      "Common node of pce-peer, pce-peer-v6";
+    leaf password {
+      type string {
+        length "1..25";
+      }
+      description
+        "PCC Peer MD5 Password";
+    }
+  }
+
   grouping PCE-GROUP {
     description
       "Common node of policy, preference,
        on-demand-color";
+    leaf pce-group {
+      type xr:Cisco-ios-xr-string {
+        length "1..16";
+      }
+      description
+        "Name of the PCE group - maximum 16 characters";
+    }
+  }
+
+  grouping XTC-AGENT-CFG-PCE-GROUP {
+    description
+      "Common node of policy, preference,
+       on-demand-colorCommon node of pce-peer,
+       pce-peer-v6";
     leaf pce-group {
       type xr:Cisco-ios-xr-string {
         length "1..16";
@@ -1016,6 +1114,34 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
     }
   }
 
+  grouping AUTHENTICATION-OPTION {
+    description
+      "Common node of pce-peer, pce-peer-v6";
+    container authentication-option {
+      presence "Indicates a authentication-option node is configured.";
+      description
+        "Configure AO keychain based authentication";
+      leaf keychain {
+        type string {
+          length "1..32";
+        }
+        mandatory true;
+        description
+          "Name of the keychain";
+      }
+      leaf include-tcp-options {
+        type boolean;
+        description
+          "Include other TCP options in the header";
+      }
+      leaf accept-mismatch-connection {
+        type boolean;
+        description
+          "Deprecated";
+      }
+    }
+  }
+
   grouping FORWARD-CLASS {
     description
       "Common node of auto-route, profile-auto-route";
@@ -1063,6 +1189,18 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
     }
   }
 
+  grouping KEYCHAIN {
+    description
+      "Common node of pce-peer, pce-peer-v6";
+    leaf keychain {
+      type string {
+        length "1..32";
+      }
+      description
+        "PCC Peer Keychain";
+    }
+  }
+
   augment "/a1:sr" {
     description
       "This augment extends the configuration data of
@@ -1103,16 +1241,19 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
           container on-demand-color-dyn-mpls {
             presence "CLI submode compatibility.";
             description
-              "Dynamic MPLS path properties";
+              "Dynamic path properties. Applicable for
+               SR-MPLS and SRv6 policies";
             container on-demand-color-dyn-mpls-anycast {
               presence "CLI submode compatibility.";
               description
-                "Anycast Prefix SID Inclusion";
+                "Anycast Prefix SID Inclusion. Applicable for
+                 SR-MPLS and SRv6 policies";
             }
             container on-demand-color-dyn-mpls-metric {
               presence "CLI submode compatibility.";
               description
-                "Metric type";
+                "Metric type. Applicable for SR-MPLS and SRv6
+                 policies";
               leaf metric-type {
                 type Xtc-metric;
                 description
@@ -1123,7 +1264,8 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
             container on-demand-color-dyn-mpls-pce {
               presence "CLI submode compatibility.";
               description
-                "Use Path Computation Element";
+                "Use Path Computation Element. Applicable for
+                 SR-MPLS and SRv6 policies";
             }
             container disjoint-path {
               presence "Indicates a disjoint-path node is configured.";
@@ -1156,7 +1298,10 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
                 range "128..255";
               }
               description
-                "Prefix-SID algorithm";
+                "DEPRECATED in IOS-XR 7.5.1. Please use
+                 on-demand-colors on-demand-color constraint
+                 segments sid-algorithm. Prefix-SID algorithm
+                 . Applicable for SR-MPLS and SRv6 policies";
             }
             uses AFFINITY-RULE-TABLE;
             uses BOUNDS;
@@ -1216,6 +1361,7 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
             description
               "Color";
           }
+          uses MAX-INSTALL-STANDBY-C-PATHS;
           uses PERFORMANCE-MEASUREMENT;
           uses PER-FLOW;
           uses MAXIMUM-SID-DEPTH;
@@ -1467,6 +1613,14 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
             "Timer to wait for topology convergence after
              topology starts populating for startup case";
         }
+        leaf delete-delay {
+          type uint32 {
+            range "0..3600";
+          }
+          default "0";
+          description
+            "Delete delay value in seconds";
+        }
         leaf cleanup-delay {
           type uint32 {
             range "0..300";
@@ -1528,12 +1682,14 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
         container dynamic-binding-sid-rules {
           presence "Indicates a dynamic-binding-sid-rules node is configured.";
           description
-            "Dynamic binding SID options";
+            "Dynamic binding SID options. Applicable for
+             SR-MPLS and SRv6 policies";
           leaf dynamic-binding-sid-rule {
             type Xtc-binding-sid-dynamic-rule;
             mandatory true;
             description
-              "Binding SID dynamic rule";
+              "Binding SID dynamic rule. Applicable for
+               SR-MPLS and SRv6 policies";
           }
         }
       }
@@ -1665,7 +1821,8 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
                 }
                 key "af-type";
                 description
-                  "Autoroute IP prefix to include";
+                  "Autoroute IP prefix to include (limited to
+                   IPv4 prefixes)";
                 container af-type-all {
                   when "../af-type = 'af-type-all'" {
                     description
@@ -1703,6 +1860,11 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
                   }
                 }
               }
+            }
+            leaf include-ipv6-all {
+              type empty;
+              description
+                "Include all eligible IPv6 prefixes";
             }
             leaf force-sr-include {
               type empty;
@@ -1793,7 +1955,7 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
                     "Policy path-option preference
                      configuration";
                   list path-info {
-                    key "type segment-list-name";
+                    key "type hop-type segment-list-name";
                     description
                       "Policy configuration";
                     container metric {
@@ -1844,8 +2006,13 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
                       description
                         "Path-option type";
                     }
+                    leaf hop-type {
+                      type Xtc-path-hop;
+                      description
+                        "Type of dynamic path to be computed";
+                    }
                     leaf segment-list-name {
-                      type string {
+                      type xr:Cisco-ios-xr-string {
                         length "1..128";
                       }
                       description
@@ -1891,6 +2058,7 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
             description
               "Policy name";
           }
+          uses MAX-INSTALL-STANDBY-C-PATHS;
           uses PERFORMANCE-MEASUREMENT;
           uses BFD;
           uses PCE-GROUP;
@@ -1947,128 +2115,35 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
             key "pce-address";
             description
               "PCE peer";
-            container authentication-option {
-              presence "Indicates a authentication-option node is configured.";
-              description
-                "Configure AO keychain based authentication";
-              leaf keychain {
-                type string {
-                  length "1..32";
-                }
-                mandatory true;
-                description
-                  "Name of the keychain";
-              }
-              leaf include-tcp-options {
-                type boolean;
-                description
-                  "Include other TCP options in the header";
-              }
-              leaf accept-mismatch-connection {
-                type boolean;
-                description
-                  "Accept new connection even if
-                   Authentication Option mismatched";
-              }
-            }
-            leaf password {
-              type string {
-                length "1..25";
-              }
-              description
-                "PCC Peer MD5 Password";
-            }
-            leaf keychain {
-              type string {
-                length "1..32";
-              }
-              description
-                "PCC Peer Keychain";
-            }
-            leaf precedence {
-              type uint32 {
-                range "0..255";
-              }
-              description
-                "Precedence value of this PCE";
-            }
             leaf pce-address {
               type inet:ip-address-no-zone;
               description
                 "Remote PCE address";
             }
+            uses PASSWORD;
+            uses KEYCHAIN;
+            uses XTC-AGENT-CFG-PCE-GROUP;
+            uses AUTHENTICATION-OPTION;
+            uses PRECEDENCE;
           }
         }
-        container pce-peer-with-afs {
+        container pce-peer-v6s {
           description
-            "PCE peer configuration with address family";
-          list pce-peer-with-af {
-            key "af-type pce-address";
+            "PCE peer configuration for IPv6";
+          list pce-peer-v6 {
+            key "pce-address";
             description
               "PCE peer";
-            container authentication-option-with-af {
-              presence "Indicates a authentication-option-with-af node is configured.";
-              description
-                "Configure AO keychain based authentication";
-              leaf keychain {
-                type string {
-                  length "1..32";
-                }
-                mandatory true;
-                description
-                  "Name of the keychain";
-              }
-              leaf include-tcp-options {
-                type boolean;
-                description
-                  "Include other TCP options in the header";
-              }
-              leaf accept-mismatch-connection {
-                type boolean;
-                description
-                  "Accept new connection even if
-                   Authentication Option mismatched";
-              }
-            }
-            leaf password-with-af {
-              type string {
-                length "1..25";
-              }
-              description
-                "PCC Peer MD5 Password";
-            }
-            leaf precedence-with-af {
-              type uint32 {
-                range "0..255";
-              }
-              description
-                "Precedence value of this PCE";
-            }
-            leaf pce-group {
-              type xr:Cisco-ios-xr-string {
-                length "1..16";
-              }
-              description
-                "Name of the PCE group - maximum 16
-                 characters";
-            }
-            leaf keychain-with-af {
-              type string {
-                length "1..32";
-              }
-              description
-                "PCC Peer Keychain";
-            }
-            leaf af-type {
-              type Xtc-address-family;
-              description
-                "PCE address-family type";
-            }
             leaf pce-address {
               type inet:ip-address-no-zone;
               description
                 "Remote PCE address";
             }
+            uses PASSWORD;
+            uses KEYCHAIN;
+            uses XTC-AGENT-CFG-PCE-GROUP;
+            uses AUTHENTICATION-OPTION;
+            uses PRECEDENCE;
           }
         }
         container profiles {
@@ -2117,7 +2192,12 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
               leaf include-all {
                 type empty;
                 description
-                  "Include all prefixes to autoroute";
+                  "Include all IPv4 prefixes to autoroute";
+              }
+              leaf include-ipv6-all {
+                type empty;
+                description
+                  "Include all eligible IPv6 prefixes";
               }
               leaf force-sr-include {
                 type empty;
@@ -2344,6 +2424,14 @@ module Cisco-IOS-XR-infra-xtc-agent-cfg {
         type empty;
         description
           "Use TE-latency algorithm";
+      }
+      leaf global-policy-max-install-standby-c-paths {
+        type uint32 {
+          range "1..3";
+        }
+        description
+          "Allow additional candidate paths to warm up non
+           forwarding LSPs";
       }
       leaf kshortest-paths {
         type uint32 {

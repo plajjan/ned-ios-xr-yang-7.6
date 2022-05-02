@@ -23,19 +23,30 @@ submodule Cisco-IOS-XR-fib-common-oper-sub3 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR fib-common package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-17 {
+    description
+      "Modify the type of list fsum-attr-cnt";
+    semver:module-version "5.0.0";
+  }
   revision 2020-12-02 {
     description
-      "Adding per-object accounting.";
-    semver:module-version "3.1.0";
+      "Adding per-object accounting.
+       2020-10-20
+           NBC documentation of CSCvu06764, CSCvv14573,CSCvv76648
+       2020-05-26
+           Update SRv6 Block Space naming convention
+       2020-05-05
+           changes related to treat SRv6 and SID as well-known when parsing XML for yang";
+    semver:module-version "3.0.0";
   }
   revision 2020-01-16 {
     description
       "NBC documentation of CSCvs27272,CSCvs22018,CSCvs45512
        2019-10-29
-       Updated srv6 global bag";
+         Updated srv6 global bag";
     semver:module-version "2.0.0";
   }
   revision 2019-09-27 {
@@ -73,6 +84,26 @@ submodule Cisco-IOS-XR-fib-common-oper-sub3 {
     type string;
     description
       "Bag string";
+  }
+
+  grouping FIB-OC-AFT-ERROR-STATE {
+    description
+      "FIB OC AFT ERROR STATE";
+    leaf is-in-error-state {
+      type boolean;
+      description
+        "Error State";
+    }
+  }
+
+  grouping FIB-OC-AFT-OOR-STATE {
+    description
+      "FIB OC AFT OOR STATE";
+    leaf is-in-oor-state {
+      type boolean;
+      description
+        "OOR State";
+    }
   }
 
   grouping FIB-OC-AFT-PREFIX-STATE {

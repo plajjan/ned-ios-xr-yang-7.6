@@ -9,7 +9,7 @@ module Cisco-IOS-XR-crypto-macsec-mka-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-crypto-macsec-mka-oper-sub1 {
-    revision-date 2021-04-15;
+    revision-date 2021-05-13;
   }
 
   organization
@@ -35,9 +35,20 @@ module Cisco-IOS-XR-crypto-macsec-mka-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-05-13 {
+    description
+      "Changed the latest SAK data field to last SAK";
+    semver:module-version "2.0.0";
+  }
   revision 2021-04-15 {
     description
-      "Modified to display session stats";
+      "Modified to display session stats
+       2021-02-17
+           Modified to display port power status
+       2021-01-19
+           show_mka.bag dormant entry remove
+       2020-08-24
+           MKA PPK";
     semver:module-version "2.0.0";
   }
   revision 2019-05-27 {

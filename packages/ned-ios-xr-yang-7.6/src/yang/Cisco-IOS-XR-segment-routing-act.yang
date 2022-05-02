@@ -5,9 +5,6 @@ module Cisco-IOS-XR-segment-routing-act {
   import cisco-semver {
     prefix semver;
   }
-  import Cisco-IOS-XR-types {
-    prefix xr;
-  }
 
   organization
     "Cisco Systems, Inc.";
@@ -41,6 +38,8 @@ module Cisco-IOS-XR-segment-routing-act {
     input {
       choice sr-policy-option {
         mandatory true;
+        description
+          "Choose to run switchover on all or a specific policy";
         case sr-policy-all {
           leaf all {
             type boolean;

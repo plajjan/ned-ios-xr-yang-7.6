@@ -36,27 +36,23 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
 
   revision 2021-09-08 {
     description
-      "Removed the container interface-extended-hash from the container multipath
-       2021-08-31
-         Added container ssm and multipath
-       2021-07-22
-         Added container route-rate";
-    semver:module-version "2.1.0";
+      "Added flex-algo under default/mlpd";
+    semver:module-version "2.2.0";
   }
   revision 2021-02-17 {
     description
       "Added strict-rpf node under static segment-routing container
        2021-01-28
-       Added cisco-support task yang nodes
+           Added cisco-support task yang nodes
        2021-01-27
-       Modified must constraints under p2mp-te container
+           Modified must constraints under p2mp-te container
        2020-12-11
-       Renamed improper node name 'inerface' to 'interface'. Changed max string length from 1024 to 800.
+           Renamed improper node name 'inerface' to 'interface'. Changed max string length from 1024 to 800.
        2020-12-04
-       Removed container maximum and its child node as these are used
-       internally with cisco-support task.
+           Removed container maximum and its child node as these are used
+         internally with cisco-support task.
        2020-04-06
-       Added segment-routing container under mdt and bgp";
+           Added segment-routing container under mdt and bgp";
     semver:module-version "2.0.0";
   }
   revision 2019-08-20 {
@@ -279,6 +275,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                     description
                       "Traffic rate threshold in Kbps to trigger Data MDT";
                   }
+                  leaf flex-algo {
+                    type uint32 {
+                      range "128..255" {
+                        description
+                          "MLDP Flex-algo value";
+                      }
+                    }
+                    description
+                      "Configure MLDP Flex-algo";
+                  }
                 }
                 container p2mp-te {
                   must "(maximum-number or route-policy) and not(maximum-number and route-policy)";
@@ -440,6 +446,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                             "Enable Exclusive Partitioned MDT for Bidir";
                         }
                       }
+                      leaf flex-algo {
+                        type uint32 {
+                          range "128..255" {
+                            description
+                              "MLDP Flex-algo value";
+                          }
+                        }
+                        description
+                          "Configure MLDP Flex-algo";
+                      }
                     }
                   }
                   container p2mp {
@@ -454,6 +470,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                         description
                           "Enable Exclusive Partitioned MDT for Bidir";
                       }
+                    }
+                    leaf flex-algo {
+                      type uint32 {
+                        range "128..255" {
+                          description
+                            "MLDP Flex-algo value";
+                        }
+                      }
+                      description
+                        "Configure MLDP Flex-algo";
                     }
                   }
                 }
@@ -589,6 +615,17 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                         description
                           "Enable Exclusive Partitioned MDT for Bidir";
                       }
+                    }
+                    leaf flex-algo {
+                      type uint32 {
+                        range "128..255" {
+                          description
+                            "MLDP Flex-algo value";
+                        }
+                      }
+                      must "../mp2mp or ../p2mp";
+                      description
+                        "Configure MLDP Flex-algo";
                     }
                   }
                 }
@@ -1340,6 +1377,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                     description
                       "Traffic rate threshold in Kbps to trigger Data MDT";
                   }
+                  leaf flex-algo {
+                    type uint32 {
+                      range "128..255" {
+                        description
+                          "MLDP Flex-algo value";
+                      }
+                    }
+                    description
+                      "Configure MLDP Flex-algo";
+                  }
                 }
                 container p2mp-te {
                   must "(maximum-number or route-policy) and not(maximum-number and route-policy)";
@@ -1432,6 +1479,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                             "Enable Exclusive Partitioned MDT for Bidir";
                         }
                       }
+                      leaf flex-algo {
+                        type uint32 {
+                          range "128..255" {
+                            description
+                              "MLDP Flex-algo value";
+                          }
+                        }
+                        description
+                          "Configure MLDP Flex-algo";
+                      }
                     }
                   }
                   container p2mp {
@@ -1446,6 +1503,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                         description
                           "Enable Exclusive Partitioned MDT for Bidir";
                       }
+                    }
+                    leaf flex-algo {
+                      type uint32 {
+                        range "128..255" {
+                          description
+                            "MLDP Flex-algo value";
+                        }
+                      }
+                      description
+                        "Configure MLDP Flex-algo";
                     }
                   }
                 }
@@ -1542,6 +1609,17 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                         description
                           "Enable Exclusive Partitioned MDT for Bidir";
                       }
+                    }
+                    leaf flex-algo {
+                      type uint32 {
+                        range "128..255" {
+                          description
+                            "MLDP Flex-algo value";
+                        }
+                      }
+                      must "../mp2mp or ../p2mp";
+                      description
+                        "Configure MLDP Flex-algo";
                     }
                   }
                 }
@@ -2154,6 +2232,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                 description
                   "Traffic rate threshold in Kbps to trigger Data MDT";
               }
+              leaf flex-algo {
+                type uint32 {
+                  range "128..255" {
+                    description
+                      "MLDP Flex-algo value";
+                  }
+                }
+                description
+                  "Configure MLDP Flex-algo";
+              }
             }
             container p2mp-te {
               must "(maximum-number or route-policy) and not(maximum-number and route-policy)";
@@ -2279,6 +2367,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                 presence "Indicates a p2mp node is configured.";
                 description
                   "P2MP core-tree";
+                leaf flex-algo {
+                  type uint32 {
+                    range "128..255" {
+                      description
+                        "MLDP Flex-algo value";
+                    }
+                  }
+                  description
+                    "Configure MLDP Flex-algo";
+                }
               }
             }
             container p2mp-te {
@@ -2463,6 +2561,17 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                     description
                       "Enable Exclusive Partitioned MDT for Bidir";
                   }
+                }
+                leaf flex-algo {
+                  type uint32 {
+                    range "128..255" {
+                      description
+                        "MLDP Flex-algo value";
+                    }
+                  }
+                  must "../mp2mp or ../p2mp";
+                  description
+                    "Configure MLDP Flex-algo";
                 }
               }
             }
@@ -3211,6 +3320,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                 description
                   "Traffic rate threshold in Kbps to trigger Data MDT";
               }
+              leaf flex-algo {
+                type uint32 {
+                  range "128..255" {
+                    description
+                      "MLDP Flex-algo value";
+                  }
+                }
+                description
+                  "Configure MLDP Flex-algo";
+              }
             }
             container p2mp-te {
               must "(maximum-number or route-policy) and not(maximum-number and route-policy)";
@@ -3283,6 +3402,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                         "Enable Exclusive Partitioned MDT for Bidir";
                     }
                   }
+                  leaf flex-algo {
+                    type uint32 {
+                      range "128..255" {
+                        description
+                          "MLDP Flex-algo value";
+                      }
+                    }
+                    description
+                      "Configure MLDP Flex-algo";
+                  }
                 }
               }
               container p2mp {
@@ -3297,6 +3426,16 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                     description
                       "Enable Exclusive Partitioned MDT for Bidir";
                   }
+                }
+                leaf flex-algo {
+                  type uint32 {
+                    range "128..255" {
+                      description
+                        "MLDP Flex-algo value";
+                    }
+                  }
+                  description
+                    "Configure MLDP Flex-algo";
                 }
               }
             }
@@ -3427,6 +3566,17 @@ module Cisco-IOS-XR-um-multicast-routing-cfg {
                     description
                       "Enable Exclusive Partitioned MDT for Bidir";
                   }
+                }
+                leaf flex-algo {
+                  type uint32 {
+                    range "128..255" {
+                      description
+                        "MLDP Flex-algo value";
+                    }
+                  }
+                  must "../mp2mp or ../p2mp";
+                  description
+                    "Configure MLDP Flex-algo";
                 }
               }
             }

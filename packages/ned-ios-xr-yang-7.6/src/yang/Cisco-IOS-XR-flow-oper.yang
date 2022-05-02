@@ -9,10 +9,10 @@ module Cisco-IOS-XR-flow-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-flow-oper-sub2 {
-    revision-date 2019-04-05;
+    revision-date 2021-08-16;
   }
   include Cisco-IOS-XR-flow-oper-sub1 {
-    revision-date 2019-04-05;
+    revision-date 2021-08-16;
   }
 
   organization
@@ -35,9 +35,21 @@ module Cisco-IOS-XR-flow-oper {
      for the following management objects:
        flow: Flow operational data
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-16 {
+    description
+      "Added a new field for cache flow record size in cache information";
+    semver:module-version "1.2.0";
+  }
+  revision 2021-06-16 {
+    description
+      "Added tunnel egress related options for sflow
+       2021-04-23
+          Added new node for data-template info";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -102,6 +114,11 @@ module Cisco-IOS-XR-flow-oper {
                 description
                   "Monitor-map operational data";
                 uses NFSVR-SHOW-FLOW-CACHE-RESP-SINGLE-MONITOR-MAP;
+              }
+              container data-template {
+                description
+                  "Monitor-map data template information";
+                uses NFSVR-SHOW-FLOW-DATA-TEMPLATE;
               }
               leaf monitor-map-name {
                 type xr:Cisco-ios-xr-string;

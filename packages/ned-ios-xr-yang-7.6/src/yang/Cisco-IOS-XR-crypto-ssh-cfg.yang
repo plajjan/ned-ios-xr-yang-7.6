@@ -41,13 +41,13 @@ module Cisco-IOS-XR-crypto-ssh-cfg {
     description
       "Ciphers and key exchange algorithms added.
        2021-05-10
-       RSA keys allowed in FIPS mode
+           RSA keys allowed in FIPS mode
        2021-01-20
-       SSH v1 support CLI added
+           SSH v1 support CLI added
        2020-11-18
-       Port forwarding cli added.
+           Port forwarding cli added.
        2020-08-14
-       ED25519 support for XR SSH.";
+           ED25519 support for XR SSH.";
     semver:module-version "2.0.0";
   }
   revision 2020-04-30 {

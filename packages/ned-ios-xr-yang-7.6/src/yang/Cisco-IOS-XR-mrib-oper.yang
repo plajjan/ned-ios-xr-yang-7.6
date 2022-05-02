@@ -42,13 +42,13 @@ module Cisco-IOS-XR-mrib-oper {
   revision 2021-08-27 {
     description
       "non-backward compatible edit in leaf parent-if-handle. type changed from uint32 to type xr:Hex-integer";
-    semver:module-version "2.0.0";
+    semver:module-version "3.0.0";
   }
   revision 2020-10-29 {
     description
       "Adding RPFID for PIM-SM design
        2020-10-11
-       Backward compatible addition in leaf table-mdt-name-tree-sid,table-tree-sid-turnaround and reference-count.";
+           Backward compatible addition in leaf table-mdt-name-tree-sid,table-tree-sid-turnaround and reference-count.";
     semver:module-version "1.1.0";
   }
   revision 2020-02-13 {
@@ -301,7 +301,7 @@ module Cisco-IOS-XR-mrib-oper {
               "Entry Type";
           }
           leaf next-hop-address {
-            type inet:ip-address-no-zone;
+            type xr:Cisco-ios-xr-string;
             description
               "Next-Hop Address";
           }

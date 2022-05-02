@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-smart-license-platform-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR smart-license-platform package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-03 {
+    description
+      "Added support for enum node-deactivated.";
+    semver:module-version "1.1.0";
+  }
   revision 2020-09-15 {
     description
       "Structured the yang response for show CLIs.";
@@ -147,6 +152,10 @@ submodule Cisco-IOS-XR-smart-license-platform-oper-sub1 {
       enum "out-of-compliance" {
         description
           "out of compliance";
+      }
+      enum "node-deactivated" {
+        description
+          "node deactivated";
       }
     }
     description

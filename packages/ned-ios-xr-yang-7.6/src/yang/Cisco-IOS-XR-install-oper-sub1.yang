@@ -29,28 +29,64 @@ submodule Cisco-IOS-XR-install-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-21 {
+    description
+      "Add new states for ISO download and extracting main ISO contents.
+       2021-08-10
+         Add force option to package abort.";
+    semver:module-version "1.4.0";
+  }
+  revision 2021-07-15 {
+    description
+      "Add pre-commit check support.
+       2021-05-18
+          Modified oper path for upgrade compatibility matrix with iso input
+       2021-05-13
+          Added optional hash into all package queries.
+       2021-04-14
+          Add system reload reason and config replace info
+       2021-03-22
+          Added support for upgrade compatibility matrix feature";
+    semver:module-version "1.4.0";
+  }
   revision 2021-01-14 {
     description
-      "Add DDTS info to rollback queries.";
+      "Add DDTS info to rollback queries.
+       2020-07-23
+           Added optional label into inst_packages_bag.
+       2020-07-22
+           Update Inst-provides-match-type with additional provide value
+       2020-05-27
+           Add install and runtime fingerprint
+       2020-05-27
+           Add install and runtime fingerprint
+       2020-05-27
+           Add install and runtime fingerprint
+       2020-05-13
+           Updated version information to add hostname and disk space
+       2020-05-13
+           Updated version information to add hostname and disk space
+       2020-05-13
+           Updated version information to add hostname and disk space";
     semver:module-version "1.3.0";
   }
   revision 2020-04-23 {
     description
       "Add categorization of installed software packages into Cisco and Non-Cisco
        2020-04-23
-       Add categorization of installed software packages into Cisco and Non-Cisco
+         Add categorization of installed software packages into Cisco and Non-Cisco
        2020-04-23
-       Add categorization of installed software packages into Cisco and Non-Cisco
+         Add categorization of installed software packages into Cisco and Non-Cisco
        2020-02-05
-       Updated version information to add a GISO label
+         Updated version information to add a GISO label
        2020-02-05
-       Updated version information to add a GISO label
+         Updated version information to add a GISO label
        2020-02-05
-       Updated version information to add a GISO label
+         Updated version information to add a GISO label
        2020-01-09
-       Added optional label into inst_summary_packages_bag.
+         Added optional label into inst_summary_packages_bag.
        2019-10-14
-       Combined platform updates including updates to show install rollback list-ids";
+         Combined platform updates including updates to show install rollback list-ids";
     semver:module-version "1.2.0";
   }
   revision 2019-10-13 {
@@ -59,7 +95,7 @@ submodule Cisco-IOS-XR-install-oper-sub1 {
        2019-10-12
        8000 series 7.0.11 release
        2019-08-13
-       Common yang oper model for lindt and eXR install.";
+         Common yang oper model for lindt and eXR install.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -115,6 +151,18 @@ submodule Cisco-IOS-XR-install-oper-sub1 {
     }
     description
       "package Fingerprint request status";
+  }
+
+  typedef Caveat {
+    type string;
+    description
+      "Caveat";
+  }
+
+  typedef Fix {
+    type string;
+    description
+      "DDTS or fix ID";
   }
 
   typedef Install-opt-string {
@@ -256,6 +304,11 @@ submodule Cisco-IOS-XR-install-oper-sub1 {
       type Install-opt-string;
       description
         "Label of image";
+    }
+    leaf xr-packages-hash {
+      type Install-opt-string;
+      description
+        "Hash of XR packages in this bag";
     }
     list package {
       description
@@ -443,6 +496,81 @@ submodule Cisco-IOS-XR-install-oper-sub1 {
       description
         "Packages";
       uses INST-VER-PKG-TYPE;
+    }
+  }
+
+  grouping INSTALL-UPGRADE-MATRIX-ISO {
+    description
+      "Upgrade matrix info for the input ISO";
+    leaf info {
+      type Install-opt-string;
+      description
+        "Info";
+    }
+    list upgrade-matrix-info {
+      description
+        "Upgrade matrix table";
+      uses INSTALL-UPGRADE-MATRIX-DATA;
+    }
+  }
+
+  grouping INSTALL-UPGRADE-MATRIX-DETAILS {
+    description
+      "Upgrade matrix details";
+    leaf-list bridging-fixes {
+      type Fix;
+      description
+        "Bridging Fixes List";
+    }
+    leaf-list caveats {
+      type Caveat;
+      description
+        "Caveats list";
+    }
+  }
+
+  grouping INSTALL-UPGRADE-MATRIX-RELEASE-DATA {
+    description
+      "Upgrade matrix version data";
+    leaf from {
+      type string;
+      description
+        "From version";
+    }
+    leaf to {
+      type string;
+      description
+        "To version";
+    }
+  }
+
+  grouping INSTALL-UPGRADE-MATRIX-DATA {
+    description
+      "Upgrade matrix data";
+    container versions {
+      description
+        "Versions";
+      uses INSTALL-UPGRADE-MATRIX-RELEASE-DATA;
+    }
+    container details {
+      description
+        "Details";
+      uses INSTALL-UPGRADE-MATRIX-DETAILS;
+    }
+  }
+
+  grouping INSTALL-UPGRADE-MATRIX-RUNNING {
+    description
+      "Upgrade matrix info for current running image";
+    leaf info {
+      type Install-opt-string;
+      description
+        "Info";
+    }
+    list upgrade-matrix-info {
+      description
+        "Upgrade matrix table";
+      uses INSTALL-UPGRADE-MATRIX-DATA;
     }
   }
 }

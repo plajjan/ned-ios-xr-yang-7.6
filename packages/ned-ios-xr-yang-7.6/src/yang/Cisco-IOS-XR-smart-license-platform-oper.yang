@@ -6,7 +6,7 @@ module Cisco-IOS-XR-smart-license-platform-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-smart-license-platform-oper-sub1 {
-    revision-date 2020-09-15;
+    revision-date 2021-06-03;
   }
 
   organization
@@ -29,9 +29,14 @@ module Cisco-IOS-XR-smart-license-platform-oper {
      for the following management objects:
        plat-smart-license: Smart License info
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-03 {
+    description
+      "Added support for enum node-deactivated.";
+    semver:module-version "1.1.0";
+  }
   revision 2020-09-15 {
     description
       "Structured the yang response for show CLIs.";

@@ -32,12 +32,27 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR mpls-lsd package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-04-20 {
+    description
+      "Add mpls_lsd_moi_evpn as new EVPN moi";
+    semver:module-version "1.4.0";
+  }
   revision 2020-11-26 {
     description
-      "Extend MPLS_LSDLabelContextType to include PFP block type";
+      "Extend MPLS_LSDLabelContextType to include PFP block type
+       2020-11-22
+           New Label Context type defined, SR_Pfx_node
+       2020-10-29
+           Deprecated bag mpls_lsd_first_srgb_allocated_block_size Added bag mpls_lsd_active_block_range
+       2020-08-21
+           Modify mpls_lsd to include label flags in mpls_lsd_fpi_lbl bag
+       2020-06-13
+           Modify mpls_lsd to include BIER app type and label context type
+       2020-06-02
+           Modify mpls_lsd_moi_pw to include platform data";
     semver:module-version "1.3.0";
   }
   revision 2020-05-29 {
@@ -133,6 +148,68 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       "Mgmt lsd rw id";
   }
 
+  typedef Mgmt-lsd-tun {
+    type enumeration {
+      enum "mgmt-lsd-ipvpn-tunnel-type-invalid" {
+        value 0;
+        description
+          "mgmt lsd ipvpn tunnel type invalid";
+      }
+      enum "mgmt-lsd-ipvpn-tunnel-type-l2tp" {
+        value 1;
+        description
+          "mgmt lsd ipvpn tunnel type l2tp";
+      }
+      enum "mgmt-lsd-ipvpn-tunnel-type-mgre" {
+        value 2;
+        description
+          "mgmt lsd ipvpn tunnel type mgre";
+      }
+      enum "mgmt-lsd-ipvpn-tunnel-type-vxlan-l2" {
+        value 3;
+        description
+          "mgmt lsd ipvpn tunnel type vxlan l2";
+      }
+      enum "mgmt-lsd-ipvpn-tunnel-type-gre" {
+        value 4;
+        description
+          "mgmt lsd ipvpn tunnel type gre";
+      }
+      enum "mgmt-lsd-ipvpn-tunnel-type-ip" {
+        value 5;
+        description
+          "mgmt lsd ipvpn tunnel type ip";
+      }
+      enum "mgmt-lsd-ipvpn-tunnel-type-te" {
+        value 6;
+        description
+          "mgmt lsd ipvpn tunnel type te";
+      }
+      enum "mgmt-lsd-ipvpn-tunnel-type-vxlan-l3" {
+        value 7;
+        description
+          "mgmt lsd ipvpn tunnel type vxlan l3";
+      }
+    }
+    description
+      "Mgmt lsd tun";
+  }
+
+  typedef Mgmt-lsd-afi {
+    type enumeration {
+      enum "mgmt-lsd-afi-ipv4" {
+        description
+          "mgmt lsd afi ipv4";
+      }
+      enum "mgmt-lsd-afi-ipv6" {
+        description
+          "mgmt lsd afi ipv6";
+      }
+    }
+    description
+      "Mgmt lsd afi";
+  }
+
   typedef Mpls-lsd-nnh {
     type enumeration {
       enum "none" {
@@ -221,6 +298,10 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       enum "mgmt-lsd-moi-type-label-range" {
         description
           "Label Range Opaque Message Data";
+      }
+      enum "mgmt-lsd-moi-type-evpn" {
+        description
+          "EVPN";
       }
     }
     description
@@ -522,6 +603,10 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
         description
           "Per Flow Policy Label Block";
       }
+      enum "mgmt-lsd-lbl-ctx-type-sfi" {
+        description
+          "SFI Label";
+      }
     }
     description
       "Mgmt lsd lbl ctx";
@@ -785,7 +870,7 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
         "Number of connections made";
     }
     list label-context-count {
-      max-elements "36";
+      max-elements "37";
       description
         "Active labels contexts count";
       leaf entry {
@@ -795,7 +880,7 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       }
     }
     list label-context-pending-count {
-      max-elements "36";
+      max-elements "37";
       description
         "Unclaimed (pending) labels contexts count";
       leaf entry {
@@ -805,7 +890,7 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       }
     }
     list label-context-notification-count {
-      max-elements "36";
+      max-elements "37";
       description
         "Number of notifications sent to application, per
          
@@ -1059,6 +1144,11 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       description
         "Total number of Label Ranges";
     }
+    leaf total-evpn-paths {
+      type uint32;
+      description
+        "Total number of EVPN paths";
+    }
     leaf vrf-name-xr {
       type string;
       description
@@ -1117,6 +1207,81 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       description
         "Rewrite ID";
       uses MPLS-LSD-RW-ID-GEN;
+    }
+  }
+
+  grouping MPLS-LSD-MOI-EVPN {
+    description
+      "EVPN MOI information";
+    leaf table-id {
+      type uint32;
+      description
+        "Table ID";
+    }
+    leaf table-name {
+      type string;
+      description
+        "VRF table name";
+    }
+    leaf path-flags-decode {
+      type string;
+      description
+        "Path flag decoded string";
+    }
+    leaf out-interface {
+      type xr:Interface-name;
+      description
+        "Outgoing Interface name";
+    }
+    leaf afi {
+      type Mgmt-lsd-afi;
+      description
+        "Address Family Identifier";
+    }
+    leaf ipv4-next-hop {
+      type inet:ipv4-address;
+      description
+        "IPv4 nexthop";
+    }
+    leaf ipv6-next-hop {
+      type inet:ipv6-address;
+      description
+        "IPv6 nexthop";
+    }
+    leaf out-binding-sid {
+      type uint32;
+      description
+        "Outgoing BindingSID";
+    }
+    leaf path-id {
+      type uint16;
+      description
+        "Routing path id";
+    }
+    leaf backup-path-id {
+      type uint16;
+      description
+        "Routing path backup id";
+    }
+    leaf out-label {
+      type uint32;
+      description
+        "Outgoing Label";
+    }
+    leaf out-label-name {
+      type string;
+      description
+        "Outgoing label name";
+    }
+    leaf tunnel-id {
+      type uint16;
+      description
+        "Tunnel ID";
+    }
+    leaf tunnel-type {
+      type Mgmt-lsd-tun;
+      description
+        "Tunnel Type";
     }
   }
 
@@ -2132,6 +2297,15 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
         "Label range moi";
       uses MPLS-LSD-MOI-LABEL-RANGE;
     }
+    container evpn-data {
+      when "../moi-type = 'mgmt-lsd-moi-type-evpn'" {
+        description
+          "../MoiType = 'MGMT_LSD_MOI_TYPE_EVPN'";
+      }
+      description
+        "EVPN moi";
+      uses MPLS-LSD-MOI-EVPN;
+    }
     leaf moi-type {
       type Mgmt-lsd-moi;
       description
@@ -2648,6 +2822,28 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       description
         "Out Path List";
       uses MPLS-LSD-FRR-OUT-PATH;
+    }
+  }
+
+  grouping MPLS-LSD-LBL-CTX-SFI {
+    description
+      "SFI label context";
+    leaf sfi-interface {
+      type xr:Interface-name;
+      description
+        "SFI interface";
+    }
+    leaf sfi-name {
+      type string {
+        length "0..41";
+      }
+      description
+        "SFI name";
+    }
+    leaf sfi-disposition-protocol {
+      type uint32;
+      description
+        "SFI Disposition protocol";
     }
   }
 
@@ -3781,6 +3977,16 @@ submodule Cisco-IOS-XR-mpls-lsd-oper-sub1 {
       description
         "Label block PFP context";
       uses MPLS-LSD-LBL-CTX-LBL-BLK-PFP;
+    }
+    container sfi {
+      when "../label-context-type = 'mgmt-lsd-lbl-ctx-type-sfi'" {
+        description
+          "../LabelContextType =
+           'MGMT_LSD_LBL_CTX_TYPE_SFI'";
+      }
+      description
+        "SFI label context";
+      uses MPLS-LSD-LBL-CTX-SFI;
     }
     leaf label-context-type {
       type Mgmt-lsd-lbl-ctx;

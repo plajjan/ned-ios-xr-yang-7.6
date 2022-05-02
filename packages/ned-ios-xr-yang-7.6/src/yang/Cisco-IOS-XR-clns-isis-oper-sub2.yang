@@ -26,28 +26,50 @@ submodule Cisco-IOS-XR-clns-isis-oper-sub2 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR clns-isis package operational data.
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-30 {
+    description
+      "add per-area, per topology statistic indexed list.
+       2022-01-11
+         add show isis neighbor summary statistic info. IosSetYangSchemaRev Cisco-IOS-XR-PRIVATE-ocni-isis-oper
+       2021-09-03
+         Show output added for IP Flex-algo.";
+    semver:module-version "4.2.0";
+  }
+  revision 2021-07-07 {
+    description
+      "Add timestamp and age to isis local rib routes.";
+    semver:module-version "4.1.0";
+  }
   revision 2021-03-13 {
     description
-      "Interface bandwidth changed from uint32_t to uint64_t";
-    semver:module-version "4.1.0";
+      "Interface bandwidth changed from uint32_t to uint64_t
+       2021-01-04
+           Add private adjacency bag
+       2020-11-05
+           Flex-algo extension for show isis topology.
+       2020-10-27
+           Add a new type Isis-flex-algo-metric for flex-algo metrics and change the metric-type leaf in ISIS-SH-FLEX-ALGO-AREA to use it.
+       2020-10-20
+           Change in Yang tool corrected strings repair-s-rv6* to repair-srv6*, end-xsid* to end-x-sid*, and is-s-rv6 to is-srv6. Changed avg-dela-rawy to avg-delay-raw to fix misspelling via CSCvu63930. Changed SRv6 function-type to sid-behavior, uint32_t to mgmt_srv6_sid_fmt, and num-sid to num-sids for consistency and to comply with current IETF ISIS SRv6 draft via CSCvu06764.";
+    semver:module-version "4.0.0";
   }
   revision 2020-05-12 {
     description
       "Added SRLG and SRLG Static
        2020-03-25
-       Added operational data for new features.";
+         Added operational data for new features.";
     semver:module-version "3.0.0";
   }
   revision 2019-09-25 {
     description
       "Added operational data for new features
        2019-05-14
-       Conditional Advertise-prefix support
+         Conditional Advertise-prefix support
        2019-05-03
-       move ocni-isis opencfg model from native model to private oper model";
+         move ocni-isis opencfg model from native model to private oper model";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {

@@ -26,12 +26,36 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR pmengine package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-13 {
+    description
+      "Support added for cumulative-bad-sh and cumulative-frm-err in pcs layer.
+       2021-10-06
+         Support added for new counters in Optics layer.";
+    semver:module-version "1.5.0";
+  }
+  revision 2021-07-09 {
+    description
+      "Support added for prbs layer for fibre-channel, ocn, stm and ethernet controllers. Support added for cem layer and controller. Container cem added.
+       2021-04-26
+          Support added for E1 controller.
+       2021-04-14
+          Support added for pcs and fec layers for fibre-channel controller.
+       2021-02-24
+          Support added for fc layer and controller. Container fibre-channel added.";
+    semver:module-version "1.4.0";
+  }
   revision 2020-09-02 {
     description
-      "Added PM support for PRBS direction feature.";
+      "Added PM support for PRBS direction feature.
+       2020-07-20
+           Added parameter for cumulative BIP count in pcs pmengine bag.
+       2020-04-17
+           Added Instantaneous Q Margin in fec layer.
+       2020-04-07
+           Changes made to support TCA for OTU PRBS layer.";
     semver:module-version "1.3.0";
   }
   revision 2019-10-10 {
@@ -43,9 +67,9 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
     description
       "Existing optics parameter PMD is deprecated and SOPMD is added to use instead.
        2019-08-28
-       Max and Min time support for fec and optics layer parameters.
+         Max and Min time support for fec and optics layer parameters.
        2019-06-01
-       Added Range attribute for the history buckets.";
+         Added Range attribute for the history buckets.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -208,90 +232,93 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
       "PM PRBS Direction Mode Enum";
   }
 
-  grouping PM-PCS-PARAMETER-COUNT {
+  grouping PM-E1-PARAM {
     description
-      "pm pcs parameter count";
-    leaf name {
-      type string {
-        length "0..19";
-      }
-      description
-        "pcs param name";
-    }
+      "PM E1 PARAM";
     leaf data {
       type uint64;
       description
-        "the threshold users set";
-    }
-  }
-
-  grouping PM-PCS-PARAMETER {
-    description
-      "pm pcs parameter";
-    leaf tca-report {
-      type boolean;
-      description
-        "enable/disable to report TCA";
+        "the number in the interval";
     }
     leaf threshold {
       type uint64;
       description
         "the threshold users set";
     }
-    list count {
+    leaf tca-report {
+      type boolean;
       description
-        "param count";
-      uses PM-PCS-PARAMETER-COUNT;
+        "enable/disable to report TCA";
+    }
+    leaf valid {
+      type boolean;
+      description
+        "valid";
     }
   }
 
-  grouping PM-PCS-PARAS {
+  grouping PM-E1-PARAS {
     description
-      "all paras in pcs";
-    container bip {
+      "all paras in e1";
+    container line-code-violations {
       description
-        "Bip ";
-      uses PM-PCS-PARAMETER;
+        "Line Code Violations";
+      uses PM-E1-PARAM;
     }
-    container frm-err {
+    container path-code-violations {
       description
-        "Frm Err";
-      uses PM-PCS-PARAMETER;
+        "Path Code Violations";
+      uses PM-E1-PARAM;
     }
-    container bad-sh {
+    container sels {
       description
-        "Bad Sh";
-      uses PM-PCS-PARAMETER;
+        "SELS";
+      uses PM-E1-PARAM;
     }
-    container es-ne {
+    container les {
       description
-        "Es Ne";
-      uses PM-PCS-PARAMETER;
+        "LES";
+      uses PM-E1-PARAM;
     }
-    container ses-ne {
+    container aiss-sef {
       description
-        "Ses Ne";
-      uses PM-PCS-PARAMETER;
+        "AISS SEF";
+      uses PM-E1-PARAM;
     }
-    container uas-ne {
+    container fcp {
       description
-        "Uas Ne";
-      uses PM-PCS-PARAMETER;
+        "FCP";
+      uses PM-E1-PARAM;
+    }
+    container es {
+      description
+        "ES ";
+      uses PM-E1-PARAM;
+    }
+    container ses {
+      description
+        "SES";
+      uses PM-E1-PARAM;
+    }
+    container uas {
+      description
+        "UAS";
+      uses PM-E1-PARAM;
     }
     container es-fe {
       description
-        "Es Fe";
-      uses PM-PCS-PARAMETER;
+        "ES FE";
+      uses PM-E1-PARAM;
     }
     container ses-fe {
       description
-        "Ese Fe";
-      uses PM-PCS-PARAMETER;
+        "SES FE";
+      uses PM-E1-PARAM;
     }
     container uas-fe {
       description
-        "Uas Fe";
-      uses PM-PCS-PARAMETER;
+        "UAS FE";
+      uses PM-E1-PARAM;
     }
     leaf index {
       type uint32;
@@ -313,15 +340,189 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
       description
         "last clear time";
     }
+    leaf last-clear15-min-timep {
+      type string;
+      description
+        "last clear time";
+    }
+    leaf last-clear24-hr-time {
+      type string;
+      description
+        "last clear time";
+    }
+  }
+
+  grouping PM-CEM-PARAM {
+    description
+      "PM CEM PARAM";
+    leaf data {
+      type uint64;
+      description
+        "the value contained in the parameter";
+    }
+    leaf threshold {
+      type uint64;
+      description
+        "the threshold set for the parameter by user";
+    }
+    leaf tca-report {
+      type uint8;
+      description
+        "flag to enable reporting of TCA";
+    }
+    leaf supp-flag {
+      type uint8;
+      description
+        "flag to check if parameter is supported";
+    }
+  }
+
+  grouping PM-CEM-PARAS {
+    description
+      "PM CEM PARAS";
+    container missing-pkts {
+      description
+        "Number of missing packets";
+      uses PM-CEM-PARAM;
+    }
+    container pkts-reorder {
+      description
+        "Number of packets detected out of sequence, but
+         successfully re-ordered.";
+      uses PM-CEM-PARAM;
+    }
+    container jtr-bfr-under {
+      description
+        "Number of times a packet needed to be played out
+         and the jitter buffer was empty.";
+      uses PM-CEM-PARAM;
+    }
+    container mis-order-drop {
+      description
+        "Number of packets detected out of order, and
+         could not be re-ordered, or could not fit in the
+         jitter buffer.";
+      uses PM-CEM-PARAM;
+    }
+    container malformed-pkt {
+      description
+        "Number of packets detected with unexpected size,
+         or bad headers stack.";
+      uses PM-CEM-PARAM;
+    }
+    container es {
+      description
+        "number of Error Seconds encountered.";
+      uses PM-CEM-PARAM;
+    }
+    container ses {
+      description
+        "number of Severely Error Seconds";
+      uses PM-CEM-PARAM;
+    }
+    container uas {
+      description
+        "number of UnAvailable Seconds.";
+      uses PM-CEM-PARAM;
+    }
+    container fc {
+      description
+        "number of TDM failure events";
+      uses PM-CEM-PARAM;
+    }
+    container input-errs {
+      description
+        "number of input errors";
+      uses PM-CEM-PARAM;
+    }
+    container output-errs {
+      description
+        "number of output errors";
+      uses PM-CEM-PARAM;
+    }
+    container jtr-bfr-overrun {
+      description
+        "Number of jitter buffer overruns.";
+      uses PM-CEM-PARAM;
+    }
+    container tx-lbits {
+      description
+        "Number of generated lbits.";
+      uses PM-CEM-PARAM;
+    }
+    container tx-rbits {
+      description
+        "Number of generated rbits.";
+      uses PM-CEM-PARAM;
+    }
+    container rx-lbits {
+      description
+        "Number of received lbits.";
+      uses PM-CEM-PARAM;
+    }
+    container rx-rbits {
+      description
+        "Number of received rbits.";
+      uses PM-CEM-PARAM;
+    }
+    container in-pkts {
+      description
+        "Number of ingress packets.";
+      uses PM-CEM-PARAM;
+    }
+    container eg-pkts {
+      description
+        "Number of egress packets.";
+      uses PM-CEM-PARAM;
+    }
+    container in-drop {
+      description
+        "Number of ingress packets dropped.";
+      uses PM-CEM-PARAM;
+    }
+    container eg-drop {
+      description
+        "Number of egress packets dropped.";
+      uses PM-CEM-PARAM;
+    }
+    leaf index {
+      type uint32;
+      description
+        "index";
+    }
+    leaf valid {
+      type boolean;
+      description
+        "valid";
+    }
+    leaf timestamp {
+      type string {
+        length "0..64";
+      }
+      description
+        "timestamp";
+    }
+    leaf last-clear-time {
+      type string {
+        length "0..64";
+      }
+      description
+        "last clear time";
+    }
+    leaf sec30-support {
+      type boolean;
+      description
+        "30 sec support";
+    }
+    leaf flex-bin-support {
+      type boolean;
+      description
+        "flex bin support";
+    }
     leaf flex-bin-interval {
       type uint16;
       description
         "flex bin interval";
-    }
-    leaf cumulative-bip {
-      type uint64;
-      description
-        "Cumulative Bip";
     }
   }
 
@@ -606,6 +807,81 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
     container sops3 {
       description
         "SOP S3";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container opt-cl {
+      description
+        "TX Power (C+L)";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container opr-cl {
+      description
+        "RX Power (C+L)";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container opt-s {
+      description
+        "TX Power (S)";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container opr-s {
+      description
+        "RX Power (S)";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container opbr {
+      description
+        "OPBR";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container eagn {
+      description
+        "Egress Ampli Gain";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container eatl {
+      description
+        "Egress Ampli Tilt";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container iagn {
+      description
+        "Ingress Ampli Gain";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container iatl {
+      description
+        "Ingress Ampli Tilt";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container raman-tot {
+      description
+        "RAMAN TOT";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container raman-1 {
+      description
+        "RAMAN 1";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container raman-2 {
+      description
+        "RAMAN 2";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container raman-3 {
+      description
+        "RAMAN 3";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container raman-4 {
+      description
+        "RAMAN 4";
+      uses PM-OPTICS-PARAMETER-STRING;
+    }
+    container raman-5 {
+      description
+        "RAMAN 5";
       uses PM-OPTICS-PARAMETER-STRING;
     }
     leaf index {
@@ -1222,201 +1498,6 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
     }
   }
 
-  grouping PM-FEC-PARAM-STRING {
-    description
-      "pm avg fec parameter";
-    leaf minimum {
-      type string;
-      description
-        "minimum";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf average {
-      type string;
-      description
-        "average";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf maximum {
-      type string;
-      description
-        "maximum";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf minimum-threshold {
-      type string;
-      description
-        "minimun threshold";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf minimum-tca-report {
-      type boolean;
-      description
-        "enable/disable to report TCA on min";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf maximum-threshold {
-      type string;
-      description
-        "maximum threshold";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf maximum-tca-report {
-      type boolean;
-      description
-        "enable/disable to report TCA";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf valid {
-      type boolean;
-      description
-        "valid";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf min-time {
-      type uint64;
-      description
-        "minimum time";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf max-time {
-      type uint64;
-      description
-        "maximum time";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-  }
-
-  grouping PM-FEC-PARAM {
-    description
-      "pm avg fec param";
-    leaf data {
-      type uint64;
-      description
-        "the number in the interval";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf threshold {
-      type uint64;
-      description
-        "the threshold users set";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf tca-report {
-      type boolean;
-      description
-        "enable/disable to report TCA";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf valid {
-      type boolean;
-      description
-        "valid";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-  }
-
-  grouping PM-FEC-PARAS {
-    description
-      "all paras in fec";
-    container ec-bits {
-      description
-        "EC BITS";
-      uses PM-FEC-PARAM;
-    }
-    container uc-words {
-      description
-        "UC WORDS";
-      uses PM-FEC-PARAM;
-    }
-    container pre-fec-ber {
-      description
-        "Pre FEC BER";
-      uses PM-FEC-PARAM-STRING;
-    }
-    container post-fec-ber {
-      description
-        "Post FEC BER";
-      uses PM-FEC-PARAM-STRING;
-    }
-    container q {
-      description
-        "Q";
-      uses PM-FEC-PARAM-STRING;
-    }
-    container qmargin {
-      description
-        "Q Margin";
-      uses PM-FEC-PARAM-STRING;
-    }
-    container qmargin-inst {
-      description
-        "Q Margin Instantaneous";
-      uses PM-FEC-PARAM-STRING;
-    }
-    container ec-words {
-      description
-        "EC Words";
-      uses PM-FEC-PARAM;
-    }
-    leaf index {
-      type uint32;
-      description
-        "index";
-    }
-    leaf valid {
-      type boolean;
-      description
-        "valid";
-    }
-    leaf timestamp {
-      type string;
-      description
-        "timestamp";
-      xr:event-telemetry "Subscribe Telemetry Event";
-    }
-    leaf last-clear-time {
-      type string;
-      description
-        "last clear time";
-    }
-    leaf last-clear15-min-time {
-      type string;
-      description
-        "last clear time";
-    }
-    leaf last-clear-flex-bin-time {
-      type string;
-      description
-        "last clear time";
-    }
-    leaf last-clear30-sec-time {
-      type string;
-      description
-        "last clear time";
-    }
-    leaf last-clear24-hr-time {
-      type string;
-      description
-        "last clear time";
-    }
-    leaf sec30-support {
-      type boolean;
-      description
-        "30 sec support";
-    }
-    leaf flex-bin-support {
-      type boolean;
-      description
-        "flex bin support";
-    }
-    leaf flex-bin-interval {
-      type uint16;
-      description
-        "flex bin interval";
-    }
-  }
-
   grouping PM-GFP-PARAM {
     description
       "PM GFP PARAM";
@@ -1679,6 +1760,318 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
     }
   }
 
+  grouping PM-OTN-PARAMETER-RATIO {
+    description
+      "pm one parameter";
+    leaf data {
+      type string;
+      description
+        "the number in the interval";
+    }
+    leaf threshold {
+      type string;
+      description
+        "the threshold users set";
+    }
+    leaf tca-report {
+      type boolean;
+      description
+        "enable/disable to report TCA";
+    }
+  }
+
+  grouping PM-OTN-PARAMETER {
+    description
+      "pm one parameter";
+    leaf data {
+      type uint64;
+      description
+        "the number in the interval";
+    }
+    leaf threshold {
+      type uint64;
+      description
+        "the threshold users set";
+    }
+    leaf tca-report {
+      type boolean;
+      description
+        "enable/disable to report TCA";
+    }
+  }
+
+  grouping PM-OTN-PARAS {
+    description
+      "all paras in otn";
+    container lbc {
+      description
+        "LBC";
+      uses PM-OTN-PARAMETER;
+    }
+    container es-ne {
+      description
+        "ES SM NE";
+      uses PM-OTN-PARAMETER;
+    }
+    container esr-ne {
+      description
+        "ESR PM NE";
+      uses PM-OTN-PARAMETER-RATIO;
+    }
+    container ses-ne {
+      description
+        "SES SM NE";
+      uses PM-OTN-PARAMETER;
+    }
+    container sesr-ne {
+      description
+        "SESR SM NE";
+      uses PM-OTN-PARAMETER-RATIO;
+    }
+    container uas-ne {
+      description
+        "UAS SM NE";
+      uses PM-OTN-PARAMETER;
+    }
+    container bbe-ne {
+      description
+        "BBE SM NE";
+      uses PM-OTN-PARAMETER;
+    }
+    container bber-ne {
+      description
+        "BBER SM NE";
+      uses PM-OTN-PARAMETER-RATIO;
+    }
+    container fc-ne {
+      description
+        "FC SM NE";
+      uses PM-OTN-PARAMETER;
+    }
+    container es-fe {
+      description
+        "ES SM FE";
+      uses PM-OTN-PARAMETER;
+    }
+    container esr-fe {
+      description
+        "ESR PM FE";
+      uses PM-OTN-PARAMETER-RATIO;
+    }
+    container ses-fe {
+      description
+        "SES SM FE";
+      uses PM-OTN-PARAMETER;
+    }
+    container sesr-fe {
+      description
+        "SESR SM FE";
+      uses PM-OTN-PARAMETER-RATIO;
+    }
+    container uas-fe {
+      description
+        "UAS SM FE";
+      uses PM-OTN-PARAMETER;
+    }
+    container bbe-fe {
+      description
+        "BBE SM FE";
+      uses PM-OTN-PARAMETER;
+    }
+    container bber-fe {
+      description
+        "BBER SM FE";
+      uses PM-OTN-PARAMETER-RATIO;
+    }
+    container fc-fe {
+      description
+        "FC SM FE";
+      uses PM-OTN-PARAMETER;
+    }
+    leaf index {
+      type uint32;
+      description
+        "index";
+    }
+    leaf valid {
+      type boolean;
+      description
+        "valid";
+    }
+    leaf timestamp {
+      type string;
+      description
+        "timestamp";
+    }
+    leaf last-clear-time {
+      type string;
+      description
+        "last clear time";
+    }
+    leaf last-clear15-min-time {
+      type string;
+      description
+        "last clear time";
+    }
+    leaf last-clear-flex-bin-time {
+      type string;
+      description
+        "last clear time";
+    }
+    leaf last-clear30-sec-time {
+      type string;
+      description
+        "last clear time";
+    }
+    leaf last-clear24-hr-time {
+      type string;
+      description
+        "last clear time";
+    }
+    leaf sec30-support {
+      type boolean;
+      description
+        "30 sec support";
+    }
+    leaf flex-bin-support {
+      type boolean;
+      description
+        "flex bin support";
+    }
+    leaf flex-bin-interval {
+      type uint16;
+      description
+        "flex bin interval";
+    }
+  }
+
+  grouping PM-PCS-PARAMETER-COUNT {
+    description
+      "pm pcs parameter count";
+    leaf name {
+      type string {
+        length "0..19";
+      }
+      description
+        "pcs param name";
+    }
+    leaf data {
+      type uint64;
+      description
+        "the threshold users set";
+    }
+  }
+
+  grouping PM-PCS-PARAMETER {
+    description
+      "pm pcs parameter";
+    leaf tca-report {
+      type boolean;
+      description
+        "enable/disable to report TCA";
+    }
+    leaf threshold {
+      type uint64;
+      description
+        "the threshold users set";
+    }
+    list count {
+      description
+        "param count";
+      uses PM-PCS-PARAMETER-COUNT;
+    }
+  }
+
+  grouping PM-PCS-PARAS {
+    description
+      "all paras in pcs";
+    container bip {
+      description
+        "Bip ";
+      uses PM-PCS-PARAMETER;
+    }
+    container frm-err {
+      description
+        "Frm Err";
+      uses PM-PCS-PARAMETER;
+    }
+    container bad-sh {
+      description
+        "Bad Sh";
+      uses PM-PCS-PARAMETER;
+    }
+    container es-ne {
+      description
+        "Es Ne";
+      uses PM-PCS-PARAMETER;
+    }
+    container ses-ne {
+      description
+        "Ses Ne";
+      uses PM-PCS-PARAMETER;
+    }
+    container uas-ne {
+      description
+        "Uas Ne";
+      uses PM-PCS-PARAMETER;
+    }
+    container es-fe {
+      description
+        "Es Fe";
+      uses PM-PCS-PARAMETER;
+    }
+    container ses-fe {
+      description
+        "Ese Fe";
+      uses PM-PCS-PARAMETER;
+    }
+    container uas-fe {
+      description
+        "Uas Fe";
+      uses PM-PCS-PARAMETER;
+    }
+    leaf index {
+      type uint32;
+      description
+        "index";
+    }
+    leaf valid {
+      type boolean;
+      description
+        "valid";
+    }
+    leaf timestamp {
+      type string;
+      description
+        "timestamp";
+    }
+    leaf last-clear-time {
+      type string;
+      description
+        "last clear time";
+    }
+    leaf flex-bin-interval {
+      type uint16;
+      description
+        "flex bin interval";
+    }
+    leaf cumulative-bip {
+      type uint64;
+      description
+        "Cumulative Bip";
+    }
+    leaf cumulative-frm-err {
+      type uint64;
+      description
+        "Cumulative Frm Err";
+    }
+    leaf cumulative-bad-sh {
+      type uint64;
+      description
+        "Cumulative Bad Sh";
+    }
+  }
+
   grouping PM-PRBS-STATUS-PARAMETER {
     description
       "one parameter in optics";
@@ -1848,29 +2241,9 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
     }
   }
 
-  grouping PM-OTN-PARAMETER-RATIO {
+  grouping PM-FC-PARAM {
     description
-      "pm one parameter";
-    leaf data {
-      type string;
-      description
-        "the number in the interval";
-    }
-    leaf threshold {
-      type string;
-      description
-        "the threshold users set";
-    }
-    leaf tca-report {
-      type boolean;
-      description
-        "enable/disable to report TCA";
-    }
-  }
-
-  grouping PM-OTN-PARAMETER {
-    description
-      "pm one parameter";
+      "PM FC PARAM";
     leaf data {
       type uint64;
       description
@@ -1886,95 +2259,285 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
       description
         "enable/disable to report TCA";
     }
+    leaf supp-flag {
+      type boolean;
+      description
+        "Support Flag";
+    }
+    leaf valid {
+      type boolean;
+      description
+        "valid";
+    }
   }
 
-  grouping PM-OTN-PARAS {
+  grouping PM-FC-PARAS {
     description
-      "all paras in otn";
-    container lbc {
+      "PM FC PARAS";
+    container if-in-octets {
       description
-        "LBC";
-      uses PM-OTN-PARAMETER;
+        "Number of bytes received since the last counter
+         reset.";
+      uses PM-FC-PARAM;
     }
-    container es-ne {
+    container rx-pkt {
       description
-        "ES SM NE";
-      uses PM-OTN-PARAMETER;
+        "Total number of receive packets.";
+      uses PM-FC-PARAM;
     }
-    container esr-ne {
+    container if-in-errors {
       description
-        "ESR PM NE";
-      uses PM-OTN-PARAMETER-RATIO;
+        "Total number of receive errors.";
+      uses PM-FC-PARAM;
     }
-    container ses-ne {
+    container rx-bad-fcs {
       description
-        "SES SM NE";
-      uses PM-OTN-PARAMETER;
+        "Number of Rx frames with bad FCS, no coding
+         error";
+      uses PM-FC-PARAM;
     }
-    container sesr-ne {
+    container if-out-octets {
       description
-        "SESR SM NE";
-      uses PM-OTN-PARAMETER-RATIO;
+        "The total number of octets transmitted out of
+         the interface, including framing characters.";
+      uses PM-FC-PARAM;
     }
-    container uas-ne {
+    container tx-pkt {
       description
-        "UAS SM NE";
-      uses PM-OTN-PARAMETER;
+        "Total number of transmitted packets.";
+      uses PM-FC-PARAM;
     }
-    container bbe-ne {
+    container tx-bad-fcs {
       description
-        "BBE SM NE";
-      uses PM-OTN-PARAMETER;
+        "Number of Tx frames with bad FCS, no coding
+         error";
+      uses PM-FC-PARAM;
     }
-    container bber-ne {
+    container rx-frames-too-long {
       description
-        "BBER SM NE";
-      uses PM-OTN-PARAMETER-RATIO;
+        "Number of too long rx frames.";
+      uses PM-FC-PARAM;
     }
-    container fc-ne {
+    container rx-frames-trunc {
       description
-        "FC SM NE";
-      uses PM-OTN-PARAMETER;
+        "Number of truncated rx frames.";
+      uses PM-FC-PARAM;
     }
-    container es-fe {
+    container tx-frames-too-long {
       description
-        "ES SM FE";
-      uses PM-OTN-PARAMETER;
+        "Number of too long tx frames.";
+      uses PM-FC-PARAM;
     }
-    container esr-fe {
+    container tx-frames-trunc {
       description
-        "ESR PM FE";
-      uses PM-OTN-PARAMETER-RATIO;
+        "Number of truncated tx frames.";
+      uses PM-FC-PARAM;
     }
-    container ses-fe {
+    leaf index {
+      type uint32;
       description
-        "SES SM FE";
-      uses PM-OTN-PARAMETER;
+        "index";
     }
-    container sesr-fe {
+    leaf valid {
+      type boolean;
       description
-        "SESR SM FE";
-      uses PM-OTN-PARAMETER-RATIO;
+        "valid";
     }
-    container uas-fe {
+    leaf timestamp {
+      type string {
+        length "0..64";
+      }
       description
-        "UAS SM FE";
-      uses PM-OTN-PARAMETER;
+        "timestamp";
     }
-    container bbe-fe {
+    leaf last-clear-time {
+      type string {
+        length "0..64";
+      }
       description
-        "BBE SM FE";
-      uses PM-OTN-PARAMETER;
+        "last clear time";
     }
-    container bber-fe {
+    leaf last-clear15-min-time {
+      type string {
+        length "0..64";
+      }
       description
-        "BBER SM FE";
-      uses PM-OTN-PARAMETER-RATIO;
+        "last clear 15-min interval time";
     }
-    container fc-fe {
+    leaf last-clear-flex-bin-time {
+      type string {
+        length "0..64";
+      }
       description
-        "FC SM FE";
-      uses PM-OTN-PARAMETER;
+        "last clear flex-bin interval time";
+    }
+    leaf last-clear30-sec-time {
+      type string {
+        length "0..64";
+      }
+      description
+        "last clear 30-sec interval time";
+    }
+    leaf last-clear24-hr-time {
+      type string {
+        length "0..64";
+      }
+      description
+        "last clear  25-hour interval time";
+    }
+    leaf sec30-support {
+      type boolean;
+      description
+        "30 sec support";
+    }
+    leaf flex-bin-support {
+      type boolean;
+      description
+        "flex bin support";
+    }
+    leaf flex-bin-interval {
+      type uint16;
+      description
+        "flex bin interval";
+    }
+  }
+
+  grouping PM-FEC-PARAM-STRING {
+    description
+      "pm avg fec parameter";
+    leaf minimum {
+      type string;
+      description
+        "minimum";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf average {
+      type string;
+      description
+        "average";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf maximum {
+      type string;
+      description
+        "maximum";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf minimum-threshold {
+      type string;
+      description
+        "minimun threshold";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf minimum-tca-report {
+      type boolean;
+      description
+        "enable/disable to report TCA on min";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf maximum-threshold {
+      type string;
+      description
+        "maximum threshold";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf maximum-tca-report {
+      type boolean;
+      description
+        "enable/disable to report TCA";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf valid {
+      type boolean;
+      description
+        "valid";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf min-time {
+      type uint64;
+      description
+        "minimum time";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf max-time {
+      type uint64;
+      description
+        "maximum time";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+  }
+
+  grouping PM-FEC-PARAM {
+    description
+      "pm avg fec param";
+    leaf data {
+      type uint64;
+      description
+        "the number in the interval";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf threshold {
+      type uint64;
+      description
+        "the threshold users set";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf tca-report {
+      type boolean;
+      description
+        "enable/disable to report TCA";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+    leaf valid {
+      type boolean;
+      description
+        "valid";
+      xr:event-telemetry "Subscribe Telemetry Event";
+    }
+  }
+
+  grouping PM-FEC-PARAS {
+    description
+      "all paras in fec";
+    container ec-bits {
+      description
+        "EC BITS";
+      uses PM-FEC-PARAM;
+    }
+    container uc-words {
+      description
+        "UC WORDS";
+      uses PM-FEC-PARAM;
+    }
+    container pre-fec-ber {
+      description
+        "Pre FEC BER";
+      uses PM-FEC-PARAM-STRING;
+    }
+    container post-fec-ber {
+      description
+        "Post FEC BER";
+      uses PM-FEC-PARAM-STRING;
+    }
+    container q {
+      description
+        "Q";
+      uses PM-FEC-PARAM-STRING;
+    }
+    container qmargin {
+      description
+        "Q Margin";
+      uses PM-FEC-PARAM-STRING;
+    }
+    container qmargin-inst {
+      description
+        "Q Margin Instantaneous";
+      uses PM-FEC-PARAM-STRING;
+    }
+    container ec-words {
+      description
+        "EC Words";
+      uses PM-FEC-PARAM;
     }
     leaf index {
       type uint32;
@@ -1990,6 +2553,7 @@ submodule Cisco-IOS-XR-pmengine-oper-sub1 {
       type string;
       description
         "timestamp";
+      xr:event-telemetry "Subscribe Telemetry Event";
     }
     leaf last-clear-time {
       type string;

@@ -16,7 +16,7 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub3 {
     prefix semver;
   }
   include Cisco-IOS-XR-ipv4-ospf-oper-sub2 {
-    revision-date 2021-06-01;
+    revision-date 2021-10-01;
   }
 
   organization
@@ -38,18 +38,23 @@ submodule Cisco-IOS-XR-ipv4-ospf-oper-sub3 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-01 {
+    description
+      "Added Extended Inter-Area ASBR LSA, Added Algo label information received from RIB in Extended Prefix LSA";
+    semver:module-version "2.3.0";
+  }
   revision 2021-06-01 {
     description
-      "Added changes to show if a FAD contains unknown parameters";
+      "Added changes to show if a FAD contains unknown parameters, option to enable SR forwarding MPLS, changes in neighbor sham link or virtual link name";
     semver:module-version "2.2.0";
   }
   revision 2020-03-19 {
     description
       "Added changes for Delay Normalization
        2020-02-04
-       Added changes for Conditional Advertising
+         Added changes for Conditional Advertising
        2019-09-30
-       Added changes for Weighted SRLG";
+         Added changes for Weighted SRLG";
     semver:module-version "2.0.0";
   }
   revision 2019-07-26 {

@@ -32,19 +32,39 @@ submodule Cisco-IOS-XR-iedge4710-oper-sub2 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR iedge4710 package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-27 {
+    description
+      "New CLI added to display session summary counters";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-09-03 {
+    description
+      "Disconnect last sensor path get the chunk of 200 items so enhance this path to per entry to avoid tcp connection flaps between telemetry server and BNG.";
+    semver:module-version "4.0.0";
+  }
   revision 2020-12-24 {
     description
-      "Updated acct stop internal stats.";
+      "Updated acct stop internal stats.
+       2020-11-21
+           Added statsd event to session export.
+       2020-11-02
+           Added yang paths to support ADT
+       2020-10-23
+           Added disc queue statistics.
+       2020-10-09
+           Added acct stop statistics.
+       2020-08-24
+           Added Feature ID to session export.";
     semver:module-version "3.0.0";
   }
   revision 2020-02-20 {
     description
       "Added FADB statistics.
        2020-01-04
-       Added disconnect history support.";
+         Added disconnect history support.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -798,6 +818,111 @@ submodule Cisco-IOS-XR-iedge4710-oper-sub2 {
     }
   }
 
+  grouping IEDGE-STATS-SUMMARY-DATA {
+    description
+      "Summary statistics";
+    leaf no-subscriber-control-policy-on-interface {
+      type uint64;
+      description
+        "Subscriber control policy not applied on
+         interface";
+    }
+    leaf no-class-match-in-start-request {
+      type uint64;
+      description
+        "No control policy class match during subscriber
+         start";
+    }
+    leaf nas-port-attribute-format-warnings {
+      type uint64;
+      description
+        "NAS port attribute format warnings";
+    }
+    leaf nas-port-id-attribute-format-warnings {
+      type uint64;
+      description
+        "NAS port ID attribute format warnings";
+    }
+    leaf destination-station-id-attribute-format-warnings {
+      type uint64;
+      description
+        "Destination station ID attribute format warnings";
+    }
+    leaf calling-station-id-attribute-format-warnings {
+      type uint64;
+      description
+        "Calling station ID attribute format warnings";
+    }
+    leaf username-attribute-format-warnings {
+      type uint64;
+      description
+        "Username attribute format warnings";
+    }
+    leaf install-user-profiles {
+      type uint64;
+      description
+        "User profiles installed";
+    }
+    leaf user-profile-install-errors {
+      type uint64;
+      description
+        "User profile install errors";
+    }
+    leaf user-profile-removals {
+      type uint64;
+      description
+        "User profile removals";
+    }
+    leaf user-profile-errors {
+      type uint64;
+      description
+        "User profile errors";
+    }
+    leaf sess-disc-quota-exhausts {
+      type uint64;
+      description
+        "Session Disconnect Quota Exhausts";
+    }
+    leaf sess-disc-no-quota {
+      type uint64;
+      description
+        "Session Disconnect Request Queued, no quota";
+    }
+    leaf sess-disc-quota-avail {
+      type uint64;
+      description
+        "Session Disconnect Request Accepted, quota
+         available";
+    }
+    leaf sess-disc-recon-ip {
+      type uint64;
+      description
+        "Session Disconnect Requests not Dequeued,
+         reconciliation in progress";
+    }
+    leaf sess-disc-none-started {
+      type uint64;
+      description
+        "Session Disconnect Requests not Dequeued, no
+         quota";
+    }
+    leaf sess-disc-quota {
+      type uint32;
+      description
+        "Session Disconnect Quota";
+    }
+    leaf sess-disc-quota-remaining {
+      type uint32;
+      description
+        "Session Disconnect Quota Remaining";
+    }
+    leaf sess-disc-q-count {
+      type uint32;
+      description
+        "Session Disconnect Requests Queued";
+    }
+  }
+
   grouping IEDGE-OPER-COA-DATA {
     description
       "IEDGE OPER COA DATA";
@@ -1224,111 +1349,6 @@ submodule Cisco-IOS-XR-iedge4710-oper-sub2 {
       description
         "List of disconnect history items";
       uses IEDGE-DISCONNECT-DATA;
-    }
-  }
-
-  grouping IEDGE-STATS-SUMMARY-DATA {
-    description
-      "Summary statistics";
-    leaf no-subscriber-control-policy-on-interface {
-      type uint64;
-      description
-        "Subscriber control policy not applied on
-         interface";
-    }
-    leaf no-class-match-in-start-request {
-      type uint64;
-      description
-        "No control policy class match during subscriber
-         start";
-    }
-    leaf nas-port-attribute-format-warnings {
-      type uint64;
-      description
-        "NAS port attribute format warnings";
-    }
-    leaf nas-port-id-attribute-format-warnings {
-      type uint64;
-      description
-        "NAS port ID attribute format warnings";
-    }
-    leaf destination-station-id-attribute-format-warnings {
-      type uint64;
-      description
-        "Destination station ID attribute format warnings";
-    }
-    leaf calling-station-id-attribute-format-warnings {
-      type uint64;
-      description
-        "Calling station ID attribute format warnings";
-    }
-    leaf username-attribute-format-warnings {
-      type uint64;
-      description
-        "Username attribute format warnings";
-    }
-    leaf install-user-profiles {
-      type uint64;
-      description
-        "User profiles installed";
-    }
-    leaf user-profile-install-errors {
-      type uint64;
-      description
-        "User profile install errors";
-    }
-    leaf user-profile-removals {
-      type uint64;
-      description
-        "User profile removals";
-    }
-    leaf user-profile-errors {
-      type uint64;
-      description
-        "User profile errors";
-    }
-    leaf sess-disc-quota-exhausts {
-      type uint64;
-      description
-        "Session Disconnect Quota Exhausts";
-    }
-    leaf sess-disc-no-quota {
-      type uint64;
-      description
-        "Session Disconnect Request Queued, no quota";
-    }
-    leaf sess-disc-quota-avail {
-      type uint64;
-      description
-        "Session Disconnect Request Accepted, quota
-         available";
-    }
-    leaf sess-disc-recon-ip {
-      type uint64;
-      description
-        "Session Disconnect Requests not Dequeued,
-         reconciliation in progress";
-    }
-    leaf sess-disc-none-started {
-      type uint64;
-      description
-        "Session Disconnect Requests not Dequeued, no
-         quota";
-    }
-    leaf sess-disc-quota {
-      type uint32;
-      description
-        "Session Disconnect Quota";
-    }
-    leaf sess-disc-quota-remaining {
-      type uint32;
-      description
-        "Session Disconnect Quota Remaining";
-    }
-    leaf sess-disc-q-count {
-      type uint32;
-      description
-        "Session Disconnect Requests Queued";
     }
   }
 

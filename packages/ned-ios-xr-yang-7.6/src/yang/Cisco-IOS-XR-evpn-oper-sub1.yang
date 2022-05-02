@@ -32,19 +32,38 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR evpn package operational data.
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-05-06 {
+  revision 2022-02-08 {
     description
-      "Added union-path-buffer to l2vpn evpn label.";
-    semver:module-version "4.0.0";
+      "- Removed vES pending up refcount
+       2021-09-27
+         - Added keys for ethernet-segments/ethernet-segment list.
+       2021-09-17
+         - Added SRv6 ELAN list support in l2vpn_evpn_es bag.
+       2021-09-14
+         Display PLE-CEM attributes in xconnect info";
+    semver:module-version "6.0.0";
+  }
+  revision 2021-08-13 {
+    description
+      "Added multicast SID information for SRv6 ELAN
+       2021-07-07
+          Updated main port gES-MAC field in bag for clarity
+       2021-05-06
+          Added union-path-buffer to l2vpn evpn label.
+       2021-04-30
+          Added vES nexthop list to EVPN Ethernet Segment
+       2021-03-16
+          Added support to retrieve multiple EVPN clients under ClientTable";
+    semver:module-version "5.0.0";
   }
   revision 2020-05-05 {
     description
       "changes related to treat SRv6 and SID as well-known when parsing XML for yang
        2020-04-02
-       EVPN DF Election Synchronization with NTP related changes";
+           EVPN DF Election Synchronization with NTP related changes";
     semver:module-version "4.0.0";
   }
   revision 2019-12-20 {
@@ -257,6 +276,21 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       "L2VPN EVPN MAC flushing mode";
   }
 
+  typedef Evpn-es-warning {
+    type enumeration {
+      enum "ves-conflict" {
+        description
+          "VES conflict on ES detected";
+      }
+      enum "none" {
+        description
+          "None";
+      }
+    }
+    description
+      "Evpn es warning";
+  }
+
   typedef L2vpn-evpn-rt-origin {
     type enumeration {
       enum "invalid" {
@@ -397,6 +431,10 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
           "Local service not ready, or multiple matching
            remote EADs";
       }
+      enum "no-mac-paths" {
+        description
+          "No valid MAC paths";
+      }
     }
     description
       "EVPN label entry unresolved reasons";
@@ -445,6 +483,10 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       enum "mtu-mismatch" {
         description
           "MTU Mismatch";
+      }
+      enum "nhafi-not-supported" {
+        description
+          "NH AFI Not Supported";
       }
     }
     description
@@ -615,6 +657,43 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       "L2vpn evpn";
   }
 
+  typedef L2vpn-evpn-encap {
+    type enumeration {
+      enum "l2vpn-bag-evpn-encap-unknown" {
+        value 0;
+        description
+          "Unknown encapsulation";
+      }
+      enum "l2vpn-bag-evpn-encap-vxlan" {
+        value 8;
+        description
+          "VxLAN Encapsulation";
+      }
+      enum "l2vpn-bag-evpn-encap-mpls" {
+        value 10;
+        description
+          "MPLS Encapsulation";
+      }
+      enum "l2vpn-bag-evpn-encap-es-global" {
+        value 253;
+        description
+          "ES Global";
+      }
+      enum "l2vpn-bag-evpn-encap-route-sync" {
+        value 254;
+        description
+          "EVPN Route Sync";
+      }
+      enum "l2vpn-bag-evpn-encap-srv6" {
+        value 255;
+        description
+          "SRv6 Encapsulation";
+      }
+    }
+    description
+      "EVPN Encapsulation Type";
+  }
+
   typedef Evpn-child {
     type enumeration {
       enum "l2-fwd" {
@@ -695,6 +774,10 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
         description
           "Leave";
       }
+      enum "proxy-join" {
+        description
+          "Proxy Join";
+      }
     }
     description
       "Evpn igmp msg";
@@ -717,6 +800,10 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       enum "mld" {
         description
           "MLD";
+      }
+      enum "mldsn" {
+        description
+          "MLDSN";
       }
       enum "invalid" {
         description
@@ -933,6 +1020,11 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       description
         "Next-hop IP address (v6 format)";
     }
+    leaf ges-mac {
+      type yang:mac-address;
+      description
+        "Grouping ES MAC Address";
+    }
     leaf df-dont-preempt {
       type boolean;
       description
@@ -1088,6 +1180,11 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
         "Fast DF-Election based on tracking peer BGP
          Nexthop reachability";
     }
+    leaf mp-ges-mac {
+      type yang:mac-address;
+      description
+        "Main-port Grouping-ES MAC";
+    }
     leaf source-mac-oper {
       type yang:mac-address;
       description
@@ -1097,6 +1194,12 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       type L2vpn-evpn-smac-src;
       description
         "Origin of operational source MAC address";
+    }
+    leaf ves-sub-interface-count {
+      type uint32;
+      description
+        "Number of Sub interface VES' in this main port
+         grouping";
     }
     leaf peering-timer {
       type uint32;
@@ -1263,6 +1366,15 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
           "Ethernet Segment id";
       }
     }
+    list es-warning {
+      description
+        "EVPN ES warnings";
+      leaf entry {
+        type Evpn-es-warning;
+        description
+          "EVPN ES warnings";
+      }
+    }
     list primary-service {
       description
         "List of Primary services ESI/I-SIDs";
@@ -1335,9 +1447,32 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
           "Not elected VNI service carving results";
       }
     }
+    list service-carving-srv6-elan-elected-result {
+      description
+        "Elected SRv6 ELAN service carving results";
+      leaf entry {
+        type uint32;
+        description
+          "Elected SRv6 ELAN service carving results";
+      }
+    }
+    list service-carving-srv6-elan-not-elected-result {
+      description
+        "Not elected SRv6 ELAN service carving results";
+      leaf entry {
+        type uint32;
+        description
+          "Not elected SRv6 ELAN service carving results";
+      }
+    }
     list next-hop {
       description
         "List of nexthop IPv6 addresses";
+      uses L2VPN-EVPN-ES-NH-BUFFER;
+    }
+    list mp-ves-next-hop {
+      description
+        "List of nexthop IPv6 addresses for child vES";
       uses L2VPN-EVPN-ES-NH-BUFFER;
     }
     list service-carving-evpn-vpws-primary-result {
@@ -1416,6 +1551,19 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
         type uint32;
         description
           "List of EVIs with this locator explicitly
+           
+           configured";
+      }
+    }
+    list srv6 {
+      description
+        "List of ELAN based SRv6 with locator explicitly
+         
+         configured";
+      leaf entry {
+        type uint32;
+        description
+          "List of ELAN based SRv6 with locator explicitly
            
            configured";
       }
@@ -1648,6 +1796,16 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       type string;
       description
         "Entry Name";
+    }
+  }
+
+  grouping L2VPN-EVPN-CLIENT {
+    description
+      "EVPN Client Information";
+    leaf client-type-xr {
+      type Evpn-client1;
+      description
+        "Client Type";
     }
   }
 
@@ -1907,10 +2065,31 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       description
         "Proxy entry";
     }
+    leaf is-igmp-snooping-proxy-entry {
+      type boolean;
+      description
+        "IGMP Proxy enabled";
+    }
+    leaf is-mld-snooping-proxy-entry {
+      type boolean;
+      description
+        "MLD Proxy enabled";
+    }
+    leaf num-resolved-proxy-joins {
+      type uint32;
+      description
+        "Number of Proxy Joins resolving against this
+         entry";
+    }
     leaf etree-leaf {
       type boolean;
       description
         "E-Tree Leaf Indication";
+    }
+    list output-sid {
+      description
+        "Output SID";
+      uses L2VPN-EVPN-SRV6-SID-INFO;
     }
   }
 
@@ -1991,6 +2170,11 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       type uint32;
       description
         "Reroute Label";
+    }
+    leaf ges-mac-address {
+      type yang:mac-address;
+      description
+        "Grouping ES MAC address";
     }
     list issue {
       description
@@ -2494,6 +2678,18 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
       description
         "EVI is connected to multicast source";
     }
+    leaf multicast-igmp-snooping-proxy {
+      type boolean;
+      description
+        "IGMP-Snooping Proxy is enabled
+         (Selective-Multicast)";
+    }
+    leaf multicast-mld-snooping-proxy {
+      type boolean;
+      description
+        "MLD-Snooping Proxy is enabled
+         (Selective-Multicast)";
+    }
     leaf bgp-implicit-import-disabled {
       type boolean;
       description
@@ -2710,7 +2906,7 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
         "Ethernet VPN id";
     }
     leaf encapsulation-xr {
-      type uint8;
+      type L2vpn-evpn-encap;
       description
         "EVPN Instance transport encapsulation";
     }
@@ -2895,16 +3091,6 @@ submodule Cisco-IOS-XR-evpn-oper-sub1 {
         description
           "Ethernet Segment id";
       }
-    }
-  }
-
-  grouping L2VPN-EVPN-CLIENT {
-    description
-      "EVPN Client Information";
-    leaf client-type {
-      type Evpn-client1;
-      description
-        "Client Type";
     }
   }
 

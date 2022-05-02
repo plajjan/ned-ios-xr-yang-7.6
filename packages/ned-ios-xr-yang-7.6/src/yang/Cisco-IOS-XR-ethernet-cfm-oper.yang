@@ -18,16 +18,16 @@ module Cisco-IOS-XR-ethernet-cfm-oper {
     prefix a1;
   }
   include Cisco-IOS-XR-ethernet-cfm-oper-sub4 {
-    revision-date 2020-10-07;
+    revision-date 2022-01-18;
   }
   include Cisco-IOS-XR-ethernet-cfm-oper-sub3 {
-    revision-date 2020-10-07;
+    revision-date 2022-01-18;
   }
   include Cisco-IOS-XR-ethernet-cfm-oper-sub2 {
-    revision-date 2020-10-07;
+    revision-date 2022-01-18;
   }
   include Cisco-IOS-XR-ethernet-cfm-oper-sub1 {
-    revision-date 2020-10-07;
+    revision-date 2022-01-18;
   }
 
   organization
@@ -54,9 +54,18 @@ module Cisco-IOS-XR-ethernet-cfm-oper {
        Cisco-IOS-XR-infra-sla-oper
      module with state data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-18 {
+    description
+      "Added CSF packet counters.
+       2021-10-22
+         Added counters for missing MEP offload intervals.
+       2021-09-02
+         Added support for LTM statistics.";
+    semver:module-version "1.4.0";
+  }
   revision 2020-10-07 {
     description
       "Added the Link Loss Forwarding feature.";

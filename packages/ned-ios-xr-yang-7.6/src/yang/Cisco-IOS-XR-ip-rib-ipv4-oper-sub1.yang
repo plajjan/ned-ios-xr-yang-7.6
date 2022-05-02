@@ -37,30 +37,41 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
 
   revision 2021-11-26 {
     description
-      "Add IID Local to known Protocol Types";
+      "Add IID Local to known Protocol Types
+       2021-11-17
+         Add AFT id path and route attributes";
+    semver:module-version "4.2.0";
+  }
+  revision 2021-07-20 {
+    description
+      "Flexible Algorithm attribute added to IP Route
+       2021-06-24
+          L2 Path attribute extended with support for Split Horizong Group and BridgeID
+       2021-03-25
+          Add FIB redistribution flag to route bag";
     semver:module-version "4.1.0";
   }
   revision 2020-12-11 {
     description
       "Add forwarding sidlist
        2020-10-16
-       Route model now includes optional SRv6 SID Format field for SRv6 Local SID routes
+           Route model now includes optional SRv6 SID Format field for SRv6 Local SID routes
        2020-09-30
-       Nexthop notification model now includes client specific registration flags";
+           Nexthop notification model now includes client specific registration flags";
     semver:module-version "4.0.0";
   }
   revision 2020-05-29 {
     description
       "Updated the max number of elements for opaque stats to 16 Extended rib edm path to include IID info and SID Format type
        2020-04-02
-       Increased path_num size in redist hist route bag to 16 bits";
+         Increased path_num size in redist hist route bag to 16 bits";
     semver:module-version "3.0.0";
   }
   revision 2019-11-05 {
     description
       "Extended Nexthop and NexhopPrefix paths to include all by NH flags
        2019-10-22
-       Extended rib_edm_client_stats_summary to include client stats on bcdl ugs Extended rib_edm_local_label to support AIB prefer Extended rib_edm_path to include recursion length field Extended rib_edm_path to include metric field Extended iidmgr_summary to include oor summary info Extended rib_edm_route to include l3 route type field";
+         Extended rib_edm_client_stats_summary to include client stats on bcdl ugs Extended rib_edm_local_label to support AIB prefer Extended rib_edm_path to include recursion length field Extended rib_edm_path to include metric field Extended iidmgr_summary to include oor summary info Extended rib_edm_route to include l3 route type field";
     semver:module-version "2.0.0";
   }
   revision 2019-06-28 {
@@ -107,6 +118,21 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
+  }
+
+  typedef Rib-via-aft-id {
+    type enumeration {
+      enum "via-nh-aft-id" {
+        description
+          "Via Next-hop AFT ID";
+      }
+      enum "via-nh-group-aft-id" {
+        description
+          "Via Next-hop Group AFT ID";
+      }
+    }
+    description
+      "Rib via aft id";
   }
 
   typedef Mgmt-srv6-headend {
@@ -1293,7 +1319,7 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
         "Instance name";
     }
     list opaque-stat {
-      max-elements "16";
+      max-elements "19";
       description
         "opaque stat";
       uses RIB-EDM-STATS-OPAQUE;
@@ -1888,7 +1914,7 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
         "Instance name";
     }
     list opaque-stat {
-      max-elements "16";
+      max-elements "19";
       description
         "opaque stat";
       uses RIB-EDM-STATS-REDIST-OPAQUE;
@@ -1938,6 +1964,11 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       type uint32;
       description
         "num requeue";
+    }
+    leaf num-enqueue-del-with-ref {
+      type uint32;
+      description
+        "num enqueue del with ref";
     }
   }
 
@@ -2396,9 +2427,170 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
     }
   }
 
+  grouping RIB-PATH-SHARED-DB-STATS {
+    description
+      "Per table path sharing stats";
+    leaf num-mutable-paths {
+      type uint32;
+      description
+        "Number of mutable paths";
+    }
+    leaf num-total-mutable-alloc {
+      type uint32;
+      description
+        "Running count of mutable path allocation calls";
+    }
+    leaf num-total-mutable-cleanup {
+      type uint32;
+      description
+        "Running count of mutable path frees";
+    }
+    leaf num-path-clone-ops {
+      type uint32;
+      description
+        "Count of path clone operations";
+    }
+    leaf num-path-save-ops {
+      type uint32;
+      description
+        "Count of path save operations";
+    }
+    leaf num-shr-refcnt-incr {
+      type uint32;
+      description
+        "Number of refcount increment operations";
+    }
+    leaf num-shr-refcnt-decr {
+      type uint32;
+      description
+        "Number of refcount decrements operations";
+    }
+    leaf num-current-shared-paths {
+      type uint32;
+      description
+        "Current number of shared paths";
+    }
+    leaf max-share-refcnt {
+      type uint32;
+      description
+        "The highest sharing factor by any path,
+         high-water";
+    }
+    leaf max-paths-in-db {
+      type uint32;
+      description
+        "Largest number of paths in DB high-water";
+    }
+    leaf num-shared-path-search-miss {
+      type uint32;
+      description
+        "Number of MISS operations searching for shared
+         path";
+    }
+    leaf num-shared-path-search-hit {
+      type uint32;
+      description
+        "Number of HIT operations searching for shared
+         path";
+    }
+    leaf num-total-shared-path-create {
+      type uint32;
+      description
+        "Number of path create operations";
+    }
+    leaf num-total-shared-path-delete {
+      type uint32;
+      description
+        "Number of path delete operations";
+    }
+    leaf sum-of-all-refcounts {
+      type uint32;
+      description
+        "Sum of all path refcounts in the shared db";
+    }
+    leaf avg-path-shares {
+      type uint32;
+      description
+        "Average number of pathlists using a shared path";
+    }
+  }
+
+  grouping RIB-PATHLIST-SHARED-DB-STATS {
+    description
+      " Per table pathlist sharing stats";
+    leaf num-mutable-pathlists {
+      type uint32;
+      description
+        "Number of mutable pathlists";
+    }
+    leaf num-immutable-pathlists {
+      type uint32;
+      description
+        "Number of immutable pathlists";
+    }
+    leaf num-cumulative-pathlist-creates {
+      type uint32;
+      description
+        "Cumulative number of pathlist-CREATES";
+    }
+    leaf num-pathlist-clone-ops {
+      type uint32;
+      description
+        "Count of pathlist clone operations";
+    }
+    leaf num-pathlist-save-ops {
+      type uint32;
+      description
+        "Count of pathlist save operations";
+    }
+    leaf max-share-refcnt {
+      type uint32;
+      description
+        "The max sharing factor by any pathlist,
+         high-water";
+    }
+    leaf max-pathlists-in-db {
+      type uint32;
+      description
+        "Largest number of pathlists in DB, high-water";
+    }
+    leaf num-shared-pathlist-search-hit {
+      type uint32;
+      description
+        "number of HIT operations searching for a shared
+         pathlist";
+    }
+    leaf num-shared-pathlist-search-miss {
+      type uint32;
+      description
+        "number of MISS operations searching for a shared
+         pathlist";
+    }
+    leaf sum-of-all-refcounts {
+      type uint32;
+      description
+        "Sum of all pathlist refcounts in the shared db";
+    }
+    leaf avg-pathlist-shares {
+      type uint32;
+      description
+        "Average number of routes using a shared pathlist";
+    }
+  }
+
   grouping IPV4-RIB-EDM-TABLE {
     description
       "Information of a routing table";
+    container pathlist-stats {
+      description
+        "Pathlist Statistics";
+      uses RIB-PATHLIST-SHARED-DB-STATS;
+    }
+    container path-stats {
+      description
+        "Path Statistics";
+      uses RIB-PATH-SHARED-DB-STATS;
+    }
     leaf tableid {
       type uint32;
       description
@@ -2877,6 +3069,11 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       description
         "Damped accured penalty";
     }
+    leaf num-algo-label {
+      type uint16;
+      description
+        "Destination number of Algorithm Labels";
+    }
     leaf expiration-age {
       type uint32;
       description
@@ -2922,6 +3119,31 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
         "Path(s) of the route";
       uses RIB-EDM-NH-PATH;
     }
+    list algo-label-set {
+      description
+        "Destination list of Algorithm Labels";
+      uses RIB-EDM-ALGO-LABEL-SET;
+    }
+  }
+
+  grouping IPV4-RIB-EDM-SHARED-PATHLIST {
+    description
+      "Shared Pathlist";
+    container paths {
+      description
+        "List of shared paths";
+      uses IPV4-RIB-EDM-SHARED-PATH;
+    }
+    leaf protocol-route-references {
+      type uint32;
+      description
+        "Number of protocol routes using this pathlist";
+    }
+    leaf path-list-size {
+      type uint16;
+      description
+        "Number of paths in this pathlist";
+    }
   }
 
   grouping RIB-EDM-OPAQUE-OBJ {
@@ -2937,6 +3159,65 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       type yang:hex-string;
       description
         "The data part of the opaque object";
+    }
+  }
+
+  grouping IPV4-RIB-EDM-SHARED-PATH {
+    description
+      "Shared Path";
+    list ipv4-rib-edm-shared-path {
+      description
+        "Next path";
+      leaf refcount {
+        type uint32;
+        description
+          "Number of pathlists using this path";
+      }
+      leaf address {
+        type Ipv4-rib-edm-addr;
+        description
+          "Path nexthop";
+      }
+      leaf info-source {
+        type Ipv4-rib-edm-addr;
+        description
+          "Path infosource";
+      }
+      leaf interface {
+        type xr:Interface-name;
+        description
+          "Interface";
+      }
+      leaf metric {
+        type uint32;
+        description
+          "Path metric";
+      }
+      leaf recursion-length {
+        type uint8;
+        description
+          "Path recursion length";
+      }
+      leaf table-id {
+        type uint32;
+        description
+          "Path table identifier";
+      }
+      leaf load-metric {
+        type uint32;
+        description
+          "Path load metric";
+      }
+      leaf ospf-area-id {
+        type uint32;
+        description
+          "Path OSPF area ID";
+      }
+      leaf path-list-index {
+        type uint16;
+        description
+          "Path index in a given pathlist";
+      }
     }
   }
 
@@ -3001,6 +3282,26 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       type uint32;
       description
         "Number of backup routes";
+    }
+  }
+
+  grouping RIB-EDM-PATH-VIA-AFT-ID {
+    description
+      "Information of Via aft ID attribute in path";
+    leaf aft-id {
+      type uint64;
+      description
+        "AFT ID for this path";
+    }
+    leaf vrf-id {
+      type uint32;
+      description
+        "VRF ID for this path";
+    }
+    leaf type {
+      type Rib-via-aft-id;
+      description
+        "Type of AFT ID";
     }
   }
 
@@ -3084,6 +3385,16 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
     }
   }
 
+  grouping RIB-EDM-PATH-GROUPING-INFO {
+    description
+      "Information of Path Grouping";
+    leaf grouping-id {
+      type uint32;
+      description
+        "Grouping ID for this path";
+    }
+  }
+
   grouping RIB-EDM-PATH-L2-INFO {
     description
       "Information of L2 Info attribute in path";
@@ -3096,6 +3407,16 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       type xr:Interface-name;
       description
         "L2 AC Interface";
+    }
+    leaf split-horizon-group-id {
+      type uint32;
+      description
+        "L2 Split Horizon Group ID";
+    }
+    leaf bridge-id {
+      type uint32;
+      description
+        "L2 Bridge ID";
     }
   }
 
@@ -3147,10 +3468,20 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
           "L2 Info for this path";
         uses RIB-EDM-PATH-L2-INFO;
       }
+      container path-grouping-info {
+        description
+          "Grouping Info for this path";
+        uses RIB-EDM-PATH-GROUPING-INFO;
+      }
       container srv6-info {
         description
           "SRv6 related information";
         uses RIB-EDM-PATH-SRV6-INFO;
+      }
+      container via-aft-id {
+        description
+          "Via AFT ID info for this path";
+        uses RIB-EDM-PATH-VIA-AFT-ID;
       }
       leaf address {
         type Ipv4-rib-edm-addr;
@@ -3440,6 +3771,16 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
         description
           "L2 Info present for this path";
       }
+      leaf has-path-grouping-info {
+        type boolean;
+        description
+          "Grouping Info present for this path";
+      }
+      leaf has-via-aft-id {
+        type boolean;
+        description
+          "Via AFT ID present for this path";
+      }
       list remote-backup-addr {
         max-elements "2";
         description
@@ -3466,6 +3807,21 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
           "List of Next Next Hops";
         uses RIB-EDM-NNH;
       }
+    }
+  }
+
+  grouping RIB-EDM-ROUTE-AFT-INFO {
+    description
+      "RIB route's AFT info";
+    leaf aft-id {
+      type uint64;
+      description
+        "AFT ID for this route";
+    }
+    leaf transaction-id {
+      type uint64;
+      description
+        "Transaction ID";
     }
   }
 
@@ -3531,7 +3887,7 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
 
   grouping RIB-EDM-ALGO-LABEL-SET {
     description
-      "Algoritm ID to Local Label information";
+      "Algorithm ID to Local Label information";
     leaf algorithm-id {
       type uint8;
       description
@@ -3558,6 +3914,11 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       description
         "SRv6 related information";
       uses RIB-EDM-ROUTE-SRV6-INFO;
+    }
+    container aft {
+      description
+        "Route AFT info";
+      uses RIB-EDM-ROUTE-AFT-INFO;
     }
     container route-path {
       description
@@ -3601,6 +3962,11 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       type uint32;
       description
         "Client adding the route to RIB";
+    }
+    leaf mirrored {
+      type boolean;
+      description
+        "Mirrored";
     }
     leaf route-type {
       type uint16;
@@ -3756,6 +4122,16 @@ submodule Cisco-IOS-XR-ip-rib-ipv4-oper-sub1 {
       description
         "Number of Algorithm Labels associated with this
          prefix";
+    }
+    leaf no-fib-redist {
+      type boolean;
+      description
+        "Should the route be redistributed to FIB";
+    }
+    leaf flexible-algorithm {
+      type uint8;
+      description
+        "Flexible Algorithm associated with route";
     }
     list algorithm-label {
       description

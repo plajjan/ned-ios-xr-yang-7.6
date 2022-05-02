@@ -37,9 +37,14 @@ module Cisco-IOS-XR-um-if-ip-address-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2019-2020 by Cisco Systems, Inc.
+     Copyright (c) 2019-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-14 {
+    description
+      "Added leaf algorithm under container address, secondaries and eui64-addresses";
+    semver:module-version "3.1.0";
+  }
   revision 2020-05-27 {
     description
       "- Included BVI interface under when statement for container dhcp
@@ -85,6 +90,16 @@ module Cisco-IOS-XR-um-if-ip-address-cfg {
           description
             "Route-tag to be associated with this address";
         }
+        leaf algorithm {
+          type uint32 {
+            range "128..255" {
+              description
+                "Algorithm value (default: no algo)";
+            }
+          }
+          description
+            "Algorithm to be associated with this address";
+        }
       }
       container secondaries {
         description
@@ -110,6 +125,16 @@ module Cisco-IOS-XR-um-if-ip-address-cfg {
             }
             description
               "Route-tag to be associated with this address";
+          }
+          leaf algorithm {
+            type uint32 {
+              range "128..255" {
+                description
+                  "Algorithm value (default: no algo)";
+              }
+            }
+            description
+              "Algorithm to be associated with this address";
           }
         }
       }
@@ -172,6 +197,16 @@ module Cisco-IOS-XR-um-if-ip-address-cfg {
           }
           description
             "Route-tag to be associated with this address";
+        }
+        leaf algorithm {
+          type uint32 {
+            range "128..255" {
+              description
+                "Algorithm value (default: no algo)";
+            }
+          }
+          description
+            "Algorithm to be associated with this address";
         }
       }
       container link-local-address {
@@ -246,6 +281,16 @@ module Cisco-IOS-XR-um-if-ip-address-cfg {
             }
             description
               "Route-tag to be associated with this address";
+          }
+          leaf algorithm {
+            type uint32 {
+              range "128..255" {
+                description
+                  "Algorithm value (default: no algo)";
+              }
+            }
+            description
+              "Algorithm to be associated with this address";
           }
         }
       }

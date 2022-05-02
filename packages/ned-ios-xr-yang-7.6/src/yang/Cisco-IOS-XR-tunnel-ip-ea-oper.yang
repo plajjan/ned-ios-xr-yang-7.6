@@ -15,7 +15,7 @@ module Cisco-IOS-XR-tunnel-ip-ea-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-tunnel-ip-ea-oper-sub1 {
-    revision-date 2019-04-05;
+    revision-date 2021-10-19;
   }
 
   organization
@@ -38,9 +38,14 @@ module Cisco-IOS-XR-tunnel-ip-ea-oper {
      for the following management objects:
        tunnel-ip-ea: Tunnel IP EA parameters
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-19 {
+    description
+      "Added an entry for ipsec and changed ea_flags datatype in bag";
+    semver:module-version "2.0.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";

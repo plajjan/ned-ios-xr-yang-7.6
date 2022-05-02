@@ -36,19 +36,24 @@ module Cisco-IOS-XR-lpts-pre-ifib-cfg {
        Cisco-IOS-XR-config-mda-cfg
      modules with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-18 {
+    description
+      "added CnBNG flow enum in LPTSFlowType.";
+    semver:module-version "4.0.0";
+  }
   revision 2020-08-26 {
     description
       "added mandatory to ACL related classes.";
-    semver:module-version "4.0.0";
+    semver:module-version "3.0.0";
   }
   revision 2020-01-20 {
     description
       "LPTS Punt Policer Support for LLDP.
        2019-10-23
-       LPTS Punt Policer Support.";
+         LPTS Punt Policer Support.";
     semver:module-version "2.1.0";
   }
   revision 2019-07-15 {
@@ -105,6 +110,16 @@ module Cisco-IOS-XR-lpts-pre-ifib-cfg {
         value 5;
         description
           "LLDP packets";
+      }
+      enum "ssfp" {
+        value 6;
+        description
+          "SSFP packets";
+      }
+      enum "ipv6-nd-proxy" {
+        value 7;
+        description
+          "IPv6-ND-proxy packets";
       }
     }
     description

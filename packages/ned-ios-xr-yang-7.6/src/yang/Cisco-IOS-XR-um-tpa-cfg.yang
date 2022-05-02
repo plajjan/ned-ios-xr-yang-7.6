@@ -34,6 +34,11 @@ module Cisco-IOS-XR-um-tpa-cfg {
      Copyright (c) 2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-05 {
+    description
+      "Removed deprecated container disable";
+    semver:module-version "1.0.0";
+  }
   revision 2021-05-10 {
     description
       "Initial release";

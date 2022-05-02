@@ -12,13 +12,13 @@ module Cisco-IOS-XR-l2-eth-infra-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-l2-eth-infra-oper-sub3 {
-    revision-date 2019-04-05;
+    revision-date 2021-07-07;
   }
   include Cisco-IOS-XR-l2-eth-infra-oper-sub2 {
-    revision-date 2019-04-05;
+    revision-date 2021-07-07;
   }
   include Cisco-IOS-XR-l2-eth-infra-oper-sub1 {
-    revision-date 2019-04-05;
+    revision-date 2021-07-07;
   }
 
   organization
@@ -44,9 +44,14 @@ module Cisco-IOS-XR-l2-eth-infra-oper {
        ethernet-encapsulation: Ethernet encapsulation operational
          data
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-07 {
+    description
+      "Added hardware timestamp support for MAC accounting stats.";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";

@@ -29,9 +29,14 @@ module Cisco-IOS-XR-controller-otu-cfg {
        Cisco-IOS-XR-ifmgr-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-01 {
+    description
+      "Added support for PRBS direction and error-inject";
+    semver:module-version "2.2.0";
+  }
   revision 2020-07-23 {
     description
       "Added new enums to OTUForwardErrorCorrection";
@@ -41,7 +46,7 @@ module Cisco-IOS-XR-controller-otu-cfg {
     description
       "Changes made in SAPI/DAPI ASCII text to support 15 characters string.
        2019-07-31
-       Changes made in PRBS leaf, added pattern and mode field as mandatory.";
+         Changes made in PRBS leaf, added pattern and mode field as mandatory.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -149,6 +154,50 @@ module Cisco-IOS-XR-controller-otu-cfg {
     }
     description
       "Otn per mon";
+  }
+
+  typedef Otu-direction {
+    type enumeration {
+      enum "direct-ion-none" {
+        value 0;
+        description
+          "Prbs Direction None";
+      }
+      enum "direct-ion-line" {
+        value 1;
+        description
+          "Prbs Direction Line";
+      }
+      enum "direct-ion-system" {
+        value 2;
+        description
+          "Prbs Direction System";
+      }
+    }
+    description
+      "Otu direction";
+  }
+
+  typedef Otu-error-inject {
+    type enumeration {
+      enum "error-inject-none" {
+        value 0;
+        description
+          "Prbs Error Inject None";
+      }
+      enum "error-inject-single" {
+        value 1;
+        description
+          "Prbs Error Inject Single";
+      }
+      enum "error-inject-continuous" {
+        value 2;
+        description
+          "Prbs Error Inject Continuous";
+      }
+    }
+    description
+      "Otu error inject";
   }
 
   typedef Otn-send-tti-type-os {
@@ -301,6 +350,16 @@ module Cisco-IOS-XR-controller-otu-cfg {
         value 64;
         description
           "Prbs pattern pn7";
+      }
+      enum "pattern-pn9" {
+        value 128;
+        description
+          "Prbs pattern pn9";
+      }
+      enum "pattern-user-defined" {
+        value 256;
+        description
+          "user-defined prbs pattern(64-bit hex value)";
       }
     }
     description
@@ -710,6 +769,16 @@ module Cisco-IOS-XR-controller-otu-cfg {
           mandatory true;
           description
             "Pattern value";
+        }
+        leaf directionvalue {
+          type Otu-direction;
+          description
+            "Direction value";
+        }
+        leaf error-inject-value {
+          type Otu-error-inject;
+          description
+            "Error-inject value";
         }
       }
       container otn-expected-ttitcmos {

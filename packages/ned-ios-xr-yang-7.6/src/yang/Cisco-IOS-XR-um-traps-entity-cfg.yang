@@ -31,6 +31,11 @@ module Cisco-IOS-XR-um-traps-entity-cfg {
      Copyright (c) 2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-12 {
+    description
+      "Changed the augment of entityindex node to snmp-server-mibs instead of snmp-server";
+    semver:module-version "1.0.0";
+  }
   revision 2021-03-03 {
     description
       "Initial release";
@@ -49,7 +54,7 @@ module Cisco-IOS-XR-um-traps-entity-cfg {
         "Enable SNMP entity traps";
     }
   }
-  augment "/a1:snmp-server" {
+  augment "/a1:snmp-server-mibs" {
     container entityindex {
       description
         "Configuration pertaining to entity indices";

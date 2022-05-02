@@ -15,7 +15,7 @@ module Cisco-IOS-XR-evpn-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-evpn-oper-sub1 {
-    revision-date 2021-05-06;
+    revision-date 2022-02-08;
   }
 
   organization
@@ -38,19 +38,38 @@ module Cisco-IOS-XR-evpn-oper {
      for the following management objects:
        evpn: EVPN Operational Table
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-05-06 {
+  revision 2022-02-08 {
     description
-      "Added union-path-buffer to l2vpn evpn label.";
-    semver:module-version "4.0.0";
+      "- Removed vES pending up refcount
+       2021-09-27
+         - Added keys for ethernet-segments/ethernet-segment list.
+       2021-09-17
+         - Added SRv6 ELAN list support in l2vpn_evpn_es bag.
+       2021-09-14
+         Display PLE-CEM attributes in xconnect info";
+    semver:module-version "6.0.0";
+  }
+  revision 2021-08-13 {
+    description
+      "Added multicast SID information for SRv6 ELAN
+       2021-07-07
+          Updated main port gES-MAC field in bag for clarity
+       2021-05-06
+          Added union-path-buffer to l2vpn evpn label.
+       2021-04-30
+          Added vES nexthop list to EVPN Ethernet Segment
+       2021-03-16
+          Added support to retrieve multiple EVPN clients under ClientTable";
+    semver:module-version "5.0.0";
   }
   revision 2020-05-05 {
     description
       "changes related to treat SRv6 and SID as well-known when parsing XML for yang
        2020-04-02
-       EVPN DF Election Synchronization with NTP related changes";
+           EVPN DF Election Synchronization with NTP related changes";
     semver:module-version "4.0.0";
   }
   revision 2019-12-20 {
@@ -190,6 +209,28 @@ module Cisco-IOS-XR-evpn-oper {
     }
     description
       "Bgp route target format";
+  }
+
+  typedef Evpn-multicast-entry {
+    type enumeration {
+      enum "join" {
+        value 0;
+        description
+          "Sync join entry";
+      }
+      enum "leave" {
+        value 1;
+        description
+          "Sync leave entry";
+      }
+      enum "proxy" {
+        value 2;
+        description
+          "Proxy join entry";
+      }
+    }
+    description
+      "Evpn multicast entry";
   }
 
   grouping EVI-TABLE {
@@ -486,10 +527,10 @@ module Cisco-IOS-XR-evpn-oper {
           description
             "Source type";
         }
-        leaf is-leave {
-          type boolean;
+        leaf entry-type {
+          type Evpn-multicast-entry;
           description
-            "Is leave route type";
+            "Join, Leave or Proxy entry";
         }
         leaf evi {
           type uint32;
@@ -627,6 +668,7 @@ module Cisco-IOS-XR-evpn-oper {
       description
         "EVPN Ethernet-Segment Table";
       list ethernet-segment {
+        key "interface-name esi1 esi2 esi3 esi4 esi5";
         description
           "EVPN Ethernet-Segment Entry";
         leaf interface-name {
@@ -660,6 +702,26 @@ module Cisco-IOS-XR-evpn-oper {
             "ES id (part 5/5)";
         }
         uses L2VPN-EVPN-ES;
+      }
+    }
+  }
+
+  grouping CLIENT-TABLE {
+    description
+      "Common node of active, standby, node";
+    container clients {
+      description
+        "L2VPN EVPN Client";
+      list client {
+        key "client-type";
+        description
+          "L2VPN EVPN Client";
+        leaf client-type {
+          type Evpn-client;
+          description
+            "Client type";
+        }
+        uses L2VPN-EVPN-CLIENT;
       }
     }
   }
@@ -705,16 +767,6 @@ module Cisco-IOS-XR-evpn-oper {
         }
         uses L2VPN-EVPN-REMOTE-SHG;
       }
-    }
-  }
-
-  grouping CLIENT {
-    description
-      "Common node of active, standby, node";
-    container client {
-      description
-        "L2VPN EVPN Client";
-      uses L2VPN-EVPN-CLIENT;
     }
   }
 
@@ -862,11 +914,11 @@ module Cisco-IOS-XR-evpn-oper {
         }
         uses EVPN-GROUP-TABLE;
         uses REMOTE-SHG-TABLE;
-        uses CLIENT;
         uses IGMP-TABLE;
         uses EVI-TABLE;
         uses SUMMARY;
         uses EVI-DETAIL;
+        uses CLIENT-TABLE;
         uses TEP-TABLE;
         uses INTERNAL-LABEL-TABLE;
         uses INTERNAL-ID-TABLE;
@@ -880,11 +932,11 @@ module Cisco-IOS-XR-evpn-oper {
         "Active EVPN operational data";
       uses EVPN-GROUP-TABLE;
       uses REMOTE-SHG-TABLE;
-      uses CLIENT;
       uses IGMP-TABLE;
       uses EVI-TABLE;
       uses SUMMARY;
       uses EVI-DETAIL;
+      uses CLIENT-TABLE;
       uses TEP-TABLE;
       uses INTERNAL-LABEL-TABLE;
       uses INTERNAL-ID-TABLE;
@@ -897,11 +949,11 @@ module Cisco-IOS-XR-evpn-oper {
         "Standby EVPN operational data";
       uses EVPN-GROUP-TABLE;
       uses REMOTE-SHG-TABLE;
-      uses CLIENT;
       uses IGMP-TABLE;
       uses EVI-TABLE;
       uses SUMMARY;
       uses EVI-DETAIL;
+      uses CLIENT-TABLE;
       uses TEP-TABLE;
       uses INTERNAL-LABEL-TABLE;
       uses INTERNAL-ID-TABLE;

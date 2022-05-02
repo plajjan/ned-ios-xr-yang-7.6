@@ -22,9 +22,14 @@ module Cisco-IOS-XR-controller-odu-datatypes {
     "This module contains a collection of generally useful
      derived YANG data types.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-06 {
+    description
+      "typedef odu_prbs_error_inject is added in bag odu_prbs_info.";
+    semver:module-version "2.2.0";
+  }
   revision 2020-10-07 {
     description
       "Added two new PRBS pattern PRBS_PATTERN_PN15, PRBS_PATTERN_PN7.";
@@ -34,7 +39,7 @@ module Cisco-IOS-XR-controller-odu-datatypes {
     description
       "Removed PRBS pattern entry PRBS_PATTERN_NONE.
        2019-08-01
-       Removed PRBS mode entry PRBS_MODE_INVALID.";
+         Removed PRBS mode entry PRBS_MODE_INVALID.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -262,6 +267,28 @@ module Cisco-IOS-XR-controller-odu-datatypes {
     }
     description
       "Otn send tti type sapi";
+  }
+
+  typedef Odu-prbs-error-inject {
+    type enumeration {
+      enum "error-inject-none" {
+        value 0;
+        description
+          "Prbs Error Inject None";
+      }
+      enum "error-inject-single" {
+        value 1;
+        description
+          "Prbs Error Inject Single";
+      }
+      enum "error-inject-continuous" {
+        value 2;
+        description
+          "Prbs Error Inject Continuous";
+      }
+    }
+    description
+      "Odu prbs error inject";
   }
 
   typedef Ca-mode {

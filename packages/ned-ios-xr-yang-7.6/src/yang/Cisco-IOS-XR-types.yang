@@ -25,9 +25,14 @@ module Cisco-IOS-XR-types {
     "This module contains a collection of IOS-XR derived YANG data
      types.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-19 {
+    description
+      "Added a new type Hex-long-integer";
+    semver:module-version "2.2.0";
+  }
   revision 2020-11-18 {
     description
       "Added a new type Hex-integer-8";
@@ -71,7 +76,7 @@ module Cisco-IOS-XR-types {
   revision 2015-05-18 {
     description
       "Updated Node-id string pattern to match also shorter ncs4k
-       node names.";
+         node names.";
   }
   revision 2015-01-19 {
     description
@@ -321,6 +326,15 @@ module Cisco-IOS-XR-types {
     }
     description
       "The type of encryption used on a password string.";
+  }
+
+  typedef Hex-long-integer {
+    type string {
+      pattern "[0-9a-fA-F]{1,16}";
+    }
+    description
+      "An unsigned 64-bit integer represented in
+       hexadecimal format.";
   }
 
   typedef Hex-integer {

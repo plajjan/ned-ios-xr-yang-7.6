@@ -36,11 +36,8 @@ module Cisco-IOS-XR-um-ipsla-cfg {
 
   revision 2021-10-07 {
     description
-      "Modified the range of leaf y-value
-       2021-07-08
-         path corrected in the list ipv4-address under container remote-ip/ipv4-addresses
-       and added must statement under container local-ip";
-    semver:module-version "1.1.0";
+      "Modified the range of leaf y-value";
+    semver:module-version "3.0.0";
   }
   revision 2021-02-26 {
     description
@@ -191,16 +188,6 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                       "Enter IPv6 address of the target device";
                   }
                 }
-                leaf port {
-                  type uint32 {
-                    range "1..65535" {
-                      description
-                        "Specify the port number";
-                    }
-                  }
-                  description
-                    "Port number on target device";
-                }
               }
             }
             container path-echo {
@@ -303,6 +290,19 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                 }
                 description
                   "Type of service setting in probe packet";
+              }
+              container destination {
+                description
+                  "Address/port of the target device";
+                container address {
+                  description
+                    "IPv4/IPv6 address of the target device";
+                  leaf address {
+                    type inet:ipv4-address-no-zone;
+                    description
+                      "Enter IPv4 address of the target device";
+                  }
+                }
               }
             }
             container path-jitter {
@@ -429,6 +429,19 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                 }
                 description
                   "Type of service setting in probe packet";
+              }
+              container destination {
+                description
+                  "Address/port of the target device";
+                container address {
+                  description
+                    "IPv4/IPv6 address of the target device";
+                  leaf address {
+                    type inet:ipv4-address-no-zone;
+                    description
+                      "Enter IPv4 address of the target device";
+                  }
+                }
               }
             }
           }
@@ -2498,11 +2511,20 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                 description
                   "Enter IPv4 address of the local interface";
                 list ipv4-address {
+                  must "remote-ip/ipv4-addresses/ipv4-address or remote-ip/ipv6-addresses/ipv6-address";
                   key "address local-port";
                   description
                     "Enter IPv4 address of the local interface";
                   leaf address {
-                    type inet:ipv4-address-no-zone;
+                    type union {
+                      type inet:ipv4-address-no-zone;
+                      type string {
+                        pattern "any ipv4" {
+                          description
+                            "Enter 'any ipv4' string for IPv4 address of the local interface";
+                        }
+                      }
+                    }
                     description
                       "Enter IPv4 address of the local interface";
                   }
@@ -2527,15 +2549,32 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                         description
                           "Enter IPv4 address of the remote interface";
                         leaf address {
-                          type inet:ipv4-address-no-zone;
+                          type union {
+                            type inet:ipv4-address-no-zone;
+                            type string {
+                              pattern "any ipv4" {
+                                description
+                                  "Enter 'any ipv4' string for IPv4 address of the remote interface";
+                              }
+                            }
+                          }
                           description
                             "Enter IPv4 address of the remote interface";
                         }
                         leaf remote-port {
-                          type uint32 {
-                            range "1..65535" {
-                              description
-                                "Enter port number";
+                          type union {
+                            type uint32 {
+                              range "1..65535" {
+                                description
+                                  "Enter port number";
+                              }
+                            }
+                            type enumeration {
+                              enum "any" {
+                                value 0;
+                                description
+                                  "Match any port id";
+                              }
                             }
                           }
                           description
@@ -2569,15 +2608,32 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                         description
                           "Enter IPv6 address of the remote interface";
                         leaf address {
-                          type inet:ipv6-address-no-zone;
+                          type union {
+                            type inet:ipv6-address-no-zone;
+                            type string {
+                              pattern "any ipv6" {
+                                description
+                                  "Enter 'any ipv6' string for IPv6 address of the remote interface";
+                              }
+                            }
+                          }
                           description
                             "Enter IPv6 address of the remote interface";
                         }
                         leaf remote-port {
-                          type uint32 {
-                            range "1..65535" {
-                              description
-                                "Enter port number";
+                          type union {
+                            type uint32 {
+                              range "1..65535" {
+                                description
+                                  "Enter port number";
+                              }
+                            }
+                            type enumeration {
+                              enum "any" {
+                                value 0;
+                                description
+                                  "Match any port id";
+                              }
                             }
                           }
                           description
@@ -2610,11 +2666,20 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                 description
                   "Enter IPv6 address of the local interface";
                 list ipv6-address {
+                  must "remote-ip/ipv4-addresses/ipv4-address or remote-ip/ipv6-addresses/ipv6-address";
                   key "address local-port";
                   description
                     "Enter IPv6 address of the local interface";
                   leaf address {
-                    type inet:ipv6-address-no-zone;
+                    type union {
+                      type inet:ipv6-address-no-zone;
+                      type string {
+                        pattern "any ipv6" {
+                          description
+                            "Enter 'any ipv6' string for IPv6 address of the local interface";
+                        }
+                      }
+                    }
                     description
                       "Enter IPv6 address of the local interface";
                   }
@@ -2639,15 +2704,32 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                         description
                           "Enter IPv4 address of the remote interface";
                         leaf address {
-                          type inet:ipv4-address-no-zone;
+                          type union {
+                            type inet:ipv4-address-no-zone;
+                            type string {
+                              pattern "any ipv4" {
+                                description
+                                  "Enter 'any ipv4' string for IPv4 address of the remote interface";
+                              }
+                            }
+                          }
                           description
                             "Enter IPv4 address of the remote interface";
                         }
                         leaf remote-port {
-                          type uint32 {
-                            range "1..65535" {
-                              description
-                                "Enter port number";
+                          type union {
+                            type uint32 {
+                              range "1..65535" {
+                                description
+                                  "Enter port number";
+                              }
+                            }
+                            type enumeration {
+                              enum "any" {
+                                value 0;
+                                description
+                                  "Match any port id";
+                              }
                             }
                           }
                           description
@@ -2681,15 +2763,32 @@ module Cisco-IOS-XR-um-ipsla-cfg {
                         description
                           "Enter IPv6 address of the remote interface";
                         leaf address {
-                          type inet:ipv6-address-no-zone;
+                          type union {
+                            type inet:ipv6-address-no-zone;
+                            type string {
+                              pattern "any ipv6" {
+                                description
+                                  "Enter 'any ipv6' string for IPv6 address of the remote interface";
+                              }
+                            }
+                          }
                           description
                             "Enter IPv6 address of the remote interface";
                         }
                         leaf remote-port {
-                          type uint32 {
-                            range "1..65535" {
-                              description
-                                "Enter port number";
+                          type union {
+                            type uint32 {
+                              range "1..65535" {
+                                description
+                                  "Enter port number";
+                              }
+                            }
+                            type enumeration {
+                              enum "any" {
+                                value 0;
+                                description
+                                  "Match any port id";
+                              }
                             }
                           }
                           description

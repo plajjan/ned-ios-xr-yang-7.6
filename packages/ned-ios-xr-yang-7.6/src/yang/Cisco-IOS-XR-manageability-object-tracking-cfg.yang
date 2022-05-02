@@ -42,9 +42,14 @@ module Cisco-IOS-XR-manageability-object-tracking-cfg {
        Cisco-IOS-XR-ifmgr-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-15 {
+    description
+      "Added Support for track type Boolean Expression.";
+    semver:module-version "2.1.0";
+  }
   revision 2020-03-26 {
     description
       "Changed type-route container and leaf nodes under it to accommodate ipv6 route tracks.";
@@ -198,6 +203,15 @@ module Cisco-IOS-XR-manageability-object-tracking-cfg {
             description
               "Destination IP Address to track via BFD";
           }
+        }
+      }
+      container type-bool-exp {
+        description
+          "Track type Boolean Expression";
+        leaf expression {
+          type string;
+          description
+            "Boolean Expression String";
         }
       }
       container type-bgp-neighbor-address-family-instances {
@@ -426,6 +440,11 @@ module Cisco-IOS-XR-manageability-object-tracking-cfg {
         type empty;
         description
           "Enable track type Route";
+      }
+      leaf type-bool-exp-enable {
+        type empty;
+        description
+          "Enable track type Bool Exp";
       }
       leaf type-boolean-list-and-enable {
         type empty;

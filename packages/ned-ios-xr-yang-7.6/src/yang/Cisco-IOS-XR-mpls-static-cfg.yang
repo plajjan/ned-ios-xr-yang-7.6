@@ -41,9 +41,7 @@ module Cisco-IOS-XR-mpls-static-cfg {
 
   revision 2021-10-05 {
     description
-      "Added support for disabling default route for resolve nexthops globally.
-       2021-06-16
-         Added support for disabling default route for resolve nexthops.";
+      "Added support for disabling default route for resolve nexthops globally.";
     semver:module-version "3.1.0";
   }
   revision 2019-10-31 {

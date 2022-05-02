@@ -15,7 +15,7 @@ module Cisco-IOS-XR-ipv4-acl-cfg {
     prefix dt1;
   }
   include Cisco-IOS-XR-ipv4-ace-cfg {
-    revision-date 2020-12-04;
+    revision-date 2021-09-20;
   }
 
   organization
@@ -38,12 +38,28 @@ module Cisco-IOS-XR-ipv4-acl-cfg {
      for the following management objects:
        ipv4-acl-and-prefix-list: IPv4 ACL configuration data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-20 {
+    description
+      "7.6.1 revision. Adding icmp-on for ace in the schema
+       2021-07-28
+         7.5.1 revision. Adding additional units for policer";
+    semver:module-version "2.1.0";
+  }
+  revision 2021-06-20 {
+    description
+      "7.5.1 revision. Adding icmp-off in the schema
+       2021-03-17
+          7.3.15 revision. Adding vrrp and rsvp keywords for protocol under access-list config CLI.";
+    semver:module-version "2.1.0";
+  }
   revision 2020-12-04 {
     description
-      "7.4.1 revision. Fixing Remark Length";
+      "7.4.1 revision. Fixing Remark Length
+       2020-11-23
+           7.3.2 revision. Changing the bag version";
     semver:module-version "2.0.0";
   }
   revision 2019-10-22 {
@@ -232,6 +248,11 @@ module Cisco-IOS-XR-ipv4-acl-cfg {
         description
           "Log update rate (log msgs per second)";
       }
+    }
+    leaf icmp-off {
+      type empty;
+      description
+        "This is set to disable the icmpoff messages";
     }
   }
 }

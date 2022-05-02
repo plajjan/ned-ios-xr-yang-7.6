@@ -34,9 +34,19 @@ module Cisco-IOS-XR-um-ntp-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2021 by Cisco Systems, Inc.
+     Copyright (c) 2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-10 {
+    description
+      "Added new cmac, hmac-sha1, hmac-sha2 support for authentication-key";
+    semver:module-version "1.1.0";
+  }
+  revision 2021-03-19 {
+    description
+      "Initial release";
+    semver:module-version "1.0.0";
+  }
   revision 2021-03-03 {
     description
       "Initial release";
@@ -485,7 +495,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -495,7 +505,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -505,7 +515,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -515,7 +525,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -529,7 +539,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -539,7 +549,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -549,7 +559,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -559,7 +569,7 @@ module Cisco-IOS-XR-um-ntp-cfg {
           type xr:Cisco-ios-xr-string {
             length "1..800" {
               description
-                "Access list name - maximum 32 characters";
+                "Access list name - maximum 64 characters";
             }
           }
           description
@@ -699,6 +709,93 @@ module Cisco-IOS-XR-um-ntp-cfg {
         container md5 {
           description
             "MD5 authentication";
+          leaf encrypted {
+            type xr:Proprietary-password;
+            mandatory true;
+            description
+              "Specify an encrypted key";
+          }
+        }
+      }
+    }
+    container cmac-authentication-keys {
+      description
+        "CMAC Authentication key for trusted time sources";
+      list cmac-authentication-key {
+        key "key-number";
+        description
+          "CMAC Authentication key for trusted time sources";
+        leaf key-number {
+          type uint32 {
+            range "1..65535" {
+              description
+                "Key number";
+            }
+          }
+          description
+            "Authentication key for trusted time sources";
+        }
+        container cmac {
+          description
+            "CMAC authentication";
+          leaf encrypted {
+            type xr:Proprietary-password;
+            mandatory true;
+            description
+              "Specify an encrypted key";
+          }
+        }
+      }
+    }
+    container hmac-sha1-authentication-keys {
+      description
+        "HMA-SHA1 Authentication key for trusted time sources";
+      list hmac-sha1-authentication-key {
+        key "key-number";
+        description
+          "HMA-SHA1 Authentication key for trusted time sources";
+        leaf key-number {
+          type uint32 {
+            range "1..65535" {
+              description
+                "Key number";
+            }
+          }
+          description
+            "Authentication key for trusted time sources";
+        }
+        container hmac-sha1 {
+          description
+            "HMAC-SHA1 authentication";
+          leaf encrypted {
+            type xr:Proprietary-password;
+            mandatory true;
+            description
+              "Specify an encrypted key";
+          }
+        }
+      }
+    }
+    container hmac-sha2-authentication-keys {
+      description
+        "HMA-SHA2 Authentication key for trusted time sources";
+      list hmac-sha2-authentication-key {
+        key "key-number";
+        description
+          "HMA-SHA2 Authentication key for trusted time sources";
+        leaf key-number {
+          type uint32 {
+            range "1..65535" {
+              description
+                "Key number";
+            }
+          }
+          description
+            "Authentication key for trusted time sources";
+        }
+        container hmac-sha2 {
+          description
+            "HMAC-SHA2 authentication";
           leaf encrypted {
             type xr:Proprietary-password;
             mandatory true;

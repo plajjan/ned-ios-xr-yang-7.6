@@ -22,9 +22,14 @@ module Cisco-IOS-XR-Ethernet-SPAN-datatypes {
     "This module contains a collection of generally useful
      derived YANG data types.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-06 {
+    description
+      "Added support for global mirror intervals";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -87,6 +92,83 @@ module Cisco-IOS-XR-Ethernet-SPAN-datatypes {
     type uint32;
     description
       "Span session id";
+  }
+
+  typedef Span-mirror-interval {
+    type enumeration {
+      enum "512" {
+        value 1;
+        description
+          "Mirror 1 in every 512 packets";
+      }
+      enum "1k" {
+        value 2;
+        description
+          "Mirror 1 in every 1024 packets";
+      }
+      enum "2k" {
+        value 3;
+        description
+          "Mirror 1 in every 2048 packets";
+      }
+      enum "4k" {
+        value 4;
+        description
+          "Mirror 1 in every 4096 packets";
+      }
+      enum "8k" {
+        value 5;
+        description
+          "Mirror 1 in every 8192 packets";
+      }
+      enum "16k" {
+        value 6;
+        description
+          "Mirror 1 in every 16384 packets";
+      }
+      enum "2" {
+        value 7;
+        description
+          "Mirror 1 in every 2 packets";
+      }
+      enum "4" {
+        value 8;
+        description
+          "Mirror 1 in every 4 packets";
+      }
+      enum "8" {
+        value 9;
+        description
+          "Mirror 1 in every 8 packets";
+      }
+      enum "16" {
+        value 10;
+        description
+          "Mirror 1 in every 16 packets";
+      }
+      enum "32" {
+        value 11;
+        description
+          "Mirror 1 in every 32 packets";
+      }
+      enum "64" {
+        value 12;
+        description
+          "Mirror 1 in every 64 packets";
+      }
+      enum "128" {
+        value 13;
+        description
+          "Mirror 1 in every 128 packets";
+      }
+      enum "256" {
+        value 14;
+        description
+          "Mirror 1 in every 256 packets";
+      }
+    }
+    description
+      "Span mirror interval";
   }
 
   typedef Span-session-class-old {

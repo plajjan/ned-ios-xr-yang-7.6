@@ -9,7 +9,7 @@ module Cisco-IOS-XR-ptp-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-ptp-oper-sub1 {
-    revision-date 2020-09-07;
+    revision-date 2021-10-05;
   }
 
   organization
@@ -32,9 +32,14 @@ module Cisco-IOS-XR-ptp-oper {
      for the following management objects:
        ptp: PTP operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-05 {
+    description
+      "Add double-failure-clock-class information to show ptp ctrlr database";
+    semver:module-version "2.2.0";
+  }
   revision 2020-09-07 {
     description
       "Show command updates for APTS and virtual port";
@@ -44,14 +49,14 @@ module Cisco-IOS-XR-ptp-oper {
     description
       "Added valid flags for receiver clock information, sender clock information and master entry properties.
        2019-12-18
-       Added checksum related packet drop reasons and servo status enums.";
+         Added checksum related packet drop reasons and servo status enums.";
     semver:module-version "2.1.0";
   }
   revision 2019-10-01 {
     description
       "Corrected enum names for servo.
        2019-09-30
-       Added incompatible packet for non-negotiated setting in packet drop reasons.";
+         Added incompatible packet for non-negotiated setting in packet drop reasons.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {

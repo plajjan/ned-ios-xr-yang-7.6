@@ -72,7 +72,7 @@ module Cisco-IOS-XR-sysadmin-xrv9k-envmon-ui {
   revision 2017-04-10 {
     description
       "Adding the source leaf to altitude value,
-       this is to distinguish the source of the altitude value ";
+         this is to distinguish the source of the altitude value ";
   }
   revision 2017-03-31 {
     description
@@ -81,7 +81,7 @@ module Cisco-IOS-XR-sysadmin-xrv9k-envmon-ui {
   revision 2017-03-30 {
     description
       "commenting the sensor_attributes callpoints for the oper sensors,
-       using only the location based callpoints for sensor_attributes ";
+         using only the location based callpoints for sensor_attributes ";
   }
   revision 2016-10-12 {
     description

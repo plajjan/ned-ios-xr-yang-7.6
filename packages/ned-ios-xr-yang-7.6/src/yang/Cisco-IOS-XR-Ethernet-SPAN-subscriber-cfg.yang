@@ -32,9 +32,19 @@ module Cisco-IOS-XR-Ethernet-SPAN-subscriber-cfg {
        Cisco-IOS-XR-subscriber-infra-tmplmgr-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-06 {
+    description
+      "Added support for global mirror intervals";
+    semver:module-version "2.0.0";
+  }
+  revision 2021-07-19 {
+    description
+      "Added extended range of values to mirror interval sampling";
+    semver:module-version "1.1.0";
+  }
   revision 2020-12-03 {
     description
       "Added support for multiple attachments per class on an interface";
@@ -68,43 +78,6 @@ module Cisco-IOS-XR-Ethernet-SPAN-subscriber-cfg {
     }
     description
       "Span traffic direction";
-  }
-
-  typedef Span-mirror-interval {
-    type enumeration {
-      enum "512" {
-        value 1;
-        description
-          "Mirror 1 in every 512 packets";
-      }
-      enum "1k" {
-        value 2;
-        description
-          "Mirror 1 in every 1024 packets";
-      }
-      enum "2k" {
-        value 3;
-        description
-          "Mirror 1 in every 2048 packets";
-      }
-      enum "4k" {
-        value 4;
-        description
-          "Mirror 1 in every 4096 packets";
-      }
-      enum "8k" {
-        value 5;
-        description
-          "Mirror 1 in every 8192 packets";
-      }
-      enum "16k" {
-        value 6;
-        description
-          "Mirror 1 in every 16384 packets";
-      }
-    }
-    description
-      "Span mirror interval";
   }
 
   grouping IPV6ACL {
@@ -189,7 +162,7 @@ module Cisco-IOS-XR-Ethernet-SPAN-subscriber-cfg {
        span-monitor-session, span-attachment,
        span-attachment";
     leaf mirror-interval {
-      type Span-mirror-interval;
+      type dt1:Span-mirror-interval;
       description
         "Specify the mirror interval";
     }

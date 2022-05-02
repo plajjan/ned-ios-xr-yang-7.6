@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-sysmgr-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR sysmgr package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-04-29 {
+    description
+      "Added a grouping list to return an array of process control block records.";
+    semver:module-version "2.0.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -935,6 +940,21 @@ submodule Cisco-IOS-XR-sysmgr-oper-sub1 {
     }
   }
 
+  grouping PROC-BASIC-DETAIL-VERBOSE-INFO-LIST {
+    description
+      "PROC BASIC DETAIL VERBOSE INFO LIST";
+    leaf count {
+      type int32;
+      description
+        "count";
+    }
+    list basic-detail-verbose-info-val {
+      description
+        "basic detail verbose info val";
+      uses PROC-BASIC-DETAIL-VERBOSE-INFO;
+    }
+  }
+
   grouping PROC-DETAIL-INFO {
     description
       "Process detail information";
@@ -1082,6 +1102,21 @@ submodule Cisco-IOS-XR-sysmgr-oper-sub1 {
       description
         "Process Detail Info";
       uses PROC-DETAIL-INFO;
+    }
+  }
+
+  grouping PROC-BASIC-DETAIL-INFO-LIST {
+    description
+      "PROC BASIC DETAIL INFO LIST";
+    leaf count {
+      type int32;
+      description
+        "count";
+    }
+    list basic-detail-info-val {
+      description
+        "basic detail info val";
+      uses PROC-BASIC-DETAIL-INFO;
     }
   }
 
@@ -1272,6 +1307,21 @@ submodule Cisco-IOS-XR-sysmgr-oper-sub1 {
       description
         "Tuples Registered";
       uses TUPLE-INFO;
+    }
+  }
+
+  grouping PROC-BASIC-INFO-LIST {
+    description
+      "PROC BASIC INFO LIST";
+    leaf count {
+      type int32;
+      description
+        "count";
+    }
+    list proc-basic-info-val {
+      description
+        "proc basic info val";
+      uses PROC-BASIC-INFO;
     }
   }
 }

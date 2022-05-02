@@ -26,9 +26,19 @@ submodule Cisco-IOS-XR-spirit-install-instmgr-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR spirit-install-instmgr package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-08 {
+    description
+      "Add optional fields for show request cli";
+    semver:module-version "3.2.0";
+  }
+  revision 2021-01-08 {
+    description
+      "Deprecating ISSU show commands in Install code as the information is already provided by the ISSU infra.";
+    semver:module-version "3.1.0";
+  }
   revision 2020-10-06 {
     description
       "Fixing backward compatible addition of new leafs.";
@@ -38,7 +48,7 @@ submodule Cisco-IOS-XR-spirit-install-instmgr-oper-sub1 {
     description
       "Fixing schema-describe support.
        2019-06-28
-       Common yang action model between lindt and eXR install.";
+         Common yang action model between lindt and eXR install.";
     semver:module-version "2.1.0";
   }
   revision 2019-04-05 {
@@ -116,6 +126,29 @@ submodule Cisco-IOS-XR-spirit-install-instmgr-oper-sub1 {
     type string;
     description
       "Install opt string";
+  }
+
+  typedef Install-bag-optional-string {
+    type string;
+    description
+      "Install bag optional string";
+  }
+
+  typedef Inst-state {
+    type enumeration {
+      enum "success" {
+        value 1;
+        description
+          "Success";
+      }
+      enum "failure" {
+        value 2;
+        description
+          "Failure";
+      }
+    }
+    description
+      "Install request state type";
   }
 
   grouping INST-STRING-PTR {
@@ -534,6 +567,11 @@ submodule Cisco-IOS-XR-spirit-install-instmgr-oper-sub1 {
       description
         "Label of image";
     }
+    leaf xr-packages-hash {
+      type Install-opt-string;
+      description
+        "Hash of XR packages in this bag";
+    }
     list package {
       description
         "Packages";
@@ -917,6 +955,26 @@ submodule Cisco-IOS-XR-spirit-install-instmgr-oper-sub1 {
       type string;
       description
         "CurrInstOper";
+    }
+    leaf status {
+      type Inst-state;
+      description
+        "Status";
+    }
+    leaf request {
+      type Install-bag-optional-string;
+      description
+        "Request";
+    }
+    leaf operation-id {
+      type uint32;
+      description
+        "OperationId";
+    }
+    leaf error {
+      type Install-bag-optional-string;
+      description
+        "Error";
     }
   }
 

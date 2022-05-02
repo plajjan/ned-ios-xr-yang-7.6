@@ -30,6 +30,7 @@ module Cisco-IOS-XR-crypto-cepki-cfg {
      
      This module contains definitions
      for the following management objects:
+       keys: Generate rsa/dsa/ecdsa/ed25519 keys
        crypto-ca: Crypto CertificateAuthority
      
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
@@ -38,28 +39,28 @@ module Cisco-IOS-XR-crypto-cepki-cfg {
   revision 2021-05-13 {
     description
       "Configuration to discard certificates having rsa key size less than or equal to 1024";
-    semver:module-version "1.2.0";
+    semver:module-version "1.3.0";
   }
   revision 2021-03-24 {
     description
       "Allowed configuration of crypto keys enhancement in IOS XR
        2020-12-10
-       Fips mode enabled for aarch64 platform
+           Fips mode enabled for aarch64 platform
        2020-11-24
-       Correct the range for ca lifetime for system-trustpoint.
+           Correct the range for ca lifetime for system-trustpoint.
        2020-09-02
-       Yang support ed25519 key added";
+           Yang support ed25519 key added";
     semver:module-version "1.2.0";
   }
   revision 2020-07-12 {
     description
       "Associated task-name added
        2020-05-25
-       Yang support missing for message digest
+         Yang support missing for message digest
        2020-05-10
-       Yang support for all cepki features
+         Yang support for all cepki features
        2020-02-05
-       Yang support to fetch CRL via Source Interface.";
+         Yang support to fetch CRL via Source Interface.";
     semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
@@ -319,6 +320,97 @@ module Cisco-IOS-XR-crypto-cepki-cfg {
     }
   }
 
+  container keys {
+    description
+      "Generate rsa/dsa/ecdsa/ed25519 keys";
+    container ecdsa-keypair-types {
+      description
+        "ECDSA keypair";
+      list ecdsa-keypair-type {
+        key "name";
+        description
+          "ECDSA Keypair curve type";
+        container ecdsa-keypair-label {
+          description
+            "ECDSA Keypair Label";
+          leaf ecdsa-key {
+            type boolean;
+            default "false";
+            description
+              "Enables to generate default ecdsa keypair";
+          }
+        }
+        leaf name {
+          type xr:Cisco-ios-xr-string;
+          description
+            "Keypair type";
+        }
+      }
+    }
+    container dsa-keypair-table {
+      description
+        "DSA keypair";
+      container dsa-keypair {
+        description
+          "DSA Keypair Label";
+        leaf dsa-key {
+          type uint32 {
+            range "512..2048";
+          }
+          default "1024";
+          description
+            "Generate DSA keypairs";
+        }
+      }
+    }
+    container rsa-keypairs {
+      description
+        "RSA keypair";
+      list rsa-keypair {
+        key "name";
+        description
+          "RSA Keypair Label";
+        container rsa-key {
+          description
+            "Generate RSA keypairs";
+          leaf key-modulus {
+            type uint32 {
+              range "512..4096";
+            }
+            default "2048";
+            description
+              "RSA key modulus";
+          }
+          leaf key-type {
+            type string;
+            default "general-keys";
+            description
+              "Type of key to generate
+               general-keys/usage-keys";
+          }
+        }
+        leaf name {
+          type xr:Cisco-ios-xr-string;
+          description
+            "Keypair Label";
+        }
+      }
+    }
+    container ed25519-keypair-table {
+      description
+        "ED25519 keypair";
+      container ed25519-keypair {
+        description
+          "ED25519 Keypair Label";
+        leaf ed25519-key {
+          type boolean;
+          default "false";
+          description
+            "Enables to generate default ed25519 keypair";
+        }
+      }
+    }
+  }
   container crypto-ca {
     description
       "Crypto CertificateAuthority";

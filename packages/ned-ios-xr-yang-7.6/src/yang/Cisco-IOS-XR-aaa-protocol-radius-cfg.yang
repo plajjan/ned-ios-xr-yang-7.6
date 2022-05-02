@@ -39,12 +39,19 @@ module Cisco-IOS-XR-aaa-protocol-radius-cfg {
        Cisco-IOS-XR-aaa-lib-cfg
      modules with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-21 {
+    description
+      "Added union for radius keys to make encrypt-type field mandatory.";
+    semver:module-version "4.0.0";
+  }
   revision 2020-08-26 {
     description
-      "Fixed key display problem in netconf request";
+      "Fixed key display problem in netconf request
+       2020-04-20
+           Added Type 6 support for Secret/Key";
     semver:module-version "3.0.0";
   }
   revision 2019-10-31 {
@@ -462,16 +469,29 @@ module Cisco-IOS-XR-aaa-protocol-radius-cfg {
     container server-key {
       description
         "RADIUS CoA client encryption key";
-      leaf text {
-        type xr:Proprietary-password;
-        description
-          "Encryption key";
-      }
       leaf encrypt-type {
         type Sct-encryption;
-        default "type7";
         description
           "Encryption Type";
+      }
+      leaf secret7 {
+        when "../encrypt-type = 'type7'" {
+          description
+            "../EncryptType = Type7";
+        }
+        type xr:Proprietary-password;
+        description
+          "Type7 Encryption key";
+      }
+      leaf secret6 {
+        when "../encrypt-type = 'type6'" {
+          description
+            "../EncryptType = Type6";
+        }
+        type xr:Type6-password;
+        description
+          "Type6 Encryption key, requires a valid master
+           key in the system";
       }
     }
   }
@@ -523,16 +543,29 @@ module Cisco-IOS-XR-aaa-protocol-radius-cfg {
           container host-key {
             description
               "RADIUS encryption key";
-            leaf text {
-              type xr:Proprietary-password;
-              description
-                "Encryption key";
-            }
             leaf encrypt-type {
               type Scrt-encryption;
-              default "type7";
               description
                 "Encryption Type";
+            }
+            leaf secret7 {
+              when "../encrypt-type = 'type7'" {
+                description
+                  "../EncryptType = Type7";
+              }
+              type xr:Proprietary-password;
+              description
+                "Type7 Encryption key";
+            }
+            leaf secret6 {
+              when "../encrypt-type = 'type6'" {
+                description
+                  "../EncryptType = Type6";
+              }
+              type xr:Type6-password;
+              description
+                "Type6 Encryption key, requires a valid
+                 master key in the system";
             }
           }
           leaf host-retransmit {
@@ -890,16 +923,29 @@ module Cisco-IOS-XR-aaa-protocol-radius-cfg {
       container key {
         description
           "RADIUS encryption key";
-        leaf text {
-          type xr:Proprietary-password;
-          description
-            "Encryption key";
-        }
         leaf encrypt-type {
           type Scrt-encryption;
-          default "type7";
           description
             "Encryption Type";
+        }
+        leaf secret7 {
+          when "../encrypt-type = 'type7'" {
+            description
+              "../EncryptType = Type7";
+          }
+          type xr:Proprietary-password;
+          description
+            "Type7 Encryption key";
+        }
+        leaf secret6 {
+          when "../encrypt-type = 'type6'" {
+            description
+              "../EncryptType = Type6";
+          }
+          type xr:Type6-password;
+          description
+            "Type6 Encryption key, requires a valid master
+             key in the system";
         }
       }
       container source-port {
@@ -998,16 +1044,29 @@ module Cisco-IOS-XR-aaa-protocol-radius-cfg {
             container private-key {
               description
                 "RADIUS encryption key";
-              leaf text {
-                type xr:Proprietary-password;
-                description
-                  "Encryption key";
-              }
               leaf encrypt-type {
                 type Scrt-encryption;
-                default "type7";
                 description
                   "Encryption Type";
+              }
+              leaf secret7 {
+                when "../encrypt-type = 'type7'" {
+                  description
+                    "../EncryptType = Type7";
+                }
+                type xr:Proprietary-password;
+                description
+                  "Type7 Encryption key";
+              }
+              leaf secret6 {
+                when "../encrypt-type = 'type6'" {
+                  description
+                    "../EncryptType = Type6";
+                }
+                type xr:Type6-password;
+                description
+                  "Type6 Encryption key, requires a valid
+                   master key in the system";
               }
             }
             leaf private-timeout {

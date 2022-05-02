@@ -9,7 +9,7 @@ module Cisco-IOS-XR-lpts-pa-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-lpts-pa-oper-sub1 {
-    revision-date 2020-06-24;
+    revision-date 2021-11-24;
   }
 
   organization
@@ -32,9 +32,14 @@ module Cisco-IOS-XR-lpts-pa-oper {
      for the following management objects:
        lpts-pa: lpts pre-ifib data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-11-24 {
+    description
+      "added new members in binding oper data as location name, vrf name, client id name, etc";
+    semver:module-version "1.1.0";
+  }
   revision 2020-06-24 {
     description
       "added task-name to LptsPA class.";

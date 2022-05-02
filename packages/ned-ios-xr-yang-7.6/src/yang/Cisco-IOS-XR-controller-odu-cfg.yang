@@ -29,9 +29,14 @@ module Cisco-IOS-XR-controller-odu-cfg {
        Cisco-IOS-XR-ifmgr-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-10 {
+    description
+      "Added PRBS error-inject feature support.";
+    semver:module-version "2.2.0";
+  }
   revision 2020-12-10 {
     description
       "Added CEM packetization config for Private Line Emulation support";
@@ -41,9 +46,9 @@ module Cisco-IOS-XR-controller-odu-cfg {
     description
       "Removed PRBS pattern entry PRBS_PATTERN_NONE, PRBS mode entry PRBS_MODE_INVALID.
        2019-12-05
-       Changes made to SAPI/DAPI to support 15 char string.
+         Changes made to SAPI/DAPI to support 15 char string.
        2019-08-01
-       Changes made in PRBS leaf, added pattern and mode field as mandatory.";
+         Changes made in PRBS leaf, added pattern and mode field as mandatory.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -249,6 +254,28 @@ module Cisco-IOS-XR-controller-odu-cfg {
     }
     description
       "Otn send tti type sapi";
+  }
+
+  typedef Odu-prbs-error-inject {
+    type enumeration {
+      enum "error-inject-none" {
+        value 0;
+        description
+          "Prbs Error Inject None";
+      }
+      enum "error-inject-single" {
+        value 1;
+        description
+          "Prbs Error Inject Single";
+      }
+      enum "error-inject-continuous" {
+        value 2;
+        description
+          "Prbs Error Inject Continuous";
+      }
+    }
+    description
+      "Odu prbs error inject";
   }
 
   typedef Ca-mode {
@@ -827,6 +854,11 @@ module Cisco-IOS-XR-controller-odu-cfg {
           type Odu-prbs-direction;
           description
             "Direction value";
+        }
+        leaf error-inject-value {
+          type Odu-prbs-error-inject;
+          description
+            "Error Inject value";
         }
       }
       container idle-frame-timers {

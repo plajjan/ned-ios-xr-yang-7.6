@@ -26,9 +26,14 @@ submodule Cisco-IOS-XR-manageability-object-tracking-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR manageability-object-tracking package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-04-11 {
+    description
+      "Added support for track type Boolean Expression.";
+    semver:module-version "2.3.0";
+  }
   revision 2020-06-17 {
     description
       "Added support to display delay up/down values in show track.";
@@ -125,6 +130,11 @@ submodule Cisco-IOS-XR-manageability-object-tracking-oper-sub1 {
         value 14;
         description
           "type bgp nbr af";
+      }
+      enum "bool-exp-type" {
+        value 15;
+        description
+          "type boolean expression";
       }
     }
     description
@@ -228,6 +238,27 @@ submodule Cisco-IOS-XR-manageability-object-tracking-oper-sub1 {
            list), weight is internally computed by
            (1/N)x100, where N is the number of objects in
            the list.";
+      }
+    }
+  }
+
+  grouping BOOL-EXP-TRACK-INFO {
+    description
+      "BOOL EXP TRACK INFO";
+    list bool-exp-track-info {
+      description
+        "bool exp track info";
+      leaf object-name {
+        type string {
+          length "0..33";
+        }
+        description
+          "Object Name";
+      }
+      leaf track-state {
+        type boolean;
+        description
+          "Track state";
       }
     }
   }
@@ -484,6 +515,11 @@ submodule Cisco-IOS-XR-manageability-object-tracking-oper-sub1 {
         description
           "boolean objects";
         uses BOOL-TRACK-INFO;
+      }
+      container bool-exp-tracks {
+        description
+          "boolean Expression objects";
+        uses BOOL-EXP-TRACK-INFO;
       }
       container threshold-tracks {
         description

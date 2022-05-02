@@ -48,6 +48,11 @@ module Cisco-IOS-XR-ptp-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-05 {
+    description
+      "Add double-failure-clock-class config option";
+    semver:module-version "3.2.0";
+  }
   revision 2021-02-12 {
     description
       "Marked deprecated uncalibrated-clock-class leaf obsolete";
@@ -57,9 +62,9 @@ module Cisco-IOS-XR-ptp-cfg {
     description
       "Added submode-enter enable handling.
        2020-01-15
-       Added holdover-spec configuration options and uncalibrated time-traceable override option.
+         Added holdover-spec configuration options and uncalibrated time-traceable override option.
        2020-01-13
-       Added servo slow tracking configuration item.";
+         Added servo slow tracking configuration item.";
     semver:module-version "3.0.0";
   }
   revision 2019-10-31 {
@@ -1569,6 +1574,13 @@ module Cisco-IOS-XR-ptp-cfg {
       type empty;
       description
         "Override time-traceability while in holdover";
+    }
+    leaf double-failure-clock-class {
+      type uint32 {
+        range "0..255";
+      }
+      description
+        "Double failure clock class value";
     }
     leaf assisted-partial-timing-support {
       type empty;

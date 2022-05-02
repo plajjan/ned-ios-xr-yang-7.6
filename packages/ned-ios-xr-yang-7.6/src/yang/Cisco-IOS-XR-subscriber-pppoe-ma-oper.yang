@@ -41,7 +41,7 @@ module Cisco-IOS-XR-subscriber-pppoe-ma-oper {
   revision 2021-07-01 {
     description
       "Introduced an new enum in cleanup count";
-    semver:module-version "3.0.0";
+    semver:module-version "4.0.0";
   }
   revision 2019-10-07 {
     description

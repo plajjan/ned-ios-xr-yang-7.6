@@ -32,13 +32,34 @@ submodule Cisco-IOS-XR-ipv6-ace-cfg {
     "This module contains a collection of YANG definitions
      for Cisco IOS-XR IPv6 ACL entry configuration.
      
-     Copyright (c) 2013, 2015-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013, 2015-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-20 {
+    description
+      "Adding icmp-on per ace in the schema";
+    semver:module-version "1.0.0";
+  }
+  revision 2021-07-28 {
+    description
+      "Added new police units";
+  }
+  revision 2021-06-20 {
+    description
+      "Adding icmp-off in the schema";
+  }
+  revision 2021-03-23 {
+    description
+      "Changing bag version due to fragment-type addition";
+    semver:module-version "1.0.0";
+  }
+  revision 2021-03-17 {
+    description
+      "Adding rsvp and vrrp keywords for protocols under access-list config CLI";
+  }
   revision 2020-12-04 {
     description
       "Fixing Remark Length";
-    semver:module-version "1.0.0";
   }
   revision 2020-11-23 {
     description

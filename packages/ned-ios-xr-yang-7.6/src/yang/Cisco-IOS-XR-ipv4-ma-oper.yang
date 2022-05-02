@@ -12,7 +12,7 @@ module Cisco-IOS-XR-ipv4-ma-oper {
     prefix a1;
   }
   include Cisco-IOS-XR-ipv4-ma-oper-sub1 {
-    revision-date 2021-03-26;
+    revision-date 2021-08-17;
   }
 
   organization
@@ -38,6 +38,11 @@ module Cisco-IOS-XR-ipv4-ma-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-17 {
+    description
+      "Added few fields for oper.";
+    semver:module-version "1.2.0";
+  }
   revision 2021-03-26 {
     description
       "Added few bag fields.";

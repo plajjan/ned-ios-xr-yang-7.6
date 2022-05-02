@@ -24,10 +24,15 @@ module Cisco-IOS-XR-um-access-list-datatypes {
     "
      This module contains a collection of IOS-XR YANG model derived from CLI.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.
     ";
 
+  revision 2021-03-17 {
+    description
+      "Adding new protocols - vrrp, rsvp";
+    semver:module-version "2.1.0";
+  }
   revision 2019-06-10 {
     description
       "Establish semantic version baseline.";
@@ -126,6 +131,16 @@ module Cisco-IOS-XR-um-access-list-datatypes {
           value 17;
           description
             "User Datagram Protocol";
+        }
+        enum "rsvp" {
+          value 46;
+          description
+            "Router Reservation Protocol";
+        }
+        enum "vrrp" {
+          value 112;
+          description
+            "Virtual Router Redundancy Protocol";
         }
       }
     }
@@ -988,6 +1003,16 @@ module Cisco-IOS-XR-um-access-list-datatypes {
           value 17;
           description
             "User Datagram Protocol";
+        }
+        enum "rsvp" {
+          value 46;
+          description
+            "Router Reservation Protocol";
+        }
+        enum "vrrp" {
+          value 112;
+          description
+            "Virtual Router Redundancy Protocol";
         }
       }
     }

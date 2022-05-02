@@ -29,6 +29,11 @@ submodule Cisco-IOS-XR-ipv4-io-oper-sub2 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-09 {
+    description
+      "Added few items in the bag related to ip address.";
+    semver:module-version "1.3.0";
+  }
   revision 2021-03-26 {
     description
       "Added few items in the bag.";
@@ -412,6 +417,11 @@ submodule Cisco-IOS-XR-ipv4-io-oper-sub2 {
         "Route Tag associated with this address (0 = no
          tag)";
     }
+    leaf algorithm {
+      type uint32;
+      description
+        "Algorithm associated with address (0 - no algo)";
+    }
   }
 
   grouping MCAST-GROUP {
@@ -477,6 +487,11 @@ submodule Cisco-IOS-XR-ipv4-io-oper-sub2 {
       description
         "Route tag associated with the primary address (0
          = no tag)";
+    }
+    leaf algorithm {
+      type uint32;
+      description
+        "Algorithm associated with address (0 = no algo)";
     }
     leaf mtu {
       type uint32;

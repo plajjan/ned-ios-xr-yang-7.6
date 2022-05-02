@@ -12,7 +12,7 @@ module Cisco-IOS-XR-segment-routing-srv6-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
-    revision-date 2021-12-07;
+    revision-date 2021-11-23;
   }
 
   organization
@@ -38,27 +38,38 @@ module Cisco-IOS-XR-segment-routing-srv6-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-12-07 {
+  revision 2021-11-23 {
     description
-      "Platform capabilities extended for displaying if shift-only drop route is supported";
-    semver:module-version "3.0.0";
+      "Display locators delayed-delete status
+       2021-11-19
+         Platform capabilities report extended with Max Locator supported
+       2021-10-15
+         New SID CTX type supported uDT46 and DT46
+       2021-09-16
+         Manager will display platform requested defaults for traffic-class and hoplimit SRv6 encap parameters";
+    semver:module-version "4.1.0";
+  }
+  revision 2021-06-23 {
+    description
+      "Added id name to OOR summary";
+    semver:module-version "4.0.0";
   }
   revision 2020-12-11 {
     description
       "Update manager show command for 2 passes
        2020-10-16
-       Rename SID count fields in SID manager summary. sids_count only includes non auto-generated SIDs.
+           Rename SID count fields in SID manager summary. sids_count only includes non auto-generated SIDs.
        2020-05-06
-       changes in def for some endpoint types and headend types
+           changes in def for some endpoint types and headend types
        2020-04-16
-       Changes due to common Srv6 bag and renaming some leaf";
+           Changes due to common Srv6 bag and renaming some leaf";
     semver:module-version "3.0.0";
   }
   revision 2019-11-20 {
     description
       "Changes for SRv6 end function
        2019-04-22
-       Flex-Algo specific changes";
+         Flex-Algo specific changes";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {

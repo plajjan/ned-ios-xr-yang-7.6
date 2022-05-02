@@ -14,17 +14,20 @@ module Cisco-IOS-XR-l2vpn-oper {
   import cisco-semver {
     prefix semver;
   }
+  include Cisco-IOS-XR-l2vpn-oper-sub5 {
+    revision-date 2021-09-07;
+  }
   include Cisco-IOS-XR-l2vpn-oper-sub4 {
-    revision-date 2021-01-28;
+    revision-date 2021-09-07;
   }
   include Cisco-IOS-XR-l2vpn-oper-sub3 {
-    revision-date 2021-01-28;
+    revision-date 2021-09-07;
   }
   include Cisco-IOS-XR-l2vpn-oper-sub2 {
-    revision-date 2021-01-28;
+    revision-date 2021-09-07;
   }
   include Cisco-IOS-XR-l2vpn-oper-sub1 {
-    revision-date 2021-01-28;
+    revision-date 2021-09-07;
   }
 
   organization
@@ -48,16 +51,17 @@ module Cisco-IOS-XR-l2vpn-oper {
        l2vpn-forwarding: Show L2VPN forwarding
        l2vpnv2: L2VPN operational data to support active and standby.
          L2VPN has been deprecated
+       ea-pwhe: EA PWHE operational data
        generic-interface-list-v2: Generic Interface List operational
          data
      
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-01-28 {
+  revision 2021-09-07 {
     description
-      "Added support to IF-list ECD registration for IP address based NHOP and RSVP-TE Preferred path";
-    semver:module-version "4.0.0";
+      "- Added SRv6 nhop";
+    semver:module-version "6.0.0";
   }
   revision 2020-05-05 {
     description
@@ -1288,35 +1292,6 @@ module Cisco-IOS-XR-l2vpn-oper {
             "Pseudowire Class Name";
         }
         uses L2VPN-PW-CLASS;
-      }
-    }
-  }
-
-  grouping PSEUDOWIRE-HEADEND {
-    description
-      "Common node of active, standby, node";
-    container pseudowire-headend {
-      description
-        "Pseudowire Headend related operational data";
-      container detail-interfaces {
-        description
-          "PW-HE Interfaces";
-        list detail-interface {
-          key "interface-name";
-          description
-            "PW-HE Interface detail";
-          leaf interface-name {
-            type xr:Interface-name;
-            description
-              "PWHE Interface name";
-          }
-          uses L2VPN-PWHE-DETAIL;
-        }
-      }
-      container summary {
-        description
-          "PW-HE interface summary";
-        uses L2VPN-PWHE-SUMMARY;
       }
     }
   }
@@ -2559,7 +2534,6 @@ module Cisco-IOS-XR-l2vpn-oper {
       uses BRIDGE-SUMMARY;
       uses NSR;
       uses PREFERRED-PATH-TABLE;
-      uses PSEUDOWIRE-HEADEND;
       uses GLOBAL-SETTINGS;
       uses PWR;
       uses XCONNECT-MP2MP-CE2CE-TABLE;
@@ -2588,6 +2562,30 @@ module Cisco-IOS-XR-l2vpn-oper {
     container active {
       description
         "Active L2VPN operational data";
+      container pseudowire-headend {
+        description
+          "Pseudowire Headend related operational data";
+        container detail-interfaces {
+          description
+            "PW-HE Interfaces";
+          list detail-interface {
+            key "interface-name";
+            description
+              "PW-HE Interface detail";
+            leaf interface-name {
+              type xr:Interface-name;
+              description
+                "PWHE Interface name";
+            }
+            uses L2VPN-PWHE-DETAIL;
+          }
+        }
+        container summary {
+          description
+            "PW-HE interface summary";
+          uses L2VPN-PWHE-SUMMARY;
+        }
+      }
       uses DISCOVERY-TABLE;
       uses FLEXIBLE-XCONNECT-SERVICE-SUMMARY;
       uses MAIN-INTERFACE-TABLE;
@@ -2595,7 +2593,6 @@ module Cisco-IOS-XR-l2vpn-oper {
       uses BRIDGE-SUMMARY;
       uses NSR;
       uses PREFERRED-PATH-TABLE;
-      uses PSEUDOWIRE-HEADEND;
       uses GLOBAL-SETTINGS;
       uses PWR;
       uses XCONNECT-MP2MP-CE2CE-TABLE;
@@ -2641,7 +2638,6 @@ module Cisco-IOS-XR-l2vpn-oper {
         uses BRIDGE-SUMMARY;
         uses NSR;
         uses PREFERRED-PATH-TABLE;
-        uses PSEUDOWIRE-HEADEND;
         uses GLOBAL-SETTINGS;
         uses PWR;
         uses XCONNECT-MP2MP-CE2CE-TABLE;
@@ -2666,6 +2662,46 @@ module Cisco-IOS-XR-l2vpn-oper {
         uses L2VPN-PBB-BSA;
         uses FLEXIBLE-XCONNECT-SERVICE-TABLE;
         uses XCONNECT-BRIEF;
+      }
+    }
+  }
+  container ea-pwhe {
+    config false;
+    description
+      "EA PWHE operational data";
+    container nodes {
+      description
+        "Table of EA PWHE operational data for a
+         particular node";
+      list node {
+        key "node-id";
+        description
+          "EA PWHE operational data for a particular node";
+        container ea-pwhe-idbs {
+          description
+            "Generic interface list table";
+          list ea-pwhe-idb {
+            key "if-h";
+            description
+              "EA PWHE Interface Database";
+            leaf if-h {
+              type xr:Hex-integer;
+              description
+                "Interface Handle";
+            }
+            uses PWHE-EA-IDB;
+          }
+        }
+        container ea-pwhe-summary {
+          description
+            "EA PWHE Summary";
+          uses PWHE-EA-SUM;
+        }
+        leaf node-id {
+          type xr:Node-id;
+          description
+            "Location";
+        }
       }
     }
   }

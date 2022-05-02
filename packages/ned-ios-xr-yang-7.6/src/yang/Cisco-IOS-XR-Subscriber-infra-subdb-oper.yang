@@ -9,10 +9,10 @@ module Cisco-IOS-XR-Subscriber-infra-subdb-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-Subscriber-infra-subdb-oper-sub2 {
-    revision-date 2021-09-17;
+    revision-date 2021-11-29;
   }
   include Cisco-IOS-XR-Subscriber-infra-subdb-oper-sub1 {
-    revision-date 2021-09-17;
+    revision-date 2021-11-29;
   }
 
   organization
@@ -38,16 +38,16 @@ module Cisco-IOS-XR-Subscriber-infra-subdb-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-09-17 {
+  revision 2021-11-29 {
     description
-      "Adding new bag for retrieving subdb sirflap history .";
+      "Added new statistics to SIR flap history.
+       2021-09-17
+         Adding new bag for retrieving subdb sirflap history .";
     semver:module-version "2.1.0";
   }
   revision 2021-02-22 {
     description
-      "Adding yang support to retrive server connection time-stats.
-       2020-11-19
-       Added new bag for Subscriber database connection client statistics.";
+      "Adding yang support to retrive server connection time-stats.";
     semver:module-version "2.1.0";
   }
   revision 2020-04-02 {

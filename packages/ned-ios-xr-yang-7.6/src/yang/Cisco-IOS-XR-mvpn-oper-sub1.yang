@@ -32,9 +32,19 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR mvpn package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-09 {
+    description
+      "multiple backward compatible additions made. MDT tables, groupings, and leaf changes";
+    semver:module-version "2.2.0";
+  }
+  revision 2021-08-17 {
+    description
+      "backward compatible addition, in leaf discovery-type was made";
+    semver:module-version "2.1.0";
+  }
   revision 2020-04-02 {
     description
       "MVPN TreeSID information added.";
@@ -568,57 +578,6 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
       type uint32;
       description
         "Checkpoint Object ID";
-    }
-  }
-
-  grouping PIM-MDT-DATA-TREESID-BAG {
-    description
-      "PIM Tree-SID bag";
-    container mdt-data-core-tree-sid {
-      description
-        "Data MDT Tree-SID core";
-      uses PIM-TREESID-CORE;
-    }
-    container mdt-data-source {
-      description
-        "Data MDT Source";
-      uses PIM-ADDRTYPE;
-    }
-    leaf is-mdt-delete-in-progress {
-      type boolean;
-      description
-        "Is the entry being deleted ?";
-    }
-    leaf is-mdt-local {
-      type boolean;
-      description
-        "Is the entry locally assigned ?";
-    }
-    leaf mdt-refcount {
-      type uint32;
-      description
-        "No of cust routes using this MDT prefix";
-    }
-    leaf mdt-decapsulation-refcount {
-      type uint32;
-      description
-        "No of cust routes using this MDT prefix on Decap
-         PE";
-    }
-    leaf on-demand-color {
-      type uint32;
-      description
-        "On-Demand Color";
-    }
-    leaf lfa-protected {
-      type boolean;
-      description
-        "Is the entry Tree-SID protected by LFA FRR?";
-    }
-    list receiver-pe {
-      description
-        "Receiver PE list";
-      uses PIM-MDT-DATA-LEG-BAG;
     }
   }
 
@@ -2037,6 +1996,62 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
     }
   }
 
+  grouping PIM-MDT-DATA-TREESID-BAG {
+    description
+      "PIM Tree-SID bag";
+    container mdt-data-core-tree-sid {
+      description
+        "Data MDT Tree-SID core";
+      uses PIM-TREESID-CORE;
+    }
+    container mdt-data-source {
+      description
+        "Data MDT Source";
+      uses PIM-ADDRTYPE;
+    }
+    leaf mdt-name-xr {
+      type string;
+      description
+        "Data MDT Name";
+    }
+    leaf is-mdt-delete-in-progress {
+      type boolean;
+      description
+        "Is the entry being deleted ?";
+    }
+    leaf is-mdt-local {
+      type boolean;
+      description
+        "Is the entry locally assigned ?";
+    }
+    leaf mdt-refcount {
+      type uint32;
+      description
+        "No of cust routes using this MDT prefix";
+    }
+    leaf mdt-decapsulation-refcount {
+      type uint32;
+      description
+        "No of cust routes using this MDT prefix on Decap
+         PE";
+    }
+    leaf on-demand-color {
+      type uint32;
+      description
+        "On-Demand Color";
+    }
+    leaf lfa-protected {
+      type boolean;
+      description
+        "Is the entry Tree-SID protected by LFA FRR?";
+    }
+    list receiver-pe {
+      description
+        "Receiver PE list";
+      uses PIM-MDT-DATA-LEG-BAG;
+    }
+  }
+
   grouping PIM-MDT-DATA-IR-BAG {
     description
       "PIM IR bag";
@@ -2459,6 +2474,11 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
       description
         "Core ID";
     }
+    leaf mdt-name {
+      type string;
+      description
+        "Data MDT Name";
+    }
   }
 
   grouping PIM-MDT-DATA-RSVPTE-BAG {
@@ -2473,6 +2493,11 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
       description
         "Data MDT Source";
       uses PIM-ADDRTYPE;
+    }
+    leaf mdt-name-xr {
+      type string;
+      description
+        "Data MDT Name";
     }
     leaf is-mdt-delete-in-progress {
       type boolean;
@@ -2519,6 +2544,11 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
       type uint32;
       description
         "Tree ID";
+    }
+    leaf mdt-name {
+      type string;
+      description
+        "Data MDT Name";
     }
   }
 
@@ -2620,6 +2650,21 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
       description
         "Egress LSM Identifier for CSC MLDP MDT";
     }
+    leaf discovery-type {
+      type uint32;
+      description
+        "Discovery Type for MLDP MDT";
+    }
+    leaf discovery-value {
+      type uint32;
+      description
+        "Flex Algo value for MLDP MDT";
+    }
+    leaf mdt-name {
+      type string;
+      description
+        "Data MDT Name";
+    }
   }
 
   grouping PIM-MDT-DATA-MLDP-BAG {
@@ -2634,6 +2679,11 @@ submodule Cisco-IOS-XR-mvpn-oper-sub1 {
       description
         "Data MDT Source";
       uses PIM-ADDRTYPE;
+    }
+    leaf mdt-name-xr {
+      type string;
+      description
+        "Data MDT Name";
     }
     leaf mdt-maximum-aggregation {
       type uint32;

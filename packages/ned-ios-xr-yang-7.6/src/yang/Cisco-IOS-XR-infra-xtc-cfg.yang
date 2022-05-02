@@ -32,56 +32,65 @@ module Cisco-IOS-XR-infra-xtc-cfg {
      for the following management objects:
        pce: PCE configuration data
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-03-09 {
+    description
+      "Add api-timers, add support for send-queue-size.";
+    semver:module-version "4.1.0";
+  }
   revision 2021-09-28 {
     description
       "Added SR-TE path constraints protection type set configuration
        2021-08-31
-         Range for constraints/segment-rules/sid-algorithm was increased from 128-255 to 0-255 to allow algo-0/1 prefix-SIDs.
+          Range for constraints/segment-rules/sid-algorithm was increased from 128-255 to 0-255 to allow algo-0/1 prefix-SIDs.
        2021-07-22
-         Added SR-TE path Strict SPF algorithm configuration";
-    semver:module-version "3.1.0";
+          Added SR-TE path Strict SPF algorithm configuration
+       2021-06-18
+          Added include-ipv6-all option to policy and PCC profile autoroute configurations, used to enable installing policy as outgoing interface for IPv6 IGP prefixes.
+       2021-04-01
+          Modified value passed in GroupLspRecord to include AFI of the address passed.";
+    semver:module-version "4.0.0";
   }
   revision 2021-03-03 {
     description
       "Added PCE API address configuration
        2021-02-17
-       Removing the hop-type key leaf from path-info list
+           Removing the hop-type key leaf from path-info list
        2021-01-12
-       srv6 global msd config.
+           srv6 global msd config.
        2021-01-06
-       schema changes of removing srv6 explicit bsid cfg.
+           schema changes of removing srv6 explicit bsid cfg.
        2020-11-20
-       Adding leaf to enable Anycast SID inclusion for all SR policies
+           Adding leaf to enable Anycast SID inclusion for all SR policies
        2020-11-14
-       Added P2MP policy fast reroute support Changed Cleanup timer range change Added Support for invalidation drop and protected/unprotected path
+           Added P2MP policy fast reroute support Changed Cleanup timer range change Added Support for invalidation drop and protected/unprotected path
        2020-08-07
-       Adding configurations for new features path invalidation drop protected and unprotected path
+           Adding configurations for new features path invalidation drop protected and unprotected path
        2020-07-07
-       Added PCE global constraint bounds latency configuration.";
+           Added PCE global constraint bounds latency configuration.";
     semver:module-version "3.0.0";
   }
   revision 2020-06-25 {
     description
       "Added API VRF config
        2020-06-14
-       Added SR native CSPF algorithm configuration
+         Added SR native CSPF algorithm configuration
        2020-06-11
-       REST API interface in VRF config.
+         REST API interface in VRF config.
        2020-03-31
-       Hidde PM DM liveness and named profile for 721.
+         Hidde PM DM liveness and named profile for 721.
        2020-02-21
-       Adding disjointness-status leaf to logging container to support logging of messages whenever disjointness status changes.
+         Adding disjointness-status leaf to logging container to support logging of messages whenever disjointness status changes.
        2020-02-11
-       Removing enable leafs from submodes. Added sid-limit leaf for SID limit configuration.
+         Removing enable leafs from submodes. Added sid-limit leaf for SID limit configuration.
        2019-11-17
-       Adding leaf exclude-srlg to support SR-PCE srlg-exclude with disjointness.
+         Adding leaf exclude-srlg to support SR-PCE srlg-exclude with disjointness.
        2019-10-09
-       Adding container constraints to suppport Flex-algo related info.
+         Adding container constraints to suppport Flex-algo related info.
        2019-09-25
-       Adding enum ipv4-adjacency-address, leaf adjacency-address, leaf address-type, leaf interface-identifier, leaf prefix-length, and leaf validate-flag to support SRV6.";
+         Adding enum ipv4-adjacency-address, leaf adjacency-address, leaf address-type, leaf interface-identifier, leaf prefix-length, and leaf validate-flag to support SRV6.";
     semver:module-version "2.0.0";
   }
   revision 2019-09-24 {
@@ -885,6 +894,35 @@ module Cisco-IOS-XR-infra-xtc-cfg {
             "IPv4 address of API server";
         }
       }
+      container api-timers {
+        description
+          "API timers configuration";
+        container send-queue {
+          description
+            "REST peer send queue configuration";
+          leaf check-interval {
+            type uint32 {
+              range "1..3600";
+            }
+            units "second";
+            default "1";
+            description
+              "How often to check if peer queue is being
+               drained";
+          }
+          leaf expiration {
+            type uint32 {
+              range "30..3600";
+            }
+            units "second";
+            default "300";
+            description
+              "How long to wait before API session is
+               disconnected if data are not  drained from
+               send queue";
+          }
+        }
+      }
       container api-users {
         description
           "Northbound API authorized users configuration";
@@ -902,6 +940,26 @@ module Cisco-IOS-XR-infra-xtc-cfg {
             description
               "User name";
           }
+        }
+      }
+      container send-queue-size {
+        description
+          "API peer send queue size configuration";
+        leaf per-peer {
+          type uint32 {
+            range "1..1024";
+          }
+          default "400";
+          description
+            "Threshold value in MiB";
+        }
+        leaf global {
+          type uint32 {
+            range "1..4096";
+          }
+          default "1024";
+          description
+            "Size limit for send queue of all peers";
         }
       }
       leaf sibling {
@@ -1626,7 +1684,7 @@ module Cisco-IOS-XR-infra-xtc-cfg {
               key "lsp-id";
               description
                 "LSP first/second PCC record tuple
-                 containingIpAddr, LspName, DisjPath";
+                 containingAF, IpAddr, LspName, DisjPath";
               leaf lsp-id {
                 type uint32 {
                   range "1..2";
@@ -1634,10 +1692,15 @@ module Cisco-IOS-XR-infra-xtc-cfg {
                 description
                   "Lsp id";
               }
-              leaf ip-addr {
-                type inet:ipv4-address-no-zone;
+              leaf af-type {
+                type Pce-address-family;
                 description
-                  "IP address of PCC";
+                  "Address-family type";
+              }
+              leaf ip-addr {
+                type inet:ip-address-no-zone;
+                description
+                  "PCC IP address";
               }
               leaf lsp-name {
                 type string;

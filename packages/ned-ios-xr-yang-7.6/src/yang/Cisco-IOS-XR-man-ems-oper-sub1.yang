@@ -26,6 +26,20 @@ submodule Cisco-IOS-XR-man-ems-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-22 {
+    description
+      "Added certificate bundle statistics
+       2021-10-20
+         Added counters for load bundle
+       2021-09-13
+         Added status string to reflect unavailable port state.";
+    semver:module-version "1.3.0";
+  }
+  revision 2021-06-10 {
+    description
+      "Added gRPC tunnel.";
+    semver:module-version "1.2.0";
+  }
   revision 2021-03-22 {
     description
       "Added keep alive commands.";
@@ -43,6 +57,23 @@ submodule Cisco-IOS-XR-man-ems-oper-sub1 {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
+  }
+
+  typedef Grpc-tunnel-status {
+    type enumeration {
+      enum "not-connected" {
+        value 0;
+        description
+          "Not connected";
+      }
+      enum "connected" {
+        value 1;
+        description
+          "Tunnel session is connected";
+      }
+    }
+    description
+      "Grpc tunnel status";
   }
 
   typedef Grpc-tls-cipher-default {
@@ -65,6 +96,23 @@ submodule Cisco-IOS-XR-man-ems-oper-sub1 {
     }
     description
       "Grpc tls cipher default";
+  }
+
+  typedef Certauth-state {
+    type enumeration {
+      enum "disabled" {
+        value 0;
+        description
+          "Certificate authentication is disabled";
+      }
+      enum "enabled" {
+        value 1;
+        description
+          "Certificate authentication is enabled";
+      }
+    }
+    description
+      "Certauth state";
   }
 
   typedef Tls-mutual-state {
@@ -301,6 +349,66 @@ submodule Cisco-IOS-XR-man-ems-oper-sub1 {
       description
         "Minimum client keep alive interval";
     }
+    leaf local-connection {
+      type string;
+      description
+        "gRPC Server Unix socket";
+    }
+  }
+
+  grouping GRPC-TUNNEL-SESSIONS {
+    description
+      "grpc tunnel session";
+    leaf address-xr {
+      type string;
+      description
+        "Destination address";
+    }
+    leaf status {
+      type Grpc-tunnel-status;
+      description
+        "Session status";
+    }
+    leaf status-str {
+      type string;
+      description
+        "Status string in case of error";
+    }
+    leaf source-interface {
+      type string;
+      description
+        "Source interface";
+    }
+    leaf source-ip {
+      type string;
+      description
+        "Source interface ip";
+    }
+    leaf source-vrf {
+      type string;
+      description
+        "Source interface vrf";
+    }
+    leaf vrf {
+      type string;
+      description
+        "Configured vrf";
+    }
+    leaf target {
+      type string;
+      description
+        "Target name";
+    }
+    leaf last-connected-timestamp {
+      type uint64;
+      description
+        "Timestamp when session got connected";
+    }
+    leaf last-attempted-timestamp {
+      type uint64;
+      description
+        "Timestamp when connection attempt was done";
+    }
   }
 
   grouping GRPC-STATE {
@@ -335,6 +443,11 @@ submodule Cisco-IOS-XR-man-ems-oper-sub1 {
       type string;
       description
         "gRPC trustpoint";
+    }
+    leaf cert-auth {
+      type Certauth-state;
+      description
+        "gRPC Certificate Authentication";
     }
     leaf max-requests {
       type uint32;

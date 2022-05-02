@@ -43,9 +43,19 @@ module Cisco-IOS-XR-ipv6-nd-cfg {
        Cisco-IOS-XR-ifmgr-cfg
      module with configuration data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-17 {
+    description
+      "Adding CLI for ND proxy.";
+    semver:module-version "3.1.0";
+  }
+  revision 2021-06-01 {
+    description
+      "Removed SRP Encap value set in Yang/CLI.";
+    semver:module-version "3.0.0";
+  }
   revision 2019-10-31 {
     description
       "Added mandatory nodes.";
@@ -63,23 +73,6 @@ module Cisco-IOS-XR-ipv6-nd-cfg {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
-  }
-
-  typedef Ipv6srp-encapsulation {
-    type enumeration {
-      enum "srpa" {
-        value 5;
-        description
-          "Encapsulation type SRP, prefer side A";
-      }
-      enum "srpb" {
-        value 6;
-        description
-          "Encapsulation type SRP, prefer side B";
-      }
-    }
-    description
-      "Ipv6srp encapsulation";
   }
 
   typedef Ipv6nd-month {
@@ -147,6 +140,23 @@ module Cisco-IOS-XR-ipv6-nd-cfg {
     }
     description
       "Ipv6nd month";
+  }
+
+  typedef Ipv6srp-encapsulation {
+    type enumeration {
+      enum "srpa" {
+        value 5;
+        description
+          "Encapsulation type SRP, prefer side A";
+      }
+      enum "srpb" {
+        value 6;
+        description
+          "Encapsulation type SRP, prefer side B";
+      }
+    }
+    description
+      "Ipv6srp encapsulation";
   }
 
   typedef Ipv6-nd-router-pref {
@@ -497,6 +507,11 @@ module Cisco-IOS-XR-ipv6-nd-cfg {
         description
           "RA Router Preference";
       }
+      leaf nd-proxy {
+        type empty;
+        description
+          "Enable IPv6 ND proxy";
+      }
     }
   }
   container ipv6-neighbor {
@@ -530,12 +545,6 @@ module Cisco-IOS-XR-ipv6-nd-cfg {
           mandatory true;
           description
             "48-bit hardware address H.H.H";
-        }
-        leaf encapsulation {
-          type Ipv6srp-encapsulation;
-          description
-            "Encapsulation type only if interface type is
-             SRP";
         }
       }
     }

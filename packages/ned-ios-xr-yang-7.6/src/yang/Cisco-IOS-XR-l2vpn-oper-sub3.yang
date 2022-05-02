@@ -32,10 +32,10 @@ submodule Cisco-IOS-XR-l2vpn-oper-sub3 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-01-28 {
+  revision 2021-09-07 {
     description
-      "Added support to IF-list ECD registration for IP address based NHOP and RSVP-TE Preferred path";
-    semver:module-version "4.0.0";
+      "- Added SRv6 nhop";
+    semver:module-version "6.0.0";
   }
   revision 2020-05-05 {
     description

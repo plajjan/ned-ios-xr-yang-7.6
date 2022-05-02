@@ -32,6 +32,11 @@ submodule Cisco-IOS-XR-tunnel-ip-ma-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-23 {
+    description
+      "Added entries for ipsec related params in interface database bag";
+    semver:module-version "2.0.0";
+  }
   revision 2021-02-25 {
     description
       "Added an entry for src addr db in bag";
@@ -378,8 +383,13 @@ submodule Cisco-IOS-XR-tunnel-ip-ma-oper-sub1 {
         description
           "tunl ip mode ipv6";
       }
-      enum "tunl-ip-mode-max" {
+      enum "tunl-ip-mode-ipseco-ipv4" {
         value 7;
+        description
+          "tunl ip mode ipseco ipv4";
+      }
+      enum "tunl-ip-mode-max" {
+        value 8;
         description
           "tunl ip mode max";
       }
@@ -565,6 +575,11 @@ submodule Cisco-IOS-XR-tunnel-ip-ma-oper-sub1 {
       description
         "EP App ID";
     }
+    leaf ipsec-state {
+      type uint8;
+      description
+        "IPSec state info";
+    }
   }
 
   grouping TUNL-IP-MA-SUM {
@@ -709,6 +724,11 @@ submodule Cisco-IOS-XR-tunnel-ip-ma-oper-sub1 {
       type uint32;
       description
         "Number of Tunnels in Source addr DB";
+    }
+    leaf gre-ipsec-ifh-db-count {
+      type uint32;
+      description
+        "Number of Tunnels in IPSEC Ifhandle DB";
     }
   }
 
@@ -1012,6 +1032,16 @@ submodule Cisco-IOS-XR-tunnel-ip-ma-oper-sub1 {
       type string;
       description
         "BFD Session State";
+    }
+    leaf ip-sec-profile {
+      type string;
+      description
+        "IPSec Profile";
+    }
+    leaf ipsec-mtu-overhead {
+      type uint8;
+      description
+        "IPSec MTU overhead";
     }
   }
 

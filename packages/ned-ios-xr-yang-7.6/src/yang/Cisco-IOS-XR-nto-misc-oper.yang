@@ -9,7 +9,7 @@ module Cisco-IOS-XR-nto-misc-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-nto-misc-oper-sub1 {
-    revision-date 2019-04-05;
+    revision-date 2022-01-25;
   }
 
   organization
@@ -32,9 +32,14 @@ module Cisco-IOS-XR-nto-misc-oper {
      for the following management objects:
        memory-summary: Memory summary information
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-25 {
+    description
+      "Enhance output as per show shmwin summary/detail";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";

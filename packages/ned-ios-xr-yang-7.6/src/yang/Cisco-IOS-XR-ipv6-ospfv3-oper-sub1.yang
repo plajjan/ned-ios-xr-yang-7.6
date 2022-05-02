@@ -32,9 +32,14 @@ submodule Cisco-IOS-XR-ipv6-ospfv3-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR ipv6-ospfv3 package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-16 {
+    description
+      "Added neighbor LLS options in neighbor detail";
+    semver:module-version "2.2.0";
+  }
   revision 2020-04-29 {
     description
       "Added mtu and Bandwidth to show command";
@@ -3231,6 +3236,12 @@ submodule Cisco-IOS-XR-ipv6-ospfv3-oper-sub1 {
       type uint32;
       description
         " This is bitmask of neighbor's option field
+         received ";
+    }
+    leaf neighbor-lls-option {
+      type uint32;
+      description
+        " This is bitmask of neighbor's LLS option field
          received ";
     }
     leaf pending-events {

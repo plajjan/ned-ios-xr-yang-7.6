@@ -35,9 +35,14 @@ module Cisco-IOS-XR-subscriber-srg-cfg {
      for the following management objects:
        subscriber-redundancy: Subscriber Redundancy configuration
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-14 {
+    description
+      "Sub Interface Start Range start value changed.";
+    semver:module-version "2.0.0";
+  }
   revision 2020-11-25 {
     description
       "dscp value is set in bgen.";
@@ -186,14 +191,14 @@ module Cisco-IOS-XR-subscriber-srg-cfg {
               }
               leaf sub-interface-range-start {
                 type uint32 {
-                  range "0..2147483647";
+                  range "1..2147483647";
                 }
                 description
                   "Sub Interface Start Range";
               }
               leaf sub-interface-range-end {
                 type uint32 {
-                  range "0..2147483647";
+                  range "1..2147483647";
                 }
                 description
                   "Sub Interface End Range";

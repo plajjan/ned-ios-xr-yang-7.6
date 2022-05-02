@@ -32,9 +32,20 @@ module Cisco-IOS-XR-controller-optics-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-29 {
+    description
+      "change the optics-ots-tx-voa-attenuation type to int32";
+    semver:module-version "2.0.0";
+  }
   revision 2021-01-20 {
     description
-      "Enteries added for two new FEC types in schema.";
+      "Enteries added for two new FEC types in schema.
+       2020-09-18
+           Transceiver disable added for OTS controller
+       2020-07-24
+           New Cfg Model Added for optics yang for FastPoll
+       2020-05-06
+           Entries added in FEC enum in bag and schema";
     semver:module-version "1.2.0";
   }
   revision 2019-04-05 {
@@ -498,13 +509,13 @@ module Cisco-IOS-XR-controller-optics-cfg {
         }
         leaf param-value {
           type uint32 {
-            range "1..1961000";
+            range "1..1961375";
           }
           mandatory true;
           description
             "Type ITU-Channel Range 1-100, Frequency Range
              19115-19610, Wavelength Range 1528773-1568362,
-             100MHz Frequency Range 1861000-1961000";
+             100MHz Frequency Range 1861000-1961375";
         }
       }
       container optics-lanes {
@@ -607,7 +618,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
           "Select non linear effect compenstation mode";
       }
       leaf optics-ots-rx-low-threshold-psd {
-        type uint32 {
+        type int32 {
           range "0..800000";
         }
         description
@@ -643,7 +654,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
            (OSRI)";
       }
       leaf optics-ots-amplifier-gain-degrade-high-threshold {
-        type uint32 {
+        type int32 {
           range "0..500";
         }
         description
@@ -651,7 +662,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
            units of 0.1dBm)";
       }
       leaf optics-ots-rx-voa-attenuation {
-        type uint32 {
+        type int32 {
           range "0..200";
         }
         description
@@ -695,7 +706,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
           "Configure amplifier working mode";
       }
       leaf optics-ots-rx-low-threshold-delta {
-        type uint32 {
+        type int32 {
           range "0..300";
         }
         description
@@ -718,7 +729,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
            polarization weight mode";
       }
       leaf optics-ots-amplifier-gain {
-        type uint32 {
+        type int32 {
           range "0..500";
         }
         description
@@ -743,7 +754,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
            ps/nm)";
       }
       leaf optics-ots-amplifier-channel-psd {
-        type uint32 {
+        type int32 {
           range "0..800000";
         }
         description
@@ -751,7 +762,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
            nW/MHz)";
       }
       leaf optics-ots-tx-voa-attenuation {
-        type uint32 {
+        type int32 {
           range "0..200";
         }
         description
@@ -855,7 +866,7 @@ module Cisco-IOS-XR-controller-optics-cfg {
           "Select OSNR low threshold(in units of 0.01db)";
       }
       leaf optics-ots-amplifier-gain-degrade-low-threshold {
-        type uint32 {
+        type int32 {
           range "0..500";
         }
         description

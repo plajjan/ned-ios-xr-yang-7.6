@@ -12,7 +12,7 @@ module Cisco-IOS-XR-mvpn-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-mvpn-oper-sub1 {
-    revision-date 2020-04-02;
+    revision-date 2021-12-09;
   }
 
   organization
@@ -36,9 +36,19 @@ module Cisco-IOS-XR-mvpn-oper {
        mvpn: MVPN operational data
        ipv6-mvpn: IPv6 MVPN operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-12-09 {
+    description
+      "multiple backward compatible additions made. MDT tables, groupings, and leaf changes";
+    semver:module-version "2.2.0";
+  }
+  revision 2021-08-17 {
+    description
+      "backward compatible addition, in leaf discovery-type was made";
+    semver:module-version "2.1.0";
+  }
   revision 2020-04-02 {
     description
       "MVPN TreeSID information added.";
@@ -128,6 +138,11 @@ module Cisco-IOS-XR-mvpn-oper {
         value 6;
         description
           "G_Inband MDT Type";
+      }
+      enum "sr-p2mp" {
+        value 7;
+        description
+          "SR_P2MP MDT Type";
       }
       enum "max" {
         value 8;
@@ -226,6 +241,50 @@ module Cisco-IOS-XR-mvpn-oper {
             "Customer group IP address";
         }
         uses PIM-MDT-CACHE-BAG;
+      }
+    }
+  }
+
+  grouping LOCAL-ENTRY-NAME-TABLE {
+    description
+      "Common node of vrf, default-context";
+    container local-entry-names {
+      description
+        "PIM MDT Name mldp local table";
+      list local-entry-name {
+        key "mdt-name";
+        description
+          "PIM MDT Name mldp local entry";
+        leaf mdt-name {
+          type xr:Cisco-ios-xr-string {
+            length "1..64";
+          }
+          description
+            "Data MDT Name";
+        }
+        uses PIM-MDT-DATA-MLDP-BAG;
+      }
+    }
+  }
+
+  grouping MDT-RSVP-TE-LOCAL-ENTRY-NAME-TABLE {
+    description
+      "Common node of vrf, default-context";
+    container rsvp-te-local-name-entries {
+      description
+        "PIM MDT RSVP-TE local name table";
+      list rsvp-te-local-name-entry {
+        key "mdt-name";
+        description
+          "PIM MDT RSVP-TE local name entry";
+        leaf mdt-name {
+          type xr:Cisco-ios-xr-string {
+            length "1..64";
+          }
+          description
+            "Data MDT Name";
+        }
+        uses PIM-MDT-DATA-RSVPTE-BAG;
       }
     }
   }
@@ -419,17 +478,21 @@ module Cisco-IOS-XR-mvpn-oper {
         uses MDT-DATABASE-IR;
         uses MDT-GRE-CACHE-TABLE;
         uses MDT-IR-REMOTE-ENTRY-TABLE;
+        uses MDT-SEGMENT-ROUTING-LOCAL-ENTRY-NAME-TABLE;
         uses MDT-DATABASE-RSVP-TE;
         uses BSR;
         uses BGP-AF-TABLE;
+        uses MDT-RSVP-TE-LOCAL-ENTRY-NAME-TABLE;
         uses MDT-RSVP-TE-LOCAL-ENTRY-TABLE;
         uses MDT-PREFIX-REMOTE-TABLE;
         uses MDT-CACHE-TABLE;
         uses MDT-RSVP-TE-CACHE-TABLE;
+        uses LOCAL-ENTRY-NAME-TABLE;
         uses AUTO-RP;
         uses MDT-SEGMENT-ROUTING-LOCAL-ENTRY-TABLE;
         uses REMOTE-ENTRY-TABLE;
         uses MDT-IR-CACHE-TABLE;
+        uses MDT-SR-P2MP-CACHE-TABLE;
         uses PE-TABLE;
         uses MDT-SEGMENT-ROUTING-REMOTE-ENTRY-TABLE;
         uses MDT-MLDP-CACHE-TABLE;
@@ -717,6 +780,36 @@ module Cisco-IOS-XR-mvpn-oper {
     }
   }
 
+  grouping MDT-SR-P2MP-CACHE-TABLE {
+    description
+      "Common node of vrf, default-context";
+    container mdt-sr-p2mp-caches {
+      description
+        "SR-P2MP MDT cache";
+      list mdt-sr-p2mp-cache {
+        key "core-source-address customer-source-address customer-group-address";
+        description
+          "SR-P2MP MDT cache information";
+        leaf core-source-address {
+          type inet:ip-address-no-zone;
+          description
+            "Core source IP address";
+        }
+        leaf customer-source-address {
+          type inet:ip-address-no-zone;
+          description
+            "Customer source IP address";
+        }
+        leaf customer-group-address {
+          type inet:ip-address-no-zone;
+          description
+            "Customer group IP address";
+        }
+        uses PIM-MDT-CACHE-BAG;
+      }
+    }
+  }
+
   grouping MDT-RSVP-TE-REMOTE-ENTRY-TABLE {
     description
       "Common node of vrf, default-context";
@@ -817,6 +910,28 @@ module Cisco-IOS-XR-mvpn-oper {
     }
   }
 
+  grouping MDT-SEGMENT-ROUTING-LOCAL-ENTRY-NAME-TABLE {
+    description
+      "Common node of vrf, default-context";
+    container mdt-segment-routing-local-entry-names {
+      description
+        "PIM MDT Name Segment Routing local table";
+      list mdt-segment-routing-local-entry-name {
+        key "mdt-name";
+        description
+          "PIM MDT Name Segment Routing local entry";
+        leaf mdt-name {
+          type xr:Cisco-ios-xr-string {
+            length "1..64";
+          }
+          description
+            "Data MDT Name";
+        }
+        uses PIM-MDT-DATA-TREESID-BAG;
+      }
+    }
+  }
+
   grouping DEFAULT-CONTEXT {
     description
       "Common node of active, standby";
@@ -830,17 +945,21 @@ module Cisco-IOS-XR-mvpn-oper {
       uses MDT-DATABASE-IR;
       uses MDT-GRE-CACHE-TABLE;
       uses MDT-IR-REMOTE-ENTRY-TABLE;
+      uses MDT-SEGMENT-ROUTING-LOCAL-ENTRY-NAME-TABLE;
       uses MDT-DATABASE-RSVP-TE;
       uses BSR;
       uses BGP-AF-TABLE;
+      uses MDT-RSVP-TE-LOCAL-ENTRY-NAME-TABLE;
       uses MDT-RSVP-TE-LOCAL-ENTRY-TABLE;
       uses MDT-PREFIX-REMOTE-TABLE;
       uses MDT-CACHE-TABLE;
       uses MDT-RSVP-TE-CACHE-TABLE;
+      uses LOCAL-ENTRY-NAME-TABLE;
       uses AUTO-RP;
       uses MDT-SEGMENT-ROUTING-LOCAL-ENTRY-TABLE;
       uses REMOTE-ENTRY-TABLE;
       uses MDT-IR-CACHE-TABLE;
+      uses MDT-SR-P2MP-CACHE-TABLE;
       uses PE-TABLE;
       uses MDT-SEGMENT-ROUTING-REMOTE-ENTRY-TABLE;
       uses MDT-MLDP-CACHE-TABLE;

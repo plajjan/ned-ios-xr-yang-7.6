@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-controller-otu-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR controller-otu package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-01 {
+    description
+      "Added support for PRBS direction and error-inject";
+    semver:module-version "3.2.0";
+  }
   revision 2020-05-12 {
     description
       "Added flexo oper";
@@ -35,7 +40,7 @@ submodule Cisco-IOS-XR-controller-otu-oper-sub1 {
     description
       "Added new values in OTU_G709FECMode
        2019-09-18
-       Added new parameters, q-margin, q-factor, bandwidth to reflect under show controller coherentdsp.";
+         Added new parameters, q-margin, q-factor, bandwidth to reflect under show controller coherentdsp.";
     semver:module-version "3.0.0";
   }
   revision 2019-04-05 {
@@ -533,6 +538,50 @@ submodule Cisco-IOS-XR-controller-otu-oper-sub1 {
       "Otu state et";
   }
 
+  typedef Otu-prbs-err-inject {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None";
+      }
+      enum "single" {
+        value 1;
+        description
+          "Single";
+      }
+      enum "continuous" {
+        value 2;
+        description
+          "Continuous";
+      }
+    }
+    description
+      "Otu prbs err inject";
+  }
+
+  typedef Otu-prbs-direct-ion {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "None";
+      }
+      enum "line" {
+        value 1;
+        description
+          "Line";
+      }
+      enum "system" {
+        value 2;
+        description
+          "System";
+      }
+    }
+    description
+      "Otu prbs direct ion";
+  }
+
   typedef Otu-prbs-status {
     type enumeration {
       enum "locked" {
@@ -596,6 +645,16 @@ submodule Cisco-IOS-XR-controller-otu-oper-sub1 {
         value 64;
         description
           "PN7";
+      }
+      enum "pn9" {
+        value 128;
+        description
+          "PN9";
+      }
+      enum "user-def" {
+        value 256;
+        description
+          "USER DEFINED";
       }
     }
     description
@@ -1323,6 +1382,21 @@ submodule Cisco-IOS-XR-controller-otu-oper-sub1 {
       type Otu-prbs-status;
       description
         "otu prbs status";
+    }
+    leaf otu-prbs-direction {
+      type Otu-prbs-direct-ion;
+      description
+        "otu prbs direction";
+    }
+    leaf otu-prbs-error-inject {
+      type Otu-prbs-err-inject;
+      description
+        "otu prbs error-inject";
+    }
+    leaf otu-prbs-user-pattern {
+      type uint64;
+      description
+        "otu prbs user defined pattern";
     }
   }
 }

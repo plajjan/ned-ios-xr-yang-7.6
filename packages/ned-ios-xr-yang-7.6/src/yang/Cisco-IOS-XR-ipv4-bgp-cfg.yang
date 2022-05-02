@@ -53,51 +53,66 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
        Cisco-IOS-XR-snmp-agent-cfg
      modules with configuration data.
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-12-01 {
+  revision 2022-02-11 {
     description
-      "Added create leaf under neighbor-address. This is required for neighbor creation in BGP";
+      "Deviated the value of multipaths configurable under VRF.
+       2022-01-08
+         Added create leaf under neighbor-address. This is required for neighbor creation in BGP";
+    semver:module-version "6.0.0";
+  }
+  revision 2021-10-16 {
+    description
+      "Removed unused/deprecated options in maximum-paths config, updated leaf value type of deterministic leaf
+       2021-06-30
+          Added knobs for EPE label retention and EPE backup
+       2021-06-27
+          Changes involves segment routing alloc mode to be configured as a policy as well along with per-ce/per-vrf
+       2021-05-04
+          Added Bandwidth-Aware Graceful-Maintenance
+       2021-05-03
+          Added Import/Export Allow Config for backup and best-external";
     semver:module-version "5.0.0";
   }
   revision 2021-03-05 {
     description
       "Deprecated Hidden commands
        2021-03-05
-       Added SR Policy Path Prefernce CLI
+           Added SR Policy Path Prefernce CLI
        2021-02-07
-       Add config to include cluster-list-length in multipath criteria
+           Add config to include cluster-list-length in multipath criteria
        2020-12-07
-       cli/default behavior change for Soft NextHop Validation and Metric
+           cli/default behavior change for Soft NextHop Validation and Metric
        2020-12-01
-       Added best-external advertise config limited to labeled-unicast
+           Added best-external advertise config limited to labeled-unicast
        2020-10-27
-       BGP change dual-mode configure cli
+           BGP change dual-mode configure cli
        2020-10-09
-       Changed RPKI password type to Proprietary
+           Changed RPKI password type to Proprietary
        2020-10-04
-       Added Soft NextHop Validation and Metric
+           Added Soft NextHop Validation and Metric
        2020-07-21
-       BGP MIB cfg model has been updated to allow only one of updown or enable options";
+           BGP MIB cfg model has been updated to allow only one of updown or enable options";
     semver:module-version "4.0.0";
   }
   revision 2020-06-16 {
     description
       "Fixing various spellings/typos in descriptions
        2020-05-13
-       Support large values for BGP RPKI purge timeout.
+         Support large values for BGP RPKI purge timeout.
        2020-01-29
-       Enhancement for OC BFD augmentation in OC BGP.
+         Enhancement for OC BFD augmentation in OC BGP.
        2019-10-31
-       Added mandatory nodes and presence containers.";
+         Added mandatory nodes and presence containers.";
     semver:module-version "3.0.0";
   }
   revision 2019-08-31 {
     description
       "Fixing revision error in module.
        2019-05-12
-       Deprecated the native model, replaced by UM model.";
+         Deprecated the native model, replaced by UM model.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -614,6 +629,24 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
       "Bgp aigp cfg";
   }
 
+  typedef Bgp-best-path-sr-policy-path {
+    type enumeration {
+      enum "bgp-best-path-sr-path-type-preference" {
+        value 1;
+        description
+          "SR Policy path eligibility selection, except
+           eBGP non-color";
+      }
+      enum "bgp-best-path-sr-path-type-force" {
+        value 2;
+        description
+          "SR Policy path eligibility selection, strict";
+      }
+    }
+    description
+      "Bgp best path sr policy path";
+  }
+
   typedef Bgp-route-distinguisher {
     type enumeration {
       enum "auto" {
@@ -717,6 +750,23 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
     }
     description
       "Bgp cluster id";
+  }
+
+  typedef Bgp-bandwidth-aware-gshut-threshold-mode {
+    type enumeration {
+      enum "bgp-threshold-type-bandwidth" {
+        value 1;
+        description
+          "Bandwidth Based Threshold";
+      }
+      enum "bgp-threshold-type-percentage" {
+        value 2;
+        description
+          "Percentage Based Threshold";
+      }
+    }
+    description
+      "Bgp bandwidth aware gshut threshold mode";
   }
 
   typedef Bgp-global-extcomm-v4-addr-index {
@@ -1369,16 +1419,27 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
       container srv6 {
         description
           "SRv6 Configurations";
+        container srv6sid-allocation-mode {
+          presence "enable srv6sid-allocation-mode";
+          description
+            "BGP SRv6 SID allocation mode";
+          leaf sid-allocation-mode {
+            type string;
+            description
+              "SID allocation mode: per-ce  Set per CE SID
+               mode,per-vrf Set per VRF SID mode";
+          }
+          leaf route-policy {
+            type string;
+            description
+              "Route policy to configure SRv6 mode and
+               locator";
+          }
+        }
         leaf enable {
           type empty;
           description
             "Enable SRv6 configuration submode";
-        }
-        leaf srv6sid-allocation-mode {
-          type string;
-          description
-            "SID allocation mode: per-ce  Set per CE SID
-             mode,per-vrf Set per VRF SID mode";
         }
         leaf locator-name {
           type string;
@@ -1718,6 +1779,16 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
     }
   }
 
+  grouping NEXTHOP-CHECK-DISABLE {
+    description
+      "Common node of global-af, vrf-global-af";
+    leaf nexthop-check-disable {
+      type empty;
+      description
+        "Disable multipath nexthop check";
+    }
+  }
+
   grouping ENFORCE-FIRST-AS {
     description
       "Common node of neighbor-group, neighbor,
@@ -1758,6 +1829,18 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
         description
           "Rpki tested ordropped paths should be stored";
       }
+    }
+  }
+
+  grouping ADVERTISE-ENTROPY-LABEL-DISABLE {
+    description
+      "Common node of neighbor-group-af, neighbor-af,
+       af-group-af";
+    leaf advertise-entropy-label-disable {
+      type empty;
+      description
+        "Disable propagation of entropy label to this
+         peer";
     }
   }
 
@@ -2299,9 +2382,9 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
     description
       "Common node of global, vrf-global";
     leaf best-path-sr-policy-only-path {
-      type empty;
+      type Bgp-best-path-sr-policy-path;
       description
-        "Consider only paths over SR Policy for bestpath
+        "Prefer or Force SR policy paths for bestpath
          selection";
     }
   }
@@ -3577,6 +3660,36 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
     container graceful-maintenance {
       description
         "Graceful Maintenance mode";
+      container graceful-maintenance-bandwidth-aware {
+        description
+          "Bandwidth-Aware Graceful-Maintenance";
+        leaf gshut-bandwidth-aware-disable {
+          type boolean;
+          description
+            "TRUE, to prevent inheritance of BandwithAware
+             from its parents. FALSE, otherwise";
+        }
+        leaf mode-type {
+          type Bgp-bandwidth-aware-gshut-threshold-mode;
+          description
+            "Threshold Mode";
+        }
+        leaf low-threshold {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Low-Threshold Value";
+        }
+        leaf high-threshold {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Optional High-Threshold Value,  set 0 to
+             ignore";
+        }
+      }
       container graceful-maintenance-local-preference {
         description
           "Set Local Preference to advertise routes with";
@@ -4251,6 +4364,30 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
     }
   }
 
+  grouping ROUTE-POLICY-RET {
+    description
+      "Common node of neighbor-group-af, neighbor-af,
+       vrf-neighbor-af, af-group-af";
+    container route-policy-ret {
+      description
+        "Apply route policy to retain the routes from a
+         down neighbor";
+      leaf route-policy-name {
+        type string;
+        description
+          "Route policy name to apply to Retain routes";
+      }
+      leaf stale-time {
+        type uint32 {
+          range "0..2147483647";
+        }
+        description
+          "Configure a stale time after which retention
+           timer kicks in";
+      }
+    }
+  }
+
   grouping ROUTER-ID {
     description
       "Common node of global, vrf-global";
@@ -4491,8 +4628,8 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
         leaf allow-imported-vpn {
           type boolean;
           description
-            "TRUE Enable imported VPN paths to be exported
-             to Default VRF.FALSE Disable imported VPN
+            "TRUE: Enable imported VPN paths to be exported
+             to Default VRF; FALSE: Disable imported VPN
              paths to be exported to Default VRF.";
         }
       }
@@ -4502,23 +4639,52 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
         leaf allow-imported-vpn {
           type boolean;
           description
-            "TRUE Enable imported VPN paths to be exported
-             to non-default VRFFALSE Disable imported VPN
-             paths to be exported to non-default VRF";
-        }
-        leaf import-stitching-rt {
-          type boolean;
-          description
-            "TRUE Use stitchng RTs to import extranet
-             pathsFALSE Use regular RTs to import extranet
-             paths";
+            "TRUE: Enable imported VPN paths to be exported
+             to non-default VRF; FALSE: Disable imported
+             VPN paths to be exported to non-default VRF.";
         }
         leaf disable-adv-source-vrf-vni {
           type boolean;
           description
-            "TRUE Disallow advertisement of source vrf vni
-             for leaked pathsFALSE Allow advertisement of
-             source vrf vni  for leaked paths";
+            "TRUE: Disallow advertisement of source vrf vni
+             for leaked paths; FALSE: Allow advertisement
+             of source vrf vni  for leaked paths.";
+        }
+        leaf export-allow-backup {
+          type boolean;
+          description
+            "TRUE: Enable Leaking(export) of backup path;
+             FALSE: Disable Leaking(export) of backup path.";
+        }
+        leaf export-allow-best-external {
+          type boolean;
+          description
+            "TRUE: Enable Leaking(export) of best-external
+             path; FALSE: Disable Leaking(export) of
+             best-external path.";
+        }
+      }
+      container import-vrf-options {
+        description
+          "Import VRF options";
+        leaf advertise-as-vpn {
+          type boolean;
+          description
+            "TRUE: Enable advertising imported paths to PEs
+             ; FALSE: Disable advertising imported paths to
+             PEs.";
+        }
+        leaf import-allow-backup {
+          type boolean;
+          description
+            "TRUE: Enable Import of backup path; FALSE:
+             Disable Import of backup path.";
+        }
+        leaf import-allow-best-external {
+          type boolean;
+          description
+            "TRUE: Enable Import of best-external path;
+             FALSE: Disable Import of best-external path.";
         }
       }
       container global-to-vrf-import-route-policy {
@@ -4548,13 +4714,6 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
         type string;
         description
           "Route policy for import filtering";
-      }
-      leaf import-vrf-options {
-        type boolean;
-        description
-          "TRUE Enable advertising imported paths to
-           PEsFALSE Disable advertising imported paths to
-           PEs";
       }
       leaf import-from-bridge-domain {
         type boolean;
@@ -4599,8 +4758,8 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
         leaf allow-imported-vpn {
           type boolean;
           description
-            "TRUE Enable imported VPN paths to be exported
-             to Default VRF.FALSE Disable imported VPN
+            "TRUE: Enable imported VPN paths to be exported
+             to Default VRF; FALSE: Disable imported VPN
              paths to be exported to Default VRF.";
         }
       }
@@ -4610,23 +4769,52 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
         leaf allow-imported-vpn {
           type boolean;
           description
-            "TRUE Enable imported VPN paths to be exported
-             to non-default VRFFALSE Disable imported VPN
-             paths to be exported to non-default VRF";
-        }
-        leaf import-stitching-rt {
-          type boolean;
-          description
-            "TRUE Use stitchng RTs to import extranet
-             pathsFALSE Use regular RTs to import extranet
-             paths";
+            "TRUE: Enable imported VPN paths to be exported
+             to non-default VRF; FALSE: Disable imported
+             VPN paths to be exported to non-default VRF.";
         }
         leaf disable-adv-source-vrf-vni {
           type boolean;
           description
-            "TRUE Disallow advertisement of source vrf vni
-             for leaked pathsFALSE Allow advertisement of
-             source vrf vni  for leaked paths";
+            "TRUE: Disallow advertisement of source vrf vni
+             for leaked paths; FALSE: Allow advertisement
+             of source vrf vni  for leaked paths.";
+        }
+        leaf export-allow-backup {
+          type boolean;
+          description
+            "TRUE: Enable Leaking(export) of backup path;
+             FALSE: Disable Leaking(export) of backup path.";
+        }
+        leaf export-allow-best-external {
+          type boolean;
+          description
+            "TRUE: Enable Leaking(export) of best-external
+             path; FALSE: Disable Leaking(export) of
+             best-external path.";
+        }
+      }
+      container import-vrf-options {
+        description
+          "Import VRF options";
+        leaf advertise-as-vpn {
+          type boolean;
+          description
+            "TRUE: Enable advertising imported paths to PEs
+             ; FALSE: Disable advertising imported paths to
+             PEs.";
+        }
+        leaf import-allow-backup {
+          type boolean;
+          description
+            "TRUE: Enable Import of backup path; FALSE:
+             Disable Import of backup path.";
+        }
+        leaf import-allow-best-external {
+          type boolean;
+          description
+            "TRUE: Enable Import of best-external path;
+             FALSE: Disable Import of best-external path.";
         }
       }
       container global-to-vrf-import-route-policy {
@@ -4656,13 +4844,6 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
         type string;
         description
           "Route policy for import filtering";
-      }
-      leaf import-vrf-options {
-        type boolean;
-        description
-          "TRUE Enable advertising imported paths to
-           PEsFALSE Disable advertising imported paths to
-           PEs";
       }
       leaf import-from-bridge-domain {
         type boolean;
@@ -4810,24 +4991,12 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                         description
                           "Number of paths";
                       }
-                      leaf unequal-cost {
-                        type boolean;
-                        mandatory true;
-                        description
-                          "UNUSED";
-                      }
                       leaf selective {
                         type boolean;
                         mandatory true;
                         description
                           "Allow multipaths only from marked
                            neighbors";
-                      }
-                      leaf order-by-igp-metric {
-                        type boolean;
-                        mandatory true;
-                        description
-                          "DEPRECATED: Not supported";
                       }
                     }
                     container eibgp {
@@ -4842,24 +5011,12 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                         description
                           "Number of paths";
                       }
-                      leaf unequal-cost {
-                        type boolean;
-                        mandatory true;
-                        description
-                          "UNUSED";
-                      }
                       leaf selective {
                         type boolean;
                         mandatory true;
                         description
                           "Allow multipaths only from marked
                            neighbors";
-                      }
-                      leaf order-by-igp-metric {
-                        type boolean;
-                        mandatory true;
-                        description
-                          "DEPRECATED: Not supported";
                       }
                     }
                     container ibgp {
@@ -4887,12 +5044,6 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                         description
                           "Allow multipaths only from marked
                            neighbors";
-                      }
-                      leaf order-by-igp-metric {
-                        type boolean;
-                        mandatory true;
-                        description
-                          "DEPRECATED: Not supported";
                       }
                       leaf deterministic {
                         type empty;
@@ -4940,6 +5091,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                     uses LABEL-MODE;
                     uses EIGRP-ROUTE-TABLE;
                     uses BEST-EXTERNAL;
+                    uses NEXTHOP-CHECK-DISABLE;
                     uses SOURCED-NETWORK-TABLE;
                     uses RPKI-ORIGIN-AS-VALIDITY-SIGNAL-IBGP;
                     uses CONNECTED-ROUTES;
@@ -5051,6 +5203,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       uses MULTIPATH;
                       uses SEND-COMMUNITY-EBGP-GRACEFUL-SHUTDOWN;
                       uses ACTIVATE;
+                      uses ROUTE-POLICY-RET;
                       uses PREFIX-ORF-POLICY;
                       uses NEIGHBOR-AF-LONG-LIVED-GRACEFUL-RESTART-STALE-TIME;
                       uses SITE-OF-ORIGIN;
@@ -5202,6 +5355,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       uses ACCEPT-ROUTE-LEGACY-RT;
                       uses AIGP-COST-COMMUNITY;
                       uses CLUSTER-ID-ALLOW-EQUAL;
+                      uses ADVERTISE-ENTROPY-LABEL-DISABLE;
                       uses SEND-COMMUNITY-EBGP;
                       uses ADVERTISE-DEF-IMP-DISABLE-V6;
                       uses ADVERTISE-DISABLE;
@@ -5224,6 +5378,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       uses MULTIPATH;
                       uses SEND-COMMUNITY-EBGP-GRACEFUL-SHUTDOWN;
                       uses ACTIVATE;
+                      uses ROUTE-POLICY-RET;
                       uses PREFIX-ORF-POLICY;
                       uses NEIGHBOR-AF-LONG-LIVED-GRACEFUL-RESTART-STALE-TIME;
                       uses UPDATE-OUT-ORIG-LOOP-CHK-DISABLE;
@@ -5371,6 +5526,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       uses ACCEPT-ROUTE-LEGACY-RT;
                       uses AIGP-COST-COMMUNITY;
                       uses CLUSTER-ID-ALLOW-EQUAL;
+                      uses ADVERTISE-ENTROPY-LABEL-DISABLE;
                       uses SEND-COMMUNITY-EBGP;
                       uses ADVERTISE-DEF-IMP-DISABLE-V6;
                       uses ADVERTISE-DISABLE;
@@ -5393,6 +5549,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       uses MULTIPATH;
                       uses SEND-COMMUNITY-EBGP-GRACEFUL-SHUTDOWN;
                       uses ACTIVATE;
+                      uses ROUTE-POLICY-RET;
                       uses PREFIX-ORF-POLICY;
                       uses NEIGHBOR-AF-LONG-LIVED-GRACEFUL-RESTART-STALE-TIME;
                       uses SITE-OF-ORIGIN;
@@ -5529,6 +5686,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       uses ACCEPT-ROUTE-LEGACY-RT;
                       uses AIGP-COST-COMMUNITY;
                       uses CLUSTER-ID-ALLOW-EQUAL;
+                      uses ADVERTISE-ENTROPY-LABEL-DISABLE;
                       uses SEND-COMMUNITY-EBGP;
                       uses ADVERTISE-DEF-IMP-DISABLE-V6;
                       uses ADVERTISE-DISABLE;
@@ -5550,6 +5708,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       uses AS-OVERRIDE;
                       uses MULTIPATH;
                       uses SEND-COMMUNITY-EBGP-GRACEFUL-SHUTDOWN;
+                      uses ROUTE-POLICY-RET;
                       uses PREFIX-ORF-POLICY;
                       uses NEIGHBOR-AF-LONG-LIVED-GRACEFUL-RESTART-STALE-TIME;
                       uses SITE-OF-ORIGIN;
@@ -5769,6 +5928,13 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       type inet:ip-address-no-zone;
                       description
                         "Tertiary Root for the ORR group";
+                    }
+                    leaf flexiable-algorithm {
+                      type uint32 {
+                        range "128..255";
+                      }
+                      description
+                        "Flexible Algorithm value";
                     }
                   }
                 }
@@ -6170,16 +6336,23 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                          from import-policy";
                     }
                   }
-                  container export-vrf-allow {
+                  container export-vrf-options {
                     description
-                      "Allow export/leak to Vrf based on
-                       path-type";
+                      "Allow export/leak of backup and/or
+                       best-external path";
                     leaf export-allow-backup {
                       type boolean;
                       description
-                        "TRUE Enable Leaking(export) of backup
-                         path, FALSE Disable Leaking(export) of
-                         backup path";
+                        "TRUE: Enable Leaking(export) of backup
+                         path; FALSE: Disable Leaking(export) of
+                         backup path.";
+                    }
+                    leaf export-allow-best-external {
+                      type boolean;
+                      description
+                        "TRUE: Enable Leaking(export) of
+                         best-external path; FALSE: Disable
+                         Leaking(export) of best-external path.";
                     }
                   }
                   container disable-cluster-client-to-client-rrs {
@@ -6262,17 +6435,11 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       "Use eBGP multipaths";
                     leaf paths-value {
                       type uint32 {
-                        range "2..128";
+                        range "2..1024";
                       }
                       mandatory true;
                       description
                         "Number of paths";
-                    }
-                    leaf unequal-cost {
-                      type boolean;
-                      mandatory true;
-                      description
-                        "UNUSED";
                     }
                     leaf selective {
                       type boolean;
@@ -6280,12 +6447,6 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       description
                         "Allow multipaths only from marked
                          neighbors";
-                    }
-                    leaf order-by-igp-metric {
-                      type boolean;
-                      mandatory true;
-                      description
-                        "DEPRECATED: Not supported";
                     }
                   }
                   container eibgp {
@@ -6294,17 +6455,11 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       "Use eiBGP multipaths";
                     leaf paths-value {
                       type uint32 {
-                        range "2..128";
+                        range "2..1024";
                       }
                       mandatory true;
                       description
                         "Number of paths";
-                    }
-                    leaf unequal-cost {
-                      type boolean;
-                      mandatory true;
-                      description
-                        "UNUSED";
                     }
                     leaf selective {
                       type boolean;
@@ -6312,12 +6467,6 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       description
                         "Allow multipaths only from marked
                          neighbors";
-                    }
-                    leaf order-by-igp-metric {
-                      type boolean;
-                      mandatory true;
-                      description
-                        "DEPRECATED: Not supported";
                     }
                   }
                   container retain-rt {
@@ -6342,7 +6491,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       "Use iBGP multipaths";
                     leaf paths-value {
                       type uint32 {
-                        range "2..128";
+                        range "2..1024";
                       }
                       mandatory true;
                       description
@@ -6361,12 +6510,6 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       description
                         "Allow multipaths only from marked
                          neighbors";
-                    }
-                    leaf order-by-igp-metric {
-                      type boolean;
-                      mandatory true;
-                      description
-                        "DEPRECATED: Not supported";
                     }
                     leaf deterministic {
                       type empty;
@@ -6501,6 +6644,11 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                     description
                       "Label retention time in minutes";
                   }
+                  leaf enable-epe-backup-path {
+                    type empty;
+                    description
+                      "Install a backup path for the EPE labels";
+                  }
                   leaf scan-time {
                     type uint32 {
                       range "5..3600";
@@ -6584,6 +6732,12 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                       "Wait for route install before sending
                        updates to neighbors";
                   }
+                  leaf advertise-epe-labeled-unicast {
+                    type empty;
+                    description
+                      "Advertise BGP EPE objects as Labeled
+                       Unicast routes to controller";
+                  }
                   leaf prefix-sid-map {
                     type empty;
                     description
@@ -6610,6 +6764,7 @@ module Cisco-IOS-XR-ipv4-bgp-cfg {
                   uses LABEL-MODE;
                   uses EIGRP-ROUTE-TABLE;
                   uses BEST-EXTERNAL;
+                  uses NEXTHOP-CHECK-DISABLE;
                   uses SOURCED-NETWORK-TABLE;
                   uses RPKI-ORIGIN-AS-VALIDITY-SIGNAL-IBGP;
                   uses CONNECTED-ROUTES;

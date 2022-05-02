@@ -42,25 +42,25 @@ module Cisco-IOS-XR-aaa-tacacs-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-03-19 {
+  revision 2021-06-21 {
     description
-      "Extended TACACS single-connect-idle timeout expiration range for first login.";
-    semver:module-version "2.0.0";
+      "Added union for tacacs keys to make encrypt-type field mandatory.";
+    semver:module-version "3.0.0";
   }
   revision 2020-11-24 {
     description
       "Added single connect idle timeout support config for private server.
        2020-08-19
-       Added support for Holddown Time.
+           Added support for Holddown Time.
        2020-04-20
-       Added support for Type 6.";
+           Added support for Type 6.";
     semver:module-version "2.0.0";
   }
   revision 2020-01-28 {
     description
       "Added single connect support config for private server group.
        2019-08-29
-       Added new config for idle timeout for single connection.";
+         Added new config for idle timeout for single connection.";
     semver:module-version "1.2.0";
   }
   revision 2019-04-05 {
@@ -241,16 +241,29 @@ module Cisco-IOS-XR-aaa-tacacs-cfg {
     container key {
       description
         "Set TACACS+ encryption key";
-      leaf text {
-        type xr:Proprietary-password;
-        description
-          "Encryption key";
-      }
       leaf encrypt-type {
         type Secret-encryption;
-        default "type7";
         description
           "Encryption Type";
+      }
+      leaf secret7 {
+        when "../encrypt-type = 'type7'" {
+          description
+            "../EncryptType = Type7";
+        }
+        type xr:Proprietary-password;
+        description
+          "Type7 Encryption key";
+      }
+      leaf secret6 {
+        when "../encrypt-type = 'type6'" {
+          description
+            "../EncryptType = Type6";
+        }
+        type xr:Type6-password;
+        description
+          "Type6 Encryption key, requires a valid master
+           key in the system";
       }
     }
   }

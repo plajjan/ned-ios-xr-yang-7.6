@@ -32,9 +32,14 @@ submodule Cisco-IOS-XR-l2rib-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR l2rib package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-09 {
+    description
+      "Changes made in the bag to display IID next-hop.";
+    semver:module-version "2.2.0";
+  }
   revision 2019-11-22 {
     description
       "Added to path for Mac/IP Table and Mac/IP Detail Table";
@@ -159,6 +164,11 @@ submodule Cisco-IOS-XR-l2rib-oper-sub1 {
         value 9;
         description
           "l2rib next hop xid";
+      }
+      enum "l2rib-next-hop-iid" {
+        value 11;
+        description
+          "l2rib next hop iid";
       }
     }
     description
@@ -809,6 +819,15 @@ submodule Cisco-IOS-XR-l2rib-oper-sub1 {
       type uint32;
       description
         "XID Next Hop";
+    }
+    leaf iid {
+      when "../type = 'l2rib-next-hop-iid'" {
+        description
+          "../Type = 'L2RIB_NEXT_HOP_IID'";
+      }
+      type uint32;
+      description
+        "IID Next Hop";
     }
   }
 

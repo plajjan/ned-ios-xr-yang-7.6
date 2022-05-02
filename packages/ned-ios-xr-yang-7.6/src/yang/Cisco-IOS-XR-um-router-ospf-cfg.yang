@@ -37,27 +37,39 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2019-2021 by Cisco Systems, Inc.
+     Copyright (c) 2019-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-06-14 {
+  revision 2021-12-29 {
     description
-      "Added leaf use-interface-bandwidth under apply-weight";
-    semver:module-version "3.1.0";
+      "Added ietf-strict-lsa-checking next to container ietf,
+       Added container neighbors under multi-area-interface";
+    semver:module-version "4.1.0";
+  }
+  revision 2021-10-04 {
+    description
+      "Updated apply-weight container
+       2021-09-15
+          Added prefix-metric under flex-alogo
+        and added container lls/disable under capability
+       2021-06-15
+          Added leaf use-interface-bandwidth, modified leaf bandwidth name to leaf reference
+        and added mandatory for all the three leafs  under container apply-weight ";
+    semver:module-version "4.0.0";
   }
   revision 2021-03-26 {
     description
       "Added leaf dead-interval-minimal-hello-multiplier
        2021-02-10
-       Added disable container in area_scope link-down fast-detect container
+           Added disable container in area_scope link-down fast-detect container
        2021-01-08
-       Added microloop avoidance disable in flex-algos container
+           Added microloop avoidance disable in flex-algos container
        2020-12-24
-       Added cost-fallback anomaly container
+           Added cost-fallback anomaly container
        2020-09-28
-       - Changed log/adjacency/changes container as presence
+           - Changed log/adjacency/changes container as presence
        2020-05-22
-       - Added container fast-reroute and its child nodes";
+           - Added container fast-reroute and its child nodes";
     semver:module-version "3.0.0";
   }
   revision 2020-05-21 {
@@ -67,7 +79,7 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
        - Added container srlg and delay and its child nodes
        - Added container advertise to its child nodes
        2020-03-10
-       Made separate nodes for avoidance-rib-update-delay and ietf-helper";
+         Made separate nodes for avoidance-rib-update-delay and ietf-helper";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -1814,6 +1826,16 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
                   "Disable Opaque LSA capability";
               }
             }
+            container lls {
+              presence "Indicates a lls node is configured.";
+              description
+                "Link Local Signalling";
+              container disable {
+                presence "Indicates a disable node is configured.";
+                description
+                  "Disable Link Local Signalling capability";
+              }
+            }
             container type7 {
               description
                 "NSSA capability";
@@ -2367,6 +2389,11 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
               presence "Indicates a ietf node is configured.";
               description
                 "Enable ietf graceful restart";
+            }
+            container ietf-strict-lsa-checking {
+              presence "Indicates a strict-lsa-checking node is configured.";
+              description
+                "terminate graceful restart helper mode if lsa changed";
             }
             container ietf-helper {
               description
@@ -3227,6 +3254,53 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
                     type xr:Interface-name;
                     description
                       "Enable multi-area adjacency on this interface";
+                  }
+                  container neighbors {
+                    description
+                      "Specify a  neighbor router";
+                    list neighbor {
+                      key "address";
+                      description
+                        "Specify a  neighbor router";
+                      leaf address {
+                        type inet:ipv4-address-no-zone;
+                        description
+                          "Specify a  neighbor router";
+                      }
+                      container database-filter {
+                        description
+                          "Filter OSPF LSA during synchronization and flooding for point-to-multipoint neighbor";
+                        container all {
+                          description
+                            "Filter all LSA";
+                          container out {
+                            presence "Indicates a out node is configured.";
+                            description
+                              "Outgoing LSA";
+                          }
+                        }
+                      }
+                      leaf poll-interval {
+                        type uint32 {
+                          range "0..4294967295" {
+                            description
+                              "Seconds";
+                          }
+                        }
+                        description
+                          "OSPF dead-router polling interval";
+                      }
+                      leaf cost {
+                        type uint32 {
+                          range "1..65535" {
+                            description
+                              "Metric";
+                          }
+                        }
+                        description
+                          "OSPF cost for point-to-multipoint neighbor";
+                      }
+                    }
                   }
                   container authentication-key {
                     description
@@ -6545,6 +6619,11 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
                   }
                 }
               }
+              container prefix-metric {
+                presence "Indicates a prefix-metric node is configured.";
+                description
+                  "Advertise the Flex-Algo Definition";
+              }
               container metric-type {
                 description
                   "Metric-type used by flex-algo calculation";
@@ -6939,10 +7018,12 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
             }
           }
           container apply-weight {
+            presence "Indicates a apply-weight node is configured.";
             description
               "Enable weights configured under interfaces for load sharing";
             leaf use-interface-bandwidth {
               type boolean;
+              mandatory true;
               description
                 "Use interface bandwidth when calculating weights";
             }
@@ -6955,6 +7036,7 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
                      Value must be 100 when use-interface-bandwidth = false";
                 }
               }
+              mandatory true;
               description
                 "Reference bandwidth to use for calculation
                  (Mbits/sec).
@@ -6967,8 +7049,9 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
                     "Specify default weight value. Value must be 1 when use-interface-bandwidth = true";
                 }
               }
+              mandatory true;
               description
-                "Specify default weight value. Value must be 1 when use-interface-bandwidth = true";
+                "Specify default weight value.Value must be 1 when use-interface-bandwidth = true";
             }
           }
           container srlg {
@@ -8567,6 +8650,16 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
                       "Disable Opaque LSA capability";
                   }
                 }
+                container lls {
+                  presence "Indicates a lls node is configured.";
+                  description
+                    "Link Local Signalling";
+                  container disable {
+                    presence "Indicates a disable node is configured.";
+                    description
+                      "Disable Link Local Signalling capability";
+                  }
+                }
                 container type7 {
                   description
                     "NSSA capability";
@@ -9093,6 +9186,11 @@ module Cisco-IOS-XR-um-router-ospf-cfg {
                   presence "Indicates a ietf node is configured.";
                   description
                     "Enable ietf graceful restart";
+                }
+                container ietf-strict-lsa-checking {
+                  presence "Indicates a strict-lsa-checking node is configured.";
+                  description
+                    "terminate graceful restart helper mode if lsa changed";
                 }
                 container ietf-helper {
                   description

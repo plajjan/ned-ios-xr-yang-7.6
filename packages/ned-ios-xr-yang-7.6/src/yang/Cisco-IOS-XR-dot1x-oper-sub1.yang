@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-dot1x-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR dot1x package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-03-31 {
+    description
+      "EAP TTLS/EAP Attestation";
+    semver:module-version "2.2.0";
+  }
   revision 2020-04-23 {
     description
       "Dot1x Port Status";
@@ -44,6 +49,23 @@ submodule Cisco-IOS-XR-dot1x-oper-sub1 {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
+  }
+
+  typedef Eap-inner-method {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          "Inner Method not set";
+      }
+      enum "eap-attestation" {
+        value 56;
+        description
+          "Inner Method EAP Attestation";
+      }
+    }
+    description
+      "Eap inner method";
   }
 
   grouping DOT1X-INTERFACE-MKA {
@@ -334,9 +356,34 @@ submodule Cisco-IOS-XR-dot1x-oper-sub1 {
     }
   }
 
+  grouping EAP-SUPP-INNER-METHOD {
+    description
+      "EAP SUPP INNER METHOD";
+    leaf type {
+      type Eap-inner-method;
+      description
+        "Type";
+    }
+  }
+
+  grouping EAP-SUPP-INNER-METHOD-DATA {
+    description
+      "EAP SUPP INNER METHOD DATA";
+    list method {
+      description
+        "EAP Inner Method";
+      uses EAP-SUPP-INNER-METHOD;
+    }
+  }
+
   grouping DOT1X-SUPP-CLIENT-INFO {
     description
       "DOT1X SUPP CLIENT INFO";
+    container inner-method {
+      description
+        "Inner Methods if any";
+      uses EAP-SUPP-INNER-METHOD-DATA;
+    }
     leaf mac {
       type string;
       description
@@ -389,9 +436,68 @@ submodule Cisco-IOS-XR-dot1x-oper-sub1 {
     }
   }
 
+  grouping EAP-AUTH-ATTESTATION {
+    description
+      "EAP AUTH ATTESTATION";
+    leaf stamped-passport-appraisal {
+      type string;
+      description
+        "Stamped Passport Appraisal";
+    }
+  }
+
+  grouping EAP-AUTH-INNER-METHOD {
+    description
+      "EAP AUTH INNER METHOD";
+    container attestation {
+      when "../type = 'eap-attestation'" {
+        description
+          "../Type = 'EAPAttestation'";
+      }
+      description
+        "EAP Attestation Data";
+      uses EAP-AUTH-ATTESTATION;
+    }
+    leaf type {
+      type Eap-inner-method;
+      description
+        "Type";
+    }
+  }
+
+  grouping EAP-AUTH-INNER-METHOD-DATA {
+    description
+      "EAP AUTH INNER METHOD DATA";
+    list method {
+      description
+        "EAP Inner Method";
+      uses EAP-AUTH-INNER-METHOD;
+    }
+  }
+
+  grouping EAP-AUTH-DATA {
+    description
+      "EAP AUTH DATA";
+    container inner-method {
+      description
+        "Inner Methods if any";
+      uses EAP-AUTH-INNER-METHOD-DATA;
+    }
+    leaf eap-method {
+      type string;
+      description
+        "EAP method name";
+    }
+  }
+
   grouping DOT1X-AUTH-CLIENT-INFO {
     description
       "DOT1X AUTH CLIENT INFO";
+    container local-eap {
+      description
+        "Local EAP data ";
+      uses EAP-AUTH-DATA;
+    }
     leaf mac {
       type string;
       description

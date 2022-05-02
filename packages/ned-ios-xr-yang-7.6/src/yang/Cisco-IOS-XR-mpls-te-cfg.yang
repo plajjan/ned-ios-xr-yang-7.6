@@ -50,6 +50,13 @@ module Cisco-IOS-XR-mpls-te-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-11-18 {
+    description
+      "Added attribute sets for path-option under named-tunnels
+       2021-10-13
+         Added BFD and path protection support for named tunnels.";
+    semver:module-version "3.1.0";
+  }
   revision 2021-06-10 {
     description
       "Removal of leaf oor-recovery-duration and add back as grouping OOR-RECOVERY-DURATION, the grouping is used by multiple parents. add OOR-AVAILABLE-BANDWIDTH-PERCENTAGE add OOR-ACCEPT-LSP-MIN-BANDWIDTH add OOR-ACCEPT-REOPT-LSP add OOR-METRIC-TE-PENALTY add container lsp-oor-green-state add container backoff-timer add grouping OOR-RECOVERY-DURATION";
@@ -59,23 +66,23 @@ module Cisco-IOS-XR-mpls-te-cfg {
     description
       "Added enhancement of auto-tunnel backup capabilities to prevent circuit congestion
        2020-06-11
-       new leaf mpls.traffic-eng.timers.backoff-timer";
+           new leaf mpls.traffic-eng.timers.backoff-timer";
     semver:module-version "2.2.0";
   }
   revision 2020-03-28 {
     description
       "Added path retry timeout and path error message.
        2020-03-27
-       Added PCE redundancy PCC-centric model support.";
+         Added PCE redundancy PCC-centric model support.";
     semver:module-version "2.1.0";
   }
   revision 2019-10-31 {
     description
       "Added mandatory nodes
        2019-09-30
-       extra leaves in mpls.traffic-eng.attribute-set.auto-backup.logging.events.lsp-status
+         extra leaves in mpls.traffic-eng.attribute-set.auto-backup.logging.events.lsp-status
        2019-05-12
-       Deprecated the native model, replaced by UM model.";
+         Deprecated the native model, replaced by UM model.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -383,6 +390,28 @@ module Cisco-IOS-XR-mpls-te-cfg {
     }
     description
       "Mpls te signaled label";
+  }
+
+  typedef Mpls-tebfd-session {
+    type enumeration {
+      enum "regular-bfd" {
+        value 1;
+        description
+          "Regular BFD";
+      }
+      enum "sbfd" {
+        value 2;
+        description
+          "Seamless BFD";
+      }
+      enum "redundant-sbfd" {
+        value 3;
+        description
+          "Redundant SBFD";
+      }
+    }
+    description
+      "Mpls tebfd session";
   }
 
   typedef Mpls-te-lsp-switch {
@@ -1242,28 +1271,6 @@ module Cisco-IOS-XR-mpls-te-cfg {
       "Mpls te igp protocol";
   }
 
-  typedef Mpls-tebfd-session {
-    type enumeration {
-      enum "regular-bfd" {
-        value 1;
-        description
-          "Regular BFD";
-      }
-      enum "sbfd" {
-        value 2;
-        description
-          "Seamless BFD";
-      }
-      enum "redundant-sbfd" {
-        value 3;
-        description
-          "Redundant SBFD";
-      }
-    }
-    description
-      "Mpls tebfd session";
-  }
-
   typedef Binding-segment-id {
     type enumeration {
       enum "any-label" {
@@ -1399,6 +1406,18 @@ module Cisco-IOS-XR-mpls-te-cfg {
     }
   }
 
+  grouping MULTIPLIER {
+    description
+      "Common node of bfd-over-lsp, bfd-over-named-lsp";
+    leaf multiplier {
+      type uint32 {
+        range "3..10";
+      }
+      description
+        "Specify the multiplier for BFD failure detection";
+    }
+  }
+
   grouping PATH-ERROR-MESSAGE {
     description
       "Common node of logging, auto-mesh-logging";
@@ -1432,6 +1451,19 @@ module Cisco-IOS-XR-mpls-te-cfg {
         description
           "Array of Policy class";
       }
+    }
+  }
+
+  grouping MINIMUM-INTERVAL {
+    description
+      "Common node of bfd-over-lsp, bfd-over-named-lsp";
+    leaf minimum-interval {
+      type uint32 {
+        range "3..30000";
+      }
+      description
+        "Specify the minimum interval for BFD failure
+         detection";
     }
   }
 
@@ -1876,6 +1908,17 @@ module Cisco-IOS-XR-mpls-te-cfg {
         "Period of time (minutes) during which the action
          in Green state are applied. After this period,
          the processing in TE goes back to normal state";
+    }
+  }
+
+  grouping SRLG-DIVERSE {
+    description
+      "Common node of tunnel-path-protection,
+       named-tunnel-path-protection";
+    leaf srlg-diverse {
+      type empty;
+      description
+        "Enforce SRLG diversity for protection LSP";
     }
   }
 
@@ -2614,6 +2657,32 @@ module Cisco-IOS-XR-mpls-te-cfg {
     }
   }
 
+  grouping MPLS-TE-TUNNEL-CFG-ENABLE {
+    description
+      "Common node of path-selection,
+       att-path-option-path-selectionCommon node of
+       bfd-over-lsp, bfd-over-named-lsp";
+    leaf enable {
+      type empty;
+      description
+        "Always set to true";
+    }
+  }
+
+  grouping MPLS-TE-TUNNEL-CFG-ENABLE-MP {
+    description
+      "Common node of path-selection,
+       att-path-option-path-selectionCommon node of
+       bfd-over-lsp, bfd-over-named-lspCommon node of
+       tunnel-path-protection,
+       named-tunnel-path-protection";
+    leaf enable {
+      type empty;
+      description
+        "Enable Path Protection";
+    }
+  }
+
   grouping AUTOROUTE {
     description
       "Common node of tunnel-attributes,
@@ -2713,6 +2782,16 @@ module Cisco-IOS-XR-mpls-te-cfg {
       description
         "Disable FRR node-protection when the link is in
          this OOR State";
+    }
+  }
+
+  grouping FAST-DETECT {
+    description
+      "Common node of bfd-over-lsp, bfd-over-named-lsp";
+    leaf fast-detect {
+      type Mpls-tebfd-session;
+      description
+        "Enable BFD Fast Detect On the tunnel";
     }
   }
 
@@ -3002,24 +3081,6 @@ module Cisco-IOS-XR-mpls-te-cfg {
           description
             "Initial delay in milliseconds (default 16000)";
         }
-        leaf fast-detect {
-          type Mpls-tebfd-session;
-          description
-            "Enable BFD Fast Detect On the tunnel";
-        }
-        leaf enable {
-          type empty;
-          description
-            "Always set to true";
-        }
-        leaf multiplier {
-          type uint32 {
-            range "3..10";
-          }
-          description
-            "Specify the multiplier for BFD failure
-             detection";
-        }
         leaf bringup-timeout {
           type uint32 {
             range "10..3600";
@@ -3056,14 +3117,6 @@ module Cisco-IOS-XR-mpls-te-cfg {
           description
             "Maximum delay in milliseconds (default 600000)";
         }
-        leaf minimum-interval {
-          type uint32 {
-            range "3..30000";
-          }
-          description
-            "Specify the minimum interval for BFD failure
-             detection";
-        }
         leaf encap-mode {
           type uint32 {
             range "0..1";
@@ -3071,6 +3124,10 @@ module Cisco-IOS-XR-mpls-te-cfg {
           description
             "Specify BFD Encap Mode on the tunnel";
         }
+        uses FAST-DETECT;
+        uses MPLS-TE-TUNNEL-CFG-ENABLE;
+        uses MULTIPLIER;
+        uses MINIMUM-INTERVAL;
       }
       container binding-segment-id-mpls {
         description
@@ -3104,16 +3161,8 @@ module Cisco-IOS-XR-mpls-te-cfg {
               "Enable non-revertive mode";
           }
         }
-        leaf enable {
-          type empty;
-          description
-            "Enable Path Protection";
-        }
-        leaf srlg-diverse {
-          type empty;
-          description
-            "Enforce SRLG diversity for protection LSP";
-        }
+        uses MPLS-TE-TUNNEL-CFG-ENABLE-MP;
+        uses SRLG-DIVERSE;
       }
       container path-option-protects {
         description
@@ -4572,12 +4621,31 @@ module Cisco-IOS-XR-mpls-te-cfg {
                   description
                     "Path preference level";
                 }
+                leaf attribute-set {
+                  type string;
+                  description
+                    "Attribute set to be applied to this path";
+                }
                 leaf path-setup-name {
                   type xr:Cisco-ios-xr-string;
                   description
                     "Path Name";
                 }
               }
+            }
+            container bfd-over-named-lsp {
+              description
+                "BFD over Named TE LSP";
+              uses FAST-DETECT;
+              uses MPLS-TE-TUNNEL-CFG-ENABLE;
+              uses MULTIPLIER;
+              uses MINIMUM-INTERVAL;
+            }
+            container named-tunnel-path-protection {
+              description
+                "MPLS named tunnel path protected configs";
+              uses MPLS-TE-TUNNEL-CFG-ENABLE-MP;
+              uses SRLG-DIVERSE;
             }
             leaf shutdown {
               type empty;

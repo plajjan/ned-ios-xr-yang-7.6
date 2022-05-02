@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-ztp-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR ztp package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-02 {
+    description
+      "Added breakout mode information.";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -134,6 +139,11 @@ submodule Cisco-IOS-XR-ztp-oper-sub1 {
       description
         "ZTP Vlan discovery mode - static, dynamic or
          disabled";
+    }
+    leaf is-breakout-enabled {
+      type boolean;
+      description
+        "Will ZTP breakout down interfaces";
     }
     leaf is-retry-enabled {
       type boolean;

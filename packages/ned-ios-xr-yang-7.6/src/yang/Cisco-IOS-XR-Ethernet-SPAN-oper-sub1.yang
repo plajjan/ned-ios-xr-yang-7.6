@@ -32,21 +32,39 @@ submodule Cisco-IOS-XR-Ethernet-SPAN-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR Ethernet-SPAN package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-15 {
+    description
+      "Added support for mirror first configured on sessions
+       2021-08-20
+         Added support for ERSPAN session ID under GRE destinations";
+    semver:module-version "5.1.0";
+  }
+  revision 2021-07-19 {
+    description
+      "Added extended range of values to mirror interval sampling
+       2021-06-02
+          Added support for non-default VRFs and router-id";
+    semver:module-version "5.0.0";
+  }
   revision 2020-12-03 {
     description
-      "Added support for multiple attachments per class on an interface";
+      "Added support for multiple attachments per class on an interface
+       2020-09-14
+           Added support for mirror rx and tx traffic to separate destinations
+       2020-04-03
+           Added support for bundle destinations.";
     semver:module-version "4.0.0";
   }
   revision 2020-01-30 {
     description
       "Added support for L3 IPv4 and IPv6 ACLs on a L2 ethernet SPAN session
        2019-12-12
-       Added support for file format and PCAP filter expressions under file
+         Added support for file format and PCAP filter expressions under file
        2019-10-02
-       Added support for UDP destinations and CloudSPAN.";
+         Added support for UDP destinations and CloudSPAN.";
     semver:module-version "3.0.0";
   }
   revision 2019-05-12 {
@@ -106,6 +124,46 @@ submodule Cisco-IOS-XR-Ethernet-SPAN-oper-sub1 {
         value 6;
         description
           "Mirror Interval 16K";
+      }
+      enum "mirror-interval2" {
+        value 7;
+        description
+          "Mirror Interval 2";
+      }
+      enum "mirror-interval4" {
+        value 8;
+        description
+          "Mirror Interval 4";
+      }
+      enum "mirror-interval8" {
+        value 9;
+        description
+          "Mirror Interval 8";
+      }
+      enum "mirror-interval16" {
+        value 10;
+        description
+          "Mirror Interval 16";
+      }
+      enum "mirror-interval32" {
+        value 11;
+        description
+          "Mirror Interval 32";
+      }
+      enum "mirror-interval64" {
+        value 12;
+        description
+          "Mirror Interval 64";
+      }
+      enum "mirror-interval128" {
+        value 13;
+        description
+          "Mirror Interval 128";
+      }
+      enum "mirror-interval256" {
+        value 14;
+        description
+          "Mirror Interval 256";
       }
     }
     description
@@ -641,6 +699,11 @@ submodule Cisco-IOS-XR-Ethernet-SPAN-oper-sub1 {
       description
         "enabled";
     }
+    leaf router-id {
+      type uint8;
+      description
+        "router id";
+    }
   }
 
   grouping FILE-DST-STATE-INFO {
@@ -680,6 +743,36 @@ submodule Cisco-IOS-XR-Ethernet-SPAN-oper-sub1 {
       type xr:Interface-name;
       description
         "Bundle member interface handles";
+    }
+  }
+
+  grouping UDP-DST-CFG-INFO {
+    description
+      "UDP destination config";
+    container ip-addresses {
+      description
+        "IP Addresses";
+      uses UDP-ADDRESSES;
+    }
+    leaf source-port {
+      type uint32;
+      description
+        "Source Port";
+    }
+    leaf destination-port {
+      type uint32;
+      description
+        "Destination Port";
+    }
+    leaf vrfid {
+      type string;
+      description
+        "VRF ID";
+    }
+    leaf vrf-name {
+      type string;
+      description
+        "VRF Name";
     }
   }
 
@@ -856,36 +949,6 @@ submodule Cisco-IOS-XR-Ethernet-SPAN-oper-sub1 {
       type Udp-address;
       description
         "AddressType";
-    }
-  }
-
-  grouping UDP-DST-CFG-INFO {
-    description
-      "UDP destination config";
-    container ip-addresses {
-      description
-        "IP Addresses";
-      uses UDP-ADDRESSES;
-    }
-    leaf source-port {
-      type uint32;
-      description
-        "Source Port";
-    }
-    leaf destination-port {
-      type uint32;
-      description
-        "Destination Port";
-    }
-    leaf vrfid {
-      type string;
-      description
-        "VRF ID";
-    }
-    leaf vrf-name {
-      type string;
-      description
-        "VRF Name";
     }
   }
 

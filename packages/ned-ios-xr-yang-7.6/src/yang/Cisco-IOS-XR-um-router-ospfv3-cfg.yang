@@ -37,17 +37,30 @@ module Cisco-IOS-XR-um-router-ospfv3-cfg {
      Copyright (c) 2019-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-15 {
+    description
+      "Added container lls/disable under capability";
+    semver:module-version "2.2.0";
+  }
   revision 2021-03-11 {
     description
-      "Added container strict-lsa-checking under graceful-restart";
+      "Added container strict-lsa-checking under graceful-restart
+       2021-02-12
+           Added leaf disable under
+         (1) area/database-filter,
+         (2) area/interface/database-filter
+         (3) vrf/area/database-filter
+         (4) vrf/area/interface/database-filter
+       2021-01-20
+           Added leaf route-policy under default-information";
     semver:module-version "2.1.0";
   }
   revision 2020-05-26 {
     description
       "(1) Added container advertise and its child nodes under area/interface
-       (2) Removed container include-stub from stub-router/router-lsa/r-bit|v6-bit
+         (2) Removed container include-stub from stub-router/router-lsa/r-bit|v6-bit
        2020-04-14
-       Moved translate out of nssa into the new node nssa-translate";
+         Moved translate out of nssa into the new node nssa-translate";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -176,6 +189,15 @@ module Cisco-IOS-XR-um-router-ospfv3-cfg {
                   description
                     "Translate Type 7 LSAs without forwarding address";
                 }
+              }
+            }
+            container lls {
+              description
+                "LLS capability";
+              container disable {
+                presence "Indicates a disable node is configured.";
+                description
+                  "Disable LLS capability";
               }
             }
           }
@@ -4114,6 +4136,15 @@ module Cisco-IOS-XR-um-router-ospfv3-cfg {
                       description
                         "Translate Type 7 LSAs without forwarding address";
                     }
+                  }
+                }
+                container lls {
+                  description
+                    "LLS capability";
+                  container disable {
+                    presence "Indicates a disable node is configured.";
+                    description
+                      "Disable LLS capability";
                   }
                 }
               }

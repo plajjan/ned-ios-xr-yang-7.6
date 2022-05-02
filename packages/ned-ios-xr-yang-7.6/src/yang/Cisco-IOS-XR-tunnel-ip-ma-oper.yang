@@ -15,7 +15,7 @@ module Cisco-IOS-XR-tunnel-ip-ma-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-tunnel-ip-ma-oper-sub1 {
-    revision-date 2021-02-25;
+    revision-date 2021-09-23;
   }
 
   organization
@@ -41,6 +41,11 @@ module Cisco-IOS-XR-tunnel-ip-ma-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-23 {
+    description
+      "Added entries for ipsec related params in interface database bag";
+    semver:module-version "2.0.0";
+  }
   revision 2021-02-25 {
     description
       "Added an entry for src addr db in bag";

@@ -6,7 +6,7 @@ module Cisco-IOS-XR-ztp-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-ztp-oper-sub1 {
-    revision-date 2019-04-05;
+    revision-date 2021-09-02;
   }
 
   organization
@@ -29,9 +29,14 @@ module Cisco-IOS-XR-ztp-oper {
      for the following management objects:
        ztp: ZTP operational data
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-02 {
+    description
+      "Added breakout mode information.";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";

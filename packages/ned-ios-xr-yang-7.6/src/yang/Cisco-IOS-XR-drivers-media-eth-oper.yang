@@ -9,7 +9,7 @@ module Cisco-IOS-XR-drivers-media-eth-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
-    revision-date 2021-12-10;
+    revision-date 2021-11-24;
   }
 
   organization
@@ -35,27 +35,46 @@ module Cisco-IOS-XR-drivers-media-eth-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-12-10 {
+  revision 2021-11-24 {
     description
-      "Enums added for new modules 4x100G-LR-S and 100G-ERL-S.";
+      "Updated media type string
+       2021-11-19
+         Added new Ethernet media type definition for 24GE ER-I optics
+       2021-10-07
+         Enums added for new module 2x400G FR4 and 8x100G DR.
+       2021-09-30
+         Added new Ethernet media type definition.";
+    semver:module-version "2.2.0";
+  }
+  revision 2021-09-29 {
+    description
+      "Removed list rx_drop_data_frames_per_tc and added leaf total_rx_drop_data_frames.
+       2021-08-24
+          Support added for last data time for generic stats.
+       2021-08-16
+          Added new Ethernet media type definition.
+       2021-07-19
+          Removed leaf total_rx_drop_data_frames and added list rx_drop_data_frames_per_tc to maintain backward compatibility.
+       2021-07-01
+          Support added for hardware timestamp for generic stats.";
     semver:module-version "2.1.0";
   }
   revision 2021-02-12 {
     description
       "Added support for PFC per TC Rx drop Data Frames.
        2020-11-04
-       Added support for SER alarms.
+           Added support for SER alarms.
        2020-09-08
-       Added new ethernet speed values.";
+           Added new ethernet speed values.";
     semver:module-version "2.0.0";
   }
   revision 2020-02-19 {
     description
       "Description updated.
        2019-11-27
-       Adding operational value for power m-factor.
+         Adding operational value for power m-factor.
        2019-08-15
-       Adding PFC watchdog support.";
+         Adding PFC watchdog support.";
     semver:module-version "1.2.0";
   }
   revision 2019-05-21 {

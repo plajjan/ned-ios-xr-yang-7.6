@@ -23,18 +23,13 @@ submodule Cisco-IOS-XR-asr9k-lpts-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR asr9k-lpts package operational data.
      
-     Copyright (c) 2013-2021 by Cisco Systems, Inc.
+     Copyright (c) 2013-2019 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-10-13 {
-    description
-      "Added Stream Name.";
-    semver:module-version "1.1.0";
-  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
-    semver:module-version "1.0.0";
+    semver:module-version "1.1.0";
   }
   revision 2015-11-09 {
     description

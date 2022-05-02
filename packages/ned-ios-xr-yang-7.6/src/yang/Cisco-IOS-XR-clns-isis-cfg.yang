@@ -49,9 +49,45 @@ module Cisco-IOS-XR-clns-isis-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-24 {
+    description
+      "Add auth-check-disable CLI.
+       2021-09-03
+         Add IP Flex-algo CLI.";
+    semver:module-version "4.2.0";
+  }
+  revision 2021-07-01 {
+    description
+      "Add log-format-brief leaf to disable adding additional information to syslog messages.";
+    semver:module-version "4.1.0";
+  }
   revision 2021-04-02 {
     description
-      "Add TEMetric configuration.";
+      "Add TEMetric configuration.
+       2021-02-07
+           Deprecate UnlabeledProtection leaf under AF and add it to SegmentRouting
+       2020-11-26
+           Add mpls traffic-eng tunnel metric config command.
+       2020-10-27
+           Added a new CLI keyword te under flex-algo metric-type.
+       2020-10-25
+           change sspf and algorithm prefix sid attributes php, nflag-clear and explicit-null to optional.
+       2020-10-20
+           Replace ospf-route-type by route-type since it is now used by protocols other than ospf via CSCvu81047. Replace boolean flag with an enum type to accommodate more values via CSCvs18561.
+       2020-10-18
+           Added mpls traffic-eng tunnel-preferred container.
+       2020-09-21
+           Added attestation submodes and related commands.
+       2020-07-28
+           Added a new CLI command receive application flex-algo delay app-only under the router isis menu.
+       2020-07-09
+           Added two additional leaves to the metric fallback bandwidth container.
+       2020-07-02
+           Added srv6-locator-level leaf to srv6-locator
+       2020-06-30
+           Added DownFlagClear option to Redistribution
+       2020-04-11
+           Added metric callback for bundle interface";
     semver:module-version "4.0.0";
   }
   revision 2019-12-21 {
@@ -63,11 +99,11 @@ module Cisco-IOS-XR-clns-isis-cfg {
     description
       "Added default value for max-metric mode.
        2019-10-31
-       Added mandatory nodes and presence containers.
+         Added mandatory nodes and presence containers.
        2019-09-25
-       Added configuration options for new features
+         Added configuration options for new features
        2019-05-12
-       Deprecated the native model, replaced by UM model.";
+         Deprecated the native model, replaced by UM model.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -552,6 +588,29 @@ module Cisco-IOS-XR-clns-isis-cfg {
       "Isis metric fallback metric";
   }
 
+  typedef Isis-eag-mode {
+    type enumeration {
+      enum "cisco" {
+        value 0;
+        description
+          "Use the Cisco pre-standard TLV code-point (252)";
+      }
+      enum "ietf" {
+        value 1;
+        description
+          "Use the IETF standard TLV code-point (14)";
+      }
+      enum "both" {
+        value 2;
+        description
+          "Use both the Cisco pre-standard and IETF EAG
+           subTLV code-points";
+      }
+    }
+    description
+      "Isis eag mode";
+  }
+
   typedef Isisfrr-srlg-protection {
     type enumeration {
       enum "local" {
@@ -781,6 +840,11 @@ module Cisco-IOS-XR-clns-isis-cfg {
         value 0;
         description
           "LFA Application";
+      }
+      enum "flex-algo" {
+        value 1;
+        description
+          "Flex-Algo Application";
       }
     }
     description
@@ -3277,6 +3341,32 @@ module Cisco-IOS-XR-clns-isis-cfg {
                   "Array of Attribute Names";
               }
             }
+            container data-plane {
+              description
+                "Set the Flex-Algo Data-Plane";
+              leaf segment-routing {
+                type boolean;
+                default "true";
+                description
+                  "If TRUE, use SR data-plane";
+              }
+              leaf ip {
+                type boolean;
+                default "false";
+                description
+                  "If TRUE, use IP data-plane";
+              }
+            }
+            container srlg-exclude-anies {
+              description
+                "Set the exclude-any SRLG";
+              leaf-list srlg-exclude-any {
+                type string;
+                max-elements "32";
+                description
+                  "Array of SRLG Names";
+              }
+            }
             leaf prefix-metric {
               type empty;
               description
@@ -4742,6 +4832,18 @@ module Cisco-IOS-XR-clns-isis-cfg {
           description
             "VRF context for ISIS process";
         }
+        leaf eag-mode {
+          type Isis-eag-mode;
+          default "cisco";
+          description
+            "Extended Admin Group configuration";
+        }
+        leaf log-format-brief {
+          type empty;
+          description
+            "Don't add additional information to ISIS
+             syslog messages";
+        }
         leaf instance-id {
           type uint32 {
             range "0..65535";
@@ -4749,6 +4851,12 @@ module Cisco-IOS-XR-clns-isis-cfg {
           default "0";
           description
             "Instance ID of the IS-IS process";
+        }
+        leaf auth-check-disable {
+          type boolean;
+          description
+            "If TRUE, authenticatin check is disabled for
+             all ISIS PDUs.";
         }
         leaf dynamic-host-name {
           type boolean;

@@ -9,19 +9,19 @@ module Cisco-IOS-XR-ip-tcp-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-ip-tcp-oper-sub5 {
-    revision-date 2020-05-15;
+    revision-date 2021-05-21;
   }
   include Cisco-IOS-XR-ip-tcp-oper-sub4 {
-    revision-date 2020-05-15;
+    revision-date 2021-05-21;
   }
   include Cisco-IOS-XR-ip-tcp-oper-sub3 {
-    revision-date 2020-05-15;
+    revision-date 2021-05-21;
   }
   include Cisco-IOS-XR-ip-tcp-oper-sub2 {
-    revision-date 2020-05-15;
+    revision-date 2021-05-21;
   }
   include Cisco-IOS-XR-ip-tcp-oper-sub1 {
-    revision-date 2020-05-15;
+    revision-date 2021-05-21;
   }
 
   organization
@@ -46,9 +46,14 @@ module Cisco-IOS-XR-ip-tcp-oper {
        tcp: IP TCP Operational Data
        tcp-nsr: TCP NSR operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-05-21 {
+    description
+      "APP bound interface handle added to PCB_DETAIL output";
+    semver:module-version "1.2.0";
+  }
   revision 2020-05-15 {
     description
       "First SYN delay timer added";

@@ -27,9 +27,14 @@ module Cisco-IOS-XR-ipv4-ma-cfg {
        ipv4-network-global: IPv4 network global configuration data
        subscriber-pta: PTA Subscriber configuration
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-25 {
+    description
+      "Enabled DHCP client support on physical interface.";
+    semver:module-version "1.0.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";

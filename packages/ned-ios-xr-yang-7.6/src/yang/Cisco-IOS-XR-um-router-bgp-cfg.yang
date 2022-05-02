@@ -40,82 +40,101 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
      Copyright (c) 2019-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2022-02-07 {
+  revision 2022-02-18 {
     description
-      "Updated maximum-paths ibgp to include deterministic for unequal-cost
+      "Updated maximum-paths ebgp/eibgp and ibgp to remove unused container 'order' and fix pack format
+       2021-10-20
+         Added force node under sr-policy";
+    semver:module-version "5.0.0";
+  }
+  revision 2021-10-19 {
+    description
+      "Added leaf flex-algo under container optimal-route-reflection
+       2021-09-21
+          Added retention under route-policy
        2021-08-27
-         Increase maximum-paths ebgp range to 1024,
-       Added preference  under rpki/server,
-       Added datafile under rpki,
-       Added unique-nexthop-check-disable under maximum-paths,
-       Added table-version under address-family";
-    semver:module-version "3.1.0";
+          Increase maximum-paths ebgp range to 1024,
+        Added preference  under rpki/server,
+        Added datafile under rpki,
+        Added unique-nexthop-check-disable under maximum-paths,
+        Added table-version under address-family
+       2021-08-23
+          Added epe-bgp/labeled-unicast under advertise and epe/backup/enable
+        Added deterministic under unequal-cost of maximum-paths
+        Added container export under address family
+        Added leaf route-policy under srv6/alloc
+        Added container bandwidth-aware
+        Added leaf route-policy under srv6/alloc of vrfs
+        Added node deterministic under unequal-cost of maximum-paths/address family
+       2021-07-29
+          Removed duplicate enforce-first-as-disable which serve same as enforce-first-as/disable";
+    semver:module-version "4.0.0";
   }
   revision 2021-05-31 {
     description
       "Added must statement under list instances router->bgp
        2021-03-15
-       Added sr-policy under router-bgp->bgp->bestpath and
-       router-bgp->vrf->bgp->bestpath
+           Added sr-policy under router-bgp->bgp->bestpath and
+         router-bgp->vrf->bgp->bestpath
        2021-02-25
-       Added multipath container under vrf->neighbors->address-family
+           Added multipath container under vrf->neighbors->address-family
        2021-02-17
-       Added must constraints in af-group list
+           Added must constraints in af-group list
        2021-02-11
-       Removed presence statement from match node under eigrp container
+           Removed presence statement from match node under eigrp container
        2021-02-10
-       Added labeled-unicast under best-external
+           Added labeled-unicast under best-external
        2021-02-04
-       Added sr-policy under nexthop & igp-metric
+           Added sr-policy under nexthop & igp-metric
        2021-02-03
-       Added container option-b-asbr-only
+           Added container option-b-asbr-only
        2020-11-16
-       Added srte-metric and validation under nexthop
+           Added srte-metric and validation under nexthop
        2020-11-10
-       Added mask-length under local-address-subnet as needed
+           Added mask-length under local-address-subnet as needed
        2020-10-22
-       Added rpki-dropped-only/rpki-tested-only under
-       soft-reconfiguration/inbound. Updated must statements accordingly
-       to define proper constraints with new nodes.
+           Added rpki-dropped-only/rpki-tested-only under
+         soft-reconfiguration/inbound. Updated must statements accordingly
+         to define proper constraints with new nodes.
        2020-09-30
-       Added multipath under neighbor address-family
+           Added multipath under neighbor address-family
        2020-08-12
-       Added route-target container under retain.
-       Added per-nexthop-received-label under mode.
-       Added appropriate when statements under retain/mode containers.
-       Removed per-prefix under vrf as it's not supported.
+           Added route-target container under retain.
+         Added per-nexthop-received-label under mode.
+         Added appropriate when statements under retain/mode containers.
+         Removed per-prefix under vrf as it's not supported.
        2020-08-05
-       Added some must statements as needed
+           Added some must statements as needed
        2020-07-30
-       Added when statement to local-labeled-route under address-family
-       hierarchy and removed one presence statement as needed";
+           Added when statement to local-labeled-route under address-family
+         hierarchy and removed one presence statement as needed";
     semver:module-version "3.0.0";
   }
   revision 2020-07-24 {
     description
       "Added internal under remove-private-as. Also added must statements
-       under remove-private-as as appropriate.
+         under remove-private-as as appropriate.
        2020-06-05
-       Removed unused nodes from vrf address-family
-       Added constraint to nodes under as-format
+         Removed unused nodes from vrf address-family
+         Added constraint to nodes under as-format
        2020-05-17
-       (1) Added enable/label-mode under as
-       (2) Added srv6 under encapsulation-type
-       (3) Added vpnv4/vpnv6/l2vpn nodes under advertise
-       (4) Added segment-routing node under neighbors/neighbor/address-family
-       (5) Changed integer range of multipath, message-log-buffer-size, purge-time
-       (6) Added minimum-ipv6 node under nexthop/resolution/prefix-length
-       (7) Changed sysdb path of log node and its chilren
-       (8) Changed sysdb path of suppress node and its children
-       (9) Added extended-nexthop-encoding node under suppress
-       (10) Added update node under neighbor-group/address-families/address-family
-       (11) Added retain-nbr-routes under graceful-restart
+         (1) Added enable/label-mode under as
+         (2) Added srv6 under encapsulation-type
+         (3) Added vpnv4/vpnv6/l2vpn nodes under advertise
+         (4) Added segment-routing node under neighbors/neighbor/address-family
+         (5) Changed integer range of multipath, message-log-buffer-size, purge-time
+         (6) Added minimum-ipv6 node under nexthop/resolution/prefix-length
+         (7) Changed sysdb path of log node and its chilren
+         (8) Changed sysdb path of suppress node and its children
+         (9) Added extended-nexthop-encoding node under suppress
+         (10) Added update node under neighbor-group/address-families/address-family
+         (11) Added retain-nbr-routes under graceful-restart
        
        2020-04-14
-       Added rd augment to vrf model
+         Added rd augment to vrf model
        2020-03-13
-       Added corresponding nodes for peer-set-id, adjacencies,
-       peer-set and peer-node-sid";
+         Added corresponding nodes for peer-set-id, adjacencies,
+         peer-set and peer-node-sid";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -1226,17 +1245,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
               description
                 "Allow multipaths only from marked neighbors";
             }
-            container order {
-              status deprecated;
-              description
-                "Order candidate multipaths for selection as per configured number";
-              container igp-metric {
-                presence "Indicates an igp-metric node is configured.";
-                status deprecated;
-                description
-                  "Order by IGP metric ";
-              }
-            }
           }
           container eibgp {
             presence "Indicates an eibgp node is configured.";
@@ -1258,17 +1266,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
               description
                 "Allow multipaths only from marked neighbors";
             }
-            container order {
-              status deprecated;
-              description
-                "Order candidate multipaths for selection as per configured number";
-              container igp-metric {
-                presence "Indicates an igp-metric node is configured.";
-                status deprecated;
-                description
-                  "Order by IGP metric ";
-              }
-            }
           }
           container ibgp {
             presence "Indicates an ibgp node is configured.";
@@ -1289,17 +1286,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
               presence "Indicates a selective node is configured.";
               description
                 "Allow multipaths only from marked neighbors";
-            }
-            container order {
-              status deprecated;
-              description
-                "Order candidate multipaths for selection as per configured number";
-              container igp-metric {
-                presence "Indicates an igp-metric node is configured.";
-                status deprecated;
-                description
-                  "Order by IGP metric ";
-              }
             }
             container unequal-cost {
               presence "Indicates an unequal-cost node is configured.";
@@ -1383,6 +1369,15 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                 description
                   "Do not advertise routes with local-label via Unicast SAFI";
               }
+            }
+          }
+          container epe-bgp {
+            description
+              "Advertisement of bgp epe via as label Unicast";
+            container labeled-unicast {
+              presence "Indicates a disable node is configured.";
+              description
+                "Limit epe-bgplu to Labeled-Unicast address family";
             }
           }
         }
@@ -2544,6 +2539,19 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
             }
           }
         }
+        container epe {
+          description
+            "EPE related Global AFI knobs";
+          container backup {
+            description
+              "Install a Backup path for the EPE labels";
+            container enable {
+              presence "Indicates a enable node is configured.";
+              description
+                "Enable the EPE backup under current AFI";
+            }
+          }
+        }
         container default-martian-check {
           description
             "Martian check default";
@@ -2551,6 +2559,38 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
             presence "Indicates a disable node is configured.";
             description
               "Disable";
+          }
+        }
+        container export {
+          description
+            "Enable allowing leak/export of non-bestpaths";
+          container to {
+            description
+              "Leak to Destination Vrf";
+            container vrf {
+              description
+                "Enable leak to a destination vrf";
+              container allow {
+                presence "Indicates a allow node is configured.";
+                description
+                  "Allow leak of path-type";
+                container backup {
+                  presence "Indicates a backup node is configured.";
+                  description
+                    "Allow Export of backup path";
+                  container best-external {
+                    presence "Indicates a best-external node is configured.";
+                    description
+                      "Allow Export of best-external";
+                  }
+                }
+                container best-external {
+                  presence "Indicates a best-external node is configured.";
+                  description
+                    "Allow Export of best-external";
+                }
+              }
+            }
           }
         }
         container peer-set-ids {
@@ -2611,16 +2651,22 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                 description
                   "SID Allocation mode";
                 container per-ce {
-                  must "not(../per-vrf)";
+                  must "not(../per-vrf or ../route-policy)";
                   presence "Indicates a per-ce node is configured.";
                   description
                     "Set per CE label mode";
                 }
                 container per-vrf {
-                  must "not(../per-ce)";
+                  must "not(../per-ce or ../route-policy)";
                   presence "Indicates a per-vrf node is configured.";
                   description
                     "Set per VRF label mode";
+                }
+                leaf route-policy {
+                  type xr:Route-policy-name;
+                  must "not(../per-ce or ../per-vrf)";
+                  description
+                    "Use a route policy to determine the SID allocation mode and locator (if provided) for given prefix";
                 }
               }
             }
@@ -2912,6 +2958,27 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                 type xr:Route-policy-name;
                 description
                   "Apply route policy to outbound routes";
+              }
+              container retention {
+                description
+                  "Apply retention policy to inbound routes";
+                leaf route-policy-name {
+                  type xr:Route-policy-name;
+                  must "../retention-time";
+                  description
+                    "Apply retention policy to inbound routes";
+                }
+                leaf retention-time {
+                  type uint32 {
+                    range "0..4294967295" {
+                      description
+                        "Max time (seconds)";
+                    }
+                  }
+                  must "../route-policy-name";
+                  description
+                    "Retention-time for this neighbor";
+                }
               }
             }
             container orf {
@@ -3707,6 +3774,53 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
               presence "Indicates a inheritance-disable node is configured.";
               description
                 "Prevent activate from being inherited from the parent";
+            }
+          }
+          container bandwidth-aware {
+            description
+              "Session interface Bandwidth based Graceful-Maintenance
+               Only restricted to eBGP directly connected, this will
+               enable Graceful maintenance whenever the link effective
+               bandwidth goes below a configurable low-threshold and deactivates
+               based on effective bandwidth reaches the high-threshold
+               or low-threshold if high-threshold is not configured";
+            leaf bandwidth-threshold {
+              type uint32 {
+                range "1..4294967295" {
+                  description
+                    "Low threshold of effective bandwidth (in kbps)to enter/eful-maintenance";
+                }
+              }
+              must "not(../percentage-threshold)";
+              description
+                "Bandwidth based threshold detection in kbps";
+            }
+            leaf optional-high-threshold-of {
+              type uint32 {
+                range "1..4294967295" {
+                  description
+                    "Optional High threshold of effective bandwidth (in kbps) raceful-maintenance";
+                }
+              }
+              must "../bandwidth-threshold";
+              description
+                "Optional High threshold of effective bandwidth (in kbps) raceful-maintenance";
+            }
+            leaf percentage-threshold {
+              type uint32 {
+                range "1..100" {
+                  description
+                    "Low threshold of effective bandwidth (in percenax bandwidth) to enter/exit graceful-me";
+                }
+              }
+              must "not(../bandwidth-threshold)";
+              description
+                "Threshold in Percentage of Effective Bandwidth over Maximdth";
+            }
+            container inheritance-disable {
+              presence "Indicates a inheritance-disable node is configured.";
+              description
+                "Prevent bandwidth-aware from being inherited from the parent";
             }
           }
         }
@@ -4945,6 +5059,27 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                 type xr:Route-policy-name;
                 description
                   "Apply route policy to outbound routes";
+              }
+              container retention {
+                description
+                  "Apply retention policy to inbound routes";
+                leaf route-policy-name {
+                  type xr:Route-policy-name;
+                  must "../retention-time";
+                  description
+                    "Apply retention policy to inbound routes";
+                }
+                leaf retention-time {
+                  type uint32 {
+                    range "0..4294967295" {
+                      description
+                        "Max time (seconds)";
+                    }
+                  }
+                  must "../route-policy-name";
+                  description
+                    "Retention-time for this neighbor";
+                }
               }
             }
             container orf {
@@ -6966,6 +7101,27 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                 description
                   "Apply route policy to outbound routes";
               }
+              container retention {
+                description
+                  "Apply retention policy to inbound routes";
+                leaf route-policy-name {
+                  type xr:Route-policy-name;
+                  must "../retention-time";
+                  description
+                    "Apply retention policy to inbound routes";
+                }
+                leaf retention-time {
+                  type uint32 {
+                    range "0..4294967295" {
+                      description
+                        "Max time (seconds)";
+                    }
+                  }
+                  must "../route-policy-name";
+                  description
+                    "Retention-time for this neighbor";
+                }
+              }
             }
             container orf {
               description
@@ -8883,6 +9039,27 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                 type xr:Route-policy-name;
                 description
                   "Apply route policy to outbound routes";
+              }
+              container retention {
+                description
+                  "Apply retention policy to inbound routes";
+                leaf route-policy-name {
+                  type xr:Route-policy-name;
+                  must "../retention-time";
+                  description
+                    "Apply retention policy to inbound routes";
+                }
+                leaf retention-time {
+                  type uint32 {
+                    range "0..4294967295" {
+                      description
+                        "Max time (seconds)";
+                    }
+                  }
+                  must "../route-policy-name";
+                  description
+                    "Retention-time for this neighbor";
+                }
               }
             }
             container orf {
@@ -11087,6 +11264,16 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
             description
               "IPv4 tertiary address";
           }
+          leaf flex-algo {
+            type uint32 {
+              range "128..255" {
+                description
+                  "Flexiable Algorithm value";
+              }
+            }
+            description
+              "Flexible Algorithm";
+          }
         }
       }
       container ipv6 {
@@ -11242,9 +11429,15 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
           description
             "Paths over SR-policy";
           container prefer {
-            presence "Indicates a sr-policy node is configured.";
+            presence "Indicates a prefer node is configured.";
             description
-              "Consider only paths over SR Policy for bestpath selection";
+              "Consider only paths over SR Policy for bestpath selection, eBGP no-color eligible";
+          }
+          container force {
+            must "not(../prefer)";
+            presence "Indicates a force node is configured.";
+            description
+              "Consider only paths over SR Policy for bestpath selection, eBGP no-color ineligible";
           }
         }
       }
@@ -11900,17 +12093,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                   description
                     "Allow multipaths only from marked neighbors";
                 }
-                container order {
-                  status deprecated;
-                  description
-                    "Order candidate multipaths for selection as per configured number";
-                  container igp-metric {
-                    presence "Indicates an igp-metric node is configured.";
-                    status deprecated;
-                    description
-                      "Order by IGP metric ";
-                  }
-                }
               }
               container eibgp {
                 presence "Indicates an eibgp node is configured.";
@@ -11932,17 +12114,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                   description
                     "Allow multipaths only from marked neighbors";
                 }
-                container order {
-                  status deprecated;
-                  description
-                    "Order candidate multipaths for selection as per configured number";
-                  container igp-metric {
-                    presence "Indicates an igp-metric node is configured.";
-                    status deprecated;
-                    description
-                      "Order by IGP metric ";
-                  }
-                }
               }
               container ibgp {
                 presence "Indicates an ibgp node is configured.";
@@ -11963,17 +12134,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                   presence "Indicates a selective node is configured.";
                   description
                     "Allow multipaths only from marked neighbors";
-                }
-                container order {
-                  status deprecated;
-                  description
-                    "Order candidate multipaths for selection as per configured number";
-                  container igp-metric {
-                    presence "Indicates an igp-metric node is configured.";
-                    status deprecated;
-                    description
-                      "Order by IGP metric ";
-                  }
                 }
                 container unequal-cost {
                   presence "Indicates an unequal-cost node is configured.";
@@ -12909,16 +13069,22 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                     description
                       "SID Allocation mode";
                     container per-ce {
-                      must "not(../per-vrf)";
+                      must "not(../per-vrf or ../route-policy)";
                       presence "Indicates a per-ce node is configured.";
                       description
                         "Set per CE label mode";
                     }
                     container per-vrf {
-                      must "not(../per-ce)";
+                      must "not(../per-ce or ../route-policy)";
                       presence "Indicates a per-vrf node is configured.";
                       description
                         "Set per VRF label mode";
+                    }
+                    leaf route-policy {
+                      type xr:Route-policy-name;
+                      must "not(../per-ce or ../per-vrf)";
+                      description
+                        "Use a route policy to determine the SID allocation mode and locator (if provided) for given prefix";
                     }
                   }
                 }
@@ -13199,6 +13365,27 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                     type xr:Route-policy-name;
                     description
                       "Apply route policy to outbound routes";
+                  }
+                  container retention {
+                    description
+                      "Apply retention policy to inbound routes";
+                    leaf route-policy-name {
+                      type xr:Route-policy-name;
+                      must "../retention-time";
+                      description
+                        "Apply retention policy to inbound routes";
+                    }
+                    leaf retention-time {
+                      type uint32 {
+                        range "0..4294967295" {
+                          description
+                            "Max time (seconds)";
+                        }
+                      }
+                      must "../route-policy-name";
+                      description
+                        "Retention-time for this neighbor";
+                    }
                   }
                 }
                 container orf {
@@ -14641,11 +14828,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                   "Do not enforce the first AS for EBGP routes";
               }
             }
-            container enforce-first-as-disable {
-              presence "Indicates a enforce-first-as-disable node is configured.";
-              description
-                "Do not enforce the first AS for EBGP routes";
-            }
             leaf maximum-peers {
               type uint32 {
                 range "1..4095" {
@@ -15053,6 +15235,27 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                     type xr:Route-policy-name;
                     description
                       "Apply route policy to outbound routes";
+                  }
+                  container retention {
+                    description
+                      "Apply retention policy to inbound routes";
+                    leaf route-policy-name {
+                      type xr:Route-policy-name;
+                      must "../retention-time";
+                      description
+                        "Apply retention policy to inbound routes";
+                    }
+                    leaf retention-time {
+                      type uint32 {
+                        range "0..4294967295" {
+                          description
+                            "Max time (seconds)";
+                        }
+                      }
+                      must "../route-policy-name";
+                      description
+                        "Retention-time for this neighbor";
+                    }
                   }
                 }
                 container orf {
@@ -16407,11 +16610,6 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                   "Do not enforce the first AS for EBGP routes";
               }
             }
-            container enforce-first-as-disable {
-              presence "Indicates a enforce-first-as-disable node is configured.";
-              description
-                "Do not enforce the first AS for EBGP routes";
-            }
             leaf maximum-peers {
               type uint32 {
                 range "1..4095" {
@@ -16773,6 +16971,16 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
                 description
                   "IPv4 tertiary address";
               }
+              leaf flex-algo {
+                type uint32 {
+                  range "128..255" {
+                    description
+                      "Flexiable Algorithm value";
+                  }
+                }
+                description
+                  "Flexible Algorithm";
+              }
             }
           }
           container ipv6 {
@@ -16913,9 +17121,15 @@ module Cisco-IOS-XR-um-router-bgp-cfg {
               description
                 "Paths over SR-policy";
               container prefer {
-                presence "Indicates a sr-policy node is configured.";
+                presence "Indicates a prefer node is configured.";
                 description
-                  "Consider only paths over SR Policy for bestpath selection";
+                  "Consider only paths over SR Policy for bestpath selection, eBGP no-color eligible";
+              }
+              container force {
+                must "not(../prefer)";
+                presence "Indicates a force node is configured.";
+                description
+                  "Consider only paths over SR Policy for bestpath selection, eBGP no-color ineligible";
               }
             }
           }

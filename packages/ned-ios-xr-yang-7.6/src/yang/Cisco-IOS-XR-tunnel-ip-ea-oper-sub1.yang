@@ -29,9 +29,14 @@ submodule Cisco-IOS-XR-tunnel-ip-ea-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR tunnel-ip-ea package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-19 {
+    description
+      "Added an entry for ipsec and changed ea_flags datatype in bag";
+    semver:module-version "2.0.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -40,103 +45,6 @@ submodule Cisco-IOS-XR-tunnel-ip-ea-oper-sub1 {
   revision 2015-11-09 {
     description
       "IOS XR 6.0 revision.";
-  }
-
-  typedef Tunl-ip-ea-flags {
-    type enumeration {
-      enum "tunl-ip-ea-flag-none" {
-        value 0;
-        description
-          "tunl ip ea flag none";
-      }
-      enum "tunl-ip-ea-adj-ipv4-created" {
-        value 1;
-        description
-          "tunl ip ea adj ipv4 created";
-      }
-      enum "tunl-ip-ea-adj-ipv4-to-create" {
-        value 2;
-        description
-          "tunl ip ea adj ipv4 to create";
-      }
-      enum "tunl-ip-ea-adj-ipv4-to-delete" {
-        value 4;
-        description
-          "tunl ip ea adj ipv4 to delete";
-      }
-      enum "tunl-ip-ea-adj-ipv4-mask" {
-        value 7;
-        description
-          "tunl ip ea adj ipv4 mask";
-      }
-      enum "tunl-ip-ea-adj-ipv6-created" {
-        value 8;
-        description
-          "tunl ip ea adj ipv6 created";
-      }
-      enum "tunl-ip-ea-adj-ipv6-to-create" {
-        value 16;
-        description
-          "tunl ip ea adj ipv6 to create";
-      }
-      enum "tunl-ip-ea-adj-ipv6-to-delete" {
-        value 32;
-        description
-          "tunl ip ea adj ipv6 to delete";
-      }
-      enum "tunl-ip-ea-adj-ipv6-mask" {
-        value 56;
-        description
-          "tunl ip ea adj ipv6 mask";
-      }
-      enum "tunl-ip-ea-adj-mpls-created" {
-        value 64;
-        description
-          "tunl ip ea adj mpls created";
-      }
-      enum "tunl-ip-ea-adj-mpls-to-create" {
-        value 128;
-        description
-          "tunl ip ea adj mpls to create";
-      }
-      enum "tunl-ip-ea-adj-mpls-to-delete" {
-        value 256;
-        description
-          "tunl ip ea adj mpls to delete";
-      }
-      enum "tunl-ip-ea-adj-mpls-mask" {
-        value 448;
-        description
-          "tunl ip ea adj mpls mask";
-      }
-      enum "tunl-ip-ea-flag-new-intf" {
-        value 65536;
-        description
-          "tunl ip ea flag new intf";
-      }
-      enum "tunl-ip-ea-flag-pd-create" {
-        value 131072;
-        description
-          "tunl ip ea flag pd create";
-      }
-      enum "tunl-ip-ea-flag-pending-op" {
-        value 262144;
-        description
-          "tunl ip ea flag pending op";
-      }
-      enum "tunl-ip-ea-flag-unsync" {
-        value 524288;
-        description
-          "tunl ip ea flag unsync";
-      }
-      enum "tunl-ip-ea-flag-qt-added" {
-        value 1048576;
-        description
-          "tunl ip ea flag qt added";
-      }
-    }
-    description
-      "Tunl ip ea flags";
   }
 
   typedef Tunl-gre-plat-upd {
@@ -251,6 +159,11 @@ submodule Cisco-IOS-XR-tunnel-ip-ea-oper-sub1 {
         description
           "tunl ip plat upd encap in sw";
       }
+      enum "tunl-ip-plat-upd-ipsec-enabled" {
+        value 1048576;
+        description
+          "tunl ip plat upd ipsec enabled";
+      }
     }
     description
       "Tunl gre plat upd";
@@ -350,8 +263,13 @@ submodule Cisco-IOS-XR-tunnel-ip-ea-oper-sub1 {
         description
           "tunl ip mode ipv6";
       }
-      enum "tunl-ip-mode-max" {
+      enum "tunl-ip-mode-ipseco-ipv4" {
         value 7;
+        description
+          "tunl ip mode ipseco ipv4";
+      }
+      enum "tunl-ip-mode-max" {
+        value 8;
         description
           "tunl ip mode max";
       }
@@ -449,7 +367,7 @@ submodule Cisco-IOS-XR-tunnel-ip-ea-oper-sub1 {
         "Encapsulation State";
     }
     leaf adjacent-flags {
-      type Tunl-ip-ea-flags;
+      type uint32;
       description
         "Adjacent Flags";
     }
@@ -462,6 +380,11 @@ submodule Cisco-IOS-XR-tunnel-ip-ea-oper-sub1 {
       type uint32;
       description
         "Pointer to next Node";
+    }
+    leaf ip-sec-enabled {
+      type uint8;
+      description
+        "IPSec profile enabled";
     }
   }
 

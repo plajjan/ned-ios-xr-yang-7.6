@@ -5,9 +5,6 @@ module Cisco-IOS-XR-um-flowspec-cfg {
   import Cisco-IOS-XR-types {
     prefix xr;
   }
-  import Cisco-IOS-XR-um-interface-cfg {
-    prefix a1;
-  }
   import cisco-semver {
     prefix semver;
   }
@@ -34,56 +31,17 @@ module Cisco-IOS-XR-um-flowspec-cfg {
      Copyright (c) 2020-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-20 {
+    description
+      "Removed duplicate flowspec container under ipv4/ipv6";
+    semver:module-version "2.0.0";
+  }
   revision 2021-01-05 {
     description
       "Initial release";
     semver:module-version "1.0.0";
   }
 
-  grouping IF-IPV4-BODY {
-    container ipv4 {
-      description
-        "IPv4 interface subcommands";
-      container flowspec {
-        description
-          "Flowspec on IPv4 interface";
-        container disable {
-          presence "Indicates a disable node is configured.";
-          description
-            "Disable FlowSpec on this interface";
-        }
-      }
-    }
-  }
-
-  grouping IF-IPV6-BODY {
-    container ipv6 {
-      description
-        "IPv6 interface subcommands";
-      container flowspec {
-        description
-          "Flowspec on IPv6 interface";
-        container disable {
-          presence "Indicates a disable node is configured.";
-          description
-            "Disable flowspec on interface";
-        }
-      }
-    }
-  }
-
-  augment "/a1:interfaces/a1:interface" {
-    uses IF-IPV4-BODY;
-  }
-  augment "/a1:interfaces/a1:interface-preconfigure" {
-    uses IF-IPV4-BODY;
-  }
-  augment "/a1:interfaces/a1:interface" {
-    uses IF-IPV6-BODY;
-  }
-  augment "/a1:interfaces/a1:interface-preconfigure" {
-    uses IF-IPV6-BODY;
-  }
   container flowspec {
     presence "Indicates a flowspec node is configured.";
     description

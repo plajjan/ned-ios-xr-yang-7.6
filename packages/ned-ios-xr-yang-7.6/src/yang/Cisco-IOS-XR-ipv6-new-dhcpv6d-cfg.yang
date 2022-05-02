@@ -35,6 +35,11 @@ module Cisco-IOS-XR-ipv6-new-dhcpv6d-cfg {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-25 {
+    description
+      "Enabled DHCP client support on physical interface.";
+    semver:module-version "2.1.0";
+  }
   revision 2021-05-28 {
     description
       "Edit config issue seen in Cisco-IOS-XR-ipv6-new-dhcpv6d-cfg model";

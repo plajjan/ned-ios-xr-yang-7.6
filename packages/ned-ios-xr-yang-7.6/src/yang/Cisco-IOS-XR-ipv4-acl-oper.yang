@@ -12,7 +12,7 @@ module Cisco-IOS-XR-ipv4-acl-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-ipv4-acl-oper-sub1 {
-    revision-date 2020-11-13;
+    revision-date 2021-09-20;
   }
 
   organization
@@ -35,9 +35,21 @@ module Cisco-IOS-XR-ipv4-acl-oper {
      for the following management objects:
        ipv4-acl-and-prefix-list: Root class of IPv4 Oper schema tree
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-20 {
+    description
+      "Cleanup of deprecated source port/operator fields in acl oper bag.CSCve77173
+       2021-09-14
+         Changing vrf name size macro from 32 to 33.CSCve72799";
+    semver:module-version "2.0.0";
+  }
+  revision 2021-03-05 {
+    description
+      "Adding a new policer stats field.CSCvx54997";
+    semver:module-version "1.2.0";
+  }
   revision 2020-11-13 {
     description
       "Adding policer and priority.";

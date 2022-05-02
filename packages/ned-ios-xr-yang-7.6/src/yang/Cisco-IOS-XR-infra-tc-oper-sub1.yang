@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-infra-tc-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR infra-tc package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2020 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2020-07-26 {
+    description
+      "Added is OCAFT/OCSR enabled to track TC FSM modes and has SR flag to track label flag";
+    semver:module-version "1.1.0";
+  }
   revision 2019-06-17 {
     description
       "Change type of tunnel interface name to string";
@@ -218,12 +223,18 @@ submodule Cisco-IOS-XR-infra-tc-oper-sub1 {
 
   grouping TC-MGMT-OCAFT-SUMMARY {
     description
-      "TC oc-aft Server Summary";
+      "TC oc Server Summary";
     leaf collection-interval {
       type uint8;
       units "minute";
       description
         "Statistic collection interval in minutes";
+    }
+    leaf collection-interval-sec {
+      type uint16;
+      units "second";
+      description
+        "Statistic collection interval in seconds";
     }
     leaf collection-timer-is-running {
       type boolean;
@@ -233,7 +244,7 @@ submodule Cisco-IOS-XR-infra-tc-oper-sub1 {
     leaf total-label-count {
       type uint32;
       description
-        "Total count of oc-aft label entries";
+        "Total count of oc label entries";
     }
   }
 
@@ -395,6 +406,22 @@ submodule Cisco-IOS-XR-infra-tc-oper-sub1 {
       type boolean;
       description
         "Label is Active and collecting new Statistics";
+    }
+    leaf has-sr-flag {
+      type boolean;
+      description
+        "Label has SR flag meaning stats are pushed on
+         OCSR sensor path";
+    }
+    leaf is-oc-aft-mode-enabled {
+      type boolean;
+      description
+        "OC-AFT mode is enabled in TC FSM";
+    }
+    leaf is-oc-sr-mode-enabled {
+      type boolean;
+      description
+        "OC-SR mode is enabled in TC FSM";
     }
   }
 }

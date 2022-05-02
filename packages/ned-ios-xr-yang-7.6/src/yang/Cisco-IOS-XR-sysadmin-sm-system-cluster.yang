@@ -33,6 +33,11 @@ module Cisco-IOS-XR-sysadmin-sm-system-cluster {
      Copyright (c) 2012-2020 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-15 {
+    description
+      "Added support for dynamic fabric connection";
+    semver:module-version "1.1.0";
+  }
   revision 2020-09-01 {
     description
       "Added version and cluster size oper fields";
@@ -152,6 +157,27 @@ module Cisco-IOS-XR-sysadmin-sm-system-cluster {
         }
         leaf port-type {
           type PortType;
+        }
+      }
+      list fabric-rack-id {
+        key "rack-id port-id";
+        leaf rack-id {
+          type uint32;
+        }
+        leaf port-id {
+          type string;
+        }
+        leaf rack-type {
+          type uint32;
+        }
+        leaf peer-rack-type {
+          type uint32;
+        }
+        leaf peer-rack-id {
+          type uint32;
+        }
+        leaf peer-port-id {
+          type string;
         }
       }
     }

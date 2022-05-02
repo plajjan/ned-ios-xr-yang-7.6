@@ -22,9 +22,23 @@ module Cisco-IOS-XR-ipv4-acl-datatypes {
     "This module contains a collection of generally useful
      derived YANG data types.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-20 {
+    description
+      "7.6.1 revision. Adding icmp-on for ace in the schema
+       2021-07-28
+         7.5.1 revision. Adding additional units for policer";
+    semver:module-version "2.1.0";
+  }
+  revision 2021-06-20 {
+    description
+      "Adding icmp-off in the schema
+       2021-03-17
+          7.3.15 revision. Adding vrrp and rsvp keywords for protocol under access-list config CLI.";
+    semver:module-version "2.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -89,6 +103,11 @@ module Cisco-IOS-XR-ipv4-acl-datatypes {
           description
             "User Datagram Protocol";
         }
+        enum "rsvp" {
+          value 46;
+          description
+            "Resource Reservation Protocol";
+        }
         enum "gre" {
           value 47;
           description
@@ -128,6 +147,11 @@ module Cisco-IOS-XR-ipv4-acl-datatypes {
           value 108;
           description
             "Payload Compression Protocol";
+        }
+        enum "vrrp" {
+          value 112;
+          description
+            "Virtual Router Redundancy Protocol";
         }
         enum "sctp" {
           value 132;

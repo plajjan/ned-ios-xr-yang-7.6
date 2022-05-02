@@ -57,7 +57,7 @@ module Cisco-IOS-XR-ipv4-pim-oper {
     description
       "Changes to IOS-XR PIM oper
        2019-08-27
-       Providing pim information";
+         Providing pim information";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {

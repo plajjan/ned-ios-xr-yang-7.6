@@ -53,9 +53,14 @@ module Cisco-IOS-XR-ethernet-cfm-cfg {
        Cisco-IOS-XR-infra-sla-cfg
      modules with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-03 {
+    description
+      "Added log-csf config option.";
+    semver:module-version "2.2.0";
+  }
   revision 2020-10-07 {
     description
       "Added the Link Loss Forwarding feature.";
@@ -331,7 +336,7 @@ module Cisco-IOS-XR-ethernet-cfm-cfg {
                       "../BinsCount != 0";
                   }
                   type uint32 {
-                    range "1..10000";
+                    range "1..10000000";
                   }
                   description
                     "Width of each bin";
@@ -341,7 +346,14 @@ module Cisco-IOS-XR-ethernet-cfm-cfg {
                     range "0..9";
                   }
                   description
-                    "Tenths portion of the bin width";
+                    "The portion of the bin width in tenths of
+                     a percent";
+                }
+                leaf microseconds {
+                  type boolean;
+                  description
+                    "Interpret the bin width in microseconds if
+                     true";
                 }
               }
               leaf enable {
@@ -1031,6 +1043,11 @@ module Cisco-IOS-XR-ethernet-cfm-cfg {
                 description
                   "The number of tags to use when sending CFM
                    packets from up MEPs in this Service";
+              }
+              leaf log-csf {
+                type empty;
+                description
+                  "Log receipt of CSF packets";
               }
               leaf log-continuity-check-state-changes {
                 type empty;

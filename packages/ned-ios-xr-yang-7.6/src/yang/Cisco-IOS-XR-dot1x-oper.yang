@@ -9,7 +9,7 @@ module Cisco-IOS-XR-dot1x-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-dot1x-oper-sub1 {
-    revision-date 2020-04-23;
+    revision-date 2021-03-31;
   }
 
   organization
@@ -32,9 +32,14 @@ module Cisco-IOS-XR-dot1x-oper {
      for the following management objects:
        dot1x: Dot1x operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-03-31 {
+    description
+      "EAP TTLS/EAP Attestation";
+    semver:module-version "2.2.0";
+  }
   revision 2020-04-23 {
     description
       "Dot1x Port Status";

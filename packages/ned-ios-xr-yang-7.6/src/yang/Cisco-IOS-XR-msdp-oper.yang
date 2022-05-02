@@ -12,7 +12,7 @@ module Cisco-IOS-XR-msdp-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-msdp-oper-sub1 {
-    revision-date 2019-08-27;
+    revision-date 2021-09-22;
   }
 
   organization
@@ -35,9 +35,14 @@ module Cisco-IOS-XR-msdp-oper {
      for the following management objects:
        msdp: MSDP operational data
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-22 {
+    description
+      "backward compatible addition";
+    semver:module-version "2.0.0";
+  }
   revision 2019-08-27 {
     description
       "Providing MSDP information.";

@@ -32,7 +32,7 @@ module Cisco-IOS-XR-filesysinv-cfg {
   revision 2021-08-13 {
     description
       "Support for OnDemand DirSet and SkipList.";
-    semver:module-version "1.0.0";
+    semver:module-version "1.1.0";
   }
   revision 2019-04-05 {
     description
@@ -44,13 +44,78 @@ module Cisco-IOS-XR-filesysinv-cfg {
       "IOS XR 6.0 revision.";
   }
 
+  typedef Filesysinv-snapshot {
+    type enumeration {
+      enum "incremental" {
+        value 0;
+        description
+          "Incremental";
+      }
+      enum "full" {
+        value 1;
+        description
+          "Full";
+      }
+    }
+    description
+      "Filesysinv snapshot";
+  }
+
   container filesystem-inventory {
     description
       "Filesystem inventory config";
+    container dir-sets {
+      description
+        "OnDemand config";
+      list dir-set {
+        key "dir-set";
+        description
+          "OnDemand config";
+        leaf value {
+          type string;
+          description
+            "List of directories seperated by
+             space(enclosed in quotes)";
+        }
+        leaf dir-set {
+          type uint32 {
+            range "1..5";
+          }
+          description
+            "Dir Set";
+        }
+      }
+    }
+    leaf skip-files {
+      type string;
+      description
+        "Space seperated list of files to be
+         skipped(enclosed in quotes)";
+    }
+    leaf skip-list {
+      type string;
+      description
+        "Space seperated list of directories to be
+         skipped(enclosed in quotes)";
+    }
     leaf enable {
       type empty;
       description
         "Enable Filesystem inventory";
+    }
+    leaf snapshot-type {
+      type Filesysinv-snapshot;
+      description
+        "Type of snapshot to be taken at periodic
+         intervals. Default is incremental";
+    }
+    leaf snapshot-interval {
+      type uint32 {
+        range "1..720";
+      }
+      description
+        "Snapshot Time interval in 1 hour blocks eg 2 is
+         120 minutes";
     }
   }
 }

@@ -35,9 +35,25 @@ submodule Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-05 {
+    description
+      "Migrated LEAF-LIST with duplicate value to LIST type.";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-09-14 {
+    description
+      "Fixed GET-OPER to display interface name in standard format.";
+    semver:module-version "3.0.0";
+  }
   revision 2021-03-19 {
     description
-      "Added support for dynamic relay MAC address handling.";
+      "Added support for dynamic relay MAC address handling.
+       2020-12-20
+           Added Yang Support for ADT,to retrive statistcs with help of vrf/interface.
+       2020-09-30
+           Modified to accommodate cdm changes
+       2020-09-29
+           Added support to track server that allocated IP for DHCPv6 relay client.";
     semver:module-version "2.1.0";
   }
   revision 2019-12-18 {
@@ -494,11 +510,15 @@ submodule Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
       description
         "Client Option 17 value";
     }
-    leaf-list dns-address {
-      type Ipv6-address;
+    list dns-address {
       max-elements "8";
       description
         "DNS addresses";
+      leaf entry {
+        type Ipv6-address;
+        description
+          "DNS addresses";
+      }
     }
   }
 
@@ -625,11 +645,15 @@ submodule Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
       description
         "Server delegated prefix pool name";
     }
-    leaf-list profile-dns-address {
-      type Ipv6-address;
+    list profile-dns-address {
       max-elements "8";
       description
         "DNS addresses";
+      leaf entry {
+        type Ipv6-address;
+        description
+          "DNS addresses";
+      }
     }
   }
 
@@ -740,11 +764,15 @@ submodule Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
       description
         "Dynamce Relay Mac Addr";
     }
-    leaf-list profile-dns-address {
-      type Ipv6-address;
+    list profile-dns-address {
       max-elements "8";
       description
         "DNS addresses";
+      leaf entry {
+        type Ipv6-address;
+        description
+          "DNS addresses";
+      }
     }
   }
 
@@ -1823,12 +1851,6 @@ submodule Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
       description
         "LinkAddress From RA mesage";
     }
-    leaf-list profile-helper-address {
-      type Ipv6-address;
-      max-elements "8";
-      description
-        "Helper addresses";
-    }
     leaf-list vrf-name {
       type String-vrf;
       max-elements "8";
@@ -1840,6 +1862,16 @@ submodule Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
       max-elements "8";
       description
         "Interface names";
+    }
+    list profile-helper-address {
+      max-elements "8";
+      description
+        "Helper addresses";
+      leaf entry {
+        type Ipv6-address;
+        description
+          "Helper addresses";
+      }
     }
   }
 
@@ -1853,17 +1885,21 @@ submodule Cisco-IOS-XR-ipv6-new-dhcpv6d-oper-sub1 {
       description
         "Class name";
     }
-    leaf-list profile-helper-address {
-      type Ipv6-address;
-      max-elements "8";
-      description
-        "Helper addresses";
-    }
     leaf-list vrf-name {
       type String-vrf;
       max-elements "8";
       description
         "VRF names";
+    }
+    list profile-helper-address {
+      max-elements "8";
+      description
+        "Helper addresses";
+      leaf entry {
+        type Ipv6-address;
+        description
+          "Helper addresses";
+      }
     }
   }
 

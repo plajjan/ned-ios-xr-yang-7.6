@@ -34,9 +34,14 @@ module Cisco-IOS-XR-um-router-vrrp-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2020-2021 by Cisco Systems, Inc.
+     Copyright (c) 2020-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-02-16 {
+    description
+      "Renamed lonklocal to linklocal under vrrp address and vrrp-subordinates";
+    semver:module-version "2.0.0";
+  }
   revision 2020-12-11 {
     description
       "Initial release";
@@ -386,7 +391,7 @@ module Cisco-IOS-XR-um-router-vrrp-cfg {
                         }
                       }
                     }
-                    container lonklocal {
+                    container linklocal {
                       description
                         "VRRP IPv6 linklocal address";
                       leaf linklocal-address {
@@ -593,7 +598,7 @@ module Cisco-IOS-XR-um-router-vrrp-cfg {
                         }
                       }
                     }
-                    container lonklocal {
+                    container linklocal {
                       description
                         "VRRP IPv6 linklocal address";
                       leaf linklocal-address {

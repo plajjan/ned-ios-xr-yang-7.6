@@ -28,9 +28,19 @@ module Cisco-IOS-XR-um-call-home-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2020-2021 by Cisco Systems, Inc.
+     Copyright (c) 2020-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-02-15 {
+    description
+      "Added disable node for email and http under container transport-method";
+    semver:module-version "2.1.0";
+  }
+  revision 2021-10-12 {
+    description
+      "Removed node all under container reporting";
+    semver:module-version "2.0.0";
+  }
   revision 2020-12-14 {
     description
       "Initial release";
@@ -462,11 +472,21 @@ module Cisco-IOS-XR-um-call-home-cfg {
               presence "Indicates a email node is configured.";
               description
                 "Enable email as transport method";
+              container disable {
+                presence "Indicates a disable node is configured.";
+                description
+                  "Disable";
+              }
             }
             container http {
               presence "Indicates a http node is configured.";
               description
                 "Enable http as transport method";
+              container disable {
+                presence "Indicates a disable node is configured.";
+                description
+                  "Disable";
+              }
             }
           }
         }
@@ -488,16 +508,6 @@ module Cisco-IOS-XR-um-call-home-cfg {
             presence "Indicates a smart-licensing-data node is configured.";
             description
               "Report Smart Licensing data";
-            container disable {
-              presence "Indicates a disable node is configured.";
-              description
-                "Disable";
-            }
-          }
-          container all {
-            presence "Indicates a all node is configured.";
-            description
-              "Report all data";
             container disable {
               presence "Indicates a disable node is configured.";
               description

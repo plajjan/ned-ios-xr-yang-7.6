@@ -34,17 +34,26 @@ module Cisco-IOS-XR-um-telemetry-model-driven-cfg {
      Copyright (c) 2019-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-06-28 {
+    description
+      "added new leaf node mode";
+    semver:module-version "3.1.0";
+  }
   revision 2021-05-12 {
     description
-      "added a must statement under sensor-group";
+      "added a must statement under sensor-group
+       2020-12-10
+           Changed string length of leaf nodes that set maximum as 1024
+       2020-10-02
+           Added heartbeat containers";
     semver:module-version "3.0.0";
   }
   revision 2020-05-08 {
     description
       "Added new containers, destinations under destination-group and
-       tcp-send-timeout/gnmi-target-defined under top node
+         tcp-send-timeout/gnmi-target-defined under top node
        2020-03-13
-       Added new gzip option for grpc protocol";
+         Added new gzip option for grpc protocol";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -643,6 +652,17 @@ module Cisco-IOS-XR-um-telemetry-model-driven-cfg {
                   description
                     "Send heartbeat even if events have occurred within interval";
                 }
+              }
+              leaf mode {
+                type enumeration {
+                  enum "target-defined" {
+                    value 0;
+                    description
+                      "Device selects one of sample/on-change for leaves to stream data";
+                  }
+                }
+                description
+                  "Subscription mode";
               }
             }
           }

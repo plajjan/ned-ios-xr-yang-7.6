@@ -26,9 +26,14 @@ submodule Cisco-IOS-XR-ip-ntp-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR ip-ntp package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-23 {
+    description
+      "Strong NTP authentication needs addition of authentication type.";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
@@ -96,6 +101,38 @@ submodule Cisco-IOS-XR-ip-ntp-oper-sub1 {
     }
     description
       "Loop filter state";
+  }
+
+  typedef Authentication {
+    type enumeration {
+      enum "none" {
+        value 0;
+        description
+          " No authentication type";
+      }
+      enum "md5" {
+        value 1;
+        description
+          " MD5 authentication";
+      }
+      enum "cmac" {
+        value 2;
+        description
+          " CMAC authentication";
+      }
+      enum "hmac-sha1" {
+        value 3;
+        description
+          " HMAC SHA1 authentication";
+      }
+      enum "hmac-sha2" {
+        value 4;
+        description
+          " HMAC SHA2 authentication";
+      }
+    }
+    description
+      "NTP authentication type";
   }
 
   typedef Ntp-peer-status {
@@ -501,6 +538,11 @@ submodule Cisco-IOS-XR-ip-ntp-oper-sub1 {
       type boolean;
       description
         "Is authenticated";
+    }
+    leaf authentication-type {
+      type Authentication;
+      description
+        "NTP authentication type";
     }
     leaf root-delay {
       type string;

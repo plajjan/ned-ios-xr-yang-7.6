@@ -35,27 +35,38 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-12-07 {
+  revision 2021-11-23 {
     description
-      "Platform capabilities extended for displaying if shift-only drop route is supported";
-    semver:module-version "3.0.0";
+      "Display locators delayed-delete status
+       2021-11-19
+         Platform capabilities report extended with Max Locator supported
+       2021-10-15
+         New SID CTX type supported uDT46 and DT46
+       2021-09-16
+         Manager will display platform requested defaults for traffic-class and hoplimit SRv6 encap parameters";
+    semver:module-version "4.1.0";
+  }
+  revision 2021-06-23 {
+    description
+      "Added id name to OOR summary";
+    semver:module-version "4.0.0";
   }
   revision 2020-12-11 {
     description
       "Update manager show command for 2 passes
        2020-10-16
-       Rename SID count fields in SID manager summary. sids_count only includes non auto-generated SIDs.
+           Rename SID count fields in SID manager summary. sids_count only includes non auto-generated SIDs.
        2020-05-06
-       changes in def for some endpoint types and headend types
+           changes in def for some endpoint types and headend types
        2020-04-16
-       Changes due to common Srv6 bag and renaming some leaf";
+           Changes due to common Srv6 bag and renaming some leaf";
     semver:module-version "3.0.0";
   }
   revision 2019-11-20 {
     description
       "Changes for SRv6 end function
        2019-04-22
-       Flex-Algo specific changes";
+         Flex-Algo specific changes";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -550,6 +561,12 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       description
         "An Anycast locator";
     }
+    leaf is-delayed-delete {
+      type boolean;
+      description
+        "Locator will delay deleting route after SID free
+         during migration";
+    }
     leaf out-of-resources-state {
       type Srv6-out-of-resource-state;
       description
@@ -644,6 +661,41 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
     }
   }
 
+  grouping MGMT-SRV6-SID-CTX-U-DX {
+    description
+      "SRv6 uDX4/6 SID context";
+    leaf table-id {
+      type uint32;
+      description
+        "Table ID";
+    }
+    leaf next-hop-set-id {
+      type uint32;
+      description
+        "Next Hop Set ID";
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-U-DT2M {
+    description
+      "SRv6 uDT2M SID context";
+    container dt2-base-ctx {
+      description
+        "Common DT2 context";
+      uses MGMT-SRV6-SID-CTX-DT2-BASE;
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-U-DT2U {
+    description
+      "SRv6 uDT2U SID context";
+    container dt2-base-ctx {
+      description
+        "Common DT2 context";
+      uses MGMT-SRV6-SID-CTX-DT2-BASE;
+    }
+  }
+
   grouping MGMT-SRV6-SID-CTX-U-DX2 {
     description
       "SRv6 uDX2 SID context";
@@ -709,6 +761,16 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       type boolean;
       description
         "Policy endpoint is null";
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-U-DT46 {
+    description
+      "SRv6 uDT46 SID context";
+    leaf vrf-name {
+      type string;
+      description
+        "VRF name";
     }
   }
 
@@ -792,6 +854,61 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
     }
   }
 
+  grouping MGMT-SRV6-SID-CTX-X-PSP-USD {
+    description
+      "SRv6 End.X (PSP-USD) SID context";
+    container xctx {
+      description
+        "Common End.X context for End.X (PSP-USD) SID";
+      uses MGMT-SRV6-SID-CTX-X;
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-E-PSP-USD {
+    description
+      "SRv6 End (PSP-USD) SID context";
+    container ectx {
+      description
+        "Common End context for End (PSP-USD) SID";
+      uses MGMT-SRV6-SID-CTX1;
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-DT2M {
+    description
+      "SRv6 End.DT2M SID context";
+    container dt2-base-ctx {
+      description
+        "Common DT2 context";
+      uses MGMT-SRV6-SID-CTX-DT2-BASE;
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-DT2-BASE {
+    description
+      "SRv6 uDT2x/End.DT2x SID base context";
+    leaf evi {
+      type uint32;
+      description
+        "EVI";
+    }
+    leaf opaque-id {
+      type uint32;
+      description
+        "Additional differentiator - opaque to SIDMgr";
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-DT2U {
+    description
+      "SRv6 End.DT2U SID context";
+    container dt2-base-ctx {
+      description
+        "Common DT2 context";
+      uses MGMT-SRV6-SID-CTX-DT2-BASE;
+    }
+  }
+
   grouping MGMT-SRV6-SID-CTX-DX2 {
     description
       "SRv6 End.DX2 SID context";
@@ -804,6 +921,16 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       type uint32;
       description
         "Ethernet Tag ID";
+    }
+  }
+
+  grouping MGMT-SRV6-SID-CTX-DT46 {
+    description
+      "SRv6 End.DT46 SID context";
+    leaf vrf-name {
+      type string;
+      description
+        "VRF name";
     }
   }
 
@@ -978,6 +1105,15 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
         "End.DT6 SID context";
       uses MGMT-SRV6-SID-CTX-DT;
     }
+    container dt46 {
+      when "../sid-context-type = 'end-dt46'" {
+        description
+          "../SIDContextType = 'EndDT46'";
+      }
+      description
+        "End.DT46 SID context";
+      uses MGMT-SRV6-SID-CTX-DT46;
+    }
     container dx2 {
       when "../sid-context-type = 'end-dx2'" {
         description
@@ -986,6 +1122,42 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       description
         "End.DX2 SID context";
       uses MGMT-SRV6-SID-CTX-DX2;
+    }
+    container dt2u {
+      when "../sid-context-type = 'end-dt2u'" {
+        description
+          "../SIDContextType = 'EndDT2U'";
+      }
+      description
+        "End.DT2U SID context";
+      uses MGMT-SRV6-SID-CTX-DT2U;
+    }
+    container dt2m {
+      when "../sid-context-type = 'end-dt2m'" {
+        description
+          "../SIDContextType = 'EndDT2M'";
+      }
+      description
+        "End.DT2M SID context";
+      uses MGMT-SRV6-SID-CTX-DT2M;
+    }
+    container e-psp-usd {
+      when "../sid-context-type = 'end-with-psp-usd'" {
+        description
+          "../SIDContextType = 'EndWithPSP_USD'";
+      }
+      description
+        "End (PSP-USD) SID context";
+      uses MGMT-SRV6-SID-CTX-E-PSP-USD;
+    }
+    container x-psp-usd {
+      when "../sid-context-type = 'end-x-with-psp-usd'" {
+        description
+          "../SIDContextType = 'EndXWithPSP_USD'";
+      }
+      description
+        "End.X (PSP-USD) SID context";
+      uses MGMT-SRV6-SID-CTX-X-PSP-USD;
     }
     container u-a-shift-only {
       when "../sid-context-type = 'ua-shift-only'" {
@@ -1041,6 +1213,15 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
         "uDT6 SID context";
       uses MGMT-SRV6-SID-CTX-U-DT;
     }
+    container u-dt46 {
+      when "../sid-context-type = 'udt46'" {
+        description
+          "../SIDContextType = 'UDT46'";
+      }
+      description
+        "uDT46 SID context";
+      uses MGMT-SRV6-SID-CTX-U-DT46;
+    }
     container u-b6-insert-red {
       when "../sid-context-type = 'ub6-insert-red'" {
         description
@@ -1058,6 +1239,42 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       description
         "UDX2 SID context";
       uses MGMT-SRV6-SID-CTX-U-DX2;
+    }
+    container udt2u {
+      when "../sid-context-type = 'udt2u'" {
+        description
+          "../SIDContextType = 'UDT2U'";
+      }
+      description
+        "uDT2U SID context";
+      uses MGMT-SRV6-SID-CTX-U-DT2U;
+    }
+    container udt2m {
+      when "../sid-context-type = 'udt2m'" {
+        description
+          "../SIDContextType = 'UDT2M'";
+      }
+      description
+        "uDT2M SID context";
+      uses MGMT-SRV6-SID-CTX-U-DT2M;
+    }
+    container udx4 {
+      when "../sid-context-type = 'udx4'" {
+        description
+          "../SIDContextType = 'UDX4'";
+      }
+      description
+        "UDX4 SID context";
+      uses MGMT-SRV6-SID-CTX-U-DX;
+    }
+    container udx6 {
+      when "../sid-context-type = 'udx6'" {
+        description
+          "../SIDContextType = 'UDX6'";
+      }
+      description
+        "UDX6 SID context";
+      uses MGMT-SRV6-SID-CTX-U-DX;
     }
     leaf sid-context-type {
       type Mgmt-srv6-endpoint;
@@ -1166,6 +1383,57 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
     }
   }
 
+  grouping SRV6-PER-BEH-INFO {
+    description
+      "SRv6 SID HW resource consumption";
+    leaf endpoint-behavior {
+      type string;
+      description
+        "End function";
+    }
+    leaf value {
+      type uint32;
+      description
+        "Value associated with the end function";
+    }
+  }
+
+  grouping SRV6-PLATFORM-SET-OR-PROPAGATE {
+    description
+      "SRv6 Platform default encap parameters value set
+       or propagate";
+    leaf do-propagate {
+      type boolean;
+      description
+        "Propagate from incoming packet or frame";
+    }
+    leaf value {
+      type uint8;
+      description
+        "Specific value set";
+    }
+  }
+
+  grouping MGMT-SRV6-PLATFORM-USID-ENDP-SUPPORT {
+    description
+      "Platform SRv6 uSID endpoint FIB support";
+    leaf local-only {
+      type boolean;
+      description
+        "Local only support";
+    }
+    leaf global-local-combo {
+      type boolean;
+      description
+        "Global-Local combo support";
+    }
+    leaf separate-shift-and-non-shift {
+      type boolean;
+      description
+        "Separate Shift and Non-shift support";
+    }
+  }
+
   grouping MGMT-SRV6-PLATFORM-SIG-PARAMS {
     description
       "Platform SRv6 params to be signaled";
@@ -1213,6 +1481,11 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       description
         "Signaled Parameters";
       uses MGMT-SRV6-PLATFORM-SIG-PARAMS;
+    }
+    container endpoint-entries {
+      description
+        "Supported endpoint entries";
+      uses MGMT-SRV6-PLATFORM-USID-ENDP-SUPPORT;
     }
     leaf srv6 {
       type boolean;
@@ -1295,6 +1568,16 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
         "Feature support";
       uses SRV6-PLATFORM-SUPPORT;
     }
+    container encap-hop-limit-default {
+      description
+        "Platform Encap Hop-limit default info";
+      uses SRV6-PLATFORM-SET-OR-PROPAGATE;
+    }
+    container encap-traffic-class-default {
+      description
+        "Platform Encap Traffic-class default info";
+      uses SRV6-PLATFORM-SET-OR-PROPAGATE;
+    }
     leaf max-sids {
       type uint32;
       description
@@ -1306,11 +1589,27 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       description
         "Freed SID holdtime in mins";
     }
+    leaf max-locators {
+      type uint32;
+      description
+        "Maximum Locators";
+    }
+    list sid-resource-usage {
+      description
+        "SID resource usage info for each supported
+         behavior";
+      uses SRV6-PER-BEH-INFO;
+    }
   }
 
   grouping SRV6-OOR-SUMMARY {
     description
       "SRv6 SID Manager Out of Resource Summary";
+    leaf identifer-name {
+      type string;
+      description
+        "OOR Identifier Name";
+    }
     leaf oor-state {
       type Srv6-out-of-resource-state;
       description
@@ -1363,7 +1662,7 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       "SRv6 SID Manager summary";
     container sids-out-of-resource-summary {
       description
-        "SIDs Global Out of Resource info";
+        "SID resources global Out of Resource info";
       uses SRV6-OOR-SUMMARY;
     }
     leaf locators-count {
@@ -1393,7 +1692,7 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
     }
     list block-local-sid-oor-summary {
       description
-        "Local SID Out of Resource info for each Block";
+        "SIDs local (per block) Out of Resource info";
       uses SRV6-OOR-SUMMARY;
     }
   }
@@ -1410,6 +1709,22 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       type string;
       description
         "Mode description";
+    }
+  }
+
+  grouping MGMT-SRV6-OP-MODE-INFO {
+    description
+      "SRv6 SID Manager parameters related to operation
+       mode";
+    container srv6-operational-mode {
+      description
+        "SRv6 operational mode";
+      uses MGMT-SRV6-OP-MODE;
+    }
+    leaf srv6-operational-mode-enabled {
+      type boolean;
+      description
+        "SRv6 operational mode enabled";
     }
   }
 
@@ -1447,11 +1762,6 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
         "Encap Traffic-class info";
       uses SRV6-SIDMGR-PARAMS-SET-OR-PROPAGATE;
     }
-    container srv6-operational-mode {
-      description
-        "SRv6 operational mode";
-      uses MGMT-SRV6-OP-MODE;
-    }
     leaf srv6-enabled {
       type boolean;
       description
@@ -1477,6 +1787,11 @@ submodule Cisco-IOS-XR-segment-routing-srv6-oper-sub1 {
       units "minute";
       description
         "Configured SID Holdtime in mins";
+    }
+    list srv6-operational-mode {
+      description
+        "SRv6 operational modes";
+      uses MGMT-SRV6-OP-MODE-INFO;
     }
   }
 

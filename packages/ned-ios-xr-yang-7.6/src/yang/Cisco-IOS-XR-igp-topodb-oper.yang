@@ -9,7 +9,7 @@ module Cisco-IOS-XR-igp-topodb-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-igp-topodb-oper-sub1 {
-    revision-date 2021-06-01;
+    revision-date 2021-10-22;
   }
 
   organization
@@ -35,10 +35,15 @@ module Cisco-IOS-XR-igp-topodb-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-06-01 {
+  revision 2021-10-22 {
     description
-      "Added changes to show if a FAD contains unknown parameters";
-    semver:module-version "2.1.0";
+      "Modified for Flex algo srlg exclude-any and Flex algo External features.";
+    semver:module-version "4.0.0";
+  }
+  revision 2021-05-12 {
+    description
+      "Modified for Flex algo Inter-area support.";
+    semver:module-version "3.0.0";
   }
   revision 2020-01-02 {
     description
@@ -96,6 +101,70 @@ module Cisco-IOS-XR-igp-topodb-oper {
             uses OTLIB-SHOW-PATH-INSTANCE;
           }
         }
+        container topology-microloop-avoidances {
+          description
+            "Container for Topology Microloop Avoidance
+             information";
+          list topology-microloop-avoidance {
+            key "topo-vrf-name";
+            description
+              "Topology Microloop Avoidance information";
+            leaf topo-vrf-name {
+              type xr:Cisco-ios-xr-string;
+              description
+                "VRF Name";
+            }
+            uses OTLIB-SHOW-ULOOP-INSTANCE;
+          }
+        }
+        container topology-forwarding-addresses {
+          description
+            "Container for Topology Forwarding Address
+             information";
+          list topology-forwarding-address {
+            key "topo-vrf-name";
+            description
+              "Topology Forwarding Address information";
+            leaf topo-vrf-name {
+              type xr:Cisco-ios-xr-string;
+              description
+                "VRF Name";
+            }
+            uses OTLIB-SHOW-FORW-ADDR-INSTANCE;
+          }
+        }
+        container topology-fast-reroutes {
+          description
+            "Container for Topology Fast Reroute
+             information";
+          list topology-fast-reroute {
+            key "topo-vrf-name";
+            description
+              "Topology Fast Reroute information";
+            leaf topo-vrf-name {
+              type xr:Cisco-ios-xr-string;
+              description
+                "VRF Name";
+            }
+            uses OTLIB-SHOW-IPFRR-INSTANCE;
+          }
+        }
+        container topology-asbr-reachabilities {
+          description
+            "Container for Topology ASBR Reachability
+             information";
+          list topology-asbr-reachability {
+            key "topo-vrf-name";
+            description
+              "Topology ASBR Reachability information";
+            leaf topo-vrf-name {
+              type xr:Cisco-ios-xr-string;
+              description
+                "VRF Name";
+            }
+            uses OTLIB-SHOW-ASBR-REACHABILITY-INSTANCE;
+          }
+        }
         container topology-routes {
           description
             "Container for Topology route information";
@@ -109,6 +178,21 @@ module Cisco-IOS-XR-igp-topodb-oper {
                 "VRF Name";
             }
             uses OTLIB-SHOW-ROUTE-INSTANCE;
+          }
+        }
+        container topology-asbr-paths {
+          description
+            "Container for Topology ASBR path information";
+          list topology-asbr-path {
+            key "topo-vrf-name";
+            description
+              "Topology ASBR path information";
+            leaf topo-vrf-name {
+              type xr:Cisco-ios-xr-string;
+              description
+                "VRF Name";
+            }
+            uses OTLIB-SHOW-PATH-INSTANCE;
           }
         }
         container topology-summaries {

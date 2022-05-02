@@ -12,13 +12,13 @@ module Cisco-IOS-XR-Ethernet-SPAN-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-Ethernet-SPAN-oper-sub3 {
-    revision-date 2020-12-03;
+    revision-date 2021-09-15;
   }
   include Cisco-IOS-XR-Ethernet-SPAN-oper-sub2 {
-    revision-date 2020-12-03;
+    revision-date 2021-09-15;
   }
   include Cisco-IOS-XR-Ethernet-SPAN-oper-sub1 {
-    revision-date 2020-12-03;
+    revision-date 2021-09-15;
   }
 
   organization
@@ -41,21 +41,39 @@ module Cisco-IOS-XR-Ethernet-SPAN-oper {
      for the following management objects:
        span-monitor-session: Monitor Session operational data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-15 {
+    description
+      "Added support for mirror first configured on sessions
+       2021-08-20
+         Added support for ERSPAN session ID under GRE destinations";
+    semver:module-version "5.1.0";
+  }
+  revision 2021-07-19 {
+    description
+      "Added extended range of values to mirror interval sampling
+       2021-06-02
+          Added support for non-default VRFs and router-id";
+    semver:module-version "5.0.0";
+  }
   revision 2020-12-03 {
     description
-      "Added support for multiple attachments per class on an interface";
+      "Added support for multiple attachments per class on an interface
+       2020-09-14
+           Added support for mirror rx and tx traffic to separate destinations
+       2020-04-03
+           Added support for bundle destinations.";
     semver:module-version "4.0.0";
   }
   revision 2020-01-30 {
     description
       "Added support for L3 IPv4 and IPv6 ACLs on a L2 ethernet SPAN session
        2019-12-12
-       Added support for file format and PCAP filter expressions under file
+         Added support for file format and PCAP filter expressions under file
        2019-10-02
-       Added support for UDP destinations and CloudSPAN.";
+         Added support for UDP destinations and CloudSPAN.";
     semver:module-version "3.0.0";
   }
   revision 2019-05-12 {

@@ -13,7 +13,7 @@ submodule Cisco-IOS-XR-ethernet-cfm-oper-sub2 {
     prefix semver;
   }
   include Cisco-IOS-XR-ethernet-cfm-oper-sub3 {
-    revision-date 2020-10-07;
+    revision-date 2022-01-18;
   }
 
   organization
@@ -32,9 +32,18 @@ submodule Cisco-IOS-XR-ethernet-cfm-oper-sub2 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR ethernet-cfm package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-01-18 {
+    description
+      "Added CSF packet counters.
+       2021-10-22
+         Added counters for missing MEP offload intervals.
+       2021-09-02
+         Added support for LTM statistics.";
+    semver:module-version "1.4.0";
+  }
   revision 2020-10-07 {
     description
       "Added the Link Loss Forwarding feature.";
@@ -1614,6 +1623,26 @@ submodule Cisco-IOS-XR-ethernet-cfm-oper-sub2 {
       description
         "Number of unexpected LTRs received";
     }
+    leaf lt-rs-received {
+      type uint64;
+      description
+        "Number of LTRs received";
+    }
+    leaf lt-rs-sent {
+      type uint64;
+      description
+        "Number of LTRs sent";
+    }
+    leaf lt-ms-received {
+      type uint64;
+      description
+        "Number of LTMs received";
+    }
+    leaf lt-ms-sent {
+      type uint64;
+      description
+        "Number of LTMs sent";
+    }
     leaf ai-ss-sent {
       type uint64;
       description
@@ -1718,6 +1747,36 @@ submodule Cisco-IOS-XR-ethernet-cfm-oper-sub2 {
       type uint64;
       description
         "Number of LLR messages received";
+    }
+    leaf los-csfs-received {
+      type uint64;
+      description
+        "Number of LOS CSF messages received";
+    }
+    leaf rdi-csfs-received {
+      type uint64;
+      description
+        "Number of RDI CSF messages received";
+    }
+    leaf fdi-csfs-received {
+      type uint64;
+      description
+        "Number of FDI CSF messages received";
+    }
+    leaf dci-csfs-received {
+      type uint64;
+      description
+        "Number of DCI CSF messages received";
+    }
+    leaf los-csfs-sent {
+      type uint64;
+      description
+        "Number of LOS CSF messages sent";
+    }
+    leaf dci-csfs-sent {
+      type uint64;
+      description
+        "Number of DCI CSF messages sent";
     }
   }
 
@@ -3030,6 +3089,11 @@ submodule Cisco-IOS-XR-ethernet-cfm-oper-sub2 {
       type boolean;
       description
         "AIS or LCK received";
+    }
+    leaf csf-received {
+      type boolean;
+      description
+        "CSF packet received indicating a defect";
     }
     leaf peer-meps-that-timed-out {
       type uint32;

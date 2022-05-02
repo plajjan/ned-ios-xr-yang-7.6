@@ -47,21 +47,31 @@ module Cisco-IOS-XR-subscriber-nal-cfg {
 
   revision 2021-09-28 {
     description
-      "Augmented MDA common config schema
-       2021-08-18
-         Added support for tcp mss adjust config
-       2021-07-13
-         Added support for l2tp enable CLI
-       2021-07-07
-         Added support for pre-configuration.
-       2021-04-01
-         NAL access interface config for LNS.";
-    semver:module-version "2.0.0";
+      "Augmented MDA common config schema";
+  }
+  revision 2021-08-18 {
+    description
+      "Added support for tcp mss adjust config";
+  }
+  revision 2021-07-13 {
+    description
+      "Added support for l2tp enable CLI";
+  }
+  revision 2021-07-07 {
+    description
+      "Added support for pre-configuration.";
+  }
+  revision 2021-05-05 {
+    description
+      "Added support for storing tr459 mode.";
+  }
+  revision 2021-04-01 {
+    description
+      "NAL access interface config for LNS.";
   }
   revision 2020-12-01 {
     description
       "NAL access interface config.";
-    semver:module-version "1.0.0";
   }
   revision 2020-11-24 {
     description
@@ -246,6 +256,11 @@ module Cisco-IOS-XR-subscriber-nal-cfg {
         description
           "Tag value";
       }
+      leaf enable-tr459-mode {
+        type uint32;
+        description
+          "Set constant integer";
+      }
       leaf nal-enable-sec-addr-upd {
         type uint32;
         description
@@ -421,7 +436,7 @@ module Cisco-IOS-XR-subscriber-nal-cfg {
     description
       "This augment extends the configuration data of
        'Cisco-IOS-XR-ifmgr-cfg'";
-    leaf cn-bngnallns-subscriber {
+    leaf cnbng-nal-lns-subscriber {
       type empty;
       description
         "Enable";

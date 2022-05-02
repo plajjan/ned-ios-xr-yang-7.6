@@ -28,6 +28,11 @@ module Cisco-IOS-XR-um-aaa-cfg {
      Copyright (c) 2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-10-10 {
+    description
+      "Modified must statements for group-2 nodes";
+    semver:module-version "2.0.0";
+  }
   revision 2021-02-08 {
     description
       "Initial release";
@@ -123,7 +128,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name or ../../../local)
                    and not(../local or ../radius or ../server-group-name or
                    ../../group-1/tacacs)";
                 presence "Indicates a tacacs node is configured.";
@@ -132,7 +137,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name or ../../../local)
                    and not(../local or ../tacacs or ../server-group-name or
                    ../../group-1/radius)";
                 presence "Indicates a radius node is configured.";
@@ -150,7 +155,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
+                   ../../group-1/server-group-name or ../../../local) and
                    not(../local or ../tacacs or ../radius)";
                 description
                   "server-group name";
@@ -344,7 +349,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name or ../../../local)
                    and not(../local or ../radius or ../server-group-name or
                    ../../group-1/tacacs)";
                 presence "Indicates a tacacs node is configured.";
@@ -353,7 +358,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name or ../../../local)
                    and not(../local or ../tacacs or ../server-group-name or
                    ../../group-1/radius)";
                 presence "Indicates a radius node is configured.";
@@ -371,7 +376,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
+                   ../../group-1/server-group-name or ../../../local) and
                    not(../local or ../tacacs or ../radius)";
                 description
                   "server-group name";
@@ -591,7 +596,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name
+                   or ../../../local or ../../../line)
                    and not(../local or ../line or ../radius or
                    ../server-group-name or
                    ../../group-1/tacacs)";
@@ -601,7 +607,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name
+                   or ../../../local or ../../../line)
                    and not(../local or ../line or ../tacacs or
                    ../server-group-name or
                    ../../group-1/radius)";
@@ -620,8 +627,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
-                   not(../local or ../line or ../tacacs or ../radius)";
+                   ../../group-1/server-group-name or ../../../local or ../../../line)
+                   and not(../local or ../line or ../tacacs or ../radius)";
                 description
                   "server-group name";
               }
@@ -1204,229 +1211,11 @@ module Cisco-IOS-XR-um-aaa-cfg {
             description
               "List name for AAA authorization";
           }
-          container none {
-            must
-              "not(../groups/group-1/tacacs or
-               ../groups/group-1/radius or
-               ../groups/group-1/server-group-name)";
-            presence "Indicates a none node is configured.";
+          container local {
+            must "not(../none)";
+            presence "Indicates a local node is configured.";
             description
-              "no authorization";
-          }
-          container groups {
-            description
-              "Use Server-group";
-            container group-1 {
-              description
-                "First server-group";
-              container tacacs {
-                must "not(../../../none) and not(../radius or ../server-group-name)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must "not(../../../none) and not(../tacacs or ../server-group-name)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must "not(../../../none) and not(../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-            container group-2 {
-              description
-                "Second server-group";
-              container none {
-                must
-                  "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
-                   not(../tacacs or ../radius or ../server-group-name or
-                   ../../../none)";
-                presence "Indicates a none node is configured.";
-                description
-                  "no authorization";
-              }
-              container tacacs {
-                must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
-                   and not(../none or ../radius or ../server-group-name or
-                   ../../group-1/tacacs)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
-                   and not(../none or ../tacacs or ../server-group-name or
-                   ../../group-1/radius)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must
-                  "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
-                   not(../none or ../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-            container group-3 {
-              description
-                "Third server-group";
-              container none {
-                must
-                  "(../../group-2/tacacs or ../../group-2/radius or
-                   ../../group-2/server-group-name) and
-                   not(../tacacs or ../radius or ../server-group-name or
-                   ../../group-2/none)";
-                presence "Indicates a none node is configured.";
-                description
-                  "no authorization";
-              }
-              container tacacs {
-                must
-                  "(../../group-2/radius or
-                   ../../group-2/server-group-name)
-                   and not(../none or ../radius or ../server-group-name or
-                   ../../group-1/tacacs or ../../group-2/tacacs)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must
-                  "(../../group-2/tacacs or
-                   ../../group-2/server-group-name)
-                   and not(../none or ../tacacs or ../server-group-name or
-                   ../../group-1/radius or ../../group-2/radius)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must
-                  "(../../group-2/tacacs or
-                   ../../group-2/radius or ../../group-2/server-group-name)
-                   and not(../none or ../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-            container group-4 {
-              description
-                "Fourth server-group";
-              container none {
-                must
-                  "(../../group-3/tacacs or ../../group-3/radius or
-                   ../../group-3/server-group-name) and
-                   not(../tacacs or ../radius or ../server-group-name or
-                   ../../group-3/none)";
-                presence "Indicates a none node is configured.";
-                description
-                  "no authorization";
-              }
-              container tacacs {
-                must
-                  "(../../group-3/radius or
-                   ../../group-3/server-group-name) and
-                   not(../none or ../radius or ../server-group-name or
-                   ../../group-1/tacacs or ../../group-2/tacacs or
-                   ../../group-3/tacacs)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must
-                  "(../../group-3/tacacs or
-                   ../../group-3/server-group-name) and
-                   not(../none or ../tacacs or ../server-group-name or
-                   ../../group-1/radius or ../../group-2/radius or
-                   ../../group-3/radius)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must
-                  "(../../group-3/tacacs or
-                   ../../group-3/radius or ../../group-3/server-group-name)
-                   and not(../none or ../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-          }
-        }
-      }
-      container api {
-        description
-          "For XML requests";
-        list authorization-list {
-          must
-            "none or groups/group-1/tacacs or
-             groups/group-1/server-group-name";
-          key "list-name";
-          description
-            "List name for AAA authorization";
-          leaf list-name {
-            type union {
-              type string {
-                pattern "default" {
-                  description
-                    "Default list name for AAA authorization";
-                }
-              }
-              type string {
-                length "1..253" {
-                  description
-                    "List name for AAA authorization.
-                     Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                     and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                }
-              }
-            }
-            description
-              "List name for AAA authorization";
+              "Authorize if authenticated locally";
           }
           container none {
             must
@@ -1484,7 +1273,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name
+                   or ../../../local or ../../../none)
                    and not(../none or ../radius or ../server-group-name or
                    ../../group-1/tacacs)";
                 presence "Indicates a tacacs node is configured.";
@@ -1493,7 +1283,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name
+                   or ../../../local or ../../../none)
                    and not(../none or ../tacacs or ../server-group-name or
                    ../../group-1/radius)";
                 presence "Indicates a radius node is configured.";
@@ -1511,8 +1302,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
-                   not(../none or ../tacacs or ../radius)";
+                   ../../group-1/server-group-name or ../../../local or ../../../none)
+                   and not(../none or ../tacacs or ../radius)";
                 description
                   "server-group name";
               }
@@ -3007,7 +2798,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name or ../../../none)
                    and not(../none or ../radius or ../server-group-name or
                    ../../group-1/tacacs)";
                 presence "Indicates a tacacs node is configured.";
@@ -3016,7 +2807,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name or ../../../none)
                    and not(../none or ../tacacs or ../server-group-name or
                    ../../group-1/radius)";
                 presence "Indicates a radius node is configured.";
@@ -3034,7 +2825,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
+                   ../../group-1/server-group-name or ../../../none) and
                    not(../none or ../tacacs or ../radius)";
                 description
                   "server-group name";
@@ -3272,7 +3063,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name
+                   or ../../../local or ../../../none)
                    and not(../local or ../none or ../radius or
                    ../server-group-name or
                    ../../group-1/tacacs)";
@@ -3282,7 +3074,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name
+                   or ../../../local or ../../../none)
                    and not(../local or ../none or ../tacacs or
                    ../server-group-name or
                    ../../group-1/radius)";
@@ -3301,8 +3094,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
-                   not(../local or ../none or ../tacacs or ../radius)";
+                   ../../group-1/server-group-name or ../../../local or ../../../none)
+                   and not(../local or ../none or ../tacacs or ../radius)";
                 description
                   "server-group name";
               }
@@ -3448,243 +3241,6 @@ module Cisco-IOS-XR-um-aaa-cfg {
           }
         }
       }
-      container api {
-        description
-          "For XML requests";
-        list accounting-list {
-          must
-            "(start-stop or stop-only) and (none or
-             groups/group-1/tacacs or
-             groups/group-1/radius or
-             groups/group-1/server-group-name)";
-          key "list-name";
-          description
-            "List name for AAA accounting";
-          leaf list-name {
-            type union {
-              type string {
-                pattern "default" {
-                  description
-                    "Default list name for AAA accounting";
-                }
-              }
-              type string {
-                length "1..253" {
-                  description
-                    "List name for AAA accounting.
-                     Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                     and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                }
-              }
-            }
-            description
-              "List name for AAA accounting";
-          }
-          container start-stop {
-            must "not(../stop-only)";
-            presence "Indicates a start-stop node is configured.";
-            description
-              "start and stop records";
-          }
-          container stop-only {
-            must "not(../start-stop)";
-            presence "Indicates a stop-only node is configured.";
-            description
-              "stop records only";
-          }
-          container none {
-            must
-              "not(../groups/group-1/tacacs or
-               ../groups/group-1/radius or
-               ../groups/group-1/server-group-name)";
-            presence "Indicates a none node is configured.";
-            description
-              "No accounting";
-          }
-          container groups {
-            description
-              "Use Server-group";
-            container group-1 {
-              description
-                "First server-group";
-              container tacacs {
-                must "not(../../../none) and not(../radius or ../server-group-name)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must "not(../../../none) and not(../tacacs or ../server-group-name)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must "not(../../../none) and not(../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-            container group-2 {
-              description
-                "Second server-group";
-              container none {
-                must
-                  "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
-                   not(../tacacs or ../radius or ../server-group-name)";
-                presence "Indicates a none node is configured.";
-                description
-                  "No accounting";
-              }
-              container tacacs {
-                must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
-                   and not(../none or ../radius or ../server-group-name or
-                   ../../group-1/tacacs)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
-                   and not(../none or ../tacacs or ../server-group-name or
-                   ../../group-1/radius)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must
-                  "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
-                   not(../none or ../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-            container group-3 {
-              description
-                "Third server-group";
-              container none {
-                must
-                  "(../../group-2/tacacs or ../../group-2/radius or
-                   ../../group-2/server-group-name) and
-                   not(../tacacs or ../radius or ../server-group-name or
-                   ../../group-2/none)";
-                presence "Indicates a none node is configured.";
-                description
-                  "No accounting";
-              }
-              container tacacs {
-                must
-                  "(../../group-2/none or ../../group-2/radius or
-                   ../../group-2/server-group-name)
-                   and not(../none or ../radius or ../server-group-name or
-                   ../../group-1/tacacs or ../../group-2/tacacs)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must
-                  "(../../group-2/none or ../../group-2/tacacs or
-                   ../../group-2/server-group-name)
-                   and not(../none or ../tacacs or ../server-group-name or
-                   ../../group-1/radius or ../../group-2/radius)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must
-                  "(../../group-2/none or ../../group-2/tacacs or
-                   ../../group-2/radius or ../../group-2/server-group-name)
-                   and not(../none or ../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-            container group-4 {
-              description
-                "Fourth server-group";
-              container none {
-                must
-                  "(../../group-3/tacacs or ../../group-3/radius or
-                   ../../group-3/server-group-name) and
-                   not(../tacacs or ../radius or ../server-group-name or
-                   ../../group-3/none)";
-                presence "Indicates a none node is configured.";
-                description
-                  "No accounting";
-              }
-              container tacacs {
-                must
-                  "(../../group-3/none or ../../group-3/radius or
-                   ../../group-3/server-group-name) and
-                   not(../none or ../radius or ../server-group-name or
-                   ../../group-1/tacacs or ../../group-2/tacacs or
-                   ../../group-3/tacacs)";
-                presence "Indicates a tacacs node is configured.";
-                description
-                  "Use list of all TACACS+ hosts";
-              }
-              container radius {
-                must
-                  "(../../group-3/none or ../../group-3/tacacs or
-                   ../../group-3/server-group-name) and
-                   not(../none or ../tacacs or ../server-group-name or
-                   ../../group-1/radius or ../../group-2/radius or
-                   ../../group-3/radius)";
-                presence "Indicates a radius node is configured.";
-                description
-                  "Use list of all RADIUS hosts";
-              }
-              leaf server-group-name {
-                type string {
-                  length "1..253" {
-                    description
-                      "server-group name.
-                       Allowed special chars for tacacs server group are A-Z,a-z,_,.,-,%,=,+,space allowed with backslash,;,:,|,#,$,0-9
-                       and for radius server group are _,-,.,;,:,$,#,space allowed with backslash";
-                  }
-                }
-                must
-                  "(../../group-3/none or ../../group-3/tacacs or
-                   ../../group-3/radius or ../../group-3/server-group-name)
-                   and not(../none or ../tacacs or ../radius)";
-                description
-                  "server-group name";
-              }
-            }
-          }
-        }
-      }
       container system {
         description
           "For System events";
@@ -3786,7 +3342,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 container tacacs {
                   must
-                    "(../../group-1/radius or ../../group-1/server-group-name)
+                    "(../../group-1/radius or ../../group-1/server-group-name
+                     or ../../../none)
                      and not(../none or ../radius or ../server-group-name or
                      ../../group-1/tacacs)";
                   presence "Indicates a tacacs node is configured.";
@@ -3795,7 +3352,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 container radius {
                   must
-                    "(../../group-1/tacacs or ../../group-1/server-group-name)
+                    "(../../group-1/tacacs or ../../group-1/server-group-name
+                     or ../../../none)
                      and not(../none or ../tacacs or ../server-group-name or
                      ../../group-1/radius)";
                   presence "Indicates a radius node is configured.";
@@ -3813,7 +3371,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
                   }
                   must
                     "(../../group-1/tacacs or ../../group-1/radius or
-                     ../../group-1/server-group-name) and
+                     ../../group-1/server-group-name or ../../../none) and
                      not(../none or ../tacacs or ../radius)";
                   description
                     "server-group name";
@@ -4018,7 +3576,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name
+                   or ../../../none)
                    and not(../none or ../radius or ../server-group-name or
                    ../../group-1/tacacs)";
                 presence "Indicates a tacacs node is configured.";
@@ -4027,7 +3586,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name
+                   or ../../../none)
                    and not(../none or ../tacacs or ../server-group-name or
                    ../../group-1/radius)";
                 presence "Indicates a radius node is configured.";
@@ -4045,7 +3605,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
+                   ../../group-1/server-group-name or ../../../none) and
                    not(../none or ../tacacs or ../radius)";
                 description
                   "server-group name";
@@ -4255,7 +3815,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name
+                   or ../../../none)
                    and not(../none or ../radius or ../server-group-name or
                    ../../group-1/tacacs)";
                 presence "Indicates a tacacs node is configured.";
@@ -4264,7 +3825,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name
+                   or ../../../none)
                    and not(../none or ../tacacs or ../server-group-name or
                    ../../group-1/radius)";
                 presence "Indicates a radius node is configured.";
@@ -4282,7 +3844,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
+                   ../../group-1/server-group-name or ../../../none) and
                    not(../none or ../tacacs or ../radius)";
                 description
                   "server-group name";
@@ -4492,7 +4054,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container tacacs {
                 must
-                  "(../../group-1/radius or ../../group-1/server-group-name)
+                  "(../../group-1/radius or ../../group-1/server-group-name
+                   or ../../../none)
                    and not(../none or ../radius or ../server-group-name or
                    ../../group-1/tacacs)";
                 presence "Indicates a tacacs node is configured.";
@@ -4501,7 +4064,8 @@ module Cisco-IOS-XR-um-aaa-cfg {
               }
               container radius {
                 must
-                  "(../../group-1/tacacs or ../../group-1/server-group-name)
+                  "(../../group-1/tacacs or ../../group-1/server-group-name
+                   or ../../../none)
                    and not(../none or ../tacacs or ../server-group-name or
                    ../../group-1/radius)";
                 presence "Indicates a radius node is configured.";
@@ -4519,7 +4083,7 @@ module Cisco-IOS-XR-um-aaa-cfg {
                 }
                 must
                   "(../../group-1/tacacs or ../../group-1/radius or
-                   ../../group-1/server-group-name) and
+                   ../../group-1/server-group-name or ../../../none) and
                    not(../none or ../tacacs or ../radius)";
                 description
                   "server-group name";

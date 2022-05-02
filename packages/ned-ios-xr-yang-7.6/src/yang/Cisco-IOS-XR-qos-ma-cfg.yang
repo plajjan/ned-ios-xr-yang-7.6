@@ -40,9 +40,13 @@ module Cisco-IOS-XR-qos-ma-cfg {
        Cisco-IOS-XR-l2vpn-cfg,
      modules with configuration data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-07-20 {
+    description
+      "7.5.1 service-policy-name length 0-63";
+  }
   revision 2020-03-10 {
     description
       "IOS XR 7.2.1 revision.";
@@ -148,7 +152,7 @@ module Cisco-IOS-XR-qos-ma-cfg {
         "Service policy details";
       leaf service-policy-name {
         type string {
-          length "0..64";
+          length "0..63";
         }
         description
           "Name of policy-map";

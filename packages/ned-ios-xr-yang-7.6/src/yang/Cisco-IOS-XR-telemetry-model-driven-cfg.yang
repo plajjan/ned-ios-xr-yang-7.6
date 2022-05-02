@@ -36,9 +36,14 @@ module Cisco-IOS-XR-telemetry-model-driven-cfg {
      for the following management objects:
        telemetry-model-driven: Model Driven Telemetry configuration
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-04-11 {
+    description
+      "Added subscription mode leaf to sensor profile";
+    semver:module-version "2.1.0";
+  }
   revision 2020-12-11 {
     description
       "Added length restriction to tls-hostname IosSetYangSchemaRev Cisco-IOS-XR-telemetry-model-driven-cfg";
@@ -48,15 +53,15 @@ module Cisco-IOS-XR-telemetry-model-driven-cfg {
     description
       "Added back default value of MDT_DEF_UDP_MTU to UDP packetsize to solve nbc issue.
        2020-01-30
-       Added compression option to protocol.
+         Added compression option to protocol.
        2020-01-07
-       Added default statement to leaves max-containers-per-path, max-sensor-paths, and tcp-send-timeout.
+         Added default statement to leaves max-containers-per-path, max-sensor-paths, and tcp-send-timeout.
        2019-10-09
-       Added select-leaves-on-events config leaf
+         Added select-leaves-on-events config leaf
        2019-09-25
-       Added minimum-cadence and cadence-factor options for tgtdef
+         Added minimum-cadence and cadence-factor options for tgtdef
        2019-09-01
-       Add capability to configure a Fully Qualified Domain Name as destination.";
+         Add capability to configure a Fully Qualified Domain Name as destination.";
     semver:module-version "1.2.0";
   }
   revision 2019-08-29 {
@@ -142,6 +147,19 @@ module Cisco-IOS-XR-telemetry-model-driven-cfg {
     }
     description
       "Proto type";
+  }
+
+  typedef Subscription-mode {
+    type enumeration {
+      enum "target-defined" {
+        value 0;
+        description
+          "Device selects one of sample/on-change for
+           leaves to stream data";
+      }
+    }
+    description
+      "Subscription mode";
   }
 
   typedef Encode-type {
@@ -424,6 +442,11 @@ module Cisco-IOS-XR-telemetry-model-driven-cfg {
               units "millisecond";
               description
                 "Sample interval in milliseconds";
+            }
+            leaf mode {
+              type Subscription-mode;
+              description
+                "Subscription mode";
             }
             leaf heartbeat-always {
               type empty;

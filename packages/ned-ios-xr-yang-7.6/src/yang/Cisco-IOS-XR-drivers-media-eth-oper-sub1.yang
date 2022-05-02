@@ -29,27 +29,46 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-12-10 {
+  revision 2021-11-24 {
     description
-      "Enums added for new modules 4x100G-LR-S and 100G-ERL-S.";
+      "Updated media type string
+       2021-11-19
+         Added new Ethernet media type definition for 24GE ER-I optics
+       2021-10-07
+         Enums added for new module 2x400G FR4 and 8x100G DR.
+       2021-09-30
+         Added new Ethernet media type definition.";
+    semver:module-version "2.2.0";
+  }
+  revision 2021-09-29 {
+    description
+      "Removed list rx_drop_data_frames_per_tc and added leaf total_rx_drop_data_frames.
+       2021-08-24
+          Support added for last data time for generic stats.
+       2021-08-16
+          Added new Ethernet media type definition.
+       2021-07-19
+          Removed leaf total_rx_drop_data_frames and added list rx_drop_data_frames_per_tc to maintain backward compatibility.
+       2021-07-01
+          Support added for hardware timestamp for generic stats.";
     semver:module-version "2.1.0";
   }
   revision 2021-02-12 {
     description
       "Added support for PFC per TC Rx drop Data Frames.
        2020-11-04
-       Added support for SER alarms.
+           Added support for SER alarms.
        2020-09-08
-       Added new ethernet speed values.";
+           Added new ethernet speed values.";
     semver:module-version "2.0.0";
   }
   revision 2020-02-19 {
     description
       "Description updated.
        2019-11-27
-       Adding operational value for power m-factor.
+         Adding operational value for power m-factor.
        2019-08-15
-       Adding PFC watchdog support.";
+         Adding PFC watchdog support.";
     semver:module-version "1.2.0";
   }
   revision 2019-05-21 {
@@ -227,6 +246,148 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
     type uint32;
     description
       "Ethernet bert mask";
+  }
+
+  typedef Ether-prbs-status {
+    type enumeration {
+      enum "prbs-status-not-running" {
+        description
+          "PRBS Status Not running";
+      }
+      enum "prbs-status-unlocked" {
+        description
+          "PRBS Status unlocked";
+      }
+      enum "prbs-status-locked" {
+        description
+          "PRBS Status locked";
+      }
+      enum "prbs-status-not-available" {
+        description
+          "PRBS Status not available";
+      }
+    }
+    description
+      "Ether prbs status";
+  }
+
+  typedef Ether-prbs-framing {
+    type enumeration {
+      enum "prbs-framing-not-configured" {
+        description
+          "PRBS Framing not configured";
+      }
+      enum "prbs-framing-unframed" {
+        description
+          "PRBS Unframed mode";
+      }
+      enum "prbs-framing-framed" {
+        description
+          "PRBS framed mode";
+      }
+    }
+    description
+      "Ether prbs framing";
+  }
+
+  typedef Ether-prbs-error-inject {
+    type enumeration {
+      enum "prbs-error-inject-none" {
+        description
+          "PRBS Error inject none";
+      }
+      enum "prbs-error-inject-single" {
+        description
+          "PRBS Error inject single";
+      }
+      enum "prbs-error-inject-continuous" {
+        description
+          "PRBS Error inject continuous";
+      }
+    }
+    description
+      "Ether prbs error inject";
+  }
+
+  typedef Ether-prbs-direction {
+    type enumeration {
+      enum "prbs-direction-not-configured" {
+        description
+          "PRBS Direction not configured";
+      }
+      enum "prbs-direction-line" {
+        description
+          "PRBS Direction towards line side";
+      }
+      enum "prbs-direction-system" {
+        description
+          "PRBS Direction towards system side";
+      }
+    }
+    description
+      "Ether prbs direction";
+  }
+
+  typedef Ether-prbs-pattern {
+    type enumeration {
+      enum "prbs-pattern-none" {
+        description
+          "PRBS Pattern None";
+      }
+      enum "prbs-pattern-pn7" {
+        description
+          "PRBS Polynomial pattern PN7";
+      }
+      enum "prbs-pattern-pn9" {
+        description
+          "PRBS Polynomial pattern PN9";
+      }
+      enum "prbs-pattern-pn11" {
+        description
+          "PRBS Polynomial pattern PN11";
+      }
+      enum "prbs-pattern-pn15" {
+        description
+          "PRBS Polynomial pattern PN15";
+      }
+      enum "prbs-pattern-pn23" {
+        description
+          "PRBS Polynomial pattern PN23";
+      }
+      enum "prbs-pattern-pn31" {
+        description
+          "PRBS Polynomial pattern PN31";
+      }
+      enum "prbs-pattern-user-defined" {
+        description
+          "PRBS user defined pattern";
+      }
+    }
+    description
+      "Ether prbs pattern";
+  }
+
+  typedef Ether-prbs-mode {
+    type enumeration {
+      enum "prbs-mode-none" {
+        description
+          "PRBS Mode none";
+      }
+      enum "prbs-mode-source" {
+        description
+          "PRBS Mode source";
+      }
+      enum "prbs-mode-sink" {
+        description
+          "PRBS Mode sink";
+      }
+      enum "prbs-mode-source-sink" {
+        description
+          "PRBS Mode source-sink";
+      }
+    }
+    description
+      "Ether prbs mode";
   }
 
   typedef Ether-ains-status {
@@ -2367,7 +2528,7 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
       }
       enum "ethernet-4x100gbase-fr" {
         description
-          "Duplex SMF LC Connector 2km";
+          "Parallel SMF (Far Reach/2 km)";
       }
       enum "ethernet-400gbase-zr-s" {
         description
@@ -2409,13 +2570,73 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
         description
           "Multimode fiber";
       }
+      enum "ethernet-800gbase-cr8" {
+        description
+          "8 lane copper (very short reach)";
+      }
+      enum "ethernet-qsa" {
+        description
+          "No Media Type (Empty QSA)";
+      }
       enum "ethernet-100gbase-erl" {
         description
           "duplex single mode fiber (Extended Reach 25km)";
       }
+      enum "ethernet-50gbase-cu1-5m" {
+        description
+          "Twinaxial copper cabling (1.5m)";
+      }
+      enum "ethernet-50gbase-cu2m" {
+        description
+          "Twinaxial copper cabling (2m)";
+      }
+      enum "ethernet-50gbase-cu2-5m" {
+        description
+          "Twinaxial copper cabling (2.5m)";
+      }
+      enum "ethernet-50gbase-cu3m" {
+        description
+          "Twinaxial copper cabling (3m)";
+      }
+      enum "ethernet-50gbase-cu5m" {
+        description
+          "Twinaxial copper cabling (5m)";
+      }
       enum "ethernet-4x100gbase-lr" {
         description
-          "Duplex SMF LC Connector 10km";
+          "Parallel SMF (Long Reach/10 km)";
+      }
+      enum "ethernet-100gbase-zr-plus-s" {
+        description
+          "Duplex SMF LC Connector 80km";
+      }
+      enum "ethernet-2x400gbase-fr4" {
+        description
+          "Dual Duplex SMF CS 2km";
+      }
+      enum "ethernet-8x100gbase-dr" {
+        description
+          "SMF With Angled MPO-16 Connector 500m";
+      }
+      enum "ethernet-10gbase-pas-loop" {
+        description
+          "Passive loopback 10G ELB";
+      }
+      enum "ethernet-gebase-pas-loop" {
+        description
+          "Passive loopback 1GE ELB";
+      }
+      enum "ethernet-2x200gbase-cu" {
+        description
+          "2x200G over 8 lane passive copper";
+      }
+      enum "ethernet-25gbase-er" {
+        description
+          "Duplex Single mode fibre (30/40km)";
+      }
+      enum "ethernet-qsa-28" {
+        description
+          "No Media Type (Empty QSA_28)";
       }
       enum "ethernet-base-max" {
         description
@@ -2518,6 +2739,46 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
       type uint32;
       description
         "Port BERT interval";
+    }
+  }
+
+  grouping ETH-CTLR-PRBS-INFO {
+    description
+      "ETH CTLR PRBS INFO";
+    leaf mode {
+      type Ether-prbs-mode;
+      description
+        "PRBS mode configured";
+    }
+    leaf pattern {
+      type Ether-prbs-pattern;
+      description
+        "PRBS pattern configured";
+    }
+    leaf direction {
+      type Ether-prbs-direction;
+      description
+        "PRBS direction configured";
+    }
+    leaf error-inject {
+      type Ether-prbs-error-inject;
+      description
+        "PRBS Error inject type configured";
+    }
+    leaf framing {
+      type Ether-prbs-framing;
+      description
+        "PRBS framing mode configured";
+    }
+    leaf status {
+      type Ether-prbs-status;
+      description
+        "PRBS Status";
+    }
+    leaf user-pattern {
+      type uint64;
+      description
+        "PRBS user pattern configured";
     }
   }
 
@@ -3165,6 +3426,16 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
       description
         "Laser Squelch - TRUE if enabled";
     }
+    leaf insert-idle-ingress-enabled {
+      type boolean;
+      description
+        "Insert Idle Ingress - TRUE if enabled";
+    }
+    leaf insert-idle-egress-enabled {
+      type boolean;
+      description
+        "Insert Idle Egress - TRUE if enabled";
+    }
     leaf bandwidth-utilization {
       type uint32;
       units "percentage";
@@ -3641,6 +3912,11 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
         "Transport state information";
       uses ETH-CTLR-TRANSPORT-INFO;
     }
+    container prbs-info {
+      description
+        "Pseudo Random Binary Sequence test information";
+      uses ETH-CTLR-PRBS-INFO;
+    }
     leaf admin-state {
       type Ethernet-port-enable;
       description
@@ -3931,6 +4207,19 @@ submodule Cisco-IOS-XR-drivers-media-eth-oper-sub1 {
       type uint64;
       description
         "Any other errors not counted";
+    }
+    leaf hardware-timestamp {
+      type uint64;
+      units "millisecond";
+      description
+        "Timestamp when port stats were last read (in
+         msecs)";
+    }
+    leaf last-data-time {
+      type uint64;
+      units "millisecond";
+      description
+        "Time when counters were last written (in msecs)";
     }
   }
 }

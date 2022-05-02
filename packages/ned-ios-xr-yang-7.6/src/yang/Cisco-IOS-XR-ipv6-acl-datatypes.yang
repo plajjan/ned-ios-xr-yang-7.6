@@ -25,9 +25,14 @@ module Cisco-IOS-XR-ipv6-acl-datatypes {
     "This module contains a collection of generally useful
      derived YANG data types.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-03-23 {
+    description
+      "7.5.1 revision. Adding enums for fragment-type addition.";
+    semver:module-version "2.2.0";
+  }
   revision 2020-12-04 {
     description
       "7.4.1 revision. Fixing Remark Length";
@@ -140,6 +145,11 @@ module Cisco-IOS-XR-ipv6-acl-datatypes {
           description
             "User Datagram Protocol";
         }
+        enum "rsvp" {
+          value 46;
+          description
+            "Resource Reservation Protocol";
+        }
         enum "gre" {
           value 47;
           description
@@ -184,6 +194,11 @@ module Cisco-IOS-XR-ipv6-acl-datatypes {
           value 108;
           description
             "Payload Compression Protocol";
+        }
+        enum "vrrp" {
+          value 112;
+          description
+            "Virtual Router Redundancy Protocol";
         }
         enum "sctp" {
           value 132;
@@ -466,6 +481,23 @@ module Cisco-IOS-XR-ipv6-acl-datatypes {
     }
     description
       "Ipv6 acl qos group number";
+  }
+
+  typedef Ipv6-acl-frag-flags {
+    type enumeration {
+      enum "is-fragment" {
+        value 2;
+        description
+          "Match is fragment flag";
+      }
+      enum "first-fragment" {
+        value 4;
+        description
+          "Match first fragment flag";
+      }
+    }
+    description
+      "Ipv6 acl frag flags";
   }
 
   typedef Ipv6-acl-type-enum {

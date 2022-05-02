@@ -35,16 +35,31 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-06-21 {
+  revision 2021-10-07 {
     description
-      "Added l2-interface information for show command";
-    semver:module-version "1.2.0";
+      "Added session_in_bound_client_id_changed counter in debug stats.
+       2021-10-05
+         Migrated LEAF-LIST with duplicate value to LIST type.";
+    semver:module-version "3.0.0";
+  }
+  revision 2021-09-14 {
+    description
+      "Fixed GET-OPER to display interface name in standard format.
+       2021-09-08
+          Fixed GET-OPER rpc response which returns false value.
+       2021-08-23
+          Migrated LEAF-LIST with duplicate value to LIST type.
+       2021-06-21
+          Added l2-interface information for show command
+       2021-04-09
+          NodeID keyword changed from nodeid to NodeName as per standard";
+    semver:module-version "2.0.0";
   }
   revision 2020-11-20 {
     description
       "Added Yang Support for ADT,to retrive statistcs with help of vrf/interface.
        2020-09-30
-       Modified to accommodate cdm changes";
+           Modified to accommodate cdm changes";
     semver:module-version "1.1.0";
   }
   revision 2019-06-25 {
@@ -159,6 +174,58 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
     }
     description
       "Bag dhcpd intf srg role";
+  }
+
+  typedef Bag-dhcpd-base-mode {
+    type enumeration {
+      enum "base" {
+        value 0;
+        description
+          "Base";
+      }
+      enum "relay" {
+        value 1;
+        description
+          "Relay";
+      }
+      enum "snoop" {
+        value 2;
+        description
+          "Snoop";
+      }
+      enum "server" {
+        value 3;
+        description
+          "Server";
+      }
+      enum "proxy" {
+        value 4;
+        description
+          "Proxy";
+      }
+      enum "dynamic" {
+        value 5;
+        description
+          "Dynamic";
+      }
+      enum "client" {
+        value 6;
+        description
+          "Client";
+      }
+      enum "cnbng" {
+        value 7;
+        description
+          "CNBNG";
+      }
+      enum "max" {
+        value 8;
+        description
+          "Max";
+      }
+    }
+    description
+      "Bag dhcpd base mode";
   }
 
   typedef Bag-dhcpd-proxy-state {
@@ -360,6 +427,53 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
       "String1";
   }
 
+  typedef Bag-dhcpd-snoop-state {
+    type enumeration {
+      enum "init" {
+        value 0;
+        description
+          "Init";
+      }
+      enum "selecting" {
+        value 1;
+        description
+          "Selecting";
+      }
+      enum "requesting" {
+        value 2;
+        description
+          "Requesting";
+      }
+      enum "bound" {
+        value 3;
+        description
+          "Bound";
+      }
+      enum "renewing" {
+        value 4;
+        description
+          "Renewing";
+      }
+      enum "informing" {
+        value 5;
+        description
+          "Informing";
+      }
+      enum "max" {
+        value 6;
+        description
+          "Max";
+      }
+      enum "unkown" {
+        value 7;
+        description
+          "Unknown";
+      }
+    }
+    description
+      "Bag dhcpd snoop state";
+  }
+
   grouping IPV4-DHCPD-RELAY-FILTERED-STATS {
     description
       "DHCP IPv4 filtered statistics";
@@ -476,23 +590,31 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
       description
         "Mac Mismatch Action";
     }
-    leaf-list relay-profile-helper-address {
-      type inet:ipv4-address;
-      max-elements "32";
-      description
-        "Helper addresses";
-    }
     leaf-list relay-profile-helper-vrf {
       type Vrf-string;
       max-elements "32";
       description
         "Helper address vrfs";
     }
-    leaf-list relay-profile-gi-addr {
-      type inet:ipv4-address;
+    list relay-profile-helper-address {
+      max-elements "32";
+      description
+        "Helper addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Helper addresses";
+      }
+    }
+    list relay-profile-gi-addr {
       max-elements "32";
       description
         "Gateway addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Gateway addresses";
+      }
     }
   }
 
@@ -617,29 +739,45 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
       description
         "Lease Limit Count";
     }
-    leaf-list server-profile-dns {
-      type inet:ipv4-address;
+    list server-profile-dns {
       max-elements "9";
       description
         "Server DNS addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Server DNS addresses";
+      }
     }
-    leaf-list server-profile-default-router {
-      type inet:ipv4-address;
+    list server-profile-default-router {
       max-elements "9";
       description
         "Server default addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Server default addresses";
+      }
     }
-    leaf-list server-profile-netbious-name-server {
-      type inet:ipv4-address;
+    list server-profile-netbious-name-server {
       max-elements "9";
       description
         "Server netbios addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Server netbios addresses";
+      }
     }
-    leaf-list server-profile-time-server {
-      type inet:ipv4-address;
+    list server-profile-time-server {
       max-elements "9";
       description
         "Server Time addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Server Time addresses";
+      }
     }
   }
 
@@ -935,7 +1073,7 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
         "VRF name";
     }
     leaf intf-mode {
-      type uint32;
+      type Bag-dhcpd-base-mode;
       description
         "Mode of interface";
     }
@@ -1293,11 +1431,15 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
       description
         "DHCP access L2-interface to client";
     }
-    leaf-list event-history {
-      type uint32;
+    list event-history {
       max-elements "20";
       description
-        "event history";
+        "DHCPv4 Event History";
+      leaf entry {
+        type uint32;
+        description
+          "DHCPv4 Event History";
+      }
     }
   }
 
@@ -1487,23 +1629,31 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
       description
         "Lease limit count";
     }
-    leaf-list profile-helper-address {
-      type inet:ipv4-address;
-      max-elements "8";
-      description
-        "Helper addresses";
-    }
     leaf-list vrf-name {
       type String1;
       max-elements "8";
       description
         "VRF names";
     }
-    leaf-list gi-addr {
-      type inet:ipv4-address;
+    list profile-helper-address {
+      max-elements "8";
+      description
+        "Helper addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Helper addresses";
+      }
+    }
+    list gi-addr {
       max-elements "8";
       description
         "Gateway addresses";
+      leaf entry {
+        type inet:ipv4-address;
+        description
+          "Gateway addresses";
+      }
     }
   }
 
@@ -1622,11 +1772,15 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
       description
         "DHCP L2 bridge name";
     }
-    leaf-list snoop-statistic {
-      type uint64;
+    list snoop-statistic {
       max-elements "45";
       description
         "Public snoop statistics";
+      leaf entry {
+        type uint64;
+        description
+          "Public snoop statistics";
+      }
     }
   }
 
@@ -1710,18 +1864,8 @@ submodule Cisco-IOS-XR-ipv4-dhcpd-oper-sub1 {
       description
         "DHCP iaddr";
     }
-    leaf snoop-binding-client-id {
-      type yang:hex-string;
-      description
-        "DHCP client id";
-    }
-    leaf snoop-binding-client-id-len {
-      type uint8;
-      description
-        "DHCP client id len";
-    }
     leaf snoop-binding-state {
-      type uint8;
+      type Bag-dhcpd-snoop-state;
       description
         "DHCP sm state";
     }

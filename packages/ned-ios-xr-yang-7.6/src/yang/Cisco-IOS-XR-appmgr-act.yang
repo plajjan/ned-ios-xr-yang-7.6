@@ -25,6 +25,16 @@ module Cisco-IOS-XR-appmgr-act {
      Copyright (c) 2020-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-09 {
+    description
+      "Adding patterns and length for strings";
+    semver:module-version "2.0.0";
+  }
+  revision 2021-08-15 {
+    description
+      "Support for process script actions added.";
+    semver:module-version "1.1.0";
+  }
   revision 2021-03-01 {
     description
       "Adding support for uninstall by source.";
@@ -44,7 +54,10 @@ module Cisco-IOS-XR-appmgr-act {
       "Start an application";
     input {
       leaf name {
-        type string;
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
         mandatory true;
         description
           "App name";
@@ -56,7 +69,10 @@ module Cisco-IOS-XR-appmgr-act {
       "Stop an application";
     input {
       leaf name {
-        type string;
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
         mandatory true;
         description
           "App name";
@@ -68,7 +84,10 @@ module Cisco-IOS-XR-appmgr-act {
       "Kill an application";
     input {
       leaf name {
-        type string;
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
         mandatory true;
         description
           "App name";
@@ -122,10 +141,103 @@ module Cisco-IOS-XR-appmgr-act {
       "Uninstall a package by source name.";
     input {
       leaf source {
-        type string;
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
         mandatory true;
         description
           "Source name";
+      }
+    }
+  }
+  rpc appmgr-process-script-activate {
+    description
+      "Activate a process-script";
+    input {
+      leaf name {
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
+        mandatory true;
+        description
+          "Process script name";
+      }
+    }
+  }
+  rpc appmgr-process-script-deactivate {
+    description
+      "Deactivate a process-script";
+    input {
+      leaf name {
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
+        mandatory true;
+        description
+          "Process script name";
+      }
+    }
+  }
+  rpc appmgr-process-script-start {
+    description
+      "Start a process-script";
+    input {
+      leaf name {
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
+        mandatory true;
+        description
+          "Process script name";
+      }
+    }
+  }
+  rpc appmgr-process-script-stop {
+    description
+      "Stop a process-script";
+    input {
+      leaf name {
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
+        mandatory true;
+        description
+          "Process script name";
+      }
+    }
+  }
+  rpc appmgr-process-script-kill {
+    description
+      "Kill a process-script";
+    input {
+      leaf name {
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
+        mandatory true;
+        description
+          "Process script name";
+      }
+    }
+  }
+  rpc appmgr-process-script-restart {
+    description
+      "Restart a process-script";
+    input {
+      leaf name {
+        type string {
+          length "1..255";
+          pattern "^[a-zA-Z0-9][a-zA-Z0-9_.-]+$";
+        }
+        mandatory true;
+        description
+          "Process script name";
       }
     }
   }

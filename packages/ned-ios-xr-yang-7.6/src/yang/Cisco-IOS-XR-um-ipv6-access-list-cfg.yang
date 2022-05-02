@@ -37,9 +37,29 @@ module Cisco-IOS-XR-um-ipv6-access-list-cfg {
      All rights reserved.
     ";
 
+  revision 2021-09-20 {
+    description
+      "Added container icmp-on for ace
+       2021-07-28
+         Added new police units";
+    semver:module-version "3.1.0";
+  }
+  revision 2021-06-03 {
+    description
+      "Added container icmp-off
+       2021-04-07
+          Added leaf fragment-type.
+       2021-03-17
+          Adding new protocols - vrrp, rsvp
+       2021-02-24
+          Added container police";
+    semver:module-version "3.0.0";
+  }
   revision 2021-01-12 {
     description
-      "Added udf support";
+      "Added udf support
+       2020-12-03
+           Limit length of remark string";
     semver:module-version "2.0.0";
   }
   revision 2019-06-10 {
@@ -97,6 +117,11 @@ module Cisco-IOS-XR-um-ipv6-access-list-cfg {
       "Check packet length";
   }
 
+  feature ipv6_acl_is_frag_flags_supported {
+    description
+      "Match fragment type for a packet";
+  }
+
   feature ipv6_acl_is_udf_supported {
     description
       "Set User Defined Fields";
@@ -147,7 +172,9 @@ module Cisco-IOS-XR-um-ipv6-access-list-cfg {
     uses dscp;
     uses packet-length;
     uses ttl;
+    uses fragment-type;
     uses udf;
+    uses police;
   }
 
   grouping source-address {
@@ -615,29 +642,121 @@ module Cisco-IOS-XR-um-ipv6-access-list-cfg {
   }
 
   grouping udf {
-    list udf {
-      if-feature "ipv6_acl_is_udf_supported";
-      key "udf-name";
-      max-elements "8";
+    container udf-entries {
       description
-        "Set User Defined Fields on this entry";
-      leaf udf-name {
-        type string {
-          length "1..16";
+        "User Defined Fields list";
+      list udf {
+        if-feature "ipv6_acl_is_udf_supported";
+        key "udf-name";
+        max-elements "8";
+        description
+          "Set User Defined Fields on this entry";
+        leaf udf-name {
+          type string {
+            length "1..16";
+          }
+          description
+            "UDF name";
         }
-        description
-          "UDF name";
+        leaf udf-value {
+          type xr2:Hex-integer;
+          description
+            "UDF value";
+        }
+        leaf udf-mask {
+          type xr2:Hex-integer;
+          description
+            "UDF mask";
+        }
       }
-      leaf udf-value {
-        type xr2:Hex-integer;
+    }
+  }
+
+  grouping police {
+    container police {
+      description
+        "Set Police value and unit on this entry";
+      leaf value {
+        type uint32 {
+          range "0..4294967295";
+        }
+        must "../unit";
         description
-          "UDF value";
+          "Police value";
       }
-      leaf udf-mask {
-        type xr2:Hex-integer;
+      leaf unit {
+        type string {
+          pattern "pps|bps|kbps|mbps|gbps";
+        }
+        must "../value";
         description
-          "UDF mask";
+          "Unit for police value. Currently only pps (packets per second)
+           is supported";
       }
+      leaf peak-rate {
+        type uint32 {
+          range "0..4294967295";
+        }
+        must "../value and ../peak-unit";
+        description
+          "Police peak-rate value on this entry";
+      }
+      leaf peak-unit {
+        type string {
+          pattern "pps|bps|kbps|mbps|gbps";
+        }
+        must "../peak-rate";
+        description
+          "Unit for peak-rate value. Currently only pps (packets per second)
+           is supported";
+      }
+      leaf priority {
+        type enumeration {
+          enum "critical" {
+            value 0;
+            description
+              "punt priority critical";
+          }
+          enum "high" {
+            value 1;
+            description
+              "punt priority high";
+          }
+          enum "low" {
+            value 2;
+            description
+              "punt priority low";
+          }
+          enum "medium" {
+            value 3;
+            description
+              "punt priority medium";
+          }
+        }
+        must "../value";
+        description
+          "Set Priority option on this entry";
+      }
+    }
+  }
+
+  grouping fragment-type {
+    leaf fragment-type {
+      if-feature "ipv6_acl_is_frag_flags_supported";
+      type enumeration {
+        enum "first-fragment" {
+          value 1;
+          description
+            "Match first fragment flag";
+        }
+        enum "is-fragment" {
+          value 2;
+          description
+            "Match is-fragment flag";
+        }
+      }
+      description
+        "Fragment type for a packet";
     }
   }
 
@@ -838,6 +957,11 @@ module Cisco-IOS-XR-um-ipv6-access-list-cfg {
             "Set access-list logging rate (num. logs per second)";
         }
       }
+      container icmp-off {
+        presence "Indicates a icmp-off node is configured.";
+        description
+          "Do not generate the ICMP message";
+      }
     }
     container access-lists {
       description
@@ -878,6 +1002,11 @@ module Cisco-IOS-XR-um-ipv6-access-list-cfg {
                 presence "Do not generate the ICMP message";
                 description
                   "Do not generate the ICMP message";
+              }
+              container icmp-on {
+                presence "Generate the ICMP message";
+                description
+                  "Generate the ICMP message";
               }
             }
             container permit {

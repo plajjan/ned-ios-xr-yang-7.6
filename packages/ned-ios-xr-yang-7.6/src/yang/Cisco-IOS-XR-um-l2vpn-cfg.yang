@@ -46,12 +46,33 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2021 by Cisco Systems, Inc.
+     Copyright (c) 2021-2022 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2022-03-08 {
+    description
+      "Added list interface under vlan-switch bridge-domain
+       2021-11-17
+         Added container segment-routing-srv6-evis under bridge-domains";
+    semver:module-version "2.1.0";
+  }
   revision 2021-10-11 {
     description
-      "Re-adjusted mac node under vlan-switch hierarchy";
+      "Re-adjusted mac node under vlan-switch hierarchy
+       2021-07-29
+          Re-adjusted load-balancing and ipv4 under encapsulation/mpls rather than redundancy
+       2021-07-22
+          Added presence statement for container group under container
+        split-horizon
+       2021-07-21
+          aging, learning, withdraw, secure, port-down, static-addresses and access-pw nodes are moved up 1 hierarchy
+        under mac rather than aging
+       2021-07-15
+          Re-adjusted dhcp,igmp,mac,mld,mpls,pw-class,split-horizon,static-mac-address and
+        storm-control container hierarchy instead of under flooding
+       2021-06-30
+          Replaced container disable with disable-deprecated;
+        Added a new container enforce-mtu-match";
     semver:module-version "2.0.0";
   }
   revision 2021-05-10 {
@@ -68,6 +89,11 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
   feature l2vpn_evpn_is_bundle_intf {
     description
       "l2vpn evpn is bundle intf";
+  }
+
+  feature l2vpn_evpn_ves_subif_supported {
+    description
+      "l2vpn evpn ves subif supported";
   }
 
   feature l2vpn_platform_srv6_supported {
@@ -580,6 +606,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
           }
         }
         container virtual-ethernet-segment {
+          if-feature "l2vpn_evpn_ves_subif_supported";
           presence "Indicates a virtual-ethernet-segment node is configured.";
           description
             "Virtual Ethernet Segment configuration commands";
@@ -600,6 +627,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
       }
     }
     container virtual {
+      if-feature "l2vpn_evpn_ves_subif_supported";
       description
         "Virtual Access Segment to EVPN";
       container neighbor {
@@ -985,6 +1013,72 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
           }
         }
       }
+      container access-evi {
+        presence "Indicates a access-evi node is configured.";
+        description
+          "Virtual access EVI interface";
+        container ethernet-segment {
+          presence "Indicates a ethernet-segment node is configured.";
+          description
+            "Ethernet Segment configuration commands";
+          container identifier {
+            description
+              "Ethernet Segment identifier (ESI)";
+            container type {
+              description
+                "ESI Type";
+              container zero {
+                presence "Indicates a zero node is configured.";
+                description
+                  "Type 0 (arbitrary 9-octet ESI value)";
+                leaf bytes-1 {
+                  type xr:Hex-integer-8;
+                  mandatory true;
+                  description
+                    "1st Byte";
+                }
+                leaf bytes-23 {
+                  type xr:Hex-integer-16;
+                  units "byte";
+                  mandatory true;
+                  description
+                    "2nd and 3rd Bytes";
+                }
+                leaf bytes-45 {
+                  type xr:Hex-integer-16;
+                  units "byte";
+                  mandatory true;
+                  description
+                    "4th and 5th Bytes";
+                }
+                leaf bytes-67 {
+                  type xr:Hex-integer-16;
+                  units "byte";
+                  mandatory true;
+                  description
+                    "6th and 7th Bytes";
+                }
+                leaf bytes-89 {
+                  type xr:Hex-integer-16;
+                  units "byte";
+                  mandatory true;
+                  description
+                    "8th and 9th Bytes";
+                }
+              }
+            }
+          }
+          container bgp {
+            description
+              "Configure BGP";
+            leaf route-target {
+              type yang:mac-address;
+              description
+                "Set ES-Import Route Target";
+            }
+          }
+        }
+      }
     }
     container bgp {
       presence "Indicates a bgp node is configured.";
@@ -1000,7 +1094,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                 "Two Byte AS Number";
             }
           }
-          must "not(../four-byte-as-number or ../ipv4-address)";
+          must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
           description
             "Two Byte AS Number";
         }
@@ -1022,7 +1116,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                 "Four Byte AS number";
             }
           }
-          must "not(../two-byte-as-number or ../ipv4-address)";
+          must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
           description
             "Four Byte AS number";
         }
@@ -1039,7 +1133,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
         }
         leaf ipv4-address {
           type inet:ipv4-address-no-zone;
-          must "not(../two-byte-as-number or ../four-byte-as-number)";
+          must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
           description
             "IP address";
         }
@@ -1268,7 +1362,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                         "Two Byte AS Number";
                     }
                   }
-                  must "not(../four-byte-as-number or ../ipv4-address)";
+                  must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
                   description
                     "Two Byte AS Number";
                 }
@@ -1290,7 +1384,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                         "Four Byte AS number";
                     }
                   }
-                  must "not(../two-byte-as-number or ../ipv4-address)";
+                  must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
                   description
                     "Four Byte AS number";
                 }
@@ -1307,7 +1401,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                 }
                 leaf ipv4-address {
                   type inet:ipv4-address-no-zone;
-                  must "not(../two-byte-as-number or ../four-byte-as-number)";
+                  must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
                   description
                     "IP address";
                 }
@@ -1678,21 +1772,31 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
               presence "Indicates a ignore-mtu-mismatch node is configured.";
               description
                 "Ignore mismatch of local and remote MTUs";
-              container disable {
-                presence "Indicates a disable node is configured.";
+              container disable-deprecated {
+                presence "Indicates a disable-deprecated node is configured.";
                 description
-                  "Disables ingoring mismatch of local and remote MTUs";
+                  "Disables ingoring mismatch of local and remote MTUs (deprecated)";
               }
+            }
+            container enforce-mtu-match {
+              presence "Indicates a enforce-mtu-match node is configured.";
+              description
+                "Enforce matching of local and remote MTUs";
             }
             container transmit-mtu-zero {
               presence "Indicates a transmit-mtu-zero node is configured.";
               description
                 "Transmit MTU zero to remote instead of actual local MTU";
-              container disable {
-                presence "Indicates a disable node is configured.";
+              container disable-deprecated {
+                presence "Indicates a disable-deprecated node is configured.";
                 description
-                  "Disables transmitting MTU zero to remote instead of actual local MTU";
+                  "Disables transmitting MTU zero to remote instead of actual local MTU (deprecated)";
               }
+            }
+            container transmit-l2-mtu {
+              presence "Indicates a transmit-l2-mtu node is configured.";
+              description
+                "Transmit L2 MTU of attachment circuit";
             }
             container re-origination-disable {
               presence "Indicates a re-origination-disable node is configured.";
@@ -1716,6 +1820,16 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                 presence "Indicates a source-connected node is configured.";
                 description
                   "Multicast traffic source connected";
+              }
+            }
+            container proxy {
+              presence "Indicates a proxy node is configured.";
+              description
+                "Configure EVPN Instance Proxy";
+              container igmp-snooping {
+                presence "Indicates a igmp-snooping node is configured.";
+                description
+                  "Proxy mode for IGMP-Snooping (selective multicast)";
               }
             }
             container etree {
@@ -1789,7 +1903,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Two Byte AS Number";
                   }
                 }
-                must "not(../four-byte-as-number or ../ipv4-address)";
+                must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
                 description
                   "Two Byte AS Number";
               }
@@ -1811,7 +1925,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Four Byte AS number";
                   }
                 }
-                must "not(../two-byte-as-number or ../ipv4-address)";
+                must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
                 description
                   "Four Byte AS number";
               }
@@ -1828,7 +1942,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
               }
               leaf ipv4-address {
                 type inet:ipv4-address-no-zone;
-                must "not(../two-byte-as-number or ../four-byte-as-number)";
+                must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
                 description
                   "IP address";
               }
@@ -2240,7 +2354,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Two Byte AS Number";
                   }
                 }
-                must "not(../four-byte-as-number or ../ipv4-address)";
+                must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
                 description
                   "Two Byte AS Number";
               }
@@ -2262,7 +2376,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Four Byte AS number";
                   }
                 }
-                must "not(../two-byte-as-number or ../ipv4-address)";
+                must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
                 description
                   "Four Byte AS number";
               }
@@ -2279,7 +2393,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
               }
               leaf ipv4-address {
                 type inet:ipv4-address-no-zone;
-                must "not(../two-byte-as-number or ../four-byte-as-number)";
+                must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
                 description
                   "IP address";
               }
@@ -2650,21 +2764,31 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             presence "Indicates a ignore-mtu-mismatch node is configured.";
             description
               "Ignore mismatch of local and remote MTUs";
-            container disable {
-              presence "Indicates a disable node is configured.";
+            container disable-deprecated {
+              presence "Indicates a disable-deprecated node is configured.";
               description
-                "Disables ingoring mismatch of local and remote MTUs";
+                "Disables ingoring mismatch of local and remote MTUs (deprecated)";
             }
+          }
+          container enforce-mtu-match {
+            presence "Indicates a enforce-mtu-match node is configured.";
+            description
+              "Enforce matching of local and remote MTUs";
           }
           container transmit-mtu-zero {
             presence "Indicates a transmit-mtu-zero node is configured.";
             description
               "Transmit MTU zero to remote instead of actual local MTU";
-            container disable {
-              presence "Indicates a disable node is configured.";
+            container disable-deprecated {
+              presence "Indicates a disable-deprecated node is configured.";
               description
-                "Disables transmitting MTU zero to remote instead of actual local MTU";
+                "Disables transmitting MTU zero to remote instead of actual local MTU (deprecated)";
             }
+          }
+          container transmit-l2-mtu {
+            presence "Indicates a transmit-l2-mtu node is configured.";
+            description
+              "Transmit L2 MTU of attachment circuit";
           }
           container re-origination-disable {
             presence "Indicates a re-origination-disable node is configured.";
@@ -2688,6 +2812,16 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
               presence "Indicates a source-connected node is configured.";
               description
                 "Multicast traffic source connected";
+            }
+          }
+          container proxy {
+            presence "Indicates a proxy node is configured.";
+            description
+              "Configure EVPN Instance Proxy";
+            container igmp-snooping {
+              presence "Indicates a igmp-snooping node is configured.";
+              description
+                "Proxy mode for IGMP-Snooping (selective multicast)";
             }
           }
           container etree {
@@ -2756,7 +2890,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     "Two Byte AS Number";
                 }
               }
-              must "not(../four-byte-as-number or ../ipv4-address)";
+              must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
               description
                 "Two Byte AS Number";
             }
@@ -2778,7 +2912,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     "Four Byte AS number";
                 }
               }
-              must "not(../two-byte-as-number or ../ipv4-address)";
+              must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
               description
                 "Four Byte AS number";
             }
@@ -2795,7 +2929,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             }
             leaf ipv4-address {
               type inet:ipv4-address-no-zone;
-              must "not(../two-byte-as-number or ../four-byte-as-number)";
+              must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
               description
                 "IP address";
             }
@@ -3166,21 +3300,31 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
           presence "Indicates a ignore-mtu-mismatch node is configured.";
           description
             "Ignore mismatch of local and remote MTUs";
-          container disable {
-            presence "Indicates a disable node is configured.";
+          container disable-deprecated {
+            presence "Indicates a disable-deprecated node is configured.";
             description
-              "Disables ingoring mismatch of local and remote MTUs";
+              "Disables ingoring mismatch of local and remote MTUs (deprecated)";
           }
+        }
+        container enforce-mtu-match {
+          presence "Indicates a enforce-mtu-match node is configured.";
+          description
+            "Enforce matching of local and remote MTUs";
         }
         container transmit-mtu-zero {
           presence "Indicates a transmit-mtu-zero node is configured.";
           description
             "Transmit MTU zero to remote instead of actual local MTU";
-          container disable {
-            presence "Indicates a disable node is configured.";
+          container disable-deprecated {
+            presence "Indicates a disable-deprecated node is configured.";
             description
-              "Disables transmitting MTU zero to remote instead of actual local MTU";
+              "Disables transmitting MTU zero to remote instead of actual local MTU (deprecated)";
           }
+        }
+        container transmit-l2-mtu {
+          presence "Indicates a transmit-l2-mtu node is configured.";
+          description
+            "Transmit L2 MTU of attachment circuit";
         }
         container re-origination-disable {
           presence "Indicates a re-origination-disable node is configured.";
@@ -3204,6 +3348,16 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             presence "Indicates a source-connected node is configured.";
             description
               "Multicast traffic source connected";
+          }
+        }
+        container proxy {
+          presence "Indicates a proxy node is configured.";
+          description
+            "Configure EVPN Instance Proxy";
+          container igmp-snooping {
+            presence "Indicates a igmp-snooping node is configured.";
+            description
+              "Proxy mode for IGMP-Snooping (selective multicast)";
           }
         }
         container etree {
@@ -3278,7 +3432,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Two Byte AS Number";
                   }
                 }
-                must "not(../four-byte-as-number or ../ipv4-address)";
+                must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
                 description
                   "Two Byte AS Number";
               }
@@ -3300,7 +3454,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Four Byte AS number";
                   }
                 }
-                must "not(../two-byte-as-number or ../ipv4-address)";
+                must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
                 description
                   "Four Byte AS number";
               }
@@ -3317,7 +3471,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
               }
               leaf ipv4-address {
                 type inet:ipv4-address-no-zone;
-                must "not(../two-byte-as-number or ../four-byte-as-number)";
+                must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
                 description
                   "IP address";
               }
@@ -3688,21 +3842,31 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             presence "Indicates a ignore-mtu-mismatch node is configured.";
             description
               "Ignore mismatch of local and remote MTUs";
-            container disable {
-              presence "Indicates a disable node is configured.";
+            container disable-deprecated {
+              presence "Indicates a disable-deprecated node is configured.";
               description
-                "Disables ingoring mismatch of local and remote MTUs";
+                "Disables ingoring mismatch of local and remote MTUs (deprecated)";
             }
+          }
+          container enforce-mtu-match {
+            presence "Indicates a enforce-mtu-match node is configured.";
+            description
+              "Enforce matching of local and remote MTUs";
           }
           container transmit-mtu-zero {
             presence "Indicates a transmit-mtu-zero node is configured.";
             description
               "Transmit MTU zero to remote instead of actual local MTU";
-            container disable {
-              presence "Indicates a disable node is configured.";
+            container disable-deprecated {
+              presence "Indicates a disable-deprecated node is configured.";
               description
-                "Disables transmitting MTU zero to remote instead of actual local MTU";
+                "Disables transmitting MTU zero to remote instead of actual local MTU (deprecated)";
             }
+          }
+          container transmit-l2-mtu {
+            presence "Indicates a transmit-l2-mtu node is configured.";
+            description
+              "Transmit L2 MTU of attachment circuit";
           }
           container re-origination-disable {
             presence "Indicates a re-origination-disable node is configured.";
@@ -3726,6 +3890,16 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
               presence "Indicates a source-connected node is configured.";
               description
                 "Multicast traffic source connected";
+            }
+          }
+          container proxy {
+            presence "Indicates a proxy node is configured.";
+            description
+              "Configure EVPN Instance Proxy";
+            container igmp-snooping {
+              presence "Indicates a igmp-snooping node is configured.";
+              description
+                "Proxy mode for IGMP-Snooping (selective multicast)";
             }
           }
           container etree {
@@ -3794,7 +3968,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     "Two Byte AS Number";
                 }
               }
-              must "not(../four-byte-as-number or ../ipv4-address)";
+              must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
               description
                 "Two Byte AS Number";
             }
@@ -3816,7 +3990,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     "Four Byte AS number";
                 }
               }
-              must "not(../two-byte-as-number or ../ipv4-address)";
+              must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
               description
                 "Four Byte AS number";
             }
@@ -3833,7 +4007,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             }
             leaf ipv4-address {
               type inet:ipv4-address-no-zone;
-              must "not(../two-byte-as-number or ../four-byte-as-number)";
+              must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
               description
                 "IP address";
             }
@@ -4204,21 +4378,31 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
           presence "Indicates a ignore-mtu-mismatch node is configured.";
           description
             "Ignore mismatch of local and remote MTUs";
-          container disable {
-            presence "Indicates a disable node is configured.";
+          container disable-deprecated {
+            presence "Indicates a disable-deprecated node is configured.";
             description
-              "Disables ingoring mismatch of local and remote MTUs";
+              "Disables ingoring mismatch of local and remote MTUs (deprecated)";
           }
+        }
+        container enforce-mtu-match {
+          presence "Indicates a enforce-mtu-match node is configured.";
+          description
+            "Enforce matching of local and remote MTUs";
         }
         container transmit-mtu-zero {
           presence "Indicates a transmit-mtu-zero node is configured.";
           description
             "Transmit MTU zero to remote instead of actual local MTU";
-          container disable {
-            presence "Indicates a disable node is configured.";
+          container disable-deprecated {
+            presence "Indicates a disable-deprecated node is configured.";
             description
-              "Disables transmitting MTU zero to remote instead of actual local MTU";
+              "Disables transmitting MTU zero to remote instead of actual local MTU (deprecated)";
           }
+        }
+        container transmit-l2-mtu {
+          presence "Indicates a transmit-l2-mtu node is configured.";
+          description
+            "Transmit L2 MTU of attachment circuit";
         }
         container re-origination-disable {
           presence "Indicates a re-origination-disable node is configured.";
@@ -4242,6 +4426,16 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             presence "Indicates a source-connected node is configured.";
             description
               "Multicast traffic source connected";
+          }
+        }
+        container proxy {
+          presence "Indicates a proxy node is configured.";
+          description
+            "Configure EVPN Instance Proxy";
+          container igmp-snooping {
+            presence "Indicates a igmp-snooping node is configured.";
+            description
+              "Proxy mode for IGMP-Snooping (selective multicast)";
           }
         }
         container etree {
@@ -4316,7 +4510,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Two Byte AS Number";
                   }
                 }
-                must "not(../four-byte-as-number or ../ipv4-address)";
+                must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
                 description
                   "Two Byte AS Number";
               }
@@ -4338,7 +4532,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                       "Four Byte AS number";
                   }
                 }
-                must "not(../two-byte-as-number or ../ipv4-address)";
+                must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
                 description
                   "Four Byte AS number";
               }
@@ -4355,7 +4549,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
               }
               leaf ipv4-address {
                 type inet:ipv4-address-no-zone;
-                must "not(../two-byte-as-number or ../four-byte-as-number)";
+                must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
                 description
                   "IP address";
               }
@@ -4707,26 +4901,56 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             presence "Indicates a ignore-mtu-mismatch node is configured.";
             description
               "Ignore mismatch of local and remote MTUs";
-            container disable {
-              presence "Indicates a disable node is configured.";
+            container disable-deprecated {
+              presence "Indicates a disable-deprecated node is configured.";
               description
-                "Disables ingoring mismatch of local and remote MTUs";
+                "Disables ingoring mismatch of local and remote MTUs (deprecated)";
             }
+          }
+          container enforce-mtu-match {
+            presence "Indicates a enforce-mtu-match node is configured.";
+            description
+              "Enforce matching of local and remote MTUs";
           }
           container transmit-mtu-zero {
             presence "Indicates a transmit-mtu-zero node is configured.";
             description
               "Transmit MTU zero to remote instead of actual local MTU";
-            container disable {
-              presence "Indicates a disable node is configured.";
+            container disable-deprecated {
+              presence "Indicates a disable-deprecated node is configured.";
               description
-                "Disables transmitting MTU zero to remote instead of actual local MTU";
+                "Disables transmitting MTU zero to remote instead of actual local MTU (deprecated)";
             }
+          }
+          container transmit-l2-mtu {
+            presence "Indicates a transmit-l2-mtu node is configured.";
+            description
+              "Transmit L2 MTU of attachment circuit";
           }
           container re-origination-disable {
             presence "Indicates a re-origination-disable node is configured.";
             description
               "Disable route re-origination";
+          }
+          container multicast {
+            presence "Indicates a multicast node is configured.";
+            description
+              "Configure EVPN Instance Multicast";
+            container source-connected {
+              presence "Indicates a source-connected node is configured.";
+              description
+                "Multicast traffic source connected";
+            }
+          }
+          container proxy {
+            presence "Indicates a proxy node is configured.";
+            description
+              "Configure EVPN Instance Proxy";
+            container igmp-snooping {
+              presence "Indicates a igmp-snooping node is configured.";
+              description
+                "Proxy mode for IGMP-Snooping (selective multicast)";
+            }
           }
           container bvi-coupled-mode {
             presence "Indicates a bvi-coupled-mode node is configured.";
@@ -4763,7 +4987,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     "Two Byte AS Number";
                 }
               }
-              must "not(../four-byte-as-number or ../ipv4-address)";
+              must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
               description
                 "Two Byte AS Number";
             }
@@ -4785,7 +5009,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     "Four Byte AS number";
                 }
               }
-              must "not(../two-byte-as-number or ../ipv4-address)";
+              must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
               description
                 "Four Byte AS number";
             }
@@ -4802,7 +5026,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             }
             leaf ipv4-address {
               type inet:ipv4-address-no-zone;
-              must "not(../two-byte-as-number or ../four-byte-as-number)";
+              must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
               description
                 "IP address";
             }
@@ -5154,26 +5378,56 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
           presence "Indicates a ignore-mtu-mismatch node is configured.";
           description
             "Ignore mismatch of local and remote MTUs";
-          container disable {
-            presence "Indicates a disable node is configured.";
+          container disable-deprecated {
+            presence "Indicates a disable-deprecated node is configured.";
             description
-              "Disables ingoring mismatch of local and remote MTUs";
+              "Disables ingoring mismatch of local and remote MTUs (deprecated)";
           }
+        }
+        container enforce-mtu-match {
+          presence "Indicates a enforce-mtu-match node is configured.";
+          description
+            "Enforce matching of local and remote MTUs";
         }
         container transmit-mtu-zero {
           presence "Indicates a transmit-mtu-zero node is configured.";
           description
             "Transmit MTU zero to remote instead of actual local MTU";
-          container disable {
-            presence "Indicates a disable node is configured.";
+          container disable-deprecated {
+            presence "Indicates a disable-deprecated node is configured.";
             description
-              "Disables transmitting MTU zero to remote instead of actual local MTU";
+              "Disables transmitting MTU zero to remote instead of actual local MTU (deprecated)";
           }
+        }
+        container transmit-l2-mtu {
+          presence "Indicates a transmit-l2-mtu node is configured.";
+          description
+            "Transmit L2 MTU of attachment circuit";
         }
         container re-origination-disable {
           presence "Indicates a re-origination-disable node is configured.";
           description
             "Disable route re-origination";
+        }
+        container multicast {
+          presence "Indicates a multicast node is configured.";
+          description
+            "Configure EVPN Instance Multicast";
+          container source-connected {
+            presence "Indicates a source-connected node is configured.";
+            description
+              "Multicast traffic source connected";
+          }
+        }
+        container proxy {
+          presence "Indicates a proxy node is configured.";
+          description
+            "Configure EVPN Instance Proxy";
+          container igmp-snooping {
+            presence "Indicates a igmp-snooping node is configured.";
+            description
+              "Proxy mode for IGMP-Snooping (selective multicast)";
+          }
         }
         container bvi-coupled-mode {
           presence "Indicates a bvi-coupled-mode node is configured.";
@@ -5208,10 +5462,20 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
       description
         "Ignore mismatch of local and remote MTUs";
     }
+    container enforce-mtu-match {
+      presence "Indicates a enforce-mtu-match node is configured.";
+      description
+        "Enforce matching of local and remote MTUs";
+    }
     container transmit-mtu-zero {
       presence "Indicates a transmit-mtu-zero node is configured.";
       description
         "Transmit MTU zero to remote instead of actual local MTU";
+    }
+    container transmit-l2-mtu {
+      presence "Indicates a transmit-l2-mtu node is configured.";
+      description
+        "Transmit L2 MTU of attachment circuit";
     }
   }
   container generic-interface-lists {
@@ -5305,6 +5569,25 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     }
                     description
                       "Ethernet VPN identifier";
+                  }
+                }
+              }
+              container segment-routing-srv6-evis {
+                description
+                  "Ethernet VPN identifier for srv6";
+                list evi {
+                  key "vpn-id";
+                  description
+                    "Ethernet VPN identifier for srv6";
+                  leaf vpn-id {
+                    type uint32 {
+                      range "1..65534" {
+                        description
+                          "Ethernet VPN ID to set";
+                      }
+                    }
+                    description
+                      "Ethernet VPN identifier for srv6";
                   }
                 }
               }
@@ -6015,6 +6298,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     description
                       "Configure split-horizon group";
                     container group {
+                      presence "Indicates a group node is configured.";
                       description
                         "Configure split-horizon group";
                     }
@@ -6122,7 +6406,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                                 "Two Byte AS number";
                             }
                           }
-                          must "not(../four-byte-as-number or ../ipv4-address)";
+                          must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
                           description
                             "Two Byte AS number";
                         }
@@ -6144,7 +6428,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                                 "Four Byte AS number";
                             }
                           }
-                          must "not(../two-byte-as-number or ../ipv4-address)";
+                          must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
                           description
                             "Four Byte AS number";
                         }
@@ -6161,7 +6445,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                         }
                         leaf ipv4-address {
                           type inet:ipv4-address-no-zone;
-                          must "not(../two-byte-as-number or ../four-byte-as-number)";
+                          must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
                           description
                             "IP address";
                         }
@@ -6498,7 +6782,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                                     "Two Byte AS number";
                                 }
                               }
-                              must "not(../ipv4-address)";
+                              must "not(../ipv4-address) and ../two-byte-as-assigned-number";
                               description
                                 "Two Byte AS number";
                             }
@@ -6515,7 +6799,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                             }
                             leaf ipv4-address {
                               type inet:ipv4-address-no-zone;
-                              must "not(../two-byte-as-number)";
+                              must "not(../two-byte-as-number) and ../ipv4-address-assigned-number";
                               description
                                 "IP address";
                             }
@@ -6870,181 +7154,181 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                         "Absolute aging type";
                     }
                   }
-                  container static-addresses {
+                }
+                container static-addresses {
+                  description
+                    "Static MAC address for filtering";
+                  list static-address {
+                    must "drop";
+                    key "mac-address";
                     description
                       "Static MAC address for filtering";
-                    list static-address {
-                      must "drop";
-                      key "mac-address";
+                    leaf mac-address {
+                      type yang:mac-address;
                       description
                         "Static MAC address for filtering";
-                      leaf mac-address {
-                        type yang:mac-address;
-                        description
-                          "Static MAC address for filtering";
-                      }
-                      container drop {
-                        presence "Indicates a drop node is configured.";
-                        description
-                          "Drop matching packets";
-                      }
+                    }
+                    container drop {
+                      presence "Indicates a drop node is configured.";
+                      description
+                        "Drop matching packets";
                     }
                   }
-                  container learning {
+                }
+                container learning {
+                  description
+                    "MAC learning";
+                  container disable {
+                    presence "Indicates a disable node is configured.";
                     description
-                      "MAC learning";
+                      "Disable MAC learning";
+                  }
+                }
+                container withdraw {
+                  description
+                    "MAC withdraw";
+                  container disable {
+                    presence "Indicates a disable node is configured.";
+                    description
+                      "Disable MAC withdraw";
+                  }
+                  container access-pw {
+                    description
+                      "MAC withdraw sent to Access PWs ";
                     container disable {
                       presence "Indicates a disable node is configured.";
                       description
-                        "Disable MAC learning";
+                        "Disable MAC withdraw on Access PW";
                     }
                   }
-                  container withdraw {
+                  container relay {
+                    presence "Indicates a relay node is configured.";
                     description
-                      "MAC withdraw";
+                      "MAC withdraw relayed to Access PWs ";
+                  }
+                  container state-down {
+                    must "not(../optimize)";
+                    presence "Indicates a state-down node is configured.";
+                    description
+                      "MAC withdraw sent on bridge port down";
+                  }
+                  container optimize {
+                    must "not(../state-down)";
+                    presence "Indicates a optimize node is configured.";
+                    description
+                      "Optimized LDP MAC withdraw (when port goes down)";
+                  }
+                }
+                container limit {
+                  description
+                    "MAC-Limit configuration commands";
+                  leaf maximum {
+                    type uint32 {
+                      range "0..4294967295" {
+                        description
+                          "Number of MAC addresses after which MAC limit action is taken";
+                      }
+                    }
+                    description
+                      "Number of MAC addresses after which MAC limit action is taken";
+                  }
+                  container action {
+                    description
+                      "MAC address limit enforcement action";
+                    container flood {
+                      must "not(../no-flood or ../shutdown)";
+                      presence "Indicates a flood node is configured.";
+                      description
+                        "Stop learning but continue flooding";
+                    }
+                    container no-flood {
+                      must "not(../flood or ../shutdown)";
+                      presence "Indicates a no-flood node is configured.";
+                      description
+                        "Stop learning and stop flooding";
+                    }
+                    container shutdown {
+                      must "not(../flood or ../no-flood)";
+                      presence "Indicates a shutdown node is configured.";
+                      description
+                        "Stop forwarding";
+                    }
+                  }
+                  container notification {
+                    description
+                      "MAC address limit notification action";
+                    container trap {
+                      must "not(../both or ../none)";
+                      presence "Indicates a trap node is configured.";
+                      description
+                        "Generate SNMP trap";
+                    }
+                    container both {
+                      must "not(../trap or ../none)";
+                      presence "Indicates a both node is configured.";
+                      description
+                        "Generate syslog message and SNMP trap";
+                    }
+                    container none {
+                      must "not(../trap or ../both)";
+                      presence "Indicates a none node is configured.";
+                      description
+                        "No notification";
+                    }
+                  }
+                }
+                container port-down {
+                  description
+                    "Configure action when port goes down";
+                  container flush {
+                    description
+                      "Configure MAC flush when port goes down";
                     container disable {
                       presence "Indicates a disable node is configured.";
                       description
-                        "Disable MAC withdraw";
-                    }
-                    container access-pw {
-                      description
-                        "MAC withdraw sent to Access PWs ";
-                      container disable {
-                        presence "Indicates a disable node is configured.";
-                        description
-                          "Disable MAC withdraw on Access PW";
-                      }
-                    }
-                    container relay {
-                      presence "Indicates a relay node is configured.";
-                      description
-                        "MAC withdraw relayed to Access PWs ";
-                    }
-                    container state-down {
-                      must "not(../optimize)";
-                      presence "Indicates a state-down node is configured.";
-                      description
-                        "MAC withdraw sent on bridge port down";
-                    }
-                    container optimize {
-                      must "not(../state-down)";
-                      presence "Indicates a optimize node is configured.";
-                      description
-                        "Optimized LDP MAC withdraw (when port goes down)";
+                        "Disable MAC flush when port goes down";
                     }
                   }
-                  container limit {
+                }
+                container secure {
+                  presence "Indicates a secure node is configured.";
+                  description
+                    "MAC Secure configuration commands";
+                  container logging {
+                    presence "Indicates a logging node is configured.";
                     description
-                      "MAC-Limit configuration commands";
-                    leaf maximum {
-                      type uint32 {
-                        range "0..4294967295" {
-                          description
-                            "Number of MAC addresses after which MAC limit action is taken";
-                        }
-                      }
+                      "Enable Logging";
+                  }
+                  container threshold {
+                    presence "Indicates a threshold node is configured.";
+                    description
+                      "Threshold based mac secure";
+                  }
+                  container action {
+                    description
+                      "MAC secure enforcement action";
+                    container none {
+                      must "not(../shutdown)";
+                      presence "Indicates a none node is configured.";
                       description
-                        "Number of MAC addresses after which MAC limit action is taken";
+                        "Forward the violating packet and allow the MAC to be relearned";
                     }
-                    container action {
+                    container shutdown {
+                      must "not(../none)";
+                      presence "Indicates a shutdown node is configured.";
                       description
-                        "MAC address limit enforcement action";
-                      container flood {
-                        must "not(../no-flood or ../shutdown)";
-                        presence "Indicates a flood node is configured.";
-                        description
-                          "Stop learning but continue flooding";
-                      }
-                      container no-flood {
-                        must "not(../flood or ../shutdown)";
-                        presence "Indicates a no-flood node is configured.";
-                        description
-                          "Stop learning and stop flooding";
-                      }
-                      container shutdown {
-                        must "not(../flood or ../no-flood)";
-                        presence "Indicates a shutdown node is configured.";
-                        description
-                          "Stop forwarding";
-                      }
-                    }
-                    container notification {
-                      description
-                        "MAC address limit notification action";
-                      container trap {
-                        must "not(../both or ../none)";
-                        presence "Indicates a trap node is configured.";
-                        description
-                          "Generate SNMP trap";
-                      }
-                      container both {
-                        must "not(../trap or ../none)";
-                        presence "Indicates a both node is configured.";
-                        description
-                          "Generate syslog message and SNMP trap";
-                      }
-                      container none {
-                        must "not(../trap or ../both)";
-                        presence "Indicates a none node is configured.";
-                        description
-                          "No notification";
-                      }
+                        "Shutdown the violating bridge port";
                     }
                   }
-                  container port-down {
+                  leaf shutdown-recovery-timeout {
+                    type uint32 {
+                      range "10..3600" {
+                        description
+                          "Recovery timer in seconds";
+                      }
+                    }
                     description
-                      "Configure action when port goes down";
-                    container flush {
-                      description
-                        "Configure MAC flush when port goes down";
-                      container disable {
-                        presence "Indicates a disable node is configured.";
-                        description
-                          "Disable MAC flush when port goes down";
-                      }
-                    }
-                  }
-                  container secure {
-                    presence "Indicates a secure node is configured.";
-                    description
-                      "MAC Secure configuration commands";
-                    container logging {
-                      presence "Indicates a logging node is configured.";
-                      description
-                        "Enable Logging";
-                    }
-                    container threshold {
-                      presence "Indicates a threshold node is configured.";
-                      description
-                        "Threshold based mac secure";
-                    }
-                    container action {
-                      description
-                        "MAC secure enforcement action";
-                      container none {
-                        must "not(../shutdown)";
-                        presence "Indicates a none node is configured.";
-                        description
-                          "Forward the violating packet and allow the MAC to be relearned";
-                      }
-                      container shutdown {
-                        must "not(../none)";
-                        presence "Indicates a shutdown node is configured.";
-                        description
-                          "Shutdown the violating bridge port";
-                      }
-                    }
-                    leaf shutdown-recovery-timeout {
-                      type uint32 {
-                        range "10..3600" {
-                          description
-                            "Recovery timer in seconds";
-                        }
-                      }
-                      description
-                        "Recovery-timer to automatically revert shutdown action";
-                    }
+                      "Recovery-timer to automatically revert shutdown action";
                   }
                 }
               }
@@ -7109,419 +7393,419 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                           "Disable Unknow Unicast flooding";
                       }
                     }
-                    container static-mac-addresses {
+                  }
+                  container static-mac-addresses {
+                    description
+                      "Static MAC address";
+                    list static-mac-address {
+                      key "mac-address";
                       description
                         "Static MAC address";
-                      list static-mac-address {
-                        key "mac-address";
+                      leaf mac-address {
+                        type yang:mac-address;
                         description
                           "Static MAC address";
-                        leaf mac-address {
-                          type yang:mac-address;
-                          description
-                            "Static MAC address";
-                        }
                       }
                     }
-                    container mpls {
+                  }
+                  container mpls {
+                    description
+                      "MPLS L2VPN PW command";
+                    container static {
                       description
-                        "MPLS L2VPN PW command";
-                      container static {
+                        "MPLS L2VPN static settings";
+                      container label {
                         description
-                          "MPLS L2VPN static settings";
-                        container label {
+                          "MPLS L2VPN static labels";
+                        leaf local {
+                          type uint32 {
+                            range "16..1048575" {
+                              description
+                                "Local pseudowire label";
+                            }
+                          }
+                          must "../remote";
                           description
-                            "MPLS L2VPN static labels";
-                          leaf local {
-                            type uint32 {
-                              range "16..1048575" {
-                                description
-                                  "Local pseudowire label";
-                              }
+                            "Local pseudowire label";
+                        }
+                        leaf remote {
+                          type uint32 {
+                            range "16..1048575" {
+                              description
+                                "Remote pseudowire label";
                             }
-                            must "../remote";
-                            description
-                              "Local pseudowire label";
                           }
-                          leaf remote {
-                            type uint32 {
-                              range "16..1048575" {
-                                description
-                                  "Remote pseudowire label";
-                              }
-                            }
-                            must "../local";
-                            description
-                              "Remote pseudowire label";
-                          }
+                          must "../local";
+                          description
+                            "Remote pseudowire label";
                         }
                       }
                     }
-                    leaf pw-class {
-                      type xr:Cisco-ios-xr-string {
-                        length "1..32" {
-                          description
-                            "Pseudowire-class name";
-                        }
+                  }
+                  leaf pw-class {
+                    type xr:Cisco-ios-xr-string {
+                      length "1..32" {
+                        description
+                          "Pseudowire-class name";
                       }
-                      description
-                        "PW class template name to use for this pseudowire";
                     }
-                    container split-horizon {
+                    description
+                      "PW class template name to use for this pseudowire";
+                  }
+                  container split-horizon {
+                    description
+                      "Configure split horizon group";
+                    container group {
+                      presence "Indicates a group node is configured.";
                       description
                         "Configure split horizon group";
-                      container group {
-                        presence "Indicates a group node is configured.";
+                    }
+                  }
+                  container storm-control {
+                    description
+                      "Storm Control";
+                    container broadcast {
+                      description
+                        "Broadcast Storm Control";
+                      leaf pps {
+                        type uint32 {
+                          range "1..160000" {
+                            description
+                              "storm control pps value";
+                          }
+                        }
                         description
-                          "Configure split horizon group";
+                          "Set the storm control pps";
+                      }
+                      leaf kbps {
+                        type uint32 {
+                          range "64..1280000" {
+                            description
+                              "storm control kbps value";
+                          }
+                        }
+                        description
+                          "Set the storm control kbps";
                       }
                     }
-                    container storm-control {
+                    container multicast {
                       description
-                        "Storm Control";
-                      container broadcast {
+                        "Multicast Storm Control";
+                      leaf pps {
+                        type uint32 {
+                          range "1..160000" {
+                            description
+                              "storm control pps value";
+                          }
+                        }
                         description
-                          "Broadcast Storm Control";
-                        leaf pps {
-                          type uint32 {
-                            range "1..160000" {
-                              description
-                                "storm control pps value";
-                            }
-                          }
-                          description
-                            "Set the storm control pps";
-                        }
-                        leaf kbps {
-                          type uint32 {
-                            range "64..1280000" {
-                              description
-                                "storm control kbps value";
-                            }
-                          }
-                          description
-                            "Set the storm control kbps";
-                        }
+                          "Set the storm control pps";
                       }
-                      container multicast {
+                      leaf kbps {
+                        type uint32 {
+                          range "64..1280000" {
+                            description
+                              "storm control kbps value";
+                          }
+                        }
                         description
-                          "Multicast Storm Control";
-                        leaf pps {
-                          type uint32 {
-                            range "1..160000" {
-                              description
-                                "storm control pps value";
-                            }
-                          }
-                          description
-                            "Set the storm control pps";
-                        }
-                        leaf kbps {
-                          type uint32 {
-                            range "64..1280000" {
-                              description
-                                "storm control kbps value";
-                            }
-                          }
-                          description
-                            "Set the storm control kbps";
-                        }
-                      }
-                      container unknown-unicast {
-                        description
-                          "Unknown-unicast Storm Control";
-                        leaf pps {
-                          type uint32 {
-                            range "1..160000" {
-                              description
-                                "storm control pps value";
-                            }
-                          }
-                          description
-                            "Set the storm control pps";
-                        }
-                        leaf kbps {
-                          type uint32 {
-                            range "64..1280000" {
-                              description
-                                "storm control kbps value";
-                            }
-                          }
-                          description
-                            "Set the storm control kbps";
-                        }
+                          "Set the storm control kbps";
                       }
                     }
-                    container mac {
+                    container unknown-unicast {
                       description
-                        "MAC configuration commands";
-                      container aging {
+                        "Unknown-unicast Storm Control";
+                      leaf pps {
+                        type uint32 {
+                          range "1..160000" {
+                            description
+                              "storm control pps value";
+                          }
+                        }
                         description
-                          "MAC-Aging configuration commands";
-                        leaf time {
-                          type uint32 {
-                            range "300..30000" {
-                              description
-                                "MAC address aging time in seconds";
-                            }
-                          }
-                          description
-                            "Mac aging";
-                        }
-                        container type {
-                          description
-                            "MAC address aging type";
-                          container absolute {
-                            must "not(../inactivity)";
-                            presence "Indicates a absolute node is configured.";
-                            description
-                              "Absolute aging type";
-                          }
-                          container inactivity {
-                            must "not(../absolute)";
-                            presence "Indicates a inactivity node is configured.";
-                            description
-                              "Inactivity aging type";
-                          }
-                        }
+                          "Set the storm control pps";
                       }
-                      container learning {
-                        presence "Indicates a learning node is configured.";
-                        description
-                          "MAC learning";
-                        container disable {
-                          presence "Indicates a disable node is configured.";
-                          description
-                            "Disable MAC learning";
+                      leaf kbps {
+                        type uint32 {
+                          range "64..1280000" {
+                            description
+                              "storm control kbps value";
+                          }
                         }
+                        description
+                          "Set the storm control kbps";
                       }
-                      container limit {
+                    }
+                  }
+                  container mac {
+                    description
+                      "MAC configuration commands";
+                    container aging {
+                      description
+                        "MAC-Aging configuration commands";
+                      leaf time {
+                        type uint32 {
+                          range "300..30000" {
+                            description
+                              "MAC address aging time in seconds";
+                          }
+                        }
                         description
-                          "MAC-Limit configuration commands";
-                        leaf maximum {
-                          type uint32 {
-                            range "0..4294967295" {
-                              description
-                                "Number of MAC addresses after which MAC limit action is taken";
-                            }
-                          }
-                          description
-                            "Number of MAC addresses after which MAC limit action is taken";
-                        }
-                        container action {
-                          description
-                            "MAC address limit enforcement action";
-                          container flood {
-                            must
-                              "not(../no-flood or ../shutdown
-                               or ../none)";
-                            presence "Indicates a flood node is configured.";
-                            description
-                              "Stop learning but continue flooding";
-                          }
-                          container no-flood {
-                            must
-                              "not(../flood or ../shutdown
-                               or ../none)";
-                            presence "Indicates a no-flood node is configured.";
-                            description
-                              "Stop learning and stop flooding";
-                          }
-                          container shutdown {
-                            must
-                              "not(../flood or ../no-flood
-                               or ../none)";
-                            presence "Indicates a shutdown node is configured.";
-                            description
-                              "Stop forwarding";
-                          }
-                          container none {
-                            must
-                              "not(../flood or ../no-flood
-                               or ../shutdown)";
-                            presence "Indicates a none node is configured.";
-                            description
-                              "No action";
-                          }
-                        }
-                        container notification {
-                          description
-                            "MAC address limit notification action";
-                          container trap {
-                            must
-                              "not(../both or ../none
-                               or ../syslog)";
-                            presence "Indicates a trap node is configured.";
-                            description
-                              "Generate SNMP trap";
-                          }
-                          container both {
-                            must
-                              "not(../trap or ../none
-                               or ../syslog)";
-                            presence "Indicates a both node is configured.";
-                            description
-                              "Generate syslog message and SNMP trap";
-                          }
-                          container none {
-                            must
-                              "not(../trap or ../both
-                               or ../syslog)";
-                            presence "Indicates a none node is configured.";
-                            description
-                              "No notification";
-                          }
-                          container syslog {
-                            must
-                              "not(../trap or ../both
-                               or ../none)";
-                            presence "Indicates a syslog node is configured.";
-                            description
-                              "Generate syslog message";
-                          }
-                        }
+                          "Mac aging";
                       }
-                      container port-down {
+                      container type {
                         description
-                          "Configure action when port goes down";
-                        container flush {
-                          presence "Indicates a flush node is configured.";
+                          "MAC address aging type";
+                        container absolute {
+                          must "not(../inactivity)";
+                          presence "Indicates a absolute node is configured.";
                           description
-                            "Configure MAC flush when port goes down";
-                          container disable {
-                            presence "Indicates a disable node is configured.";
-                            description
-                              "Disable MAC flush when port goes down";
-                          }
+                            "Absolute aging type";
                         }
-                      }
-                      container secure {
-                        presence "Indicates a secure node is configured.";
-                        description
-                          "MAC Secure configuration commands";
-                        container logging {
-                          presence "Indicates a logging node is configured.";
+                        container inactivity {
+                          must "not(../absolute)";
+                          presence "Indicates a inactivity node is configured.";
                           description
-                            "Logging";
-                          container disable {
-                            presence "Indicates a disable node is configured.";
-                            description
-                              "disable logging";
-                          }
-                        }
-                        container action {
-                          description
-                            "MAC secure enforcement action";
-                          container none {
-                            must "not(../shutdown or ../restrict)";
-                            presence "Indicates a none node is configured.";
-                            description
-                              "Forward the violating packet and allow the MAC to be relearned";
-                          }
-                          container shutdown {
-                            must "not(../none or ../restrict)";
-                            presence "Indicates a shutdown node is configured.";
-                            description
-                              "Shutdown the violating bridge port";
-                          }
-                          container restrict {
-                            must "not(../none or ../shutdown)";
-                            presence "Indicates a restrict node is configured.";
-                            description
-                              "Drop the violating packet and not allow the MAC to be relearned";
-                          }
-                        }
-                        container shutdown-recovery-timeout {
-                          description
-                            "Recovery-timer to automatically revert shutdown action";
-                          container disable {
-                            must "not(../recovery-timer-in-second)";
-                            presence "Indicates a disable node is configured.";
-                            description
-                              "Disable shutdown recovery timer";
-                          }
-                          leaf recovery-timer-in-second {
-                            type uint32 {
-                              range "10..3600" {
-                                description
-                                  "Recovery timer in second";
-                              }
-                            }
-                            must "not(../disable)";
-                            description
-                              "Recovery timer in second";
-                          }
-                        }
-                        container disable {
-                          presence "Indicates a disable node is configured.";
-                          description
-                            "Disable MAC Secure";
+                            "Inactivity aging type";
                         }
                       }
                     }
-                    container dhcp {
-                      presence "Indicates a dhcp node is configured.";
+                    container learning {
+                      presence "Indicates a learning node is configured.";
                       description
-                        "DHCP protocol";
-                      container ipv4 {
+                        "MAC learning";
+                      container disable {
+                        presence "Indicates a disable node is configured.";
                         description
-                          "IP Version 4";
-                        container snoop {
-                          presence "Indicates a snoop node is configured.";
-                          description
-                            "Set the snooping profile";
-                          leaf profile {
-                            type xr:Cisco-ios-xr-string {
-                              length "1..32" {
-                                description
-                                  "DHCPv4 Snooping profile name";
-                              }
-                            }
+                          "Disable MAC learning";
+                      }
+                    }
+                    container limit {
+                      description
+                        "MAC-Limit configuration commands";
+                      leaf maximum {
+                        type uint32 {
+                          range "0..4294967295" {
                             description
-                              "Attach a DHCP profile";
+                              "Number of MAC addresses after which MAC limit action is taken";
                           }
+                        }
+                        description
+                          "Number of MAC addresses after which MAC limit action is taken";
+                      }
+                      container action {
+                        description
+                          "MAC address limit enforcement action";
+                        container flood {
+                          must
+                            "not(../no-flood or ../shutdown
+                             or ../none)";
+                          presence "Indicates a flood node is configured.";
+                          description
+                            "Stop learning but continue flooding";
+                        }
+                        container no-flood {
+                          must
+                            "not(../flood or ../shutdown
+                             or ../none)";
+                          presence "Indicates a no-flood node is configured.";
+                          description
+                            "Stop learning and stop flooding";
+                        }
+                        container shutdown {
+                          must
+                            "not(../flood or ../no-flood
+                             or ../none)";
+                          presence "Indicates a shutdown node is configured.";
+                          description
+                            "Stop forwarding";
                         }
                         container none {
+                          must
+                            "not(../flood or ../no-flood
+                             or ../shutdown)";
                           presence "Indicates a none node is configured.";
                           description
-                            "Disable DHCP snooping";
+                            "No action";
+                        }
+                      }
+                      container notification {
+                        description
+                          "MAC address limit notification action";
+                        container trap {
+                          must
+                            "not(../both or ../none
+                             or ../syslog)";
+                          presence "Indicates a trap node is configured.";
+                          description
+                            "Generate SNMP trap";
+                        }
+                        container both {
+                          must
+                            "not(../trap or ../none
+                             or ../syslog)";
+                          presence "Indicates a both node is configured.";
+                          description
+                            "Generate syslog message and SNMP trap";
+                        }
+                        container none {
+                          must
+                            "not(../trap or ../both
+                             or ../syslog)";
+                          presence "Indicates a none node is configured.";
+                          description
+                            "No notification";
+                        }
+                        container syslog {
+                          must
+                            "not(../trap or ../both
+                             or ../none)";
+                          presence "Indicates a syslog node is configured.";
+                          description
+                            "Generate syslog message";
                         }
                       }
                     }
-                    container igmp {
+                    container port-down {
                       description
-                        "IGMP protocol";
-                      container snooping {
+                        "Configure action when port goes down";
+                      container flush {
+                        presence "Indicates a flush node is configured.";
+                        description
+                          "Configure MAC flush when port goes down";
+                        container disable {
+                          presence "Indicates a disable node is configured.";
+                          description
+                            "Disable MAC flush when port goes down";
+                        }
+                      }
+                    }
+                    container secure {
+                      presence "Indicates a secure node is configured.";
+                      description
+                        "MAC Secure configuration commands";
+                      container logging {
+                        presence "Indicates a logging node is configured.";
+                        description
+                          "Logging";
+                        container disable {
+                          presence "Indicates a disable node is configured.";
+                          description
+                            "disable logging";
+                        }
+                      }
+                      container action {
+                        description
+                          "MAC secure enforcement action";
+                        container none {
+                          must "not(../shutdown or ../restrict)";
+                          presence "Indicates a none node is configured.";
+                          description
+                            "Forward the violating packet and allow the MAC to be relearned";
+                        }
+                        container shutdown {
+                          must "not(../none or ../restrict)";
+                          presence "Indicates a shutdown node is configured.";
+                          description
+                            "Shutdown the violating bridge port";
+                        }
+                        container restrict {
+                          must "not(../none or ../shutdown)";
+                          presence "Indicates a restrict node is configured.";
+                          description
+                            "Drop the violating packet and not allow the MAC to be relearned";
+                        }
+                      }
+                      container shutdown-recovery-timeout {
+                        description
+                          "Recovery-timer to automatically revert shutdown action";
+                        container disable {
+                          must "not(../recovery-timer-in-second)";
+                          presence "Indicates a disable node is configured.";
+                          description
+                            "Disable shutdown recovery timer";
+                        }
+                        leaf recovery-timer-in-second {
+                          type uint32 {
+                            range "10..3600" {
+                              description
+                                "Recovery timer in second";
+                            }
+                          }
+                          must "not(../disable)";
+                          description
+                            "Recovery timer in second";
+                        }
+                      }
+                      container disable {
+                        presence "Indicates a disable node is configured.";
+                        description
+                          "Disable MAC Secure";
+                      }
+                    }
+                  }
+                  container dhcp {
+                    presence "Indicates a dhcp node is configured.";
+                    description
+                      "DHCP protocol";
+                    container ipv4 {
+                      description
+                        "IP Version 4";
+                      container snoop {
+                        presence "Indicates a snoop node is configured.";
                         description
                           "Set the snooping profile";
                         leaf profile {
                           type xr:Cisco-ios-xr-string {
                             length "1..32" {
                               description
-                                "IGMP Snooping profile name";
+                                "DHCPv4 Snooping profile name";
                             }
                           }
                           description
-                            "Attach an IGMP profile";
+                            "Attach a DHCP profile";
                         }
                       }
-                    }
-                    container mld {
-                      description
-                        "MLD protocol";
-                      container snooping {
+                      container none {
+                        presence "Indicates a none node is configured.";
                         description
-                          "Set the snooping profile";
-                        leaf profile {
-                          type xr:Cisco-ios-xr-string {
-                            length "1..32" {
-                              description
-                                "MLD Snooping profile name";
-                            }
+                          "Disable DHCP snooping";
+                      }
+                    }
+                  }
+                  container igmp {
+                    description
+                      "IGMP protocol";
+                    container snooping {
+                      description
+                        "Set the snooping profile";
+                      leaf profile {
+                        type xr:Cisco-ios-xr-string {
+                          length "1..32" {
+                            description
+                              "IGMP Snooping profile name";
                           }
-                          description
-                            "Attach a MLD profile";
                         }
+                        description
+                          "Attach an IGMP profile";
+                      }
+                    }
+                  }
+                  container mld {
+                    description
+                      "MLD protocol";
+                    container snooping {
+                      description
+                        "Set the snooping profile";
+                      leaf profile {
+                        type xr:Cisco-ios-xr-string {
+                          length "1..32" {
+                            description
+                              "MLD Snooping profile name";
+                          }
+                        }
+                        description
+                          "Attach a MLD profile";
                       }
                     }
                   }
@@ -9936,6 +10220,463 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
             container interface {
               description
                 "Assign interface to bridge domain";
+              list interface {
+                key "interface-name";
+                description
+                  "Specify interface name";
+                leaf interface-name {
+                  type xr:Interface-name;
+                  description
+                    "Specify interface name";
+                }
+                container flooding {
+                  presence "Indicates a flooding node is configured.";
+                  description
+                    "Traffic flooding";
+                  container disable {
+                    presence "Indicates a disable node is configured.";
+                    description
+                      "Disable flooding";
+                  }
+                }
+                container flooding-unknown-unicast {
+                  presence "Indicates a unknown-unicast node is configured.";
+                  description
+                    "Traffic flooding unknown unicast";
+                  container disable {
+                    presence "Indicates a disable node is configured.";
+                    description
+                      "Disable Unknow Unicast flooding";
+                  }
+                }
+                container storm-control {
+                  description
+                    "Storm Control";
+                  container broadcast {
+                    description
+                      "Broadcast Storm Control";
+                    leaf pps {
+                      type uint32 {
+                        range "1..160000" {
+                          description
+                            "storm control pps value";
+                        }
+                      }
+                      description
+                        "Set the storm control pps";
+                    }
+                    leaf kbps {
+                      type uint32 {
+                        range "64..1280000" {
+                          description
+                            "storm control kbps value";
+                        }
+                      }
+                      description
+                        "Set the storm control kbps";
+                    }
+                  }
+                  container multicast {
+                    description
+                      "Multicast Storm Control";
+                    leaf pps {
+                      type uint32 {
+                        range "1..160000" {
+                          description
+                            "storm control pps value";
+                        }
+                      }
+                      description
+                        "Set the storm control pps";
+                    }
+                    leaf kbps {
+                      type uint32 {
+                        range "64..1280000" {
+                          description
+                            "storm control kbps value";
+                        }
+                      }
+                      description
+                        "Set the storm control kbps";
+                    }
+                  }
+                  container unknown-unicast {
+                    description
+                      "Unknown-unicast Storm Control";
+                    leaf pps {
+                      type uint32 {
+                        range "1..160000" {
+                          description
+                            "storm control pps value";
+                        }
+                      }
+                      description
+                        "Set the storm control pps";
+                    }
+                    leaf kbps {
+                      type uint32 {
+                        range "64..1280000" {
+                          description
+                            "storm control kbps value";
+                        }
+                      }
+                      description
+                        "Set the storm control kbps";
+                    }
+                  }
+                }
+                container mac {
+                  description
+                    "MAC configuration commands";
+                  container aging {
+                    description
+                      "MAC-Aging configuration commands";
+                    leaf time {
+                      type uint32 {
+                        range "300..30000" {
+                          description
+                            "MAC address aging time in seconds";
+                        }
+                      }
+                      description
+                        "Mac aging";
+                    }
+                    container type {
+                      description
+                        "MAC address aging type";
+                      container absolute {
+                        must "not(../inactivity)";
+                        presence "Indicates a absolute node is configured.";
+                        description
+                          "Absolute aging type";
+                      }
+                      container inactivity {
+                        must "not(../absolute)";
+                        presence "Indicates a inactivity node is configured.";
+                        description
+                          "Inactivity aging type";
+                      }
+                    }
+                  }
+                  container learning {
+                    presence "Indicates a learning node is configured.";
+                    description
+                      "MAC learning";
+                    container disable {
+                      presence "Indicates a disable node is configured.";
+                      description
+                        "Disable MAC learning";
+                    }
+                  }
+                  container limit {
+                    description
+                      "MAC-Limit configuration commands";
+                    leaf maximum {
+                      type uint32 {
+                        range "0..4294967295" {
+                          description
+                            "Number of MAC addresses after which MAC limit action is taken";
+                        }
+                      }
+                      description
+                        "Number of MAC addresses after which MAC limit action is taken";
+                    }
+                    container action {
+                      description
+                        "MAC address limit enforcement action";
+                      container flood {
+                        must
+                          "not(../no-flood or ../shutdown
+                           or ../none)";
+                        presence "Indicates a flood node is configured.";
+                        description
+                          "Stop learning but continue flooding";
+                      }
+                      container no-flood {
+                        must
+                          "not(../flood or ../shutdown
+                           or ../none)";
+                        presence "Indicates a no-flood node is configured.";
+                        description
+                          "Stop learning and stop flooding";
+                      }
+                      container shutdown {
+                        must
+                          "not(../flood or ../no-flood
+                           or ../none)";
+                        presence "Indicates a shutdown node is configured.";
+                        description
+                          "Stop forwarding";
+                      }
+                      container none {
+                        must
+                          "not(../flood or ../no-flood
+                           or ../shutdown)";
+                        presence "Indicates a none node is configured.";
+                        description
+                          "No action";
+                      }
+                    }
+                    container notification {
+                      description
+                        "MAC address limit notification action";
+                      container trap {
+                        must
+                          "not(../both or ../none
+                           or ../syslog)";
+                        presence "Indicates a trap node is configured.";
+                        description
+                          "Generate SNMP trap";
+                      }
+                      container both {
+                        must
+                          "not(../trap or ../none
+                           or ../syslog)";
+                        presence "Indicates a both node is configured.";
+                        description
+                          "Generate syslog message and SNMP trap";
+                      }
+                      container none {
+                        must
+                          "not(../trap or ../both
+                           or ../syslog)";
+                        presence "Indicates a none node is configured.";
+                        description
+                          "No notification";
+                      }
+                      container syslog {
+                        must
+                          "not(../trap or ../both
+                           or ../none)";
+                        presence "Indicates a syslog node is configured.";
+                        description
+                          "Generate syslog message";
+                      }
+                    }
+                  }
+                  container port-down {
+                    description
+                      "Configure action when port goes down";
+                    container flush {
+                      presence "Indicates a flush node is configured.";
+                      description
+                        "Configure MAC flush when port goes down";
+                      container disable {
+                        presence "Indicates a disable node is configured.";
+                        description
+                          "Disable MAC flush when port goes down";
+                      }
+                    }
+                  }
+                  container secure {
+                    presence "Indicates a secure node is configured.";
+                    description
+                      "MAC Secure configuration commands";
+                    container logging {
+                      presence "Indicates a logging node is configured.";
+                      description
+                        "Logging";
+                      container disable {
+                        presence "Indicates a disable node is configured.";
+                        description
+                          "disable logging";
+                      }
+                    }
+                    container action {
+                      description
+                        "MAC secure enforcement action";
+                      container none {
+                        must "not(../shutdown or ../restrict)";
+                        presence "Indicates a none node is configured.";
+                        description
+                          "Forward the violating packet and allow the MAC to be relearned";
+                      }
+                      container shutdown {
+                        must "not(../none or ../restrict)";
+                        presence "Indicates a shutdown node is configured.";
+                        description
+                          "Shutdown the violating bridge port";
+                      }
+                      container restrict {
+                        must "not(../none or ../shutdown)";
+                        presence "Indicates a restrict node is configured.";
+                        description
+                          "Drop the violating packet and not allow the MAC to be relearned";
+                      }
+                    }
+                    container disable {
+                      presence "Indicates a disable node is configured.";
+                      description
+                        "Disable MAC Secure";
+                    }
+                  }
+                }
+                container dynamic-arp-inspection {
+                  presence "Indicates a dynamic-arp-inspection node is configured.";
+                  description
+                    "Dynamic ARP Inspection";
+                  container logging {
+                    presence "Indicates a logging node is configured.";
+                    description
+                      "Logging";
+                    container disable {
+                      presence "Indicates a disable node is configured.";
+                      description
+                        "disable logging";
+                    }
+                  }
+                  container address-validation {
+                    presence "Indicates a address-validation node is configured.";
+                    description
+                      "Address Validation Configurations";
+                    container src-mac {
+                      presence "Indicates a src-mac node is configured.";
+                      description
+                        "Match Source MAC Address";
+                      container disable {
+                        presence "Indicates a disable node is configured.";
+                        description
+                          "disable Source MAC Address check";
+                      }
+                    }
+                    container dst-mac {
+                      presence "Indicates a dst-mac node is configured.";
+                      description
+                        "Match Destination MAC Address";
+                      container disable {
+                        presence "Indicates a disable node is configured.";
+                        description
+                          "disable Destimation MAC Address check";
+                      }
+                    }
+                    container ipv4 {
+                      presence "Indicates a ipv4 node is configured.";
+                      description
+                        "Match IPv4 Address";
+                      container disable {
+                        presence "Indicates a disable node is configured.";
+                        description
+                          "disable IPV4 Address check";
+                      }
+                    }
+                  }
+                  container disable {
+                    presence "Indicates a disable node is configured.";
+                    description
+                      "Disable Dynamic Arp Inspection";
+                  }
+                }
+                container ip-source-guard {
+                  presence "Indicates a ip-source-guard node is configured.";
+                  description
+                    "IP Source Guard";
+                  container logging {
+                    presence "Indicates a logging node is configured.";
+                    description
+                      "Logging";
+                    container disable {
+                      presence "Indicates a disable node is configured.";
+                      description
+                        "disable logging";
+                    }
+                  }
+                  container disable {
+                    presence "Indicates a disable node is configured.";
+                    description
+                      "Disable IP Source Guard";
+                  }
+                }
+                container dhcp {
+                  if-feature "l2vpn_is_cli_supported";
+                  presence "Indicates a dhcp node is configured.";
+                  description
+                    "DHCP protocol";
+                  container ipv4 {
+                    description
+                      "IP Version 4";
+                    container snoop {
+                      presence "Indicates a snoop node is configured.";
+                      description
+                        "Set the snooping profile";
+                      leaf profile {
+                        type xr:Cisco-ios-xr-string {
+                          length "1..32" {
+                            description
+                              "DHCPv4 Snooping profile name";
+                          }
+                        }
+                        mandatory true;
+                        description
+                          "Attach a DHCP profile";
+                      }
+                    }
+                    container none {
+                      presence "Indicates a none node is configured.";
+                      description
+                        "Disable DHCP snooping";
+                    }
+                  }
+                }
+                container static-mac-addresses {
+                  description
+                    "Static MAC address";
+                  list static-mac-address {
+                    key "mac-address";
+                    description
+                      "Static MAC address";
+                    leaf mac-address {
+                      type yang:mac-address;
+                      description
+                        "Static MAC address";
+                    }
+                  }
+                }
+                container split-horizon {
+                  description
+                    "Configure split horizon group";
+                  container group {
+                    presence "Indicates a group node is configured.";
+                    description
+                      "Configure split horizon group";
+                  }
+                }
+                container igmp {
+                  description
+                    "IGMP protocol";
+                  container snooping {
+                    description
+                      "Set the snooping profile";
+                    leaf profile {
+                      type xr:Cisco-ios-xr-string {
+                        length "1..32" {
+                          description
+                            "IGMP Snooping profile name";
+                        }
+                      }
+                      description
+                        "Attach an IGMP profile";
+                    }
+                  }
+                }
+                container mld {
+                  description
+                    "MLD protocol";
+                  container snooping {
+                    description
+                      "Set the snooping profile";
+                    leaf profile {
+                      type xr:Cisco-ios-xr-string {
+                        length "1..32" {
+                          description
+                            "MLD Snooping profile name";
+                        }
+                      }
+                      description
+                        "Attach a MLD profile";
+                    }
+                  }
+                }
+              }
             }
             container routed {
               description
@@ -10489,74 +11230,74 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                 description
                   "Initial delay before activating the redundant PW";
               }
-              container load-balancing {
+            }
+            container load-balancing {
+              description
+                "PW class Load Balancing";
+              container pw-label {
+                presence "Indicates a pw-label node is configured.";
                 description
-                  "PW class Load Balancing";
-                container pw-label {
-                  presence "Indicates a pw-label node is configured.";
+                  "Enable PW VC label based load balancing";
+              }
+              container flow-label {
+                description
+                  "Flow label based load balancing setting";
+                container transmit {
+                  must "not(../receive or ../both)";
+                  presence "Indicates a transmit node is configured.";
                   description
-                    "Enable PW VC label based load balancing";
+                    "Insert Flow label on transmit ";
+                  container static {
+                    presence "Indicates a static node is configured.";
+                    description
+                      "Set Flow label parameters statically";
+                  }
                 }
-                container flow-label {
+                container receive {
+                  must "not(../transmit or ../both)";
+                  presence "Indicates a receive node is configured.";
                   description
-                    "Flow label based load balancing setting";
-                  container transmit {
-                    must "not(../receive or ../both)";
-                    presence "Indicates a transmit node is configured.";
+                    "Discard Flow label on receive";
+                  container static {
+                    presence "Indicates a static node is configured.";
                     description
-                      "Insert Flow label on transmit ";
-                    container static {
-                      presence "Indicates a static node is configured.";
-                      description
-                        "Set Flow label parameters statically";
-                    }
+                      "Set Flow label parameters statically";
                   }
-                  container receive {
-                    must "not(../transmit or ../both)";
-                    presence "Indicates a receive node is configured.";
+                }
+                container both {
+                  must "not(../transmit or ../receive)";
+                  presence "Indicates a both node is configured.";
+                  description
+                    "Insert/Discard Flow label on transmit/recceive";
+                  container static {
+                    presence "Indicates a static node is configured.";
                     description
-                      "Discard Flow label on receive";
-                    container static {
-                      presence "Indicates a static node is configured.";
-                      description
-                        "Set Flow label parameters statically";
-                    }
+                      "Set Flow label parameters statically";
                   }
-                  container both {
-                    must "not(../transmit or ../receive)";
-                    presence "Indicates a both node is configured.";
+                }
+                container code {
+                  description
+                    "Flow label TLV code";
+                  container one7 {
+                    presence "Indicates a one7 node is configured.";
                     description
-                      "Insert/Discard Flow label on transmit/recceive";
-                    container static {
-                      presence "Indicates a static node is configured.";
+                      "Legacy code value";
+                    container disable {
+                      presence "Indicates a disable node is configured.";
                       description
-                        "Set Flow label parameters statically";
-                    }
-                  }
-                  container code {
-                    description
-                      "Flow label TLV code";
-                    container one7 {
-                      presence "Indicates a one7 node is configured.";
-                      description
-                        "Legacy code value";
-                      container disable {
-                        presence "Indicates a disable node is configured.";
-                        description
-                          "Disables sending code 17 TLV";
-                      }
+                        "Disables sending code 17 TLV";
                     }
                   }
                 }
               }
-              container ipv4 {
+            }
+            container ipv4 {
+              description
+                "Set the local source IPv4 address";
+              leaf source {
+                type inet:ipv4-address-no-zone;
                 description
-                  "Set the local source IPv4 address";
-                leaf source {
-                  type inet:ipv4-address-no-zone;
-                  description
-                    "The local source IPv4 address";
-                }
+                  "The local source IPv4 address";
               }
             }
           }
@@ -12143,7 +12884,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                             "Two Byte AS number";
                         }
                       }
-                      must "not(../four-byte-as-number or ../ipv4-address)";
+                      must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
                       description
                         "Two Byte AS number";
                     }
@@ -12165,7 +12906,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                             "Four Byte AS number";
                         }
                       }
-                      must "not(../two-byte-as-number or ../ipv4-address)";
+                      must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
                       description
                         "Four Byte AS number";
                     }
@@ -12182,7 +12923,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                     }
                     leaf ipv4-address {
                       type inet:ipv4-address-no-zone;
-                      must "not(../two-byte-as-number or ../four-byte-as-number)";
+                      must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
                       description
                         "IP address";
                     }
@@ -12635,7 +13376,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                   "Two Byte AS Number";
               }
             }
-            must "not(../four-byte-as-number or ../ipv4-address)";
+            must "not(../four-byte-as-number or ../ipv4-address) and ../two-byte-as-assigned-number";
             description
               "Two Byte AS Number";
           }
@@ -12657,7 +13398,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
                   "Four Byte AS number";
               }
             }
-            must "not(../two-byte-as-number or ../ipv4-address)";
+            must "not(../two-byte-as-number or ../ipv4-address) and ../four-byte-as-assigned-number";
             description
               "Four Byte AS number";
           }
@@ -12674,7 +13415,7 @@ module Cisco-IOS-XR-um-l2vpn-cfg {
           }
           leaf ipv4-address {
             type inet:ipv4-address-no-zone;
-            must "not(../two-byte-as-number or ../four-byte-as-number)";
+            must "not(../two-byte-as-number or ../four-byte-as-number) and ../ipv4-address-assigned-number";
             description
               "IP address";
           }

@@ -33,9 +33,14 @@ module Cisco-IOS-XR-mpls-lsd-cfg {
      for the following management objects:
        mpls-lsd: MPLS LSD configuration data
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-13 {
+    description
+      "Removed previously deprecated app-reg-delay disable and mplslsrmib cache timer/size configs";
+    semver:module-version "2.0.0";
+  }
   revision 2020-11-26 {
     description
       "Added a new block type PFP under exisiting label blocks config";

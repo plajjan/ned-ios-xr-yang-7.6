@@ -15,7 +15,7 @@ module Cisco-IOS-XR-ipv4-bgp-oper {
     prefix dt1;
   }
   include Cisco-IOS-XR-ipv4-bgp-oper-sub1 {
-    revision-date 2021-11-12;
+    revision-date 2021-11-15;
   }
 
   organization
@@ -41,42 +41,53 @@ module Cisco-IOS-XR-ipv4-bgp-oper {
      Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
-  revision 2021-11-12 {
+  revision 2021-11-15 {
     description
-      "Updated convergence operational information";
-    semver:module-version "4.1.0";
+      "Added interafi leak information in update out
+       2021-11-12
+         Updated convergence operational information
+       2021-11-09
+         Added oper for Nexthop sync slot";
+    semver:module-version "6.0.0";
+  }
+  revision 2021-10-16 {
+    description
+      "Added Oper for mamximum-paths deterministic
+       2021-06-27
+          Added PathLocalSidTable and PathReceivedSidTable";
+    semver:module-version "5.0.0";
   }
   revision 2021-05-10 {
     description
       "Added platform capability mix srte CLI
        2021-03-15
-       Added Export Allow Config for backup
+           Added Export Allow Config for backup
        2021-03-05
-       Deprecated Hidden commands
+           Deprecated Hidden commands
        2021-03-05
-       Added SR Policy Path Prefernce in Bestpath Compare
+           Added SR Policy Path Prefernce in Bestpath Compare
        2020-10-04
-       Added Soft NextHop Validation and Metric
+           Added Soft NextHop Validation and Metric
        2020-09-30
-       Added LATEST bestpath comparison reason
+           Added LATEST bestpath comparison reason
        2020-09-18
-       Added SRv6 TE BSID information
+           Added SRv6 TE BSID information
        2020-07-15
-       Changed VRFDBVRFTable pathformat";
+           Changed VRFDBVRFTable pathformat";
     semver:module-version "4.0.0";
   }
   revision 2020-06-23 {
     description
       "changed the afi from integer to string in BPM entities
        2020-03-30
-       Extended flags to 16 bits and changed leaf names as per convention";
+         Extended flags to 16 bits and changed leaf names as per convention";
     semver:module-version "3.0.0";
   }
   revision 2020-01-11 {
     description
       "Fixing invalid range for prefix length.
        2019-08-31
-       Fixing revision error in module.";
+         Fixing revision error in module.";
     semver:module-version "2.0.0";
   }
   revision 2019-04-05 {
@@ -248,7 +259,8 @@ module Cisco-IOS-XR-ipv4-bgp-oper {
   grouping PATH {
     description
       "Common node of path-table, path-used-table,
-       path-labeled-table";
+       path-labeled-table, path-local-sid-table,
+       path-received-sid-table";
     list path {
       description
         "A BGP path table entry";
@@ -1285,6 +1297,11 @@ module Cisco-IOS-XR-ipv4-bgp-oper {
             "The BGP Path Table";
           uses PATH;
         }
+        container path-received-sid-table {
+          description
+            "The BGP Path Received Sids Table";
+          uses PATH;
+        }
         container mvpn-rt-list {
           description
             "A BGP Multicast VPN Route Target List for
@@ -1410,6 +1427,11 @@ module Cisco-IOS-XR-ipv4-bgp-oper {
             }
             uses BGP-EPE-SET-BAG;
           }
+        }
+        container path-local-sid-table {
+          description
+            "The BGP Path Local Sids Table";
+          uses PATH;
         }
         container update-generation-neighbors {
           description

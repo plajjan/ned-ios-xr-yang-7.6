@@ -378,6 +378,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   "Detailed output log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
+              container output-error {
+                description
+                  "Detailed output and error log for script
+                   execution";
+                uses SCRIPT-EXECUTION-LOG;
+              }
               container detail {
                 description
                   "Show execution request status summary
@@ -392,7 +398,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               }
               container error {
                 description
-                  "Detailed output log for script execution";
+                  "Detailed error log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               leaf name-str {
@@ -401,6 +407,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   "Show Execution Name string";
               }
             }
+          }
+          container output-error {
+            description
+              "Detailed output and error log for script
+               execution";
+            uses SCRIPT-EXECUTION-LOG;
           }
           container detail {
             description
@@ -416,7 +428,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
           }
           container error {
             description
-              "Detailed output log for script execution";
+              "Detailed error log for script execution";
             uses SCRIPT-EXECUTION-LOG;
           }
           container last-show-del {
@@ -457,6 +469,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   "Detailed output log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
+              container output-error {
+                description
+                  "Detailed output and error log for script
+                   execution";
+                uses SCRIPT-EXECUTION-LOG;
+              }
               container detail {
                 description
                   "Show execution request status summary
@@ -487,6 +505,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                       "Detailed output log for script execution";
                     uses SCRIPT-EXECUTION-LOG;
                   }
+                  container output-error {
+                    description
+                      "Detailed output and error log for script
+                       execution";
+                    uses SCRIPT-EXECUTION-LOG;
+                  }
                   container detail {
                     description
                       "Show execution request status summary
@@ -501,7 +525,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   }
                   container error {
                     description
-                      "Detailed output log for script execution";
+                      "Detailed error log for script execution";
                     uses SCRIPT-EXECUTION-LOG;
                   }
                   leaf name-str {
@@ -519,7 +543,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               }
               container error {
                 description
-                  "Detailed output log for script execution";
+                  "Detailed error log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               leaf last-num {
@@ -543,6 +567,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 "Detailed output log for script execution";
               uses SCRIPT-EXECUTION-LOG;
             }
+            container output-error {
+              description
+                "Detailed output and error log for script
+                 execution";
+              uses SCRIPT-EXECUTION-LOG;
+            }
             container detail {
               description
                 "Show execution request status summary  about
@@ -557,7 +587,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
             }
             container error {
               description
-                "Detailed output log for script execution";
+                "Detailed error log for script execution";
               uses SCRIPT-EXECUTION-LOG;
             }
             container status-reverse-lasts {
@@ -571,6 +601,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 container output {
                   description
                     "Detailed output log for script execution";
+                  uses SCRIPT-EXECUTION-LOG;
+                }
+                container output-error {
+                  description
+                    "Detailed output and error log for script
+                     execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
                 container detail {
@@ -609,6 +645,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                         "Detailed output log for script execution";
                       uses SCRIPT-EXECUTION-LOG;
                     }
+                    container output-error {
+                      description
+                        "Detailed output and error log for script
+                         execution";
+                      uses SCRIPT-EXECUTION-LOG;
+                    }
                     container detail {
                       description
                         "Show execution request status summary
@@ -623,7 +665,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                     }
                     container error {
                       description
-                        "Detailed output log for script execution";
+                        "Detailed error log for script execution";
                       uses SCRIPT-EXECUTION-LOG;
                     }
                     leaf name-str {
@@ -635,7 +677,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 }
                 container error {
                   description
-                    "Detailed output log for script execution";
+                    "Detailed error log for script execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
                 leaf last-num {
@@ -657,6 +699,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               uses SCRIPT-EXECUTION-SUMMARY;
             }
           }
+          container output-error {
+            description
+              "Detailed output and error log for script
+               execution";
+            uses SCRIPT-EXECUTION-LOG;
+          }
           container detail {
             description
               "Detailed information of a particular
@@ -674,6 +722,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               container output {
                 description
                   "Detailed output log for script execution";
+                uses SCRIPT-EXECUTION-LOG;
+              }
+              container output-error {
+                description
+                  "Detailed output and error log for script
+                   execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               container detail {
@@ -701,7 +755,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               }
               container error {
                 description
-                  "Detailed output log for script execution";
+                  "Detailed error log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               leaf name-str {
@@ -718,7 +772,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
           }
           container error {
             description
-              "Detailed output log for script execution";
+              "Detailed error log for script execution";
             uses SCRIPT-EXECUTION-LOG;
           }
           leaf status-str {
@@ -730,12 +784,17 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
       }
       container output {
         description
-          "Information about script execution";
+          "Output log for script execution";
+        uses SCRIPT-EXECUTION-LOG;
+      }
+      container output-error {
+        description
+          "Output and Error log for script execution";
         uses SCRIPT-EXECUTION-LOG;
       }
       container detail {
         description
-          "Information about script execution";
+          "Detailed information about script execution";
         uses SCRIPT-EXECUTION-DETAIL;
       }
       container requests {
@@ -758,6 +817,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   "Detailed output log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
+              container output-error {
+                description
+                  "Detailed output and error log for script
+                   execution";
+                uses SCRIPT-EXECUTION-LOG;
+              }
               container detail {
                 description
                   "Show execution request status summary
@@ -771,6 +836,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 container output {
                   description
                     "Detailed output log for script execution";
+                  uses SCRIPT-EXECUTION-LOG;
+                }
+                container output-error {
+                  description
+                    "Detailed output and error log for script
+                     execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
                 container detail {
@@ -812,6 +883,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                              execution";
                           uses SCRIPT-EXECUTION-LOG;
                         }
+                        container output-error {
+                          description
+                            "Detailed output and error log for
+                             script execution";
+                          uses SCRIPT-EXECUTION-LOG;
+                        }
                         container detail {
                           description
                             "Show execution request status summary
@@ -826,7 +903,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                         }
                         container error {
                           description
-                            "Detailed output log for script
+                            "Detailed error log for script
                              execution";
                           uses SCRIPT-EXECUTION-LOG;
                         }
@@ -840,6 +917,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                     container output {
                       description
                         "Detailed output log for script execution";
+                      uses SCRIPT-EXECUTION-LOG;
+                    }
+                    container output-error {
+                      description
+                        "Detailed output and error log for script
+                         execution";
                       uses SCRIPT-EXECUTION-LOG;
                     }
                     container detail {
@@ -856,7 +939,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                     }
                     container error {
                       description
-                        "Detailed output log for script execution";
+                        "Detailed error log for script execution";
                       uses SCRIPT-EXECUTION-LOG;
                     }
                     leaf last-num {
@@ -874,7 +957,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 }
                 container error {
                   description
-                    "Detailed output log for script execution";
+                    "Detailed error log for script execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
               }
@@ -886,7 +969,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               }
               container error {
                 description
-                  "Detailed output log for script execution";
+                  "Detailed error log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               leaf status-str {
@@ -907,6 +990,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               container output {
                 description
                   "Detailed output log for script execution";
+                uses SCRIPT-EXECUTION-LOG;
+              }
+              container output-error {
+                description
+                  "Detailed output and error log for script
+                   execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               container detail {
@@ -934,7 +1023,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               }
               container error {
                 description
-                  "Detailed output log for script execution";
+                  "Detailed error log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               leaf name-str {
@@ -953,6 +1042,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 "Detailed output log for script execution";
               uses SCRIPT-EXECUTION-LOG;
             }
+            container output-error {
+              description
+                "Detailed output and error log for script
+                 execution";
+              uses SCRIPT-EXECUTION-LOG;
+            }
             container detail {
               description
                 "Show execution request status summary  about
@@ -967,7 +1062,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
             }
             container error {
               description
-                "Detailed output log for script execution";
+                "Detailed error log for script execution";
               uses SCRIPT-EXECUTION-LOG;
             }
             container req-rev-lasts {
@@ -989,6 +1084,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                     container output {
                       description
                         "Detailed output log for script execution";
+                      uses SCRIPT-EXECUTION-LOG;
+                    }
+                    container output-error {
+                      description
+                        "Detailed output and error log for script
+                         execution";
                       uses SCRIPT-EXECUTION-LOG;
                     }
                     container detail {
@@ -1016,7 +1117,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                     }
                     container error {
                       description
-                        "Detailed output log for script execution";
+                        "Detailed error log for script execution";
                       uses SCRIPT-EXECUTION-LOG;
                     }
                     leaf name-str {
@@ -1029,6 +1130,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 container output {
                   description
                     "Detailed output log for script execution";
+                  uses SCRIPT-EXECUTION-LOG;
+                }
+                container output-error {
+                  description
+                    "Detailed output and error log for script
+                     execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
                 container detail {
@@ -1045,7 +1152,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 }
                 container error {
                   description
-                    "Detailed output log for script execution";
+                    "Detailed error log for script execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
                 leaf last-num {
@@ -1072,6 +1179,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               uses SCRIPT-EXECUTION-SUMMARY;
             }
           }
+          container output-error {
+            description
+              "Detailed output and error log for script
+               execution";
+            uses SCRIPT-EXECUTION-LOG;
+          }
           container detail {
             description
               "Show execution request status summary  about
@@ -1091,6 +1204,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   "Detailed output log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
+              container output-error {
+                description
+                  "Detailed output and error log for script
+                   execution";
+                uses SCRIPT-EXECUTION-LOG;
+              }
               container detail {
                 description
                   "Show execution request status summary
@@ -1108,6 +1227,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   container output {
                     description
                       "Detailed output log for script execution";
+                    uses SCRIPT-EXECUTION-LOG;
+                  }
+                  container output-error {
+                    description
+                      "Detailed output and error log for script
+                       execution";
                     uses SCRIPT-EXECUTION-LOG;
                   }
                   container detail {
@@ -1135,7 +1260,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                   }
                   container error {
                     description
-                      "Detailed output log for script execution";
+                      "Detailed error log for script execution";
                     uses SCRIPT-EXECUTION-LOG;
                   }
                   leaf name-str {
@@ -1153,7 +1278,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
               }
               container error {
                 description
-                  "Detailed output log for script execution";
+                  "Detailed error log for script execution";
                 uses SCRIPT-EXECUTION-LOG;
               }
               leaf last-num {
@@ -1171,7 +1296,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
           }
           container error {
             description
-              "Detailed output log for script execution";
+              "Detailed error log for script execution";
             uses SCRIPT-EXECUTION-LOG;
           }
           leaf request-id {
@@ -1191,6 +1316,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
           container output {
             description
               "Detailed output log for script execution";
+            uses SCRIPT-EXECUTION-LOG;
+          }
+          container output-error {
+            description
+              "Detailed output and error log for script
+               execution";
             uses SCRIPT-EXECUTION-LOG;
           }
           container detail {
@@ -1218,7 +1349,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
           }
           container error {
             description
-              "Detailed output log for script execution";
+              "Detailed error log for script execution";
             uses SCRIPT-EXECUTION-LOG;
           }
           leaf name-str {
@@ -1255,6 +1386,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 "Detailed output log for script execution";
               uses SCRIPT-EXECUTION-LOG;
             }
+            container output-error {
+              description
+                "Detailed output and error log for script
+                 execution";
+              uses SCRIPT-EXECUTION-LOG;
+            }
             container detail {
               description
                 "Show execution request status summary  about
@@ -1269,7 +1406,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
             }
             container error {
               description
-                "Detailed output log for script execution";
+                "Detailed error log for script execution";
               uses SCRIPT-EXECUTION-LOG;
             }
             leaf name-str {
@@ -1295,6 +1432,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
             container output {
               description
                 "Detailed output log for script execution";
+              uses SCRIPT-EXECUTION-LOG;
+            }
+            container output-error {
+              description
+                "Detailed output and error log for script
+                 execution";
               uses SCRIPT-EXECUTION-LOG;
             }
             container detail {
@@ -1327,6 +1470,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                     "Detailed output log for script execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
+                container output-error {
+                  description
+                    "Detailed output and error log for script
+                     execution";
+                  uses SCRIPT-EXECUTION-LOG;
+                }
                 container detail {
                   description
                     "Show execution request status summary
@@ -1341,7 +1490,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 }
                 container error {
                   description
-                    "Detailed output log for script execution";
+                    "Detailed error log for script execution";
                   uses SCRIPT-EXECUTION-LOG;
                 }
                 leaf name-str {
@@ -1359,7 +1508,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
             }
             container error {
               description
-                "Detailed output log for script execution";
+                "Detailed error log for script execution";
               uses SCRIPT-EXECUTION-LOG;
             }
             leaf last-num {
@@ -1368,6 +1517,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
                 "Last given number of executed requests";
             }
           }
+        }
+        container output-error {
+          description
+            "Detailed output and error log for script
+             execution";
+          uses SCRIPT-EXECUTION-LOG;
         }
         container detail {
           description
@@ -1383,7 +1538,7 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
         }
         container error {
           description
-            "Detailed output log for script execution";
+            "Detailed error log for script execution";
           uses SCRIPT-EXECUTION-LOG;
         }
         container reverse-show-del {
@@ -1400,12 +1555,12 @@ module Cisco-IOS-XR-infra-script-mgmt-oper {
       }
       container summary {
         description
-          "Information about script execution";
+          "Summary information about script execution";
         uses SCRIPT-EXECUTION-SUMMARY;
       }
       container error {
         description
-          "Information about script execution";
+          "Error log for script execution";
         uses SCRIPT-EXECUTION-LOG;
       }
       container execution-show-del {

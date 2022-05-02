@@ -23,9 +23,14 @@ submodule Cisco-IOS-XR-asr9k-netflow-oper-sub2 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR asr9k-netflow package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-18 {
+    description
+      "Added sFlow counters for ingress flows";
+    semver:module-version "1.1.0";
+  }
   revision 2019-12-16 {
     description
       "Added map-t logging counters for ingress flows.";
@@ -77,6 +82,11 @@ submodule Cisco-IOS-XR-asr9k-netflow-oper-sub2 {
       type uint64;
       description
         "Section ingress flows";
+    }
+    leaf sflow-ingress-flows {
+      type uint64;
+      description
+        "Sflow ingress flows";
     }
     leaf mapt-logging-ingress-flows {
       type uint64;

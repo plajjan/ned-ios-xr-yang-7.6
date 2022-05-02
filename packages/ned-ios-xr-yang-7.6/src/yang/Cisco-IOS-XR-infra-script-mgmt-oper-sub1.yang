@@ -293,6 +293,16 @@ submodule Cisco-IOS-XR-infra-script-mgmt-oper-sub1 {
       description
         "Checksum of script";
     }
+    leaf script-description {
+      type string;
+      description
+        "Description of script";
+    }
+    leaf script-arguments {
+      type string;
+      description
+        "Arguments to pass to script";
+    }
     list status-history {
       description
         "History information for script";

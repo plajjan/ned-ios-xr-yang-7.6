@@ -31,9 +31,14 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
      This YANG module augments the
      modules with configuration data.
      
-     Copyright (c) 2019-2020 by Cisco Systems, Inc.
+     Copyright (c) 2019-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-03-30 {
+    description
+      "Updated with statement for 800G interface";
+    semver:module-version "3.0.0";
+  }
   revision 2019-12-12 {
     description
       "Made changes for priority-flow-control and added frame preemption";
@@ -51,7 +56,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
 
   grouping GROUP-BODY {
     container threshold {
-      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -78,7 +83,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
       }
     }
     container report {
-      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -104,7 +109,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
       }
     }
     container signal {
-      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -120,7 +125,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
       }
     }
     container carrier-delay {
-      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -147,7 +152,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
       }
     }
     leaf duplex {
-      when "../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       type enumeration {
@@ -166,7 +171,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
         "Configure duplex operational mode";
     }
     leaf fec {
-      when "../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       type enumeration {
@@ -190,7 +195,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
         "Set the Forward Error Correction on an interface";
     }
     leaf flow-control {
-      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'CPRIoE')]" {
+      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'CPRIoE')]" {
         tailf:dependency "../a1:interface-name";
       }
       type enumeration {
@@ -214,7 +219,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
         "Set the flow control mode on an interface";
     }
     leaf packet-gap {
-      when "../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'TenGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'TenGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       type enumeration {
@@ -228,7 +233,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
         "Set the IPG on an interface";
     }
     leaf loopback {
-      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'CPRIoE')]" {
+      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'CPRIoE')]" {
         tailf:dependency "../a1:interface-name";
       }
       type enumeration {
@@ -252,7 +257,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
         "Set the loopback mode on an interface";
     }
     container negotiation {
-      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -293,7 +298,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
         "Set the ethernet speed on an interface";
     }
     container priority-flow-control {
-      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
+      when "../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -366,7 +371,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
       }
     }
     container fast-shutdown {
-      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ((../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]) and ../a1:interface-name[not(contains(text(),'.'))])" {
+      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ((../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]) and ../a1:interface-name[not(contains(text(),'.'))])" {
         tailf:dependency "../a1:interface-name";
       }
       presence "Indicates a fast-shutdown node is configured.";
@@ -374,7 +379,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
         "Enable fast shutdown";
     }
     container optical-power {
-      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ((../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]) and ../a1:interface-name[not(contains(text(),'.'))])" {
+      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ((../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')]) and ../a1:interface-name[not(contains(text(),'.'))])" {
         tailf:dependency "../a1:interface-name";
       }
       description
@@ -395,7 +400,7 @@ module Cisco-IOS-XR-um-if-ethernet-cfg {
       }
     }
     container frame-preemption {
-      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'CPRIoE')]" {
+      when "../a1:interface-name[starts-with(text(),'FastEthernet')] or ../a1:interface-name[starts-with(text(),'GigabitEthernet')] or ../a1:interface-name[starts-with(text(),'TenGigE')] or ../a1:interface-name[starts-with(text(),'FortyGigE')] or ../a1:interface-name[starts-with(text(),'HundredGigE')] or ../a1:interface-name[starts-with(text(),'TwoHundredGigE')] or ../a1:interface-name[starts-with(text(),'FourHundredGigE')] or ../a1:interface-name[starts-with(text(),'EightHundredGigE')] or ../a1:interface-name[starts-with(text(),'TwentyFiveGigE')] or ../a1:interface-name[starts-with(text(),'FiftyGigE')] or ../a1:interface-name[starts-with(text(),'CPRIoE')]" {
         tailf:dependency "../a1:interface-name";
       }
       presence "Indicates a frame-preemption node is configured.";

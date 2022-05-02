@@ -48,7 +48,7 @@ module Cisco-IOS-XR-sysadmin-led-mgr-ui {
   revision 2012-03-15 {
     description
       "Initial revision of led commands, march 25 changed leds to
-       location";
+         location";
   }
 
   grouping hw-module-config-group {

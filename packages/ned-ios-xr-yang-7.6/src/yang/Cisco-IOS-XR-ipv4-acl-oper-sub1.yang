@@ -26,9 +26,21 @@ submodule Cisco-IOS-XR-ipv4-acl-oper-sub1 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR ipv4-acl package operational data.
      
-     Copyright (c) 2013-2020 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-09-20 {
+    description
+      "Cleanup of deprecated source port/operator fields in acl oper bag.CSCve77173
+       2021-09-14
+         Changing vrf name size macro from 32 to 33.CSCve72799";
+    semver:module-version "2.0.0";
+  }
+  revision 2021-03-05 {
+    description
+      "Adding a new policer stats field.CSCvx54997";
+    semver:module-version "1.2.0";
+  }
   revision 2020-11-13 {
     description
       "Adding policer and priority.";
@@ -614,21 +626,6 @@ submodule Cisco-IOS-XR-ipv4-acl-oper-sub1 {
       description
         "Source port 2";
     }
-    leaf sorce-operator {
-      type Acl-port-operator;
-      description
-        "Deprecated by Source operator";
-    }
-    leaf sorce-port1 {
-      type uint16;
-      description
-        "Deprecated by SourcePort1";
-    }
-    leaf sorce-port2 {
-      type uint16;
-      description
-        "Deprecated by SourcePort2";
-    }
     leaf destination-operator {
       type Acl-port-operator;
       description
@@ -754,6 +751,11 @@ submodule Cisco-IOS-XR-ipv4-acl-oper-sub1 {
       description
         "Police stats";
     }
+    leaf police-hits-dropped {
+      type uint64;
+      description
+        "Police dropped stats";
+    }
     leaf is-icmp-off {
       type boolean;
       description
@@ -838,6 +840,11 @@ submodule Cisco-IOS-XR-ipv4-acl-oper-sub1 {
       type Acl-priority;
       description
         "Priority";
+    }
+    leaf is-icmpon {
+      type boolean;
+      description
+        "True if ICMP on";
     }
     list next-hop-info {
       max-elements "3";

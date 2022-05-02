@@ -9,7 +9,7 @@ module Cisco-IOS-XR-ip-ntp-oper {
     prefix semver;
   }
   include Cisco-IOS-XR-ip-ntp-oper-sub1 {
-    revision-date 2019-04-05;
+    revision-date 2021-08-23;
   }
 
   organization
@@ -32,9 +32,14 @@ module Cisco-IOS-XR-ip-ntp-oper {
      for the following management objects:
        ntp: NTP operational data
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-23 {
+    description
+      "Strong NTP authentication needs addition of authentication type.";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";

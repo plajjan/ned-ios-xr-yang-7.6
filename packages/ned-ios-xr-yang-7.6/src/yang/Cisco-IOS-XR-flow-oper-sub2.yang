@@ -23,9 +23,21 @@ submodule Cisco-IOS-XR-flow-oper-sub2 {
     "This submodule contains a collection of YANG definitions
      for Cisco IOS-XR flow package operational data.
      
-     Copyright (c) 2013-2019 by Cisco Systems, Inc.
+     Copyright (c) 2013-2021 by Cisco Systems, Inc.
      All rights reserved.";
 
+  revision 2021-08-16 {
+    description
+      "Added a new field for cache flow record size in cache information";
+    semver:module-version "1.2.0";
+  }
+  revision 2021-06-16 {
+    description
+      "Added tunnel egress related options for sflow
+       2021-04-23
+          Added new node for data-template info";
+    semver:module-version "1.1.0";
+  }
   revision 2019-04-05 {
     description
       "Establish semantic version baseline.";
