@@ -133,7 +133,7 @@ mirror:
 # all supported NSO versions by including a CI config file from the upstream
 # nso-docker repository. It is normal to build your own version set for the NSO
 # versions you are interested in and include that here.
-include: 'https://gitlab.com/nso-developer/nso-docker/-/raw/master/version-sets/supported-nso/build-tot.yaml'
+# include: 'https://gitlab.com/nso-developer/nso-docker/-/raw/master/version-sets/supported-nso/build-tot.yaml'
 # For example, having mirrored the nso-docker repository and created your own
 # version-set, you could reference that, as long as it is hosted on the same
 # GitLab instance as this repo. Here we are using a structured notation which
@@ -155,3 +155,12 @@ include: 'https://gitlab.com/nso-developer/nso-docker/-/raw/master/version-sets/
 # This isn't recommended other than perhaps for a quick test. It is much better
 # to build a version-set on your main NSO system repo and include it so you
 # build all your repositories for a consistent set of versions.
+include:
+  - project: '${CI_PROJECT_NAMESPACE}/nso-docker'
+    ref: master
+    file: '/version-sets/${CI_PROJECT_NAMESPACE}/build-all.yaml'
+
+  # include job to create MR on nso-ts
+  - project: '${CI_PROJECT_NAMESPACE}/nso-ts'
+    ref: master
+    file: '/ned-open-mr.yml'
